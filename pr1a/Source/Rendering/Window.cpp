@@ -70,7 +70,7 @@ void AlgGeom::Window::init(const std::string& title, const uint16_t width, const
 
     InputManager::getInstance()->init(_window);
     Renderer::getInstance()->prepareOpenGL(width, height, InputManager::getApplicationState());
-    GUI::getInstance()->initialize(_window, 5);
+    GUI::getInstance()->initialize(_window, 2);
 }
 
 void AlgGeom::Window::loop()
