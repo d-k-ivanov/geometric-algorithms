@@ -1,4 +1,5 @@
 #version 420
+#extension GL_ARB_subroutine : enable
 
 // ------------ Constraints ------------
 #define CUTOFF .8f

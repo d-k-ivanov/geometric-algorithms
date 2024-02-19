@@ -188,7 +188,7 @@ void AlgGeom::InputManager::init(GLFWwindow* window)
 {
     _window = window;
 
-    // - Registramos los callbacks que responder�n a los eventos principales
+    // We register the callbacks that will respond to the main events
     glfwSetWindowRefreshCallback(window, windowRefreshCallback);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetKeyCallback(window, keyCallback);
@@ -212,7 +212,7 @@ void AlgGeom::InputManager::suscribeScreenshot(ScreenshotListener* listener)
     _screenshotListeners.push_back(listener);
 }
 
-// - Esta funci�n callback ser� llamada cada vez que se cambie el tama�o del �rea de dibujo OpenGL.
+// This callback function will be called every time the OpenGL drawing area is resized.
 void AlgGeom::InputManager::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     InputManager* inputManager = InputManager::getInstance();
@@ -222,7 +222,7 @@ void AlgGeom::InputManager::framebufferSizeCallback(GLFWwindow* window, int widt
     }
 }
 
-// - Esta funci�n callback ser� llamada cada vez que se pulse una tecla dirigida al �rea de dibujo OpenGL.
+// This callback function will be called every time a key directed to the OpenGL drawing area is pressed.
 void AlgGeom::InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     InputManager* inputManager = InputManager::getInstance();
@@ -237,7 +237,7 @@ void AlgGeom::InputManager::keyCallback(GLFWwindow* window, int key, int scancod
     }
 }
 
-// - Esta funci�n callback ser� llamada cada vez que se pulse alg�n bot�n del rat�n sobre el �rea de dibujo OpenGL.
+// This callback function will be called every time a mouse button is pressed on the OpenGL drawing area.
 void AlgGeom::InputManager::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
     if(GUI::getInstance()->isMouseActive())
@@ -264,7 +264,7 @@ void AlgGeom::InputManager::mouseCursorCallback(GLFWwindow* window, double xpos,
     inputManager->checkPanTilt(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 
-// - Esta funci�n callback ser� llamada cada vez que se mueva la rueda del rat�n sobre el �rea de dibujo OpenGL.
+// This callback function will be called every time the mouse wheel is moved over the OpenGL drawing area.
 void AlgGeom::InputManager::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
     InputManager* inputManager = InputManager::getInstance();
@@ -273,7 +273,7 @@ void AlgGeom::InputManager::scrollCallback(GLFWwindow* window, double xoffset, d
     camera->zoom(static_cast<float>(yoffset) * inputManager->_moveSpeed[ZOOM]);
 }
 
-// - Esta funci�n callback ser� llamada cada vez que el �rea de dibujo OpenGL deba ser redibujada.
+// This callback function will be called every time the OpenGL drawing area needs to be redrawn.
 void AlgGeom::InputManager::windowRefreshCallback(GLFWwindow* window)
 {
     InputManager* inputManager = InputManager::getInstance();

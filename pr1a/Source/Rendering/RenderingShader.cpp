@@ -21,8 +21,8 @@ void AlgGeom::RenderingShader::applyActiveSubroutines()
 GLuint AlgGeom::RenderingShader::createShaderProgram(const char* filename)
 {
     if(_handler <= 0)
-    {    // Shader identifier
-        _handler = glCreateProgram();
+    {
+        _handler = glCreateProgram();    // Shader identifier
 
         if(_handler == 0)
         {

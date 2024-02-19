@@ -44,8 +44,6 @@ AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
     return this;
 }
 
-// Protected methods
-
 AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(aiMesh* mesh, const aiScene* scene, const std::string& folder)
 {
     std::vector<VAO::Vertex> vertices(mesh->mNumVertices);

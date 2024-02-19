@@ -87,12 +87,12 @@ void AlgGeom::Renderer::prepareOpenGL(uint16_t width, uint16_t height, Applicati
     _content                 = new SceneContent {};
     _screenshoter            = new FBOScreenshot(width, height);
 
-    // - Establecemos un gris medio como color con el que se borrar� el frame buffer.
-    // No tiene por qu� ejecutarse en cada paso por el ciclo de eventos.
+    // We set a medium gray as the color with which the frame buffer will be cleared.
+    // It does not have to be executed at every step through the event loop.
     glClearColor(_appState->_backgroundColor.x, _appState->_backgroundColor.y, _appState->_backgroundColor.z, 1.0f);
 
-    // - Le decimos a OpenGL que tenga en cuenta la profundidad a la hora de dibujar.
-    // No tiene por qu� ejecutarse en cada paso por el ciclo de eventos.
+    // We tell OpenGL to take depth into account when drawing.
+    // It does not have to be executed at every step through the event loop.
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 

@@ -8,7 +8,7 @@ protected:
     Vect2d _a, _b, _c;
 
 public:
-    friend class DrawTriangle;    // evitar
+    friend class DrawTriangle;    // avoid
 
     /**
      *   @brief Constructor .

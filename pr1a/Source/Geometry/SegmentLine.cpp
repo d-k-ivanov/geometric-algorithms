@@ -98,16 +98,12 @@ double SegmentLine::slope()
     return 0;
 }
 
-// Protected methods
-
 std::ostream& operator<<(std::ostream& os, const SegmentLine& segment)
 {
     os << "Point A: " << segment._orig << ", Point B: " << segment._dest << "\n";
 
     return os;
 }
-
-// Protected methods
 
 float SegmentLine::getDistanceT0(Vect2d& point)
 {
