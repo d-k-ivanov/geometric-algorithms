@@ -5,4 +5,4 @@
 namespace AlgGeom
 {
 std::string ThisExecutableLocation();
-}    // MyVulkan
+}    // AlgGeom

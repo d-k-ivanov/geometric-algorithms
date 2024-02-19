@@ -22,4 +22,4 @@ public:
     virtual void modifySize(const uint16_t width, const uint16_t height);
     void         saveImage(const std::string& filename);
 };
-}
+}    // namespace AlgGeom

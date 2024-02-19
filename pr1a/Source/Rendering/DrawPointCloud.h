@@ -16,4 +16,4 @@ public:
     DrawPointCloud(const DrawPointCloud& drawPointCloud) = delete;
     virtual ~DrawPointCloud() {};
 };
-}
+}    // namespace AlgGeom

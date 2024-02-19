@@ -144,4 +144,4 @@ public:
     Model3D* setPointSize(float size);
     Model3D* setTopologyVisibility(VAO::IBO_slots topology, bool visible);
 };
-}
+}    // namespace AlgGeom

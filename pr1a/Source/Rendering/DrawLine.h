@@ -16,4 +16,4 @@ public:
     DrawLine(const DrawLine& drawLine) = delete;
     virtual ~DrawLine() {};
 };
-}
+}    // namespace AlgGeom

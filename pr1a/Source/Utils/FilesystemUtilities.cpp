@@ -31,4 +31,4 @@ std::string ThisExecutableLocation()
     const auto executableDir = weakly_canonical(std::filesystem::path(executablePath)).parent_path();
     return executableDir.string();
 }
-}    // MyVulkan
+}    // AlgGeom

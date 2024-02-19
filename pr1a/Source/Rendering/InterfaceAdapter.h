@@ -6,5 +6,6 @@ class InterfaceAdapter
 {
 public:
     virtual void renderGuiObject() = 0;
+    virtual ~InterfaceAdapter()    = default;
 };
-}
+}    // namespace AlgGeom

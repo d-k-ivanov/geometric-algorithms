@@ -49,7 +49,7 @@ bool Polygon::add(const Point& point)
     return this->add(vertex);
 }
 
-Vertex Polygon::getVertexAt(int position)
+Vertex Polygon::getVertexAt(const int position)
 {
     if(position >= 0 && position < _vertices.size())
     {

@@ -7,8 +7,6 @@
 std::string                     AlgGeom::Model3D::CHECKER_PATTERN_PATH = ThisExecutableLocation() + "/Resources/Textures/Checker.png";
 std::unordered_set<std::string> AlgGeom::Model3D::USED_NAMES;
 
-// Public methods
-
 AlgGeom::Model3D::Model3D()
     : _modelMatrix(1.0f)
 {

@@ -98,4 +98,4 @@ public:
     void suscribeResize(ResizeListener* listener);
     void suscribeScreenshot(ScreenshotListener* listener);
 };
-}
+}    // namespace AlgGeom

@@ -42,4 +42,4 @@ public:
     virtual void resizeEvent(uint16_t width, uint16_t height);
     virtual void screenshotEvent(const ScreenshotEvent& event);
 };
-}
+}    // namespace AlgGeom

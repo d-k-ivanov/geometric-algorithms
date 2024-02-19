@@ -32,7 +32,7 @@ long long getDuration(const TimeUnit timeUnit = MILLISECONDS);
  *	@brief Starts the clock so we can execute whatever we want and measure the used time.
  */
 void initChrono();
-}
+}    // namespace ChronoUtilities
 
 inline long long ChronoUtilities::getDuration(const TimeUnit timeUnit)
 {

@@ -23,4 +23,4 @@ public:
     void     buildScenario();
     Model3D* getModel(Model3D::Component* component);
 };
-}
+}    // namespace AlgGeom

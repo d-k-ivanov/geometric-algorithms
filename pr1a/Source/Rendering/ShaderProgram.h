@@ -55,4 +55,4 @@ public:
 
     bool use();
 };
-}
+}    // namespace AlgGeom

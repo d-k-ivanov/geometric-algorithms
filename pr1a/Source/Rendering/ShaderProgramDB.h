@@ -29,4 +29,4 @@ public:
     virtual ~ShaderProgramDB();
     RenderingShader* getShader(RenderingShaderId shaderId);
 };
-}
+}    // namespace AlgGeom

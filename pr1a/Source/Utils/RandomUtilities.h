@@ -60,7 +60,7 @@ vec3 getUniformRandomInUnitDisk();
  *	@return Random point in unit sphere.
  */
 vec3 getUniformRandomInUnitSphere();
-}
+}    // namespace RandomUtilities
 
 inline vec3 RandomUtilities::getRandomToSphere(float radius, float distanceSquared)
 {

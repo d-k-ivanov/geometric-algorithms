@@ -7,7 +7,7 @@
 AlgGeom::Image::Image(const std::string& filename)
     : _depth(4)    // PNG depth
 {
-    unsigned error = lodepng::decode(_image, _width, _height, filename.c_str());
+    const unsigned error = lodepng::decode(_image, _width, _height, filename.c_str());
 
     if(error)
     {
@@ -63,7 +63,7 @@ void AlgGeom::Image::flipImageVertically(std::vector<unsigned char>& image, cons
 bool AlgGeom::Image::saveImage(const std::string& filename)
 {
     std::vector<unsigned char> result;
-    unsigned                   error = lodepng::encode(result, this->_image, this->_width, this->_height);
+    const unsigned             error = lodepng::encode(result, this->_image, this->_width, this->_height);
 
     if(!error)
     {

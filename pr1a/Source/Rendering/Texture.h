@@ -31,4 +31,4 @@ public:
     vec4        getColor() { return _color; }
     std::string getFilename() { return _filename; }
 };
-}
+}    // namespace AlgGeom

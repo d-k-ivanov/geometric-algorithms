@@ -16,4 +16,4 @@ public:
     DrawRay(const DrawRay& drawRay) = delete;
     virtual ~DrawRay() {};
 };
-}
+}    // namespace AlgGeom

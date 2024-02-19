@@ -16,4 +16,4 @@ public:
     DrawTriangle(const DrawTriangle& drawTriangle) = delete;
     virtual ~DrawTriangle() {};
 };
-}
+}    // namespace AlgGeom

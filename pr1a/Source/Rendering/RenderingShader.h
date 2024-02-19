@@ -12,4 +12,4 @@ public:
     virtual void   applyActiveSubroutines();
     virtual GLuint createShaderProgram(const char* filename);
 };
-}
+}    // namespace AlgGeom

@@ -43,4 +43,4 @@ public:
     void              saveTexture(const vec4& color, AlgGeom::Texture* texture);
     void              saveTexture(const std::string& path, AlgGeom::Texture* texture);
 };
-}
+}    // namespace AlgGeom

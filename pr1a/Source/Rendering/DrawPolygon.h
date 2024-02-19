@@ -16,4 +16,4 @@ public:
     DrawPolygon(const DrawPolygon& ddt) = delete;
     virtual ~DrawPolygon() {};
 };
-}
+}    // namespace AlgGeom

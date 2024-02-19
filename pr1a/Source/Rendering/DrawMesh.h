@@ -19,4 +19,4 @@ public:
 
     DrawMesh* loadModelOBJ(const std::string& path);
 };
-}
+}    // namespace AlgGeom

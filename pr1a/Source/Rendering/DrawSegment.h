@@ -16,4 +16,4 @@ public:
     DrawSegment(const DrawSegment& drawSegment) = delete;
     virtual ~DrawSegment() {};
 };
-}
+}    // namespace AlgGeom
