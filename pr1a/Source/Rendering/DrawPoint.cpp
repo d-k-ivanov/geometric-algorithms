@@ -2,7 +2,7 @@
 
 #include "DrawPoint.h"
 
-AlgGeom::DrawPoint::DrawPoint(Point& point)
+AlgGeom::DrawPoint::DrawPoint(const Point& point)
     : Model3D()
     , _point(point)
 {

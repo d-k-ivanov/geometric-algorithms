@@ -12,8 +12,8 @@ protected:
     Point _point;
 
 public:
-    DrawPoint(Point& p);
+    DrawPoint(const Point& p);
     DrawPoint(const DrawPoint& drawPoint) = delete;
-    virtual ~DrawPoint() {};
+    ~DrawPoint() override                 = default;
 };
-}
+}    // namespace AlgGeom

@@ -26,7 +26,7 @@ namespace
 /**
  *	@return Measured time in the selected time unit since the clock was started. By default the time unit is milliseconds.
  */
-long long getDuration(const TimeUnit timeUnit = ChronoUtilities::MILLISECONDS);
+long long getDuration(const TimeUnit timeUnit = MILLISECONDS);
 
 /**
  *	@brief Starts the clock so we can execute whatever we want and measure the used time.
@@ -36,13 +36,14 @@ void initChrono();
 
 inline long long ChronoUtilities::getDuration(const TimeUnit timeUnit)
 {
-    std::chrono::high_resolution_clock::time_point currentTime  = std::chrono::high_resolution_clock::now();
-    long long                                      measuredTime = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - ChronoUtilities::_initTime).count();
+    const std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+
+    const long long measuredTime = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - _initTime).count();
 
     return measuredTime / timeUnit;
 }
 
 inline void ChronoUtilities::initChrono()
 {
-    ChronoUtilities::_initTime = std::chrono::high_resolution_clock::now();
+    _initTime = std::chrono::high_resolution_clock::now();
 }

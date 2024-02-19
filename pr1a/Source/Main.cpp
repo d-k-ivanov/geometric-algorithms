@@ -15,15 +15,14 @@ int main()
     }
     catch (const std::exception& exception)
     {
-        std::cout << exception.what() << std::endl;
+        std::cout << exception.what() << '\n';
     }
 
     // Once the event cycle is finished, release resources, etc.
-    std::cout << "Finishing application..." << std::endl;
+    std::cout << "Finishing application...\n";
 
     // This call is to prevent the console from closing immediately after the execution and being able to read the messages.
     // You can also use getChar();
     system("pause");
 }
-
 

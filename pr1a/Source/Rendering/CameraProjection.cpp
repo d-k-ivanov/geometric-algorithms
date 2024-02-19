@@ -4,11 +4,9 @@
 
 #include "Camera.h"
 
-// Static
-
 std::vector<std::shared_ptr<AlgGeom::CameraProjection>> AlgGeom::CameraProjection::_cameraProjection {
-    std::shared_ptr<AlgGeom::CameraProjection>(new AlgGeom::PerspectiveProjection()),
-    std::shared_ptr<AlgGeom::CameraProjection>(new AlgGeom::OrthographicProjection())};
+    std::make_shared<AlgGeom::PerspectiveProjection>(),
+    std::make_shared<AlgGeom::OrthographicProjection>()};
 
 float AlgGeom::CameraProjection::CameraProperties::computeAspect()
 {
@@ -88,7 +86,7 @@ void AlgGeom::PerspectiveProjection::zoom(CameraProperties* camera, const float 
 
 mat4 AlgGeom::OrthographicProjection::buildProjectionMatrix(CameraProperties* camera)
 {
-    glm::vec2 bottomLeftCorner = camera->_bottomLeftCorner;
+    const glm::vec2 bottomLeftCorner = camera->_bottomLeftCorner;
     return glm::ortho(bottomLeftCorner.x, -bottomLeftCorner.x, bottomLeftCorner.y, -bottomLeftCorner.y, camera->_zNear, camera->_zFar);
 }
 

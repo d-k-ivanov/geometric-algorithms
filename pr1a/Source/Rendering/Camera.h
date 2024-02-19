@@ -25,9 +25,9 @@ public:
 
     Camera& operator=(const Camera& camera) = delete;
 
-    mat4 getProjectionMatrix() { return _properties._projectionMatrix; }
-    mat4 getViewMatrix() { return _properties._viewMatrix; }
-    mat4 getViewProjectionMatrix() { return _properties._viewProjectionMatrix; }
+    mat4 getProjectionMatrix() const { return _properties._projectionMatrix; }
+    mat4 getViewMatrix() const { return _properties._viewMatrix; }
+    mat4 getViewProjectionMatrix() const { return _properties._viewProjectionMatrix; }
 
     void saveCamera();
     void setBottomLeftCorner(const vec2& bottomLeft);
@@ -54,4 +54,4 @@ public:
     void truck(float speed);
     void zoom(float speed);
 };
-}
+}    // namespace AlgGeom

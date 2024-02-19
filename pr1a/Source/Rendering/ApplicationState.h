@@ -48,4 +48,4 @@ struct ApplicationState
         _gamma         = 1.3f;
     }
 };
-}
+}    // namespace AlgGeom

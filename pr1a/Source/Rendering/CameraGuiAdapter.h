@@ -15,9 +15,9 @@ public:
         : _camera(nullptr)
     {
     }
-    virtual ~CameraGuiAdapter() { }
+    virtual ~CameraGuiAdapter() = default;
 
-    virtual void renderGuiObject();
-    void         setCamera(Camera* camera) { _camera = camera; }
+    void renderGuiObject() override;
+    void setCamera(Camera* camera) { _camera = camera; }
 };
-}
+}    // namespace AlgGeom

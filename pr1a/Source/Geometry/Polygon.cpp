@@ -44,7 +44,7 @@ bool Polygon::add(const Vertex& vertex)
 
 bool Polygon::add(const Point& point)
 {
-    Vertex vertex(point);
+    const Vertex vertex(point);
 
     return this->add(vertex);
 }

@@ -4,8 +4,6 @@
 
 #include "CameraProjection.h"
 
-// Public methods
-
 AlgGeom::Camera::Camera(uint16_t width, uint16_t height, bool is2D)
     : _backupCamera(nullptr)
 {
@@ -253,16 +251,14 @@ void AlgGeom::Camera::zoom(float speed)
     this->_properties.zoom(speed);
 }
 
-/// [Private methods]
-
 void AlgGeom::Camera::copyCameraAttributes(const AlgGeom::Camera* camera)
 {
     this->_properties = camera->_properties;
 
     if(camera->_backupCamera)
     {
-        Camera* backupCamera = this->_backupCamera;
-        this->_backupCamera  = new AlgGeom::Camera(*camera->_backupCamera);
+        const Camera* backupCamera = this->_backupCamera;
+        this->_backupCamera  = new Camera(*camera->_backupCamera);
 
         delete backupCamera;
     }

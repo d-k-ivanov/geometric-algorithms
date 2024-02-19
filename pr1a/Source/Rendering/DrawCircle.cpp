@@ -1,9 +1,10 @@
-#include "StdAfx.h"
 #include "DrawCircle.h"
+#include "StdAfx.h"
 
-// Public methods
-
-AlgGeom::DrawCircle::DrawCircle(Circle& circle, uint32_t numSubdivisions): Model3D(), _circle(circle), _numSubdivisions(numSubdivisions)
+AlgGeom::DrawCircle::DrawCircle(const Circle& circle, const uint32_t numSubdivisions)
+    : Model3D()
+    , _circle(circle)
+    , _numSubdivisions(numSubdivisions)
 {
-	//
+    //
 }

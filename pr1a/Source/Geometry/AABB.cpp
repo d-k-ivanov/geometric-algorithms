@@ -2,7 +2,6 @@
 
 #include "AABB.h"
 
-// Public methods
 AABB::AABB(const vec3& min, const vec3& max)
     : _max(max)
     , _min(min)

@@ -9,13 +9,13 @@ protected:
     static std::unique_ptr<T> _instance;
 
 protected:
-    Singleton() {};
-    ~Singleton() {};
+    Singleton()  = default;
+    ~Singleton() = default;
 
 public:
-    Singleton(const Singleton&)           = delete;
-    Singleton& operator=(const Singleton) = delete;
-    static T*  getInstance();
+    Singleton(const Singleton&)     = delete;
+    Singleton& operator=(Singleton) = delete;
+    static T* getInstance();
 };
 
 // Static members initialization
