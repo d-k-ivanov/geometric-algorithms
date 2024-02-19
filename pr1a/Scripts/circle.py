@@ -16,16 +16,13 @@ nodes = np.asarray(points)
 curve = Bezier.Curve(t_values, nodes)
 
 plt.figure(figsize=(8, 8))
-plt.plot(
-    curve[:, 0],  # x-coordinates.
-    curve[:, 1]  # y-coordinates.
-)
+plt.plot(curve[:, 0], curve[:, 1])  # x-coordinates.  # y-coordinates.
 plt.plot(
     nodes[:, 0],  # x-coordinates.
     nodes[:, 1],  # y-coordinates.
-    'ro:'  # Styling (red, circles, dotted).
+    "ro:",  # Styling (red, circles, dotted).
 )
 plt.grid()
 plt.tight_layout()
-plt.savefig('circle.png', dpi=300)
+plt.savefig("circle.png", dpi=300)
 plt.show()

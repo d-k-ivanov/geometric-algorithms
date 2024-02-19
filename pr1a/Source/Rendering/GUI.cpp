@@ -72,8 +72,16 @@ void AlgGeom::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE&
 
 void AlgGeom::GUI::loadFonts()
 {
-    ImFontConfig cfg;
-    ImGuiIO&     io = ImGui::GetIO();
+    ImFontConfig   cfg;
+    ImGuiIO& io = ImGui::GetIO();
+
+    // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    // io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+    io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;
+    io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports;
 
     std::copy_n("Lato", 5, cfg.Name);
     io.Fonts->AddFontFromMemoryCompressedBase85TTF(LatoFont::lato_compressed_data_base85, 13.0f, &cfg);
@@ -91,7 +99,7 @@ void AlgGeom::GUI::loadFonts()
 
 void AlgGeom::GUI::loadImGUIStyle()
 {
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
     this->loadFonts();
 }
 
@@ -188,11 +196,11 @@ void AlgGeom::GUI::render(SceneContent* sceneContent)
     {
         if(ImGui::BeginMenu(ICON_FA_COG "Settings"))
         {
-            ImGui::MenuItem(ICON_FA_DRAW_POLYGON "Rendering", NULL, &_showMenuButtons[MenuButtons::RENDERING]);
-            ImGui::MenuItem(ICON_FA_CUBE "Models", NULL, &_showMenuButtons[MenuButtons::MODELS]);
-            ImGui::MenuItem(ICON_FA_CAMERA_RETRO "Camera", NULL, &_showMenuButtons[MenuButtons::CAMERA]);
-            ImGui::MenuItem(ICON_FA_LIGHTBULB "Light", NULL, &_showMenuButtons[MenuButtons::LIGHT]);
-            ImGui::MenuItem(ICON_FA_CAMERA "Screenshot", NULL, &_showMenuButtons[MenuButtons::SCREENSHOT]);
+            ImGui::MenuItem(ICON_FA_DRAW_POLYGON "Rendering", nullptr, &_showMenuButtons[MenuButtons::RENDERING]);
+            ImGui::MenuItem(ICON_FA_CUBE "Models", nullptr, &_showMenuButtons[MenuButtons::MODELS]);
+            ImGui::MenuItem(ICON_FA_CAMERA_RETRO "Camera", nullptr, &_showMenuButtons[MenuButtons::CAMERA]);
+            ImGui::MenuItem(ICON_FA_LIGHTBULB "Light", nullptr, &_showMenuButtons[MenuButtons::LIGHT]);
+            ImGui::MenuItem(ICON_FA_CAMERA "Screenshot", nullptr, &_showMenuButtons[MenuButtons::SCREENSHOT]);
             ImGui::EndMenu();
         }
 
@@ -309,9 +317,9 @@ void AlgGeom::GUI::showModelMenu(SceneContent* sceneContent)
 
         unsigned globalIdx = 0;
 
-        for(int modelIdx = 0; modelIdx < sceneContent->_model.size(); ++modelIdx)
+        for(size_t modelIdx = 0; modelIdx < sceneContent->_model.size(); ++modelIdx)
         {
-            for(int compIdx = 0; compIdx < sceneContent->_model[modelIdx]->_components.size(); ++compIdx)
+            for(size_t compIdx = 0; compIdx < sceneContent->_model[modelIdx]->_components.size(); ++compIdx)
             {
                 const std::string compName = sceneContent->_model[modelIdx]->getName() + ", " + "Comp. " + std::to_string(compIdx);
                 if(ImGui::Selectable(compName.c_str(), _modelCompSelected == sceneContent->_model[modelIdx]->_components[compIdx].get()))
