@@ -20,7 +20,7 @@ void AlgGeom::SceneContent::buildScenario()
     vec2 minBoundaries = vec2(-3.0f, -.4), maxBoundaries = vec2(-minBoundaries);
 
     // Random segments
-    int numSegments = 8;
+    int numSegments = 0;
 
     for(int segmentIdx = 0; segmentIdx < numSegments; ++segmentIdx)
     {
@@ -33,7 +33,7 @@ void AlgGeom::SceneContent::buildScenario()
     }
 
     // Random points
-    int numPoints = 200;
+    int numPoints = 0;
 
     for(int pointIdx = 0; pointIdx < numPoints; ++pointIdx)
     {
