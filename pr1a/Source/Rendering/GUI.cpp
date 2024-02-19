@@ -14,6 +14,9 @@
 
 #include "Utils/FilesystemUtilities.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 AlgGeom::GUI::GUI()
 {
     _appState              = InputManager::getApplicationState();
@@ -72,8 +75,8 @@ void AlgGeom::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE&
 
 void AlgGeom::GUI::loadFonts()
 {
-    ImFontConfig   cfg;
-    ImGuiIO& io = ImGui::GetIO();
+    ImFontConfig cfg;
+    ImGuiIO&     io = ImGui::GetIO();
 
     // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
@@ -152,6 +155,12 @@ void AlgGeom::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
 
     this->loadImGUIStyle();
 
+    // Add Windows icon to GLFW window
+    GLFWimage images[1];
+    images[0].pixels = stbi_load((ThisExecutableLocation() + "/Resources/App.png").c_str(), &images[0].width, &images[0].height, nullptr, 4);
+    glfwSetWindowIcon(window, 1, images);
+    stbi_image_free(images[0].pixels);
+
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(openGLVersion.c_str());
 }
@@ -165,26 +174,28 @@ void AlgGeom::GUI::render(SceneContent* sceneContent)
 
     for(int menuButtonIdx = 0; menuButtonIdx < NUM_GUI_MENU_BUTTONS; ++menuButtonIdx)
     {
-        MenuButtons button = static_cast<MenuButtons>(menuButtonIdx);
+        const MenuButtons button = static_cast<MenuButtons>(menuButtonIdx);
 
         if(_showMenuButtons[button])
         {
             switch(button)
             {
-                case MenuButtons::RENDERING:
+                case RENDERING:
                     this->showRenderingMenu(sceneContent);
                     break;
-                case MenuButtons::MODELS:
+                case MODELS:
                     this->showModelMenu(sceneContent);
                     break;
-                case MenuButtons::CAMERA:
+                case CAMERA:
                     this->showCameraMenu(sceneContent);
                     break;
-                case MenuButtons::LIGHT:
+                case LIGHT:
                     this->showLightMenu(sceneContent);
                     break;
-                case MenuButtons::SCREENSHOT:
+                case SCREENSHOT:
                     this->showScreenshotMenu(sceneContent);
+                    break;
+                case NUM_GUI_MENU_BUTTONS:
                     break;
             }
         }
@@ -262,9 +273,9 @@ void AlgGeom::GUI::showFileDialog(SceneContent* sceneContent)
             _lastDirectory = DEFAULT_DIRECTORY;
 
         uint16_t iFileDialog = static_cast<uint16_t>(_fileDialog) / 2;
-        ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_TEXT[iFileDialog].c_str(), "Select a file", FILE_DIALOG_EXTENSION[iFileDialog].c_str(), static_cast<IGFD::FileDialogConfig>(_lastDirectory));
+        ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_TEXT[iFileDialog], "Select a file", FILE_DIALOG_EXTENSION[iFileDialog].c_str(), static_cast<IGFD::FileDialogConfig>(_lastDirectory));
 
-        if(ImGuiFileDialog::Instance()->Display(FILE_DIALOG_TEXT[iFileDialog].c_str()))
+        if(ImGuiFileDialog::Instance()->Display(FILE_DIALOG_TEXT[iFileDialog]))
         {
             if(ImGuiFileDialog::Instance()->IsOk())
             {
