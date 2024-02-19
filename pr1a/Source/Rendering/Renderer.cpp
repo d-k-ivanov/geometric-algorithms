@@ -58,8 +58,6 @@ void AlgGeom::Renderer::transferLightUniforms(RenderingShader* shader)
     shader->setUniform("Is", _appState->_Is);
 }
 
-// Private methods
-
 AlgGeom::Renderer::~Renderer()
 {
     delete _screenshoter;

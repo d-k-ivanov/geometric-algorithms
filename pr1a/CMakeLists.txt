@@ -198,7 +198,7 @@ find_package(Stb REQUIRED)
 find_path(DIRENT_INCLUDE_DIRS "dirent.h")
 
 # Add executable
-add_executable(${PROJECT_NAME} ${EXE_PLATFORM_KEYWORD} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 add_dependencies(${PROJECT_NAME} always_run_resources_target)
 
 # Use WinMain as a default endpoint on Windows

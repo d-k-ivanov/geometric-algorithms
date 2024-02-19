@@ -9,8 +9,6 @@ const std::string                            AlgGeom::ShaderProgram::MODULE_FILE
 const std::string                            AlgGeom::ShaderProgram::MODULE_FILE_CHAR_2 = ">";
 std::unordered_map<std::string, std::string> AlgGeom::ShaderProgram::_moduleCode;
 
-// Public methods
-
 AlgGeom::ShaderProgram::ShaderProgram()
     : _handler(0)
     , _linked(false)

@@ -23,8 +23,6 @@ public:
 template <typename T>
 std::unique_ptr<T> Singleton<T>::_instance;
 
-// Public methods
-
 template <typename T>
 T* Singleton<T>::getInstance()
 {

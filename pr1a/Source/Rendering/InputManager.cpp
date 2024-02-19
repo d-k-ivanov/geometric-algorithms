@@ -7,8 +7,6 @@
 AlgGeom::ApplicationState AlgGeom::InputManager::_applicationState;
 const vec2                AlgGeom::InputManager::_defaultCursorPosition = vec2(-1.0f, -1.0f);
 
-// Public methods
-
 AlgGeom::InputManager::InputManager()
     : _lastCursorPosition(_defaultCursorPosition)
     , _leftClickPressed(false)

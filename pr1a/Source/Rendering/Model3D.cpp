@@ -184,8 +184,6 @@ AlgGeom::Model3D* AlgGeom::Model3D::setTopologyVisibility(VAO::IBO_slots topolog
     return this;
 }
 
-// Private methods
-
 void AlgGeom::Model3D::buildVao(Component* component)
 {
     VAO* vao = new VAO(true);

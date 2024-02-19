@@ -20,9 +20,7 @@ AlgGeom::ShaderProgramDB::~ShaderProgramDB()
 {
 }
 
-// Public methods
-
-AlgGeom::RenderingShader* AlgGeom::ShaderProgramDB::getShader(RenderingShaderId shaderId)
+AlgGeom::RenderingShader* AlgGeom::ShaderProgramDB::getShader(const RenderingShaderId shaderId)
 {
     uint8_t shaderId8 = static_cast<uint8_t>(shaderId);
 

@@ -1,8 +1,6 @@
 #include "Circle.h"
 #include "StdAfx.h"
 
-// Public methods
-
 Circle::~Circle()
 {
 }

@@ -56,8 +56,6 @@ void AlgGeom::VAO::setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices,
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), changeFrequency);
 }
 
-// Private methods
-
 void AlgGeom::VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint elementType, uint8_t slot)
 {
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
