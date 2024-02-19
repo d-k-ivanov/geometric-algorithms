@@ -23,6 +23,8 @@ int main()
 
     // This call is to prevent the console from closing immediately after the execution and being able to read the messages.
     // You can also use getChar();
-    system("pause");
+    // system("pause");
+
+    return 0;
 }
 
