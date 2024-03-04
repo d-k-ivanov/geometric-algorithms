@@ -73,7 +73,7 @@ public:
     /**
      *	@brief Assignment operator.
      */
-    virtual Vertex& operator=(const Vertex& vertex);
+    Vertex& operator=(const Vertex& vertex);
 
     /**
      *	@brief Overriding cout call.

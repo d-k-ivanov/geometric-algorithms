@@ -7,7 +7,6 @@ typedef std::uniform_real_distribution<float> DoubleUniformDistribution;
 
 /**
  *	@brief Set of utilities to retrieve random values.
- *	@author Alfonso López Ruiz.
  */
 namespace RandomUtilities
 {
@@ -60,6 +59,11 @@ vec3 getUniformRandomInUnitDisk();
  *	@return Random point in unit sphere.
  */
 vec3 getUniformRandomInUnitSphere();
+
+/**
+ *	@return Random point in unit sphere.
+ */
+vec3 getUniformRandomInUnitDiskCircumference();
 }    // namespace RandomUtilities
 
 inline vec3 RandomUtilities::getRandomToSphere(float radius, float distanceSquared)
@@ -104,7 +108,7 @@ inline vec3 RandomUtilities::getUniformRandomCosineDirection()
     const float x   = std::cos(phi) * sqrt(r2);
     const float y   = std::sin(phi) * sqrt(r2);
 
-    return vec3(x, y, z);
+    return {x, y, z};
 }
 
 inline vec3 RandomUtilities::getUniformRandomInHemisphere(const vec3& normal)
@@ -137,6 +141,21 @@ inline vec3 RandomUtilities::getUniformRandomInUnitSphere()
     while(true)
     {
         point = vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f));
+        if(glm::length2(point) >= 1)
+            continue;
+
+        return point;
+    }
+}
+
+inline vec3 RandomUtilities::getUniformRandomInUnitDiskCircumference()
+{
+    vec3 point;
+    while(true)
+    {
+        const float angle = getUniformRandom(0.0f, 2.0f * glm::pi<float>());
+        point = vec3(std::cos(angle), std::sin(angle), .0f);
+
         if(glm::length2(point) >= 1)
             continue;
 

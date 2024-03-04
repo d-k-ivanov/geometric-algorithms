@@ -3,6 +3,7 @@
 #include "SceneContent.h"
 
 #include "DrawPoint.h"
+#include "DrawPointCloud.h"
 #include "DrawPolygon.h"
 #include "DrawSegment.h"
 
@@ -20,40 +21,80 @@ void AlgGeom::SceneContent::buildScenario()
     vec2 minBoundaries = vec2(-3.0f, -.4), maxBoundaries = vec2(-minBoundaries);
 
     // Random segments
-    int numSegments = 0;
-
-    for(int segmentIdx = 0; segmentIdx < numSegments; ++segmentIdx)
-    {
-        Point        a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        Point        b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        SegmentLine* segment = new SegmentLine(a, b);
-
-        this->addNewModel((new DrawSegment(*segment))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(RandomUtilities::getUniformRandom(1.0f, 3.0f)));
-        delete segment;
-    }
+    // int numSegments = 8;
+    // for(int segmentIdx = 0; segmentIdx < numSegments; ++segmentIdx)
+    // {
+    //     Point        a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+    //     Point        b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+    //     SegmentLine* segment = new SegmentLine(a, b);
+    //
+    //     this->addNewModel((new DrawSegment(*segment))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(RandomUtilities::getUniformRandom(1.0f, 3.0f)));
+    //     delete segment;
+    // }
 
     // Random points
-    int numPoints = 0;
-
-    for(int pointIdx = 0; pointIdx < numPoints; ++pointIdx)
-    {
-        Point point(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x));
-        this->addNewModel((new DrawPoint(point))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
-    }
+    // int numPoints = 200;
+    // for(int pointIdx = 0; pointIdx < numPoints; ++pointIdx)
+    // {
+    //     Point point(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x));
+    //     this->addNewModel((new DrawPoint(point))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
+    // }
 
     // Polygon
-    float           polygonAngle = .0f;
-    constexpr float polygonAlpha = 2.0f * glm::pi<float>() / 5.0f;
-    Polygon*        polygon      = new Polygon;
+    // float           polygonAngle = .0f;
+    // constexpr float polygonAlpha = 2.0f * glm::pi<float>() / 5.0f;
+    // Polygon*        polygon      = new Polygon;
+    //
+    // while(polygonAngle < 2.0f * glm::pi<float>())
+    // {
+    //     polygon->add(Point(std::cos(polygonAngle), std::sin(polygonAngle)));
+    //     polygonAngle += polygonAlpha;
+    // }
+    //
+    // this->addNewModel((new DrawPolygon(*polygon))->setTriangleColor(vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setModelMatrix(glm::rotate(mat4(1.0f), (glm::abs(4 * polygonAlpha - glm::pi<float>() / 2.0f * 3.0f)), vec3(.0f, .0f, 1.0f))));
+    // delete polygon;
 
-    while(polygonAngle < 2.0f * glm::pi<float>())
+    // Tasks
+    // Pr1-a-1: point cloud
+    constexpr int   numPoints      = 50;
+    constexpr int   numPointClouds = 1;
+    constexpr float scale          = 1.0f;
+    vec3            center;
+
+    for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
     {
-        polygon->add(Point(std::cos(polygonAngle), std::sin(polygonAngle)));
-        polygonAngle += polygonAlpha;
-    }
+        PointCloud* pointCloud = new PointCloud;
+        if(numPointClouds > 1)
+        {
+            center = vec3(
+                RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+                RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y),
+                RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x));
+        }
+        else
+        {
+            center = vec3(0, 0, 0);
+        }
 
-    this->addNewModel((new DrawPolygon(*polygon))->setTriangleColor(vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setModelMatrix(glm::rotate(mat4(1.0f), (glm::abs(4 * polygonAlpha - glm::pi<float>() / 2.0f * 3.0f)), vec3(.0f, .0f, 1.0f))));
-    delete polygon;
+        for(int idx = 0; idx < numPoints; ++idx)
+        {
+            // Disk point cloud
+            const vec3 rand = RandomUtilities::getUniformRandomInUnitDiskCircumference() / scale + center;
+            // const vec3 rand = RandomUtilities::getUniformRandomCosineDirection() / scale + center;
+            // const vec3 rand = RandomUtilities::getUniformRandomInUnitDisk() / scale + center;
+
+            // Hemispheric point cloud
+            // const vec3 rand = RandomUtilities::getUniformRandomInHemisphere(vec3(0, -1, 0)) / scale + center;
+
+            // Spheric point cloud
+            // const vec3 rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
+            pointCloud->addPoint(Point(rand.x, rand.y));
+        }
+
+        // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName());
+        this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
+        delete pointCloud;
+    }
 }
 
 void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)

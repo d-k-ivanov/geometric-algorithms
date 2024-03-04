@@ -4,7 +4,6 @@
 
 /**
  *	@brief This class represents a 2D structure. This will be also the skeleton for other 2D structures such as Vertex or Vector.
- *	@author Lidia
  */
 class Point
 {
@@ -128,6 +127,21 @@ public:
     virtual Point& operator=(const Point& point);
 
     /**
+     *	@brief Substraction operator (override).
+     */
+    virtual Point& operator-(const Point& point);
+
+    /**
+     *	@brief Substraction operator (override).
+     */
+    virtual Point& operator+(const Point& point);
+
+    /**
+     *	@brief Substraction operator (override).
+     */
+    virtual Point& operator*(double scalar);
+
+    /**
      *	@brief Overriding cout call.
      */
     friend std::ostream& operator<<(std::ostream& os, const Point& point);
@@ -171,3 +185,5 @@ public:
      */
     double triangleArea2(Point& a, Point& b);
 };
+
+Point operator*(double scalar, Point& point);

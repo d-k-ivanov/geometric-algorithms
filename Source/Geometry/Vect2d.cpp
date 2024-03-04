@@ -18,8 +18,7 @@ Vect2d::~Vect2d()
 
 double Vect2d::dot(Vect2d& b)
 {
-    // XXXXX
-    return 0;
+    return _x * b._x + _y * b._y;
 }
 
 Vect2d& Vect2d::operator=(const Vect2d& vector)
@@ -31,18 +30,24 @@ Vect2d& Vect2d::operator=(const Vect2d& vector)
 
 Vect2d Vect2d::operator+(const Vect2d& b)
 {
-    // XXXXX
-    return Vect2d();
+    _x += b._x;
+    _y += b._y;
+
+    return *this;
 }
 
 Vect2d Vect2d::operator-(const Vect2d& b)
 {
-    // XXXXX
-    return Vect2d();
+    _x -= b._x;
+    _y -= b._y;
+
+    return *this;
 }
 
 Vect2d Vect2d::scalarMult(double t)
 {
-    // XXXXX
-    return Vect2d();
+    _x *= t;
+    _y *= t;
+
+    return *this;
 }

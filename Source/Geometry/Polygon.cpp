@@ -22,7 +22,20 @@ SegmentLine Polygon::getEdge(int i)
 
 Polygon::Polygon(const std::string& filename)
 {
-    // XXXX
+    std::ifstream file(filename);
+
+    int numVertices;
+    file.read(reinterpret_cast<char*>(&numVertices), sizeof(int));
+    std::vector<Vertex> vertices;
+    for(int i = 0; i < numVertices; i++)
+    {
+        Vertex vertex;
+        file.read(reinterpret_cast<char*>(&vertex), sizeof(Vertex));
+        vertices.push_back(vertex);
+    }
+    file.close();
+
+    this->_vertices = vertices;
 }
 
 Polygon::~Polygon()
@@ -49,9 +62,9 @@ bool Polygon::add(const Point& point)
     return this->add(vertex);
 }
 
-Vertex Polygon::getVertexAt(const int position)
+Vertex Polygon::getVertexAt(size_t position)
 {
-    if(position >= 0 && position < _vertices.size())
+    if(position < _vertices.size())
     {
         return _vertices[position];
     }
@@ -75,7 +88,14 @@ bool Polygon::intersects(RayLine& ray, Vect2d& interseccion)
 
 bool Polygon::convex()
 {
-    // XXXX
+    for(size_t i = 0; i < this->getNumVertices(); i++)
+    {
+        if(this->_vertices[i].concave())
+        {
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -84,14 +104,14 @@ bool Polygon::intersects(SegmentLine& segment, Vect2d& interseccion)
     return false;
 }
 
-Vertex Polygon::next(int index)
+Vertex Polygon::next(size_t index)
 {
-    if(index >= 0 && index < _vertices.size())
+    if(index < _vertices.size())
     {
         return _vertices[(index + 1) % _vertices.size()];
     }
 
-    return Vertex();
+    return {};
 }
 
 std::ostream& operator<<(std::ostream& os, const Polygon& polygon)
@@ -126,13 +146,27 @@ Polygon& Polygon::operator=(const Polygon& polygon)
 
 bool Polygon::pointInConvexPolygonGeo(Point& point)
 {
-    // XXXX
+    for(size_t i = 0; i < this->getNumVertices(); i++)
+    {
+        Vertex vertex = this->getVertexAt(i);
+        Vertex next   = this->next(i);
+        if(point.triangleArea2(vertex, next) < 0)
+        {
+            return false;
+        }
+    }
+
     return true;
 }
 
 void Polygon::save(const std::string& filename)
 {
-    // XXXX
+    std::ofstream file(filename);
+
+    int numVertices = static_cast<int>(this->getNumVertices());
+    file.write(reinterpret_cast<char*>(&numVertices), sizeof(int));
+    file.write(reinterpret_cast<char*>(_vertices.data()), static_cast<int>(numVertices * sizeof(Vertex)));
+    file.close();
 }
 
 void Polygon::set(Vertex& vertex, int pos)

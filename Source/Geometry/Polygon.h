@@ -73,7 +73,7 @@ public:
     /**
      *	@brief Returns the vertex at an index.
      */
-    Vertex getVertexAt(int position);
+    Vertex getVertexAt(size_t position);
 
     /**
      *	@brief Checks if a line intersects with the Polygon.
@@ -96,7 +96,7 @@ public:
     /**
      *	@brief Returns the following vertex based on the specified index.
      */
-    Vertex next(int index);
+    Vertex next(size_t index);
 
     /**
      *	@brief Overriding cout call.

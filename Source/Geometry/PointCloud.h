@@ -51,7 +51,7 @@ public:
     /**
      *	@brief Returns the point in an specific index.
      */
-    Point getPoint(int position);
+    Point getPoint(size_t position);
 
     /**
      *	@brief Returns all the available points as a vector.
@@ -71,5 +71,5 @@ public:
     /**
      *	@brief Returns the size of the point cloud.
      */
-    size_t size() { return _points.size(); }
+    size_t size() const { return _points.size(); }
 };

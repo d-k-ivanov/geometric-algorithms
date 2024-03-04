@@ -64,6 +64,8 @@ set(SOURCE_FILES
     Source/Geometry/AABB.cpp
     Source/Geometry/AABB.h
     Source/Geometry/BasicGeometry.h
+    Source/Geometry/Bezier.cpp
+    Source/Geometry/Bezier.h
     Source/Geometry/Circle.cpp
     Source/Geometry/Circle.h
     Source/Geometry/Line.cpp
@@ -96,6 +98,8 @@ set(SOURCE_FILES
     Source/Rendering/CameraGuiAdapter.h
     Source/Rendering/CameraProjection.cpp
     Source/Rendering/CameraProjection.h
+    Source/Rendering/DrawBezier.cpp
+    Source/Rendering/DrawBezier.h
     Source/Rendering/DrawCircle.cpp
     Source/Rendering/DrawCircle.h
     Source/Rendering/DrawLine.cpp

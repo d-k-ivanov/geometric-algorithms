@@ -43,14 +43,28 @@ SegmentLine& SegmentLine::operator=(const SegmentLine& segment)
 
 bool SegmentLine::segmentIntersection(SegmentLine& l)
 {
-    // XXXX
-    return false;
+    Point a = _orig;
+    Point b = _dest;
+    Point c = l._orig;
+    Point d = l._dest;
+
+    if(a.colinear(c, d) || b.colinear(c, d) || c.colinear(a, b) || d.colinear(a, b))
+    {
+        return false;
+    }
+    else
+    {
+        return a.left(c, d) ^ b.left(c, d) && c.left(a, b) ^ d.left(a, b);
+    }
 }
 
 double SegmentLine::getC()
 {
-    // XXXX
-    return 0.0;
+    if(slope() == INFINITY)
+    {
+        return INFINITY;
+    }
+    return _orig.getY() - (slope() * _orig.getX());
 }
 
 bool SegmentLine::distinct(SegmentLine& segment)
@@ -70,32 +84,62 @@ bool SegmentLine::equal(SegmentLine& segment)
 
 Point SegmentLine::getPoint(double t)
 {
-    // XXXX
-    return Point();
+    return _orig + (t * (_dest - _orig));
 }
 
 bool SegmentLine::impSegmentIntersection(SegmentLine& segment)
 {
-    // XXXX
-    return true;
+    Point a = _orig;
+    Point b = _dest;
+    Point c = segment._orig;
+    Point d = segment._dest;
+
+    if(a.equal(c) || b.equal(c) || a.equal(d) || b.equal(d))
+    {
+        return true;
+    }
+
+    if(a.colinear(c, d) || b.colinear(c, d) || c.colinear(a, b) || d.colinear(a, b))
+    {
+        return true;
+    }
+
+    return segmentIntersection(segment);
 }
 
 bool SegmentLine::isHorizontal()
 {
-    // XXXX
-    return true;
+    if(BasicGeometry::equal(_orig.getY(), _dest.getY()))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 bool SegmentLine::isVertical()
 {
-    // XXXX
-    return true;
+    if(BasicGeometry::equal(_orig.getX(), _dest.getX()))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 double SegmentLine::slope()
 {
-    // XXXX
-    return 0;
+    if(this->isHorizontal())
+    {
+        return 0.0;
+    }
+
+    if(this->isVertical())
+    {
+        return INFINITY;
+    }
+
+    return (_dest.getY() - _orig.getY()) / (_dest.getX() - _orig.getX());
 }
 
 std::ostream& operator<<(std::ostream& os, const SegmentLine& segment)

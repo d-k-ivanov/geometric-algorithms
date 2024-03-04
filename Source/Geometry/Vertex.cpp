@@ -31,26 +31,41 @@ Vertex::~Vertex()
 
 bool Vertex::convex()
 {
-    // XXXXX
+    Vertex prevV = this->previous();
+    Vertex nextV = this->next();
+
+    if(prevV.isValid() && nextV.isValid())
+    {
+        return nextV.left(prevV, *this);
+    }
+
     return false;
 }
 
 bool Vertex::concave()
 {
-    // XXXXX
-    return false;
+    return !this->convex();
 }
 
 Vertex Vertex::next()
 {
-    // XXXXX
-    return Vertex();
+    if(_polygon && _position != INVALID_POSITION)
+    {
+        return _polygon->next(_position);
+    }
+    return {};
 }
 
 SegmentLine Vertex::nextEdge()
 {
-    // XXXXX
-    return SegmentLine();
+    Vertex nextV = this->next();
+
+    if(nextV.isValid())
+    {
+        return {*this, nextV};
+    }
+
+    return {};
 }
 
 Vertex& Vertex::operator=(const Vertex& vertex)
@@ -74,12 +89,21 @@ std::ostream& operator<<(std::ostream& os, const Vertex& vertex)
 
 Vertex Vertex::previous()
 {
-    // XXXXX
-    return Vertex();
+    if(_polygon && _position != INVALID_POSITION)
+    {
+        return _polygon->previous(_position);
+    }
+    return {};
 }
 
 SegmentLine Vertex::previousEdge()
 {
-    // XXXXX
-    return SegmentLine();
+    Vertex prevV = this->previous();
+
+    if(prevV.isValid())
+    {
+        return {prevV, *this};
+    }
+
+    return {};
 }

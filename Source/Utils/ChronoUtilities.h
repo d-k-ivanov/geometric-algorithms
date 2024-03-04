@@ -5,7 +5,6 @@
 
 /**
  *	@brief Utilities which help us to measure execution time.
- *	@author Alfonso López Ruiz.
  */
 namespace ChronoUtilities
 {
