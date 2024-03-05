@@ -16,17 +16,50 @@ PointCloud::PointCloud(int size, float max_x, float max_y)
 
 PointCloud::PointCloud(const std::string& filename)
 {
-    std::ifstream file(filename);
+    std::ifstream file;
 
-    int numPoints;
-    file.read(reinterpret_cast<char*>(&numPoints), sizeof(int));
+    file.open(filename, std::fstream::in);
     std::vector<Point> points;
+    int                numPoints;
+
+    std::string line;
+    if(std::getline(file, line))
+    {
+        numPoints = std::stoi(line);
+    }
+    else
+    {
+        // Handle the case where the file is empty or cannot be read
+        // For example, you can throw an exception or set a default value for numPoints
+        numPoints = 0;
+    }
+
     for(int i = 0; i < numPoints; i++)
     {
-        Point p;
-        file.read(reinterpret_cast<char*>(&p), sizeof(Point));
-        points.push_back(p);
+        if(std::getline(file, line))
+        {
+            std::cout << line << std::endl;
+            Point              p;
+            std::istringstream iss(line);
+            iss >> p;
+            points.push_back(p);
+        }
+        else
+        {
+            // Handle the case where the file is empty or cannot be read
+            // For example, you can throw an exception or set a default value for p
+            points.emplace_back();
+        }
     }
+
+    // file.read(reinterpret_cast<char*>(&numPoints), sizeof(int));
+    // std::vector<Point> points;
+    // for(int i = 0; i < numPoints; i++)
+    // {
+    //     Point p;
+    //     file.read(reinterpret_cast<char*>(&p), sizeof(Point));
+    //     points.push_back(p);
+    // }
 
     file.close();
 
@@ -109,10 +142,16 @@ PointCloud& PointCloud::operator=(const PointCloud& pointCloud)
 
 void PointCloud::save(const std::string& filename)
 {
-    std::ofstream file(filename);
+    std::ofstream file;
 
-    int numPoints = static_cast<int>(this->size());
-    file.write(reinterpret_cast<char*>(&numPoints), sizeof(int));
-    file.write(reinterpret_cast<char*>(_points.data()), static_cast<int>(numPoints * sizeof(Point)));
+    file.open(filename, std::ios::out);
+    const int numPoints = static_cast<int>(this->size());
+    file << numPoints << '\n';
+    for(int i = 0; i < numPoints; i++)
+    {
+        file << _points[i] << '\n';
+    }
+    // file.write(reinterpret_cast<char*>(&numPoints), sizeof(int));
+    // file.write(reinterpret_cast<char*>(_points.data()), static_cast<int>(numPoints * sizeof(Point)));
     file.close();
 }

@@ -147,6 +147,11 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Point& point);
 
     /**
+     *	@brief Overriding cin call.
+     */
+    friend std::istream& operator>>(std::istream& is, Point& point);
+
+    /**
      *	@brief Checks the position of the point respect to other two points (a, b).
      */
     bool rightAbove(Point& a, Point& b);

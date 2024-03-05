@@ -2,7 +2,7 @@
 
 #include "StdAfx.h"
 
-typedef std::minstd_rand                      RandomNumberGenerator;
+typedef std::mt19937                          RandomNumberGenerator;
 typedef std::uniform_real_distribution<float> DoubleUniformDistribution;
 
 /**
@@ -97,8 +97,8 @@ inline vec3 RandomUtilities::getRandomToSphere(float radius, float distanceSquar
 inline float RandomUtilities::getUniformRandom()
 {
     static RandomNumberGenerator     generator;
+    generator.seed(std::random_device()());
     static DoubleUniformDistribution distribution(.0f, 1.0f);
-
     return distribution(generator);
 }
 

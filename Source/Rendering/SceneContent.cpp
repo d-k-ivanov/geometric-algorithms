@@ -58,16 +58,17 @@ void AlgGeom::SceneContent::buildScenario()
     // Tasks
     // Pr1-a-1: point cloud
     constexpr int   numPoints      = 100;
-    constexpr int   numPointClouds = 20;
-    constexpr float scale          = 2.0f;
+    constexpr int   numPointClouds = 10;
+    constexpr float scale          = 3.0f;
     vec3            center;
 
     for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
     {
-        PointCloud* pointCloud = new PointCloud;
+        // PointCloud* pointCloud = new PointCloud;
+        PointCloud* pointCloud = new PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
         if(numPointClouds > 1)
         {
-            center = vec3(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y), 0.0);
+            center = vec3(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
         }
         else
         {
@@ -76,26 +77,32 @@ void AlgGeom::SceneContent::buildScenario()
 
         for(int idx = 0; idx < numPoints; ++idx)
         {
-            // Disk point cloud
-            // const vec3 rand = RandomUtilities::getUniformRandomInUnitDiskCircumference() / scale + center;
-            // const vec3 rand = RandomUtilities::getUniformRandomCosineDirection() / scale + center;
-            // const vec3 rand = RandomUtilities::getUniformRandomInUnitDisk() / scale + center;
-
-            // Rectangular point cloud
-            // const vec3 rand = RandomUtilities::getUniformRandomInUnitSquare() / scale + center;
-            const vec3 rand = RandomUtilities::getUniformRandomInUnitSquarePerimeter() / scale + center;
-
+            vec3 rand;
+            if(pcIdx % 2 == 0)
+            {
+                // Disk point cloud
+                rand = RandomUtilities::getUniformRandomInUnitDiskCircumference() / scale + center;
+                // rand = RandomUtilities::getUniformRandomCosineDirection() / scale + center;
+                // rand = RandomUtilities::getUniformRandomInUnitDisk() / scale + center;
+            }
+            else
+            {
+                // Rectangular point cloud
+                // rand = RandomUtilities::getUniformRandomInUnitSquare() / scale + center;
+                rand = RandomUtilities::getUniformRandomInUnitSquarePerimeter() / scale + center;
+            }
             // Hemispheric point cloud
-            // const vec3 rand = RandomUtilities::getUniformRandomInHemisphere(vec3(0, -1, 0)) / scale + center;
+            // rand = RandomUtilities::getUniformRandomInHemisphere(vec3(0, -1, 0)) / scale + center;
 
             // Spheric point cloud
-            // const vec3 rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
-            pointCloud->addPoint(Point(rand.x, rand.y));
+            // rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
+            // pointCloud->addPoint(Point(rand.x, rand.y));
         }
 
-        // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName());
-        this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(5.0f));
+        this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(5.0f));
+        // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(5.0f));
         // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
+        // pointCloud->save("PointCloud" + std::to_string(pcIdx) + ".txt");
         delete pointCloud;
     }
 }
