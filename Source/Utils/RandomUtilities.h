@@ -31,6 +31,12 @@ float getUniformRandom(float min, float max);
 vec3 getUniformRandomColor();
 
 /**
+ *	@brief Generates a random color by using getUniformRandom using Euclidean Distance.
+ *         https://en.wikipedia.org/wiki/Color_difference
+ */
+vec3 getUniformRandomColorEuclideanDistance();
+
+/**
  *	@brief Generates a random color by using getUniformRandom function for each channel.
  */
 vec3 getUniformRandomColor(float min, float max);
@@ -103,16 +109,30 @@ inline float RandomUtilities::getUniformRandom(float min, float max)
 
 inline vec3 RandomUtilities::getUniformRandomColor()
 {
-    return vec3(RandomUtilities::getUniformRandom(), RandomUtilities::getUniformRandom(), RandomUtilities::getUniformRandom());
+    return {getUniformRandom(), getUniformRandom(), getUniformRandom()};
 }
+
+inline vec3 RandomUtilities::getUniformRandomColorEuclideanDistance()
+{
+    vec3           color;
+    constexpr vec3 background = vec3(.6f);
+    while(true)
+    {
+        color                 = getUniformRandomColor();
+        const double distance = std::sqrt(std::pow(color.x - background.x, 2) + std::pow(color.y - background.y, 2) + std::pow(color.z - background.z, 2));
+        if(distance > 0.6)
+            return color;
+    }
+}
+
 inline vec3 RandomUtilities::getUniformRandomColor(float min, float max)
 {
-    return vec3(RandomUtilities::getUniformRandom(min, max), RandomUtilities::getUniformRandom(min, max), RandomUtilities::getUniformRandom(min, max));
+    return {getUniformRandom(min, max), getUniformRandom(min, max), getUniformRandom(min, max)};
 }
 
 inline vec3 RandomUtilities::getUniformRandomCosineDirection()
 {
-    const float r1 = RandomUtilities::getUniformRandom(), r2 = RandomUtilities::getUniformRandom();
+    const float r1 = getUniformRandom(), r2 = getUniformRandom();
     const float z   = sqrt(1 - r2);
     const float phi = 2.0f * glm::pi<float>() * r1;
     const float x   = std::cos(phi) * sqrt(r2);
@@ -123,9 +143,8 @@ inline vec3 RandomUtilities::getUniformRandomCosineDirection()
 
 inline vec3 RandomUtilities::getUniformRandomInHemisphere(const vec3& normal)
 {
-    vec3 unitSphere = getUniformRandomInUnitSphere();
-
-    return unitSphere * -1.0f * ((glm::dot(unitSphere, normal) > .0f) * 2.0f - 1.0f);
+    const vec3 unitSphere = getUniformRandomInUnitSphere();
+    return unitSphere * -1.0f * ((dot(unitSphere, normal) > .0f) * 2.0f - 1.0f);
 }
 
 inline int RandomUtilities::getUniformRandomInt(int min, int max)
@@ -138,7 +157,7 @@ inline vec3 RandomUtilities::getUniformRandomInUnitDisk()
     while(true)
     {
         vec3 point = vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
-        if(glm::length2(point) >= 1)
+        if(length2(point) >= 1)
             continue;
 
         return point;
@@ -151,7 +170,7 @@ inline vec3 RandomUtilities::getUniformRandomInUnitSphere()
     while(true)
     {
         point = vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f));
-        if(glm::length2(point) >= 1)
+        if(length2(point) >= 1)
             continue;
 
         return point;
@@ -166,7 +185,7 @@ inline vec3 RandomUtilities::getUniformRandomInUnitDiskCircumference()
         const float angle = getUniformRandom(0.0f, 2.0f * glm::pi<float>());
         point             = vec3(std::cos(angle), std::sin(angle), .0f);
 
-        if(glm::length2(point) >= 1)
+        if(length2(point) >= 1)
             continue;
 
         return point;

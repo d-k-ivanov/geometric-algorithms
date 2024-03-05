@@ -18,7 +18,7 @@
 
 void AlgGeom::SceneContent::buildScenario()
 {
-    const vec2 minBoundaries = vec2(-4.0, -1.5);
+    const vec2 minBoundaries = vec2(-3.0, -1.5);
     const vec2 maxBoundaries = vec2(-minBoundaries);
 
     // Random segments
@@ -58,8 +58,8 @@ void AlgGeom::SceneContent::buildScenario()
     // Tasks
     // Pr1-a-1: point cloud
     constexpr int   numPoints      = 100;
-    constexpr int   numPointClouds = 50;
-    constexpr float scale          = 3.0f;
+    constexpr int   numPointClouds = 20;
+    constexpr float scale          = 2.0f;
     vec3            center;
 
     for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
@@ -93,7 +93,8 @@ void AlgGeom::SceneContent::buildScenario()
             pointCloud->addPoint(Point(rand.x, rand.y));
         }
 
-        this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName());
+        // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName());
+        this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(5.0f));
         // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
         delete pointCloud;
     }

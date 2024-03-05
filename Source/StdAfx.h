@@ -33,6 +33,7 @@
 #include <glm/gtc/epsilon.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/norm.hpp>
+#include <glm/gtx/color_space.hpp>
 
 // Gui
 #include <imgui.h>
