@@ -18,7 +18,8 @@
 
 void AlgGeom::SceneContent::buildScenario()
 {
-    vec2 minBoundaries = vec2(-3.0f, -.4), maxBoundaries = vec2(-minBoundaries);
+    const vec2 minBoundaries = vec2(-4.0, -1.5);
+    const vec2 maxBoundaries = vec2(-minBoundaries);
 
     // Random segments
     // int numSegments = 8;
@@ -56,9 +57,9 @@ void AlgGeom::SceneContent::buildScenario()
 
     // Tasks
     // Pr1-a-1: point cloud
-    constexpr int   numPoints      = 50;
-    constexpr int   numPointClouds = 1;
-    constexpr float scale          = 1.0f;
+    constexpr int   numPoints      = 100;
+    constexpr int   numPointClouds = 50;
+    constexpr float scale          = 3.0f;
     vec3            center;
 
     for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
@@ -66,10 +67,7 @@ void AlgGeom::SceneContent::buildScenario()
         PointCloud* pointCloud = new PointCloud;
         if(numPointClouds > 1)
         {
-            center = vec3(
-                RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x),
-                RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y),
-                RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x));
+            center = vec3(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y), 0.0);
         }
         else
         {
@@ -79,9 +77,13 @@ void AlgGeom::SceneContent::buildScenario()
         for(int idx = 0; idx < numPoints; ++idx)
         {
             // Disk point cloud
-            const vec3 rand = RandomUtilities::getUniformRandomInUnitDiskCircumference() / scale + center;
+            // const vec3 rand = RandomUtilities::getUniformRandomInUnitDiskCircumference() / scale + center;
             // const vec3 rand = RandomUtilities::getUniformRandomCosineDirection() / scale + center;
             // const vec3 rand = RandomUtilities::getUniformRandomInUnitDisk() / scale + center;
+
+            // Rectangular point cloud
+            // const vec3 rand = RandomUtilities::getUniformRandomInUnitSquare() / scale + center;
+            const vec3 rand = RandomUtilities::getUniformRandomInUnitSquarePerimeter() / scale + center;
 
             // Hemispheric point cloud
             // const vec3 rand = RandomUtilities::getUniformRandomInHemisphere(vec3(0, -1, 0)) / scale + center;
@@ -91,8 +93,8 @@ void AlgGeom::SceneContent::buildScenario()
             pointCloud->addPoint(Point(rand.x, rand.y));
         }
 
-        // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName());
-        this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
+        this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName());
+        // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
         delete pointCloud;
     }
 }

@@ -2,7 +2,7 @@
 
 #include "StdAfx.h"
 
-typedef std::mt19937                          RandomNumberGenerator;
+typedef std::minstd_rand                      RandomNumberGenerator;
 typedef std::uniform_real_distribution<float> DoubleUniformDistribution;
 
 /**
@@ -61,9 +61,19 @@ vec3 getUniformRandomInUnitDisk();
 vec3 getUniformRandomInUnitSphere();
 
 /**
- *	@return Random point in unit sphere.
+ *	@return Random point in unit dick circumference.
  */
 vec3 getUniformRandomInUnitDiskCircumference();
+
+/**
+ *	@return Random point in unit square.
+ */
+vec3 getUniformRandomInUnitSquare();
+
+/**
+ *	@return Random point in unit square perimeter.
+ */
+vec3 getUniformRandomInUnitSquarePerimeter();
 }    // namespace RandomUtilities
 
 inline vec3 RandomUtilities::getRandomToSphere(float radius, float distanceSquared)
@@ -154,11 +164,35 @@ inline vec3 RandomUtilities::getUniformRandomInUnitDiskCircumference()
     while(true)
     {
         const float angle = getUniformRandom(0.0f, 2.0f * glm::pi<float>());
-        point = vec3(std::cos(angle), std::sin(angle), .0f);
+        point             = vec3(std::cos(angle), std::sin(angle), .0f);
 
         if(glm::length2(point) >= 1)
             continue;
 
         return point;
+    }
+}
+
+inline vec3 RandomUtilities::getUniformRandomInUnitSquare()
+{
+    vec3 point;
+    while(true)
+    {
+        point = vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
+
+        if(point.x >= -1.0f && point.x <= 1.0f && point.y >= -1.0f && point.y <= 1.0f)
+            return point;
+    }
+}
+
+inline vec3 RandomUtilities::getUniformRandomInUnitSquarePerimeter()
+{
+    vec3 point;
+    while(true)
+    {
+        point = vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
+
+        if(point.x <= -0.998f || point.x >= 0.998f || point.y <= -0.998f || point.y >= 0.998f)
+            return point;
     }
 }
