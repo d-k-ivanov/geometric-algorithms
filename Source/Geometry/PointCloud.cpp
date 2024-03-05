@@ -22,6 +22,7 @@ PointCloud::PointCloud(const std::string& filename)
     std::vector<Point> points;
     int                numPoints;
 
+    // Text file version
     std::string line;
     if(std::getline(file, line))
     {
@@ -52,6 +53,7 @@ PointCloud::PointCloud(const std::string& filename)
         }
     }
 
+    // Binary file version
     // file.read(reinterpret_cast<char*>(&numPoints), sizeof(int));
     // std::vector<Point> points;
     // for(int i = 0; i < numPoints; i++)
@@ -146,11 +148,15 @@ void PointCloud::save(const std::string& filename)
 
     file.open(filename, std::ios::out);
     const int numPoints = static_cast<int>(this->size());
+
+    // Text file version
     file << numPoints << '\n';
     for(int i = 0; i < numPoints; i++)
     {
         file << _points[i] << '\n';
     }
+
+    // Binary file version
     // file.write(reinterpret_cast<char*>(&numPoints), sizeof(int));
     // file.write(reinterpret_cast<char*>(_points.data()), static_cast<int>(numPoints * sizeof(Point)));
     file.close();
