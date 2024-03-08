@@ -39,7 +39,6 @@ PointCloud::PointCloud(const std::string& filename)
     {
         if(std::getline(file, line))
         {
-            std::cout << line << std::endl;
             Point              p;
             std::istringstream iss(line);
             iss >> p;

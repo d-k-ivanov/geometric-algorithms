@@ -82,9 +82,9 @@ bool SegmentLine::equal(SegmentLine& segment)
     return (_orig.equal(segment._orig) && _dest.equal(segment._dest)) || (_orig.equal(segment._dest) && _dest.equal(segment._orig));
 }
 
-Point SegmentLine::getPoint(double t)
+Point SegmentLine::getPoint(const double t)
 {
-    return _orig + (t * (_dest - _orig));
+    return {this->getA() + (this->getB() - this->getA()).scalarMult(t)};
 }
 
 bool SegmentLine::impSegmentIntersection(SegmentLine& segment)

@@ -189,6 +189,9 @@ public:
      *	@brief Calculates the double area of the triangle formed by (this, a, b).
      */
     double triangleArea2(Point& a, Point& b);
-};
 
-Point operator*(double scalar, Point& point);
+    /**
+     *	@brief Checks the position of the point respect to other two points (a, b).
+     */
+    virtual Point scalarMult(double t);
+};

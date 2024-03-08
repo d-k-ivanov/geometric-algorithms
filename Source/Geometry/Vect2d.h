@@ -59,8 +59,8 @@ public:
      */
     Vect2d operator-(const Vect2d& b);
 
-    /**
-     *	@brief Returns t . a (vector product by a scalar).
-     */
-    Vect2d scalarMult(double t);
+    // /**
+    //  *	@brief Returns t . a (vector product by a scalar).
+    //  */
+    // Vect2d scalarMult(double t) override;
 };

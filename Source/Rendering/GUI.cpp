@@ -36,6 +36,8 @@ AlgGeom::GUI::~GUI()
 {
     delete[] _showMenuButtons;
 
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
 

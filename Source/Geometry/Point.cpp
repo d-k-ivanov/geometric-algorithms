@@ -125,7 +125,7 @@ Point& Point::operator+(const Point& point)
     return *this;
 }
 
-Point& Point::operator*(double scalar)
+Point& Point::operator*(const double scalar)
 {
     _x *= scalar;
     _y *= scalar;
@@ -168,7 +168,7 @@ double Point::triangleArea2(Point& a, Point& b)
     return _x * a._y - _y * a._x + a._x * b._y - a._y * b._x + b._x * _y - b._y * _x;
 }
 
-Point operator*(double scalar, Point& point)
+Point Point::scalarMult(double t)
 {
-    return scalar * point;
+    return {this->getX() * t, this->getY() * t};
 }

@@ -2,9 +2,11 @@
 
 #include "SceneContent.h"
 
+#include "DrawLine.h"
 #include "DrawPoint.h"
 #include "DrawPointCloud.h"
 #include "DrawPolygon.h"
+#include "DrawRay.h"
 #include "DrawSegment.h"
 
 #include "Geometry/PointCloud.h"
@@ -104,6 +106,35 @@ void AlgGeom::SceneContent::buildScenario()
         // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
         // pointCloud->save("PointCloud" + std::to_string(pcIdx) + ".txt");
         delete pointCloud;
+    }
+
+    // blue segment, red line, and magenta ray
+    {
+        // const Point  a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        // const Point  b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        const Point  a(-2, 1);
+        const Point  b(2, 1);
+        SegmentLine* segment = new SegmentLine(a, b);
+        this->addNewModel((new DrawSegment(*segment))->setLineColor(vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
+        delete segment;
+    }
+    {
+        // const Point a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        // const Point b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        const Point a(-2, 0);
+        const Point b(2, 0);
+        Line*       line = new Line(a, b);
+        this->addNewModel((new DrawLine(*line))->setLineColor(vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
+        delete line;
+    }
+    {
+        // const Point a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        // const Point b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        const Point a(-2, -1);
+        const Point b(2, -1);
+        RayLine*    ray = new RayLine(a, b);
+        this->addNewModel((new DrawRay(*ray))->setLineColor(vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
+        delete ray;
     }
 }
 
