@@ -8,8 +8,8 @@ AlgGeom::DrawLine::DrawLine(Line& line)
 {
     Component* component = new Component;
 
-    Point orig = line.getPoint(INT_MAX);
-    Point dest = line.getPoint(INT_MIN);
+    Point orig = line.getPoint(-100000);
+    Point dest = line.getPoint(100000);
 
     component->_vertices.insert(component->_vertices.end(), {VAO::Vertex {vec3(orig.getX(), orig.getY(), .0f)}, VAO::Vertex {vec3(dest.getX(), dest.getY(), .0f)}});
     // component->_vertices.insert(

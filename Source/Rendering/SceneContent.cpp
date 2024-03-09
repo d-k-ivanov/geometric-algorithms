@@ -59,28 +59,44 @@ void AlgGeom::SceneContent::buildScenario()
 
     // Tasks
     // Pr1-a-1: point cloud
-    constexpr int   numPoints      = 100;
-    constexpr int   numPointClouds = 10;
-    constexpr float scale          = 3.0f;
-    vec3            center;
+    constexpr int      numPointClouds = 10;
+    float              scale          = 1.0f;
+    vec3               center;
+    std::vector<Point> randomPointsFromCloud;
+    std::vector<Point> extremumPointInCloud;
+    extremumPointInCloud.reserve(4);
 
     for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
     {
-        // PointCloud* pointCloud = new PointCloud;
-        PointCloud* pointCloud = new PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
-        if(numPointClouds > 1)
+        constexpr int pointsPerCloud = 50;
+        PointCloud*   pointCloud     = new PointCloud;
+        // PointCloud* pointCloud = new PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
+
+        // if(numPointClouds > 1)
+        if(pcIdx == 0)
         {
-            center = vec3(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+            scale  = 0.5f;
+            center = vec3(0, 0, 0);
         }
         else
         {
-            center = vec3(0, 0, 0);
+            scale  = 3.0f;
+            center = vec3(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
         }
 
-        for(int idx = 0; idx < numPoints; ++idx)
+        for(int idx = 0; idx < pointsPerCloud; ++idx)
         {
             vec3 rand;
-            if(pcIdx % 2 == 0)
+
+            if(pcIdx == 0)
+            {
+                // Hemispheric point cloud
+                // rand = RandomUtilities::getUniformRandomInHemisphere(vec3(0, -1, 0)) / scale + center;
+
+                // Spheric point cloud
+                rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
+            }
+            else if(pcIdx % 2 == 0)
             {
                 // Disk point cloud
                 rand = RandomUtilities::getUniformRandomInUnitDiskCircumference() / scale + center;
@@ -93,18 +109,61 @@ void AlgGeom::SceneContent::buildScenario()
                 // rand = RandomUtilities::getUniformRandomInUnitSquare() / scale + center;
                 rand = RandomUtilities::getUniformRandomInUnitSquarePerimeter() / scale + center;
             }
-            // Hemispheric point cloud
-            // rand = RandomUtilities::getUniformRandomInHemisphere(vec3(0, -1, 0)) / scale + center;
-
-            // Spheric point cloud
-            // rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
-            // pointCloud->addPoint(Point(rand.x, rand.y));
+            pointCloud->addPoint(Point(rand.x, rand.y));
         }
 
-        this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(5.0f));
-        // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(5.0f));
+        // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(5.0f));
+        this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(7.0f));
         // this->addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
         // pointCloud->save("PointCloud" + std::to_string(pcIdx) + ".txt");
+
+        if(pcIdx == 0)
+        {
+            for(auto& point : pointCloud->getPoints())
+            {
+                std::cout << point << '\n';
+                if(extremumPointInCloud.size() < 4)
+                {
+                    extremumPointInCloud.push_back(point);
+                    extremumPointInCloud.push_back(point);
+                    extremumPointInCloud.push_back(point);
+                    extremumPointInCloud.push_back(point);
+                }
+                else
+                {
+                    if(point.getX() > extremumPointInCloud.at(0).getX())
+                    {
+                        extremumPointInCloud.at(0) = point;
+                    }
+
+                    if(point.getY() > extremumPointInCloud.at(1).getY())
+                    {
+                        extremumPointInCloud.at(1) = point;
+                    }
+
+                    if(point.getX() < extremumPointInCloud.at(2).getX())
+                    {
+                        extremumPointInCloud.at(2) = point;
+                    }
+
+                    if(point.getY() < extremumPointInCloud.at(3).getY())
+                    {
+                        extremumPointInCloud.at(3) = point;
+                    }
+                }
+            }
+            std::cout << "==================================================\n";
+            std::cout << extremumPointInCloud.at(0) << '\n';
+            std::cout << extremumPointInCloud.at(1) << '\n';
+            std::cout << extremumPointInCloud.at(2) << '\n';
+            std::cout << extremumPointInCloud.at(3) << '\n';
+            std::cout << "==================================================\n";
+
+            for(int i = 0; i < 7; ++i)
+            {
+                randomPointsFromCloud.push_back(pointCloud->getPoint(RandomUtilities::getUniformRandomInt(0, static_cast<int>(pointCloud->size()))));
+            }
+        }
         delete pointCloud;
     }
 
@@ -112,29 +171,54 @@ void AlgGeom::SceneContent::buildScenario()
     {
         // const Point  a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
         // const Point  b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        const Point  a(-2, 1);
-        const Point  b(2, 1);
-        SegmentLine* segment = new SegmentLine(a, b);
-        this->addNewModel((new DrawSegment(*segment))->setLineColor(vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
-        delete segment;
+        // const Point  a(-2, 1);
+        // const Point  b(2, 1);
+        if(randomPointsFromCloud.size() >= 2)
+        {
+            SegmentLine* segment = new SegmentLine(randomPointsFromCloud.at(0), randomPointsFromCloud.at(1));
+            this->addNewModel((new DrawSegment(*segment))->setLineColor(vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(0)))->setPointColor(vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(1)))->setPointColor(vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            delete segment;
+        }
     }
     {
         // const Point a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
         // const Point b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        const Point a(-2, 0);
-        const Point b(2, 0);
-        Line*       line = new Line(a, b);
-        this->addNewModel((new DrawLine(*line))->setLineColor(vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
-        delete line;
+        // const Point a(-2, 0);
+        // const Point b(2, 0);
+        if(randomPointsFromCloud.size() >= 4)
+        {
+            Line* line = new Line(randomPointsFromCloud.at(2), randomPointsFromCloud.at(3));
+            this->addNewModel((new DrawLine(*line))->setLineColor(vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(1.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(2)))->setPointColor(vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(3)))->setPointColor(vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            delete line;
+        }
     }
     {
         // const Point a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
         // const Point b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        const Point a(-2, -1);
-        const Point b(2, -1);
-        RayLine*    ray = new RayLine(a, b);
-        this->addNewModel((new DrawRay(*ray))->setLineColor(vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
-        delete ray;
+        // const Point a(-2, -1);
+        // const Point b(2, -1);
+        if(randomPointsFromCloud.size() >= 6)
+        {
+            RayLine* ray = new RayLine(randomPointsFromCloud.at(4), randomPointsFromCloud.at(5));
+            this->addNewModel((new DrawRay(*ray))->setLineColor(vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(4)))->setPointColor(vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(5)))->setPointColor(vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            delete ray;
+        }
+    }
+    // Convex polygon from the point cloud extremum points
+    {
+        Polygon* polygon = new Polygon;
+        for(auto& point : extremumPointInCloud)
+        {
+            polygon->add(point);
+        }
+        this->addNewModel((new DrawPolygon(*polygon))->setLineColor(vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
+        delete polygon;
     }
 }
 

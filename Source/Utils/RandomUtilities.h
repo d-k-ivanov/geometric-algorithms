@@ -2,7 +2,7 @@
 
 #include "StdAfx.h"
 
-typedef std::mt19937                          RandomNumberGenerator;
+typedef std::minstd_rand                      RandomNumberGenerator;
 typedef std::uniform_real_distribution<float> DoubleUniformDistribution;
 
 /**
@@ -10,11 +10,6 @@ typedef std::uniform_real_distribution<float> DoubleUniformDistribution;
  */
 namespace RandomUtilities
 {
-/**
- *	@return Random of length up to distanceSquared.
- */
-vec3 getRandomToSphere(float radius, float distanceSquared);
-
 /**
  *	@return New random value retrieved from a random uniform distribution.
  */
@@ -24,6 +19,11 @@ float getUniformRandom();
  *	@return New random value retrieved from a random uniform distribution. Note that this value is not in [0, 1].
  */
 float getUniformRandom(float min, float max);
+
+/**
+ *	@return Random of length up to distanceSquared.
+ */
+vec3 getRandomToSphere(float radius, float distanceSquared);
 
 /**
  *	@brief Generates a random color in [0, 1] by using getUniformRandom function for each channel.
@@ -82,7 +82,21 @@ vec3 getUniformRandomInUnitSquare();
 vec3 getUniformRandomInUnitSquarePerimeter();
 }    // namespace RandomUtilities
 
-inline vec3 RandomUtilities::getRandomToSphere(float radius, float distanceSquared)
+inline float RandomUtilities::getUniformRandom()
+{
+    static DoubleUniformDistribution distribution(0.0f, 1.0f);
+    // static RandomNumberGenerator     generator(static_cast<unsigned>(time(nullptr)));
+    static RandomNumberGenerator     generator;
+    generator.seed(std::random_device()());
+    return distribution(generator);
+}
+
+inline float RandomUtilities::getUniformRandom(const float min, const float max)
+{
+    return min + (max - min) * getUniformRandom();
+}
+
+inline vec3 RandomUtilities::getRandomToSphere(const float radius, const float distanceSquared)
 {
     const float r1  = getUniformRandom();
     const float r2  = getUniformRandom();
@@ -91,20 +105,7 @@ inline vec3 RandomUtilities::getRandomToSphere(float radius, float distanceSquar
     const float x   = std::cos(phi) * sqrt(1 - z * z);
     const float y   = std::sin(phi) * sqrt(1 - z * z);
 
-    return vec3(x, y, z);
-}
-
-inline float RandomUtilities::getUniformRandom()
-{
-    static RandomNumberGenerator     generator;
-    generator.seed(std::random_device()());
-    static DoubleUniformDistribution distribution(.0f, 1.0f);
-    return distribution(generator);
-}
-
-inline float RandomUtilities::getUniformRandom(float min, float max)
-{
-    return min + (max - min) * getUniformRandom();
+    return {x, y, z};
 }
 
 inline vec3 RandomUtilities::getUniformRandomColor()
@@ -125,7 +126,7 @@ inline vec3 RandomUtilities::getUniformRandomColorEuclideanDistance()
     }
 }
 
-inline vec3 RandomUtilities::getUniformRandomColor(float min, float max)
+inline vec3 RandomUtilities::getUniformRandomColor(const float min, const float max)
 {
     return {getUniformRandom(min, max), getUniformRandom(min, max), getUniformRandom(min, max)};
 }
@@ -147,9 +148,9 @@ inline vec3 RandomUtilities::getUniformRandomInHemisphere(const vec3& normal)
     return unitSphere * -1.0f * ((dot(unitSphere, normal) > .0f) * 2.0f - 1.0f);
 }
 
-inline int RandomUtilities::getUniformRandomInt(int min, int max)
+inline int RandomUtilities::getUniformRandomInt(const int min, const int max)
 {
-    return static_cast<int>(getUniformRandom(min, max));
+    return static_cast<int>(getUniformRandom(static_cast<float>(min), static_cast<float>(max)));
 }
 
 inline vec3 RandomUtilities::getUniformRandomInUnitDisk()
