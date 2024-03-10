@@ -13,7 +13,7 @@ protected:
     Bezier              _bezier;
 
 public:
-    DrawBezier(const Bezier& bezier);
+    DrawBezier(const Bezier& bezier, double lertStep);
     DrawBezier(const DrawBezier& drawBezier) = delete;
     ~DrawBezier() override { }
 };

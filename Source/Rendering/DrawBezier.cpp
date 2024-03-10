@@ -6,10 +6,10 @@
 
 namespace AlgGeom
 {
-DrawBezier::DrawBezier(const Bezier& bezier)
+DrawBezier::DrawBezier(const Bezier& bezier, const double lertStep = 0.02f)
     : _bezier(bezier)
 {
-    for(float t = 0; t < 1; t += 0.02f)
+    for(double t = 0; t < 1; t += lertStep)
     {
         Component* component = new Component;
         Vect2d     point     = _bezier.getPoint(t);

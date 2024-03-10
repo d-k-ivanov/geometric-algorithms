@@ -252,7 +252,7 @@ void AlgGeom::SceneContent::buildScenario()
         }
 
         Bezier* bezier = new Bezier(controlPoints, static_cast<int>(controlPoints.size()));
-        this->addNewModel((new DrawBezier(*bezier))->setPointColor(vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
+        this->addNewModel((new DrawBezier(*bezier, 0.02f))->setPointColor(vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
         delete bezier;
     }
 }
