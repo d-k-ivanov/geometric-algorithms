@@ -232,32 +232,26 @@ void AlgGeom::SceneContent::buildScenario()
     {
         std::vector<Vect2d> controlPoints;
         controlPoints.emplace_back(-2, -1);
+        // controlPoints.emplace_back(-2, 1);
+        // controlPoints.emplace_back(-1, 1);
         controlPoints.emplace_back(-1, 1);
-        controlPoints.emplace_back(1, -2);
+        controlPoints.emplace_back(1, -1);
         // controlPoints.emplace_back(1, 1);
-        controlPoints.emplace_back(2, -1);
+        // controlPoints.emplace_back(2, 1);
+        controlPoints.emplace_back(2, 1);
 
-        this->addNewModel((new DrawPoint(controlPoints.at(0)))->setPointColor(vec4(1.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
-        this->addNewModel((new DrawPoint(controlPoints.at(1)))->setPointColor(vec4(1.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
-        this->addNewModel((new DrawPoint(controlPoints.at(2)))->setPointColor(vec4(1.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
-        this->addNewModel((new DrawPoint(controlPoints.at(3)))->setPointColor(vec4(1.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
-
-        SegmentLine* controlSegment1 = new SegmentLine(controlPoints.at(0), controlPoints.at(1));
-        SegmentLine* controlSegment2 = new SegmentLine(controlPoints.at(1), controlPoints.at(2));
-        SegmentLine* controlSegment3 = new SegmentLine(controlPoints.at(2), controlPoints.at(3));
-        this->addNewModel((new DrawSegment(*controlSegment1))->setLineColor(vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(0.0f)->setLineWidth(1.0f));
-        this->addNewModel((new DrawSegment(*controlSegment2))->setLineColor(vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(0.0f)->setLineWidth(1.0f));
-        this->addNewModel((new DrawSegment(*controlSegment3))->setLineColor(vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(0.0f)->setLineWidth(1.0f));
-
+        for(size_t i = 0; i < controlPoints.size(); i++)
+        {
+            this->addNewModel((new DrawPoint(controlPoints.at(i)))->setPointColor(vec4(1.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            if(i > 0 && i < controlPoints.size())
+            {
+                SegmentLine* controlSegment = new SegmentLine(controlPoints.at(i - 1), controlPoints.at(i));
+                this->addNewModel((new DrawSegment(*controlSegment))->setLineColor(vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(0.0f)->setLineWidth(1.0f));
+                delete controlSegment;
+            }
+        }
 
         Bezier* bezier = new Bezier(controlPoints, static_cast<int>(controlPoints.size()));
-        // Bezier* bezier = new Bezier;
-        // bezier->add(Point(-2, -1));
-        // bezier->add(Point(-1, 1));
-        // bezier->add(Point(1, -2));
-        // bezier->add(Point(2, -1));
-        // std::cout << "Bezier control points: " << bezier->getControlPoints().size() << '\n';
-
         this->addNewModel((new DrawBezier(*bezier))->setPointColor(vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
         delete bezier;
     }
