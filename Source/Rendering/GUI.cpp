@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "GUI.h"
 
 #include "DrawMesh.h"
@@ -16,6 +14,9 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+#include <filesystem>
+
 
 AlgGeom::GUI::GUI()
 {
@@ -131,13 +132,13 @@ void AlgGeom::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sce
         if(ImGui::IsKeyPressed(ImGuiKey_S))
             _currentGizmoOperation = ImGuizmo::SCALE;
 
-        const mat4 viewMatrix       = mat4(sceneContent->_camera[_appState->_selectedCamera]->getViewMatrix());
-        const mat4 projectionMatrix = mat4(sceneContent->_camera[_appState->_selectedCamera]->getProjectionMatrix());
+        const glm::mat4 viewMatrix       = glm::mat4(sceneContent->_camera[_appState->_selectedCamera]->getViewMatrix());
+        const glm::mat4 projectionMatrix = glm::mat4(sceneContent->_camera[_appState->_selectedCamera]->getProjectionMatrix());
         Model3D*   model            = sceneContent->getModel(component);
 
         if(model)
         {
-            mat4 modelMatrix = model->getModelMatrix();
+            glm::mat4 modelMatrix = model->getModelMatrix();
 
             ImGuiIO& io = ImGui::GetIO();
             ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);

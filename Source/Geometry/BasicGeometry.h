@@ -1,9 +1,11 @@
-#include "StdAfx.h"
+#pragma once
+
+#include <glm/ext/scalar_constants.hpp>
+
+#include <cmath>
 
 namespace BasicGeometry
 {
-constexpr double Pi = 3.14159265358979323846;
-
 bool   equal(double a, double b);
 double determinant2x2(double a, double b, double c, double d);
 double determinant3x3(double a, double b, double c, double d, double e, double f, double g, double h, double i);

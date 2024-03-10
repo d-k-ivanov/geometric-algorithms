@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "Triangle.h"
 
 Triangle::Triangle(Vect2d& aa, Vect2d& bb, Vect2d& cc)

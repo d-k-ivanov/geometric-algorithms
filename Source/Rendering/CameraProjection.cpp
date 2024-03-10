@@ -1,8 +1,12 @@
-#include "StdAfx.h"
-
 #include "CameraProjection.h"
 
 #include "Camera.h"
+
+#include <glm/gtc/epsilon.hpp>
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_transform.hpp>
+
+#include <memory>
 
 std::vector<std::shared_ptr<AlgGeom::CameraProjection>> AlgGeom::CameraProjection::_cameraProjection {
     std::make_shared<AlgGeom::PerspectiveProjection>(),
@@ -13,17 +17,17 @@ float AlgGeom::CameraProjection::CameraProperties::computeAspect()
     return static_cast<float>(_width) / static_cast<float>(_height);
 }
 
-void AlgGeom::CameraProjection::CameraProperties::computeAxes(vec3& n, vec3& u, vec3& v)
+void AlgGeom::CameraProjection::CameraProperties::computeAxes(glm::vec3& n, glm::vec3& u, glm::vec3& v)
 {
     n = glm::normalize(_eye - _lookAt);    // z axis
 
     if(glm::all(glm::epsilonEqual(n, -_up, glm::epsilon<float>())))    // x axis: UP x n is 0 as both vectors are parallel. Since up and n are normalized we can check if they are equal (with epsilon checkup)
     {
-        u = glm::normalize(glm::cross(vec3(0.0f, 0.0f, -1.0f), n));
+        u = glm::normalize(glm::cross(glm::vec3(0.0f, 0.0f, -1.0f), n));
     }
     else if(glm::all(glm::epsilonEqual(n, _up, glm::epsilon<float>())))
     {
-        u = glm::normalize(glm::cross(vec3(0.0f, 0.0f, 1.0f), n));
+        u = glm::normalize(glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), n));
     }
     else
     {
@@ -32,12 +36,12 @@ void AlgGeom::CameraProjection::CameraProperties::computeAxes(vec3& n, vec3& u, 
     v = glm::normalize(glm::cross(n, u));    // y axis
 }
 
-vec2 AlgGeom::CameraProjection::CameraProperties::computeBottomLeftCorner()
+glm::vec2 AlgGeom::CameraProjection::CameraProperties::computeBottomLeftCorner()
 {
     const float halfWidth  = _width / 2.0f;
     const float halfHeight = _height / 2.0f;
 
-    return vec2(-halfWidth, -halfHeight);
+    return glm::vec2(-halfWidth, -halfHeight);
 }
 
 float AlgGeom::CameraProjection::CameraProperties::computeFovY()
@@ -69,7 +73,7 @@ void AlgGeom::CameraProjection::CameraProperties::zoom(float speed)
 
 // Projection
 
-mat4 AlgGeom::PerspectiveProjection::buildProjectionMatrix(CameraProperties* camera)
+glm::mat4 AlgGeom::PerspectiveProjection::buildProjectionMatrix(CameraProperties* camera)
 {
     return glm::perspective(camera->_fovY, camera->_aspect, camera->_zNear, camera->_zFar);
 }
@@ -84,7 +88,7 @@ void AlgGeom::PerspectiveProjection::zoom(CameraProperties* camera, const float 
     }
 }
 
-mat4 AlgGeom::OrthographicProjection::buildProjectionMatrix(CameraProperties* camera)
+glm::mat4 AlgGeom::OrthographicProjection::buildProjectionMatrix(CameraProperties* camera)
 {
     const glm::vec2 bottomLeftCorner = camera->_bottomLeftCorner;
     return glm::ortho(bottomLeftCorner.x, -bottomLeftCorner.x, bottomLeftCorner.y, -bottomLeftCorner.y, camera->_zNear, camera->_zFar);
@@ -99,7 +103,7 @@ void AlgGeom::OrthographicProjection::zoom(CameraProperties* camera, const float
     if(bottomLeftCorner.x - units >= 0 || bottomLeftCorner.y - units >= 0)
         return;
 
-    bottomLeftCorner -= vec2(units * raspect, units);
+    bottomLeftCorner -= glm::vec2(units * raspect, units);
     camera->_bottomLeftCorner = bottomLeftCorner;
 
     camera->computeProjectionMatrices(camera);

@@ -1,6 +1,6 @@
-#include "StdAfx.h"
-
 #include "Texture.h"
+
+#include <stdexcept>
 
 // [Static variables initialization]
 
@@ -50,7 +50,7 @@ AlgGeom::Texture::Texture(Image* image, const GLuint wrapS, const GLuint wrapT, 
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-AlgGeom::Texture::Texture(const vec4& color)
+AlgGeom::Texture::Texture(const glm::vec4& color)
     : _id(-1)
     , _filename("")
     , _color(color)

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "StdAfx.h"
-
 #include "ApplicationState.h"
 #include "Camera.h"
 #include "Model3D.h"

@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "DrawPointCloud.h"
 
 AlgGeom::DrawPointCloud::DrawPointCloud(PointCloud& pointCloud)
@@ -11,7 +9,7 @@ AlgGeom::DrawPointCloud::DrawPointCloud(PointCloud& pointCloud)
     for(unsigned vertexIdx = 0; vertexIdx < pointCloud.size(); vertexIdx++)
     {
         Point point = pointCloud.getPoint(vertexIdx);
-        component->_vertices.push_back(VAO::Vertex {vec3(point.getX(), point.getY(), .0f)});
+        component->_vertices.push_back(VAO::Vertex {glm::vec3(point.getX(), point.getY(), .0f)});
         component->_indices[VAO::IBO_POINT].push_back(vertexIdx);
     }
 

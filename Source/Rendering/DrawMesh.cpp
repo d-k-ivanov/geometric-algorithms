@@ -1,6 +1,7 @@
-#include "StdAfx.h"
-
 #include "DrawMesh.h"
+
+#include <filesystem>
+#include <iostream>
 
 AlgGeom::DrawMesh::DrawMesh()
     : Model3D()
@@ -55,10 +56,10 @@ AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(aiMesh* mesh, const 
     for(int i = 0; i < numVertices; i++)
     {
         VAO::Vertex vertex;
-        vertex._position = vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-        vertex._normal   = vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+        vertex._position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+        vertex._normal   = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
         if(mesh->mTextureCoords[0])
-            vertex._textCoord = vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+            vertex._textCoord = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 
         vertices[i] = vertex;
     }

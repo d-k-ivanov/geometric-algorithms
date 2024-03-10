@@ -2,6 +2,9 @@
 
 #include "Point.h"
 
+#include <vector>
+#include <string>
+
 class PointCloud
 {
 protected:

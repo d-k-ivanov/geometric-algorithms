@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "ShaderProgramDB.h"
 
 #include "Utils/FilesystemUtilities.h"

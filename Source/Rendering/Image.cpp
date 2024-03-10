@@ -1,8 +1,8 @@
-#include "StdAfx.h"
-
 #include "Image.h"
 
 #include "lodepng.h"
+
+#include <iostream>
 
 AlgGeom::Image::Image(const std::string& filename)
     : _depth(4)    // PNG depth

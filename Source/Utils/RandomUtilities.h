@@ -1,6 +1,11 @@
 #pragma once
 
-#include "StdAfx.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+#include <glm/gtx/norm.hpp>
+
+#include <cmath>
+#include <random>
 
 typedef std::minstd_rand                      RandomNumberGenerator;
 typedef std::uniform_real_distribution<float> DoubleUniformDistribution;
@@ -23,33 +28,33 @@ float getUniformRandom(float min, float max);
 /**
  *	@return Random of length up to distanceSquared.
  */
-vec3 getRandomToSphere(float radius, float distanceSquared);
+glm::vec3 getRandomToSphere(float radius, float distanceSquared);
 
 /**
  *	@brief Generates a random color in [0, 1] by using getUniformRandom function for each channel.
  */
-vec3 getUniformRandomColor();
+glm::vec3 getUniformRandomColor();
 
 /**
  *	@brief Generates a random color by using getUniformRandom using Euclidean Distance.
  *         https://en.wikipedia.org/wiki/Color_difference
  */
-vec3 getUniformRandomColorEuclideanDistance();
+glm::vec3 getUniformRandomColorEuclideanDistance();
 
 /**
  *	@brief Generates a random color by using getUniformRandom function for each channel.
  */
-vec3 getUniformRandomColor(float min, float max);
+glm::vec3 getUniformRandomColor(float min, float max);
 
 /**
  *	@return Random hemisphere vector aligned to Z axis.
  */
-vec3 getUniformRandomCosineDirection();
+glm::vec3 getUniformRandomCosineDirection();
 
 /**
  *	@return Random point in unit sphere.
  */
-vec3 getUniformRandomInHemisphere(const vec3& normal);
+glm::vec3 getUniformRandomInHemisphere(const glm::vec3& normal);
 
 /**
  *	@return Random single integer value.
@@ -59,34 +64,34 @@ int getUniformRandomInt(int min, int max);
 /**
  *	@return Random point in unit disk.
  */
-vec3 getUniformRandomInUnitDisk();
+glm::vec3 getUniformRandomInUnitDisk();
 
 /**
  *	@return Random point in unit sphere.
  */
-vec3 getUniformRandomInUnitSphere();
+glm::vec3 getUniformRandomInUnitSphere();
 
 /**
  *	@return Random point in unit dick circumference.
  */
-vec3 getUniformRandomInUnitDiskCircumference();
+glm::vec3 getUniformRandomInUnitDiskCircumference();
 
 /**
  *	@return Random point in unit square.
  */
-vec3 getUniformRandomInUnitSquare();
+glm::vec3 getUniformRandomInUnitSquare();
 
 /**
  *	@return Random point in unit square perimeter.
  */
-vec3 getUniformRandomInUnitSquarePerimeter();
+glm::vec3 getUniformRandomInUnitSquarePerimeter();
 }    // namespace RandomUtilities
 
 inline float RandomUtilities::getUniformRandom()
 {
     static DoubleUniformDistribution distribution(0.0f, 1.0f);
     // static RandomNumberGenerator     generator(static_cast<unsigned>(time(nullptr)));
-    static RandomNumberGenerator     generator;
+    static RandomNumberGenerator generator;
     generator.seed(std::random_device()());
     return distribution(generator);
 }
@@ -96,7 +101,7 @@ inline float RandomUtilities::getUniformRandom(const float min, const float max)
     return min + (max - min) * getUniformRandom();
 }
 
-inline vec3 RandomUtilities::getRandomToSphere(const float radius, const float distanceSquared)
+inline glm::vec3 RandomUtilities::getRandomToSphere(const float radius, const float distanceSquared)
 {
     const float r1  = getUniformRandom();
     const float r2  = getUniformRandom();
@@ -108,15 +113,15 @@ inline vec3 RandomUtilities::getRandomToSphere(const float radius, const float d
     return {x, y, z};
 }
 
-inline vec3 RandomUtilities::getUniformRandomColor()
+inline glm::vec3 RandomUtilities::getUniformRandomColor()
 {
     return {getUniformRandom(), getUniformRandom(), getUniformRandom()};
 }
 
-inline vec3 RandomUtilities::getUniformRandomColorEuclideanDistance()
+inline glm::vec3 RandomUtilities::getUniformRandomColorEuclideanDistance()
 {
-    vec3           color;
-    constexpr vec3 background = vec3(.6f);
+    glm::vec3           color;
+    constexpr glm::vec3 background = glm::vec3(.6f);
     while(true)
     {
         color                 = getUniformRandomColor();
@@ -126,12 +131,12 @@ inline vec3 RandomUtilities::getUniformRandomColorEuclideanDistance()
     }
 }
 
-inline vec3 RandomUtilities::getUniformRandomColor(const float min, const float max)
+inline glm::vec3 RandomUtilities::getUniformRandomColor(const float min, const float max)
 {
     return {getUniformRandom(min, max), getUniformRandom(min, max), getUniformRandom(min, max)};
 }
 
-inline vec3 RandomUtilities::getUniformRandomCosineDirection()
+inline glm::vec3 RandomUtilities::getUniformRandomCosineDirection()
 {
     const float r1 = getUniformRandom(), r2 = getUniformRandom();
     const float z   = sqrt(1 - r2);
@@ -142,9 +147,9 @@ inline vec3 RandomUtilities::getUniformRandomCosineDirection()
     return {x, y, z};
 }
 
-inline vec3 RandomUtilities::getUniformRandomInHemisphere(const vec3& normal)
+inline glm::vec3 RandomUtilities::getUniformRandomInHemisphere(const glm::vec3& normal)
 {
-    const vec3 unitSphere = getUniformRandomInUnitSphere();
+    const glm::vec3 unitSphere = getUniformRandomInUnitSphere();
     return unitSphere * -1.0f * ((dot(unitSphere, normal) > .0f) * 2.0f - 1.0f);
 }
 
@@ -153,11 +158,11 @@ inline int RandomUtilities::getUniformRandomInt(const int min, const int max)
     return static_cast<int>(getUniformRandom(static_cast<float>(min), static_cast<float>(max)));
 }
 
-inline vec3 RandomUtilities::getUniformRandomInUnitDisk()
+inline glm::vec3 RandomUtilities::getUniformRandomInUnitDisk()
 {
     while(true)
     {
-        vec3 point = vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
+        glm::vec3 point = glm::vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
         if(length2(point) >= 1)
             continue;
 
@@ -165,12 +170,12 @@ inline vec3 RandomUtilities::getUniformRandomInUnitDisk()
     }
 }
 
-inline vec3 RandomUtilities::getUniformRandomInUnitSphere()
+inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphere()
 {
-    vec3 point;
+    glm::vec3 point;
     while(true)
     {
-        point = vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f));
+        point = glm::vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f));
         if(length2(point) >= 1)
             continue;
 
@@ -178,13 +183,13 @@ inline vec3 RandomUtilities::getUniformRandomInUnitSphere()
     }
 }
 
-inline vec3 RandomUtilities::getUniformRandomInUnitDiskCircumference()
+inline glm::vec3 RandomUtilities::getUniformRandomInUnitDiskCircumference()
 {
-    vec3 point;
+    glm::vec3 point;
     while(true)
     {
         const float angle = getUniformRandom(0.0f, 2.0f * glm::pi<float>());
-        point             = vec3(std::cos(angle), std::sin(angle), .0f);
+        point             = glm::vec3(std::cos(angle), std::sin(angle), .0f);
 
         if(length2(point) >= 1)
             continue;
@@ -193,24 +198,24 @@ inline vec3 RandomUtilities::getUniformRandomInUnitDiskCircumference()
     }
 }
 
-inline vec3 RandomUtilities::getUniformRandomInUnitSquare()
+inline glm::vec3 RandomUtilities::getUniformRandomInUnitSquare()
 {
-    vec3 point;
+    glm::vec3 point;
     while(true)
     {
-        point = vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
+        point = glm::vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
 
         if(point.x >= -1.0f && point.x <= 1.0f && point.y >= -1.0f && point.y <= 1.0f)
             return point;
     }
 }
 
-inline vec3 RandomUtilities::getUniformRandomInUnitSquarePerimeter()
+inline glm::vec3 RandomUtilities::getUniformRandomInUnitSquarePerimeter()
 {
-    vec3 point;
+    glm::vec3 point;
     while(true)
     {
-        point = vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
+        point = glm::vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
 
         if(point.x <= -0.998f || point.x >= 0.998f || point.y <= -0.998f || point.y >= 0.998f)
             return point;

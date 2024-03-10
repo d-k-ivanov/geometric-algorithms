@@ -1,6 +1,9 @@
-#include "StdAfx.h"
-
 #include "FBO.h"
+
+#include <stdexcept>
+#include <string>
+#include <vector>
+
 
 AlgGeom::FBO::FBO(const uint16_t width, const uint16_t height)
     : _id(0)
@@ -15,7 +18,7 @@ AlgGeom::FBO::~FBO()
 
 void AlgGeom::FBO::modifySize(const uint16_t width, const uint16_t height)
 {
-    _size = vec2(width, height);
+    _size = glm::vec2(width, height);
 }
 
 void AlgGeom::FBO::checkFBOstate()

@@ -1,6 +1,7 @@
-#include "StdAfx.h"
-
 #include "DrawLine.h"
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
 
 AlgGeom::DrawLine::DrawLine(Line& line)
     : Model3D()
@@ -11,7 +12,7 @@ AlgGeom::DrawLine::DrawLine(Line& line)
     Point orig = line.getPoint(-100000);
     Point dest = line.getPoint(100000);
 
-    component->_vertices.insert(component->_vertices.end(), {VAO::Vertex {vec3(orig.getX(), orig.getY(), .0f)}, VAO::Vertex {vec3(dest.getX(), dest.getY(), .0f)}});
+    component->_vertices.insert(component->_vertices.end(), {VAO::Vertex {glm::vec3(orig.getX(), orig.getY(), .0f)}, VAO::Vertex {glm::vec3(dest.getX(), dest.getY(), .0f)}});
     // component->_vertices.insert(
     //     component->_vertices.end(), {VAO::Vertex {vec3(line.getA().getX(), line.getA().getY(), .0f)}, VAO::Vertex {vec3(line.getB().getX(), line.getB().getY(), .0f)}});
 

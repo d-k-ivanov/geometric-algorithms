@@ -1,11 +1,11 @@
-#include "StdAfx.h"
-
 #include "Renderer.h"
 
 #include "InputManager.h"
 #include "ShaderProgramDB.h"
 
 #include "Utils/ChronoUtilities.h"
+
+#include <glm/ext/matrix_transform.hpp>
 
 AlgGeom::Renderer::Renderer()
     : _appState(nullptr)
@@ -83,7 +83,7 @@ void AlgGeom::Renderer::createShaderProgram()
 void AlgGeom::Renderer::prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState)
 {
     _appState                = appState;
-    _appState->_viewportSize = ivec2(width, height);
+    _appState->_viewportSize = glm::ivec2(width, height);
     _content                 = new SceneContent {};
     _screenshoter            = new FBOScreenshot(width, height);
 
@@ -130,7 +130,7 @@ void AlgGeom::Renderer::resizeEvent(uint16_t width, uint16_t height)
 {
     glViewport(0, 0, width, height);
 
-    _appState->_viewportSize = ivec2(width, height);
+    _appState->_viewportSize = glm::ivec2(width, height);
     _content->_camera[_appState->_selectedCamera]->setRaspect(width, height);
 }
 
@@ -138,8 +138,8 @@ void AlgGeom::Renderer::screenshotEvent(const ScreenshotEvent& event)
 {
     if(event._type == ScreenshotListener::RGBA)
     {
-        const ivec2 size    = _appState->_viewportSize;
-        const ivec2 newSize = ivec2(_appState->_viewportSize.x * _appState->_screenshotFactor, _appState->_viewportSize.y * _appState->_screenshotFactor);
+        const glm::ivec2 size    = _appState->_viewportSize;
+        const glm::ivec2 newSize = glm::ivec2(_appState->_viewportSize.x * _appState->_screenshotFactor, _appState->_viewportSize.y * _appState->_screenshotFactor);
 
         this->resizeEvent(newSize.x, newSize.y);
         this->render(_appState->_transparentScreenshot ? .0f : 1.0f, false, true);

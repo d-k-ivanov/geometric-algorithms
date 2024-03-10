@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "DrawPolygon.h"
 
 AlgGeom::DrawPolygon::DrawPolygon(Polygon& polygon)
@@ -14,7 +12,7 @@ AlgGeom::DrawPolygon::DrawPolygon(Polygon& polygon)
 
         Point point = _polygon.getVertexAt(vertexIdx).getPoint();
 
-        component->_vertices.push_back(VAO::Vertex {vec3(point.getX(), point.getY(), .0f)});
+        component->_vertices.push_back(VAO::Vertex {glm::vec3(point.getX(), point.getY(), .0f)});
         component->_indices[VAO::IBO_LINE].insert(component->_indices[VAO::IBO_LINE].end(), {vertexIdx, static_cast<unsigned int>((vertexIdx + 1) % numVertices), RESTART_PRIMITIVE_INDEX});
     }
 

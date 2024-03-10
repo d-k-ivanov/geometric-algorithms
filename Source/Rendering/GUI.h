@@ -2,10 +2,16 @@
 
 #include "ApplicationState.h"
 #include "CameraGuiAdapter.h"
-#include "ImGuizmo.h"
 #include "SceneContent.h"
 
 #include "Patterns/Singleton.h"
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
+#include <ImGuizmo.h>
+
 
 namespace AlgGeom
 {

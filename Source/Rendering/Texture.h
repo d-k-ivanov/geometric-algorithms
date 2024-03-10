@@ -5,6 +5,8 @@
 
 #include <assimp/scene.h>
 
+#include <GL/glew.h>
+
 namespace AlgGeom
 {
 class Texture
@@ -18,17 +20,17 @@ protected:
 
 protected:
     GLuint      _id;
-    vec4        _color;
+    glm::vec4        _color;
     std::string _filename;
 
 public:
     Texture(Image* image, const GLuint wrapS = WRAP_S, const GLuint wrapT = WRAP_T, const GLuint minFilter = MIN_FILTER, const GLuint magFilter = MAG_FILTER);
-    Texture(const vec4& color);
+    Texture(const glm::vec4& color);
     virtual ~Texture();
 
     void applyTexture(AlgGeom::ShaderProgram* shader, const GLint id, const std::string& shaderVariable);
 
-    vec4        getColor() { return _color; }
+    glm::vec4        getColor() { return _color; }
     std::string getFilename() { return _filename; }
 };
 }    // namespace AlgGeom

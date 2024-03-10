@@ -3,6 +3,8 @@
 #include "Point.h"
 #include "SegmentLine.h"
 
+#include <ostream>
+
 class Polygon;    // Forward declaration due to circular reference betwen both classes
 
 class Vertex : public Point

@@ -1,6 +1,10 @@
-#include "StdAfx.h"
-
 #include "ShaderProgram.h"
+
+#include <GL/glew.h>
+
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 // Static variables initialization
 
@@ -51,7 +55,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLfloat value)
 
 bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLint value)
 {
-    GLint location = glGetUniformLocation(_handler, name.c_str());
+    const GLint location = glGetUniformLocation(_handler, name.c_str());
 
     if(location >= 0)
     {
@@ -75,7 +79,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const GLuint va
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const mat4& value)
+bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::mat4& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -88,7 +92,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const mat4& val
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const std::vector<mat4>& values)
+bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const std::vector<glm::mat4>& values)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -101,7 +105,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const std::vect
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec2& value)
+bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::vec2& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -114,7 +118,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec2& val
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const uvec2& value)
+bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::uvec2& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -127,7 +131,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const uvec2& va
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec3& value)
+bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::vec3& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -140,7 +144,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec3& val
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec4& value)
+bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::vec4& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 

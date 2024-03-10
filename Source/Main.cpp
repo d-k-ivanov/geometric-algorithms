@@ -1,7 +1,7 @@
-#include "StdAfx.h"
-
 #include "Rendering/Renderer.h"
 #include "Rendering/Window.h"
+
+#include <iostream>
 
 int main()
 {

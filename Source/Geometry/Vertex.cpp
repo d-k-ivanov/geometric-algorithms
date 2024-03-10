@@ -1,8 +1,8 @@
-#include "StdAfx.h"
-
 #include "Vertex.h"
 
 #include "Polygon.h"
+
+#include <string>
 
 Vertex::Vertex()
     : Point()

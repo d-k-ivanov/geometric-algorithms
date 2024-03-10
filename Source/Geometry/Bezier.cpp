@@ -1,6 +1,5 @@
 #include "Bezier.h"
 
-#include "StdAfx.h"
 #include <utility>
 
 Bezier::Bezier()

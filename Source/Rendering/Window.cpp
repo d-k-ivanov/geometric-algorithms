@@ -1,8 +1,9 @@
-#include "StdAfx.h"
-
 #include "Window.h"
 
 #include "InputManager.h"
+
+#include <iostream>
+#include <stdexcept>
 
 AlgGeom::Window::Window()
     : _window(nullptr)

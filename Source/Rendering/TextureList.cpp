@@ -1,6 +1,6 @@
-#include "StdAfx.h"
-
 #include "TextureList.h"
+
+#include <stdexcept>
 
 AlgGeom::TextureList::TextureList()
 {
@@ -19,7 +19,7 @@ AlgGeom::TextureList::~TextureList()
     }
 }
 
-AlgGeom::Texture* AlgGeom::TextureList::getTexture(const vec4& color)
+AlgGeom::Texture* AlgGeom::TextureList::getTexture(const glm::vec4& color)
 {
     AlgGeom::Texture* texture = nullptr;
     auto              it      = _colorTexture.find(color);
@@ -60,7 +60,7 @@ AlgGeom::Texture* AlgGeom::TextureList::getTexture(const std::string& path)
     return texture;
 }
 
-void AlgGeom::TextureList::saveTexture(const vec4& color, AlgGeom::Texture* texture)
+void AlgGeom::TextureList::saveTexture(const glm::vec4& color, AlgGeom::Texture* texture)
 {
     _colorTexture[color] = texture;
 }

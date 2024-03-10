@@ -1,11 +1,13 @@
-#include "StdAfx.h"
-
 #include "InputManager.h"
 
 #include "Renderer.h"
 
+#include <glm/gtc/epsilon.hpp>
+
+#include <vector>
+
 AlgGeom::ApplicationState AlgGeom::InputManager::_applicationState;
-const vec2                AlgGeom::InputManager::_defaultCursorPosition = vec2(-1.0f, -1.0f);
+const glm::vec2                AlgGeom::InputManager::_defaultCursorPosition = glm::vec2(-1.0f, -1.0f);
 
 AlgGeom::InputManager::InputManager()
     : _lastCursorPosition(_defaultCursorPosition)
@@ -30,21 +32,21 @@ void AlgGeom::InputManager::buildMoveRelatedBuffers()
     _moveSpeed[Events::TRUCK]    = 0.01f;
     _moveSpeed[Events::ZOOM]     = 0.008f;
 
-    _eventKey                         = std::vector<ivec2>(static_cast<size_t>(Events::NUM_EVENTS), ivec2(0));
-    _eventKey[Events::ALTER_POINT]    = ivec2(GLFW_KEY_0);
-    _eventKey[Events::ALTER_LINE]     = ivec2(GLFW_KEY_1);
-    _eventKey[Events::ALTER_TRIANGLE] = ivec2(GLFW_KEY_2);
+    _eventKey                         = std::vector<glm::ivec2>(static_cast<size_t>(Events::NUM_EVENTS), glm::ivec2(0));
+    _eventKey[Events::ALTER_POINT]    = glm::ivec2(GLFW_KEY_0);
+    _eventKey[Events::ALTER_LINE]     = glm::ivec2(GLFW_KEY_1);
+    _eventKey[Events::ALTER_TRIANGLE] = glm::ivec2(GLFW_KEY_2);
 
-    _eventKey[Events::BOOM]           = ivec2(GLFW_KEY_UP, GLFW_KEY_DOWN);
-    _eventKey[Events::DOLLY]          = ivec2(GLFW_KEY_W, GLFW_KEY_S);
-    _eventKey[Events::DOLLY_SPEED_UP] = ivec2(GLFW_MOD_SHIFT);
-    _eventKey[Events::ORBIT_XZ]       = ivec2(GLFW_KEY_Y);
-    _eventKey[Events::ORBIT_Y]        = ivec2(GLFW_KEY_X);
-    _eventKey[Events::PAN]            = ivec2(GLFW_KEY_P);
-    _eventKey[Events::RESET]          = ivec2(GLFW_KEY_B);
-    _eventKey[Events::SCREENSHOT]     = ivec2(GLFW_KEY_K, GLFW_KEY_L);
-    _eventKey[Events::TILT]           = ivec2(GLFW_KEY_T);
-    _eventKey[Events::TRUCK]          = ivec2(GLFW_KEY_D, GLFW_KEY_A);
+    _eventKey[Events::BOOM]           = glm::ivec2(GLFW_KEY_UP, GLFW_KEY_DOWN);
+    _eventKey[Events::DOLLY]          = glm::ivec2(GLFW_KEY_W, GLFW_KEY_S);
+    _eventKey[Events::DOLLY_SPEED_UP] = glm::ivec2(GLFW_MOD_SHIFT);
+    _eventKey[Events::ORBIT_XZ]       = glm::ivec2(GLFW_KEY_Y);
+    _eventKey[Events::ORBIT_Y]        = glm::ivec2(GLFW_KEY_X);
+    _eventKey[Events::PAN]            = glm::ivec2(GLFW_KEY_P);
+    _eventKey[Events::RESET]          = glm::ivec2(GLFW_KEY_B);
+    _eventKey[Events::SCREENSHOT]     = glm::ivec2(GLFW_KEY_K, GLFW_KEY_L);
+    _eventKey[Events::TILT]           = glm::ivec2(GLFW_KEY_T);
+    _eventKey[Events::TRUCK]          = glm::ivec2(GLFW_KEY_D, GLFW_KEY_A);
 
     _moves = std::vector<GLuint>(static_cast<size_t>(Events::NUM_EVENTS), 0);
 }
@@ -71,7 +73,7 @@ bool AlgGeom::InputManager::checkPanTilt(const float xPos, const float yPos)
             }
         }
 
-        _lastCursorPosition = vec2(xPos, yPos);
+        _lastCursorPosition = glm::vec2(xPos, yPos);
         return true;
     }
 

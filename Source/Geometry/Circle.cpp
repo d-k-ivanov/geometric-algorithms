@@ -1,5 +1,4 @@
 #include "Circle.h"
-#include "StdAfx.h"
 
 Circle::~Circle()
 {

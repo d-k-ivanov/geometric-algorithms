@@ -1,6 +1,6 @@
-#include "StdAfx.h"
-
 #include "FBOScreenshot.h"
+
+#include <thread>
 
 AlgGeom::FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t height)
     : FBO(width, height)

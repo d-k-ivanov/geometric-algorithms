@@ -1,8 +1,9 @@
 #include "SegmentLine.h"
-#include "StdAfx.h"
 
 #include "Line.h"
 #include "RayLine.h"
+
+#include <ostream>
 
 SegmentLine::SegmentLine()
 {

@@ -2,6 +2,9 @@
 
 #include "BasicGeometry.h"
 
+#include <ostream>
+#include <sstream>
+
 /**
  *	@brief This class represents a 2D structure. This will be also the skeleton for other 2D structures such as Vertex or Vector.
  */

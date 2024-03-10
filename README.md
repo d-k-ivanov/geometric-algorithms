@@ -251,7 +251,7 @@ for (int triangleIdx = 0; triangleIdx < numTriangles; ++triangleIdx)
     ...
     Triangle* triangle = new Triangle(a, b, c);
 
-    _content->addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(vec4(RandomUtilities::getUniformRandomColor(), 1.0f))
+    _content->addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))
         ->overrideModelName());
     delete triangle;
 }
@@ -263,7 +263,7 @@ To consider:
 - `_content` will be the scene (we should not modify anything in this class).
 - The `setters` of a 3D model have been implemented as `Model3D* set*()` to be able to chain calls in the same instantiation (considering that said instance will not be necessary in our `Renderer`, and therefore, it will be eliminated continuation).
   - What can we modify using `setters`?:
-    - Colour: `setPointColor`, `setLineColor`, `setTriangleColor`. Keep in mind that the latter receives a `vec4` to be able to modify the alpha of the model.
+    - Colour: `setPointColor`, `setLineColor`, `setTriangleColor`. Keep in mind that the latter receives a `glm::vec4` to be able to modify the alpha of the model.
     - Visibility of primitives: `setTopologyVisibility`. You will receive a primitive type of `VAO::IBO_slots` and boolean.
     - `moveGeometryToOrigin`: calculates the transformation matrix that takes a model, located at an unknown point, to the origin of the coordinate system. Additionally, you can control the scale so that it can be displayed in our viewport.
     - `overrideModelName`: by default, a model will receive a generic name in its constructor, such as `Model3D 8, Comp. 0`. However, we can customize this name automatically so that it is identifiable in the list of models (accessible through the `Settings > Models` menu). Note that the name of a subclass cannot be obtained in the constructor. Therefore, this possibility is offered as a subsequent call.

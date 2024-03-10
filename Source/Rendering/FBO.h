@@ -2,13 +2,18 @@
 
 #include "Image.h"
 
+#include <GL/glew.h>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+
 namespace AlgGeom
 {
 class FBO
 {
 protected:
     GLuint _id;
-    ivec2  _size;
+    glm::ivec2  _size;
 
 protected:
     void checkFBOstate();
@@ -18,7 +23,7 @@ public:
     virtual ~FBO();
 
     virtual GLuint getId() const { return _id; }
-    ivec2          getSize() const { return _size; }
+    glm::ivec2          getSize() const { return _size; }
 
     virtual void bindFBO() = 0;
     virtual void modifySize(const uint16_t width, const uint16_t height);

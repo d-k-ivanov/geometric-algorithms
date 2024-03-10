@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "SceneContent.h"
 
 #include "DrawBezier.h"
@@ -22,28 +20,28 @@
 
 void AlgGeom::SceneContent::buildScenario()
 {
-    const vec2 minBoundaries = vec2(-3.0, -1.5);
-    const vec2 maxBoundaries = vec2(-minBoundaries);
+    const glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
+    const glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
 
     // Random segments
-    // int numSegments = 8;
-    // for(int segmentIdx = 0; segmentIdx < numSegments; ++segmentIdx)
-    // {
-    //     Point        a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-    //     Point        b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-    //     SegmentLine* segment = new SegmentLine(a, b);
-    //
-    //     this->addNewModel((new DrawSegment(*segment))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(RandomUtilities::getUniformRandom(1.0f, 3.0f)));
-    //     delete segment;
-    // }
+    int numSegments = 0;
+    for(int segmentIdx = 0; segmentIdx < numSegments; ++segmentIdx)
+    {
+        Point        a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        Point        b(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        SegmentLine* segment = new SegmentLine(a, b);
+
+        this->addNewModel((new DrawSegment(*segment))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(RandomUtilities::getUniformRandom(1.0f, 3.0f)));
+        delete segment;
+    }
 
     // Random points
-    // int numPoints = 200;
-    // for(int pointIdx = 0; pointIdx < numPoints; ++pointIdx)
-    // {
-    //     Point point(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x));
-    //     this->addNewModel((new DrawPoint(point))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
-    // }
+    int numPoints = 0;
+    for(int pointIdx = 0; pointIdx < numPoints; ++pointIdx)
+    {
+        Point point(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x));
+        this->addNewModel((new DrawPoint(point))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(RandomUtilities::getUniformRandom(4.0f, 8.0f)));
+    }
 
     // Polygon
     // float           polygonAngle = .0f;
@@ -56,14 +54,14 @@ void AlgGeom::SceneContent::buildScenario()
     //     polygonAngle += polygonAlpha;
     // }
     //
-    // this->addNewModel((new DrawPolygon(*polygon))->setTriangleColor(vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setModelMatrix(glm::rotate(mat4(1.0f), (glm::abs(4 * polygonAlpha - glm::pi<float>() / 2.0f * 3.0f)), vec3(.0f, .0f, 1.0f))));
+    // this->addNewModel((new DrawPolygon(*polygon))->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setModelMatrix(glm::rotate(glm::mat4(1.0f), (glm::abs(4 * polygonAlpha - glm::pi<float>() / 2.0f * 3.0f)), glm::vec3(.0f, .0f, 1.0f))));
     // delete polygon;
 
     // Tasks
     // Pr1-a-1: point cloud
     constexpr int      numPointClouds = 1;
     float              scale          = 1.0f;
-    vec3               center;
+    glm::vec3               center;
     std::vector<Point> randomPointsFromCloud;
     std::vector<Point> extremumPointInCloud;
     extremumPointInCloud.reserve(4);
@@ -78,17 +76,17 @@ void AlgGeom::SceneContent::buildScenario()
         if(pcIdx == 0)
         {
             scale  = 0.5f;
-            center = vec3(0, 0, 0);
+            center = glm::vec3(0, 0, 0);
         }
         else
         {
             scale  = 3.0f;
-            center = vec3(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+            center = glm::vec3(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
         }
 
         for(int idx = 0; idx < pointsPerCloud; ++idx)
         {
-            vec3 rand;
+            glm::vec3 rand;
 
             if(pcIdx == 0)
             {
@@ -169,7 +167,7 @@ void AlgGeom::SceneContent::buildScenario()
 
         // Playing with bezier curve on the point cloud
         // Bezier* bezier = new Bezier(pointCloud->getPoints(), static_cast<int>(pointCloud->size()));
-        // this->addNewModel((new DrawBezier(*bezier))->setPointColor(vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
+        // this->addNewModel((new DrawBezier(*bezier))->setPointColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
         // delete bezier;
 
         delete pointCloud;
@@ -184,9 +182,9 @@ void AlgGeom::SceneContent::buildScenario()
         if(randomPointsFromCloud.size() >= 2)
         {
             SegmentLine* segment = new SegmentLine(randomPointsFromCloud.at(0), randomPointsFromCloud.at(1));
-            this->addNewModel((new DrawSegment(*segment))->setLineColor(vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
-            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(0)))->setPointColor(vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
-            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(1)))->setPointColor(vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawSegment(*segment))->setLineColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(0)))->setPointColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(1)))->setPointColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             delete segment;
         }
     }
@@ -198,9 +196,9 @@ void AlgGeom::SceneContent::buildScenario()
         if(randomPointsFromCloud.size() >= 4)
         {
             Line* line = new Line(randomPointsFromCloud.at(2), randomPointsFromCloud.at(3));
-            this->addNewModel((new DrawLine(*line))->setLineColor(vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(1.0f));
-            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(2)))->setPointColor(vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
-            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(3)))->setPointColor(vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawLine(*line))->setLineColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(1.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(2)))->setPointColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(3)))->setPointColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             delete line;
         }
     }
@@ -212,9 +210,9 @@ void AlgGeom::SceneContent::buildScenario()
         if(randomPointsFromCloud.size() >= 6)
         {
             RayLine* ray = new RayLine(randomPointsFromCloud.at(4), randomPointsFromCloud.at(5));
-            this->addNewModel((new DrawRay(*ray))->setLineColor(vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
-            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(4)))->setPointColor(vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
-            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(5)))->setPointColor(vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawRay(*ray))->setLineColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(4)))->setPointColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawPoint(randomPointsFromCloud.at(5)))->setPointColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             delete ray;
         }
     }
@@ -225,7 +223,7 @@ void AlgGeom::SceneContent::buildScenario()
         {
             polygon->add(point);
         }
-        this->addNewModel((new DrawPolygon(*polygon))->setLineColor(vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
+        this->addNewModel((new DrawPolygon(*polygon))->setLineColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
         delete polygon;
     }
     // Bezier curve
@@ -242,17 +240,17 @@ void AlgGeom::SceneContent::buildScenario()
 
         for(size_t i = 0; i < controlPoints.size(); i++)
         {
-            this->addNewModel((new DrawPoint(controlPoints.at(i)))->setPointColor(vec4(1.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
+            this->addNewModel((new DrawPoint(controlPoints.at(i)))->setPointColor(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             if(i > 0 && i < controlPoints.size())
             {
                 SegmentLine* controlSegment = new SegmentLine(controlPoints.at(i - 1), controlPoints.at(i));
-                this->addNewModel((new DrawSegment(*controlSegment))->setLineColor(vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(0.0f)->setLineWidth(1.0f));
+                this->addNewModel((new DrawSegment(*controlSegment))->setLineColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(0.0f)->setLineWidth(1.0f));
                 delete controlSegment;
             }
         }
 
         Bezier* bezier = new Bezier(controlPoints, static_cast<int>(controlPoints.size()));
-        this->addNewModel((new DrawBezier(*bezier, 0.02f))->setPointColor(vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
+        this->addNewModel((new DrawBezier(*bezier, 0.02f))->setPointColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
         delete bezier;
     }
 }
@@ -260,8 +258,8 @@ void AlgGeom::SceneContent::buildScenario()
 void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)
 {
     Camera* camera = new Camera(width, height, true);
-    camera->setPosition(vec3(.0f, .0f, 4.0f));
-    camera->setLookAt(vec3(.0f, .0f, 0.0f));
+    camera->setPosition(glm::vec3(.0f, .0f, 4.0f));
+    camera->setLookAt(glm::vec3(.0f, .0f, 0.0f));
     camera->saveCamera();
 
     this->_camera.push_back(std::unique_ptr<Camera>(camera));

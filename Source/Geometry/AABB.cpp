@@ -1,8 +1,6 @@
-#include "StdAfx.h"
-
 #include "AABB.h"
 
-AABB::AABB(const vec3& min, const vec3& max)
+AABB::AABB(const glm::vec3& min, const glm::vec3& max)
     : _max(max)
     , _min(min)
 {
@@ -26,9 +24,9 @@ AABB& AABB::operator=(const AABB& aabb)
     return *this;
 }
 
-AABB AABB::dot(const mat4& matrix)
+AABB AABB::dot(const glm::mat4& matrix)
 {
-    return AABB(matrix * vec4(_min, 1.0f), matrix * vec4(_max, 1.0f));
+    return AABB(matrix * glm::vec4(_min, 1.0f), matrix * glm::vec4(_max, 1.0f));
 }
 
 void AABB::update(const AABB& aabb)
@@ -37,7 +35,7 @@ void AABB::update(const AABB& aabb)
     this->update(aabb.min());
 }
 
-void AABB::update(const vec3& point)
+void AABB::update(const glm::vec3& point)
 {
     if(point.x < _min.x)
     {

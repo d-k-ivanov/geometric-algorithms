@@ -48,8 +48,6 @@ set(SHADER_FILES
 
 set(SOURCE_FILES
     Source/Main.cpp
-    Source/StdAfx.cpp
-    Source/StdAfx.h
     ${CMAKE_CURRENT_BINARY_DIR}/App.rc
 
     # Fonts

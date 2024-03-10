@@ -1,6 +1,10 @@
 #include "PointCloud.h"
-#include "StdAfx.h"
+
 #include "Utils/RandomUtilities.h"
+
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 PointCloud::PointCloud()
 {

@@ -1,6 +1,6 @@
-#include "StdAfx.h"
-
 #include "RenderingShader.h"
+
+#include <iostream>
 
 AlgGeom::RenderingShader::RenderingShader()
     : ShaderProgram()

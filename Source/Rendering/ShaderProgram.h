@@ -1,5 +1,14 @@
 #pragma once
 
+#include <GL/glew.h>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+
+#include <unordered_map>
+#include <string>
+#include <vector>
+
 namespace AlgGeom
 {
 class ShaderProgram
@@ -46,12 +55,12 @@ public:
     bool setUniform(const std::string& name, const GLfloat value);
     bool setUniform(const std::string& name, const GLint value);
     bool setUniform(const std::string& name, const GLuint value);
-    bool setUniform(const std::string& name, const mat4& value);
-    bool setUniform(const std::string& name, const std::vector<mat4>& values);
-    bool setUniform(const std::string& name, const vec2& value);
-    bool setUniform(const std::string& name, const uvec2& value);
-    bool setUniform(const std::string& name, const vec3& value);
-    bool setUniform(const std::string& name, const vec4& value);
+    bool setUniform(const std::string& name, const glm::mat4& value);
+    bool setUniform(const std::string& name, const std::vector<glm::mat4>& values);
+    bool setUniform(const std::string& name, const glm::vec2& value);
+    bool setUniform(const std::string& name, const glm::uvec2& value);
+    bool setUniform(const std::string& name, const glm::vec3& value);
+    bool setUniform(const std::string& name, const glm::vec4& value);
 
     bool use();
 };

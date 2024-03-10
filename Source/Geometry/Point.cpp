@@ -1,5 +1,4 @@
 #include "Point.h"
-#include "StdAfx.h"
 
 Point::Point()
 {

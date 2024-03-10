@@ -1,19 +1,21 @@
 #pragma once
 
-#include "StdAfx.h"
 #include "Texture.h"
 #include "VAO.h"
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
 
 namespace AlgGeom
 {
 struct ApplicationState
 {
     // Application
-    vec3     _backgroundColor;
+    glm::vec3     _backgroundColor;
     float    _materialScattering;
     uint16_t _numFps;
     uint8_t  _selectedCamera;
-    ivec2    _viewportSize;
+    glm::ivec2    _viewportSize;
 
     // Screenshot
     char  _screenshotFilenameBuffer[60];
@@ -21,7 +23,7 @@ struct ApplicationState
     bool  _transparentScreenshot;
 
     // Ligthing
-    vec3  _lightPosition, _Ia, _Id, _Is;
+    glm::vec3  _lightPosition, _Ia, _Id, _Is;
     float _gamma;
 
     // Topology
@@ -29,11 +31,11 @@ struct ApplicationState
 
     ApplicationState()
     {
-        _backgroundColor    = vec3(.6f);
+        _backgroundColor    = glm::vec3(.6f);
         _materialScattering = 1.0f;
         _numFps             = 0;
         _selectedCamera     = 0;
-        _viewportSize       = vec3(0);
+        _viewportSize       = glm::vec3(0);
 
         std::strcpy(_screenshotFilenameBuffer, "ScreenshotRGBA.png");
         _screenshotFactor = 3.0f;
@@ -41,10 +43,10 @@ struct ApplicationState
         for(int i = 0; i < VAO::NUM_IBOS; ++i)
             _activeRendering[i] = /*i == VAO::IBO_TRIANGLE*/ true;
 
-        _lightPosition = vec3(.0f);
-        _Ia            = vec3(.6f);
-        _Id            = vec3(1.0f);
-        _Is            = vec3(1.0f);
+        _lightPosition = glm::vec3(.0f);
+        _Ia            = glm::vec3(.6f);
+        _Id            = glm::vec3(1.0f);
+        _Is            = glm::vec3(1.0f);
         _gamma         = 1.3f;
     }
 };

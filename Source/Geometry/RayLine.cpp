@@ -1,8 +1,8 @@
-#include "StdAfx.h"
-
 #include "RayLine.h"
 
 #include "Line.h"
+
+#include <ostream>
 
 RayLine::RayLine(const Point& a, const Point& b)
     : SegmentLine(a, b)

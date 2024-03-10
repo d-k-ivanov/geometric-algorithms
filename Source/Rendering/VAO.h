@@ -2,6 +2,13 @@
 
 #define RESTART_PRIMITIVE_INDEX 0xFFFFFFFF
 
+#include <GL/glew.h>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+
+#include <vector>
+
 namespace AlgGeom
 {
 class VAO
@@ -27,8 +34,8 @@ public:
 
     struct Vertex
     {
-        vec3 _position, _normal;
-        vec2 _textCoord;
+        glm::vec3 _position, _normal;
+        glm::vec2 _textCoord;
     };
 
 private:

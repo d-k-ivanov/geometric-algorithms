@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "Vect2d.h"
 
 Vect2d::Vect2d(const Point& point)

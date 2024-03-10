@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "VAO.h"
 
 AlgGeom::VAO::VAO(bool interleaved)
@@ -15,7 +13,7 @@ AlgGeom::VAO::VAO(bool interleaved)
     {
         for(int vbo = 0; vbo < NUM_VBOS; ++vbo)
         {
-            this->defineNonInterleaveVBO(_vbos[vbo], sizeof(vec4), GL_FLOAT, static_cast<uint8_t>(vbo));
+            this->defineNonInterleaveVBO(_vbos[vbo], sizeof(glm::vec4), GL_FLOAT, static_cast<uint8_t>(vbo));
         }
     }
     else
@@ -70,11 +68,11 @@ void AlgGeom::VAO::defineInterleavedVBO(GLuint vboId)
     GLsizei structSize = sizeof(Vertex);
 
     glEnableVertexAttribArray(VBO_POSITION);
-    glVertexAttribPointer(VBO_POSITION, static_cast<GLsizei>(sizeof(vec3) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _position));
+    glVertexAttribPointer(VBO_POSITION, static_cast<GLsizei>(sizeof(glm::vec3) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _position));
 
     glEnableVertexAttribArray(VBO_NORMAL);
-    glVertexAttribPointer(VBO_NORMAL, static_cast<GLsizei>(sizeof(vec3) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _normal));
+    glVertexAttribPointer(VBO_NORMAL, static_cast<GLsizei>(sizeof(glm::vec3) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _normal));
 
     glEnableVertexAttribArray(VBO_TEXT_COORD);
-    glVertexAttribPointer(VBO_TEXT_COORD, static_cast<GLsizei>(sizeof(vec2) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _textCoord));
+    glVertexAttribPointer(VBO_TEXT_COORD, static_cast<GLsizei>(sizeof(glm::vec2) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _textCoord));
 }

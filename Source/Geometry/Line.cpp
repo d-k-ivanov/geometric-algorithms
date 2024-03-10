@@ -1,5 +1,4 @@
 #include "Line.h"
-#include "StdAfx.h"
 
 #include "RayLine.h"
 #include "SegmentLine.h"

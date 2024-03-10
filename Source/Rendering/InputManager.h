@@ -1,9 +1,12 @@
-
 #pragma once
 
 #include "ApplicationState.h"
 
 #include "Patterns/Singleton.h"
+
+// IMPORTANT: The GLEW include must always be BEFORE the GLFW include
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 namespace AlgGeom
 {
@@ -56,11 +59,11 @@ private:
 
 private:
     static ApplicationState _applicationState;
-    static const vec2       _defaultCursorPosition;
+    static const glm::vec2       _defaultCursorPosition;
 
 private:
-    std::vector<ivec2>  _eventKey;
-    vec2                _lastCursorPosition;
+    std::vector<glm::ivec2>  _eventKey;
+    glm::vec2                _lastCursorPosition;
     bool                _leftClickPressed, _rightClickPressed;
     std::vector<GLuint> _moves;
     float               _movementMultiplier;

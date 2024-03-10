@@ -25,19 +25,19 @@ public:
 
     Camera& operator=(const Camera& camera) = delete;
 
-    mat4 getProjectionMatrix() const { return _properties._projectionMatrix; }
-    mat4 getViewMatrix() const { return _properties._viewMatrix; }
-    mat4 getViewProjectionMatrix() const { return _properties._viewProjectionMatrix; }
+    glm::mat4 getProjectionMatrix() const { return _properties._projectionMatrix; }
+    glm::mat4 getViewMatrix() const { return _properties._viewMatrix; }
+    glm::mat4 getViewProjectionMatrix() const { return _properties._viewProjectionMatrix; }
 
     void saveCamera();
-    void setBottomLeftCorner(const vec2& bottomLeft);
+    void setBottomLeftCorner(const glm::vec2& bottomLeft);
     void setCameraType(CameraProjection::Projection projection);
     void setFovX(float fovX);
     void setFovY(float fovY);
-    void setLookAt(const vec3& position);
-    void setPosition(const vec3& position);
+    void setLookAt(const glm::vec3& position);
+    void setPosition(const glm::vec3& position);
     void setRaspect(uint16_t width, uint16_t height);
-    void setUp(const vec3& up);
+    void setUp(const glm::vec3& up);
     void setZFar(float zfar);
     void setZNear(float znear);
     void updateMatrices();

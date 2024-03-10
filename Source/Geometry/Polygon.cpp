@@ -1,5 +1,7 @@
 #include "Polygon.h"
-#include "StdAfx.h"
+
+#include <fstream>
+#include <sstream>
 
 Polygon::Polygon()
 {

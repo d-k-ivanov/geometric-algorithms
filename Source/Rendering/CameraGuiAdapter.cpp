@@ -1,8 +1,8 @@
-#include "StdAfx.h"
-
 #include "CameraGuiAdapter.h"
 
 #include "GuiUtilities.h"
+
+#include <imgui.h>
 
 void AlgGeom::CameraGuiAdapter::renderGuiObject()
 {
