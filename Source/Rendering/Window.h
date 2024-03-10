@@ -20,7 +20,7 @@ private:
 
 public:
     virtual ~Window();
-    void init(const std::string& title, const uint16_t width = 1600, const uint16_t height = 900);
+    void init(const std::string& title, const uint16_t width = 1856, const uint16_t height = 1392);
     void loop();
 };
 }    // namespace AlgGeom

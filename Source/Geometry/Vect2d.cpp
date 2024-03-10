@@ -36,6 +36,14 @@ Vect2d Vect2d::operator+(const Vect2d& b)
     return *this;
 }
 
+Vect2d Vect2d::operator+=(const Vect2d& b)
+{
+    _x += b._x;
+    _y += b._y;
+
+    return *this;
+}
+
 Vect2d Vect2d::operator-(const Vect2d& b)
 {
     _x -= b._x;
@@ -44,10 +52,10 @@ Vect2d Vect2d::operator-(const Vect2d& b)
     return *this;
 }
 
-// Vect2d Vect2d::scalarMult(double t)
-// {
-//     _x *= t;
-//     _y *= t;
-//
-//     return *this;
-// }
+Vect2d Vect2d::scalarMult(double t)
+{
+    _x *= t;
+    _y *= t;
+
+    return *this;
+}

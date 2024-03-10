@@ -17,12 +17,12 @@ public:
     /**
      *	@return X coordinate.
      */
-    double getX() { return _x; }
+    double getX() override { return _x; }
 
     /**
      *	@return Y coordinate.
      */
-    double getY() { return _y; }
+    double getY() override { return _y; }
 
     /**
      *	@brief Copy constructor.
@@ -37,7 +37,7 @@ public:
     /**
      *	@brief Destructor.
      */
-    virtual ~Vect2d();
+    ~Vect2d() override;
 
     /**
      *	@brief Returns a . b (scalar product).
@@ -47,20 +47,21 @@ public:
     /**
      *	@brief Assignment operator.
      */
-    virtual Vect2d& operator=(const Vect2d& vector);
+    Vect2d& operator=(const Vect2d& vector);
 
     /**
      *	@brief Returns this + b (sum of vectors).
      */
     Vect2d operator+(const Vect2d& b);
+    Vect2d operator+=(const Vect2d& b);
 
     /**
      *	@brief Returns a - b (substraction of vectors).
      */
     Vect2d operator-(const Vect2d& b);
 
-    // /**
-    //  *	@brief Returns t . a (vector product by a scalar).
-    //  */
-    // Vect2d scalarMult(double t) override;
+    /**
+     *	@brief Returns t . a (vector product by a scalar).
+     */
+    Vect2d scalarMult(double t);
 };

@@ -84,12 +84,12 @@ public:
     /**
      *	@return X coordinate.
      */
-    double getX() { return _x; }
+    virtual double getX() { return _x; }
 
     /**
      *	@return Y coordinate.
      */
-    double getY() { return _y; }
+    virtual double getY() { return _y; }
 
     /**
      *	@brief Angle of this point interpreted as a polar coordinate (radians).
@@ -193,5 +193,5 @@ public:
     /**
      *	@brief Checks the position of the point respect to other two points (a, b).
      */
-    virtual Point scalarMult(double t);
+    Point scalarMult(double t);
 };

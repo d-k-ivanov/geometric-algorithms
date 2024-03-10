@@ -1,18 +1,20 @@
 #pragma once
 
-#include <Geometry/Point.h>
 #include <Geometry/Vect2d.h>
+
+#include <vector>
 
 class Bezier
 {
 protected:
-    size_t              _vertexNum = 0;
     std::vector<Vect2d> _controlPoints;
+    int                 _controlPointsNum = 0;
 
 public:
     Bezier();
     Bezier(const Bezier& bezier);
-    Bezier(std::vector<Vect2d> vertices, int vertexNum);
+    Bezier(std::vector<Vect2d> controlPoints, int controlPointsNum);
+    Bezier(const std::vector<Point>& controlPoints, int controlPointsNum);
     ~Bezier();
 
     void add(const Point& point);
@@ -21,5 +23,15 @@ public:
     Vect2d getAt(size_t position);
     void   setAt(size_t position, const Vect2d& vector);
 
+    Vect2d getOrigin() const;
+    Vect2d getEnd() const;
+
     std::vector<Vect2d> getControlPoints();
+    Vect2d              getControlPoint(size_t index) const;
+    int                 getControlPointsNum() const;
+    int                 getOrder() const;
+    Vect2d              getPoint(double t);
+
+private:
+    double getBinomialCoefficient(int n, int k) const;
 };
