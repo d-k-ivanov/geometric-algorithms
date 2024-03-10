@@ -5,7 +5,7 @@
 
 int main()
 {
-    AlgGeom::Window* window = AlgGeom::Window::getInstance();
+    AlgGeom::Window*   window   = AlgGeom::Window::getInstance();
     AlgGeom::Renderer* renderer = AlgGeom::Renderer::getInstance();
 
     try
@@ -13,7 +13,7 @@ int main()
         window->init("Geometric Algorithms");
         window->loop();
     }
-    catch (const std::exception& exception)
+    catch(const std::exception& exception)
     {
         std::cout << exception.what() << '\n';
     }
@@ -27,4 +27,3 @@ int main()
 
     return 0;
 }
-

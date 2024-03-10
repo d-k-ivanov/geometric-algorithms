@@ -173,7 +173,7 @@ void Polygon::save(const std::string& filename)
 
 void Polygon::set(Vertex& vertex, int pos)
 {
-    if(pos >= 0 && pos < _vertices.size())
+    if(pos >= 0 && pos < static_cast<int>(_vertices.size()))
     {
         _vertices[pos] = vertex;
         vertex.setPolygon(this);

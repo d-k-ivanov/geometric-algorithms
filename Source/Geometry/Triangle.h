@@ -16,13 +16,13 @@ public:
      *   @param bb vertex.
      *   @param cc vertex.
      */
-    Triangle(Vect2d& aa, Vect2d& bb, Vect2d& cc);
+    Triangle(const Vect2d& aa, const Vect2d& bb, const Vect2d& cc);
 
     /**
      *   @brief Copy constructor.
-     *   @param t.
+     *   @param tt
      */
-    Triangle(const Triangle& t);
+    Triangle(const Triangle& tt);
 
     /**
      *	@brief getter.

@@ -20,7 +20,7 @@ protected:
 
 protected:
     GLuint      _id;
-    glm::vec4        _color;
+    glm::vec4   _color;
     std::string _filename;
 
 public:
@@ -30,7 +30,7 @@ public:
 
     void applyTexture(AlgGeom::ShaderProgram* shader, const GLint id, const std::string& shaderVariable);
 
-    glm::vec4        getColor() { return _color; }
+    glm::vec4   getColor() { return _color; }
     std::string getFilename() { return _filename; }
 };
 }    // namespace AlgGeom

@@ -12,8 +12,8 @@ protected:
     Triangle _triangle;
 
 public:
-    DrawTriangle(Triangle& t);
+    DrawTriangle(Triangle& triangle);
     DrawTriangle(const DrawTriangle& drawTriangle) = delete;
-    virtual ~DrawTriangle() {};
+    ~DrawTriangle() override {};
 };
 }    // namespace AlgGeom

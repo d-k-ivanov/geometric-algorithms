@@ -15,6 +15,6 @@ protected:
 public:
     DrawCircle(const Circle& circle, uint32_t numSubdivisions = 256);
     DrawCircle(const DrawCircle& ddt) = delete;
-    ~DrawCircle() override = default;
+    ~DrawCircle() override            = default;
 };
 }

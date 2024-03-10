@@ -12,7 +12,6 @@
 
 #include <ImGuizmo.h>
 
-
 namespace AlgGeom
 {
 class GUI : public Singleton<GUI>

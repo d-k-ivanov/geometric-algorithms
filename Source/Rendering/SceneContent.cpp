@@ -16,6 +16,8 @@
 #include "Utils/ChronoUtilities.h"
 #include "Utils/RandomUtilities.h"
 
+#include <iostream>
+
 // ----------------------------- BUILD YOUR SCENARIO HERE -----------------------------------
 
 void AlgGeom::SceneContent::buildScenario()
@@ -61,7 +63,7 @@ void AlgGeom::SceneContent::buildScenario()
     // Pr1-a-1: point cloud
     constexpr int      numPointClouds = 1;
     float              scale          = 1.0f;
-    glm::vec3               center;
+    glm::vec3          center;
     std::vector<Point> randomPointsFromCloud;
     std::vector<Point> extremumPointInCloud;
     extremumPointInCloud.reserve(4);

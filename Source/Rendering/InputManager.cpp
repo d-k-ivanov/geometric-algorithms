@@ -7,7 +7,7 @@
 #include <vector>
 
 AlgGeom::ApplicationState AlgGeom::InputManager::_applicationState;
-const glm::vec2                AlgGeom::InputManager::_defaultCursorPosition = glm::vec2(-1.0f, -1.0f);
+const glm::vec2           AlgGeom::InputManager::_defaultCursorPosition = glm::vec2(-1.0f, -1.0f);
 
 AlgGeom::InputManager::InputManager()
     : _lastCursorPosition(_defaultCursorPosition)

@@ -3,7 +3,6 @@
 #include "Utils/RandomUtilities.h"
 
 #include <fstream>
-#include <iostream>
 #include <sstream>
 
 PointCloud::PointCloud()
@@ -115,7 +114,7 @@ Point PointCloud::centralPoint()
 
 void PointCloud::deletePoint(int index)
 {
-    if(index < _points.size())
+    if(index < static_cast<int>(_points.size()))
     {
         _points.erase(_points.begin() + index);
     }

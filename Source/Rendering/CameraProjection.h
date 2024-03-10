@@ -26,19 +26,19 @@ public:
         int  _cameraType;
         bool _2d;
 
-        glm::vec3     _eye, _lookAt, _up;
-        float    _zNear, _zFar;
-        float    _aspect;
-        float    _fovY, _fovX;
-        glm::vec2     _bottomLeftCorner;
-        uint16_t _width, _height;
-        glm::vec3     _n, _u, _v;
-        glm::mat4     _viewMatrix, _projectionMatrix, _viewProjectionMatrix;
+        glm::vec3 _eye, _lookAt, _up;
+        float     _zNear, _zFar;
+        float     _aspect;
+        float     _fovY, _fovX;
+        glm::vec2 _bottomLeftCorner;
+        uint16_t  _width, _height;
+        glm::vec3 _n, _u, _v;
+        glm::mat4 _viewMatrix, _projectionMatrix, _viewProjectionMatrix;
 
-        float computeAspect();
-        void  computeAxes(glm::vec3& n, glm::vec3& u, glm::vec3& v);
-        glm::vec2  computeBottomLeftCorner();
-        float computeFovY();
+        float     computeAspect();
+        void      computeAxes(glm::vec3& n, glm::vec3& u, glm::vec3& v);
+        glm::vec2 computeBottomLeftCorner();
+        float     computeFovY();
 
         void computeProjectionMatrices(CameraProperties* camera);
         void computeViewMatrices();
@@ -49,20 +49,20 @@ public:
 
 public:
     virtual glm::mat4 buildProjectionMatrix(CameraProperties* camera)   = 0;
-    virtual void zoom(CameraProperties* camera, const float speed) = 0;
+    virtual void      zoom(CameraProperties* camera, const float speed) = 0;
 };
 
 class PerspectiveProjection : public CameraProjection
 {
 public:
     virtual glm::mat4 buildProjectionMatrix(CameraProperties* camera);
-    virtual void zoom(CameraProperties* camera, const float speed);
+    virtual void      zoom(CameraProperties* camera, const float speed);
 };
 
 class OrthographicProjection : public CameraProjection
 {
 public:
     virtual glm::mat4 buildProjectionMatrix(CameraProperties* camera);
-    virtual void zoom(CameraProperties* camera, const float speed);
+    virtual void      zoom(CameraProperties* camera, const float speed);
 };
 }

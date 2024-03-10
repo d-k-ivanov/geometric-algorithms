@@ -14,6 +14,6 @@ protected:
 public:
     DrawRay(RayLine& t);
     DrawRay(const DrawRay& drawRay) = delete;
-    virtual ~DrawRay() {};
+    ~DrawRay() override {};
 };
 }    // namespace AlgGeom

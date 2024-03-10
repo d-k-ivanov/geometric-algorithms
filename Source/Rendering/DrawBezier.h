@@ -10,7 +10,7 @@ namespace AlgGeom
 class DrawBezier : public Model3D
 {
 protected:
-    Bezier              _bezier;
+    Bezier _bezier;
 
 public:
     DrawBezier(const Bezier& bezier, double lertStep);

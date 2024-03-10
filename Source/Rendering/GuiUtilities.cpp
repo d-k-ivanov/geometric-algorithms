@@ -10,6 +10,6 @@ void AlgGeom::GuiUtilities::leaveSpace(unsigned numSlots)
 
 void AlgGeom::GuiUtilities::renderText(const glm::vec3& xyz, const std::string& title, char delimiter)
 {
-    std::string txt = title + (title.empty() ? "" : ": ") + std::to_string(xyz.x) + delimiter + ' ' + std::to_string(xyz.y) + delimiter + ' ' + std::to_string(xyz.z);
+    const std::string txt = title + (title.empty() ? "" : ": ") + std::to_string(xyz.x) + delimiter + ' ' + std::to_string(xyz.y) + delimiter + ' ' + std::to_string(xyz.z);
     ImGui::Text("%s", txt.c_str());
 }

@@ -222,6 +222,14 @@ find_package(pugixml CONFIG REQUIRED)
 find_package(Stb REQUIRED)
 find_path(DIRENT_INCLUDE_DIRS "dirent.h")
 
+if (MSVC)
+    add_compile_definitions(
+        NOMINMAX                # suppress min/max macros conflicting with names from std::
+        _USE_MATH_DEFINES       # ensure standard math consts such as M_PI are defined
+        _CRT_SECURE_NO_WARNINGS # suppress warnings about unsafe functions
+    )
+endif()
+
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 add_dependencies(${PROJECT_NAME} always_run_resources_target)

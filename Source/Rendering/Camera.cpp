@@ -158,8 +158,8 @@ void AlgGeom::Camera::dolly(float speed)
         return;
 
     const glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -this->_properties._n * speed);    // Translation in z axis
-    this->_properties._eye       = glm::vec3(translationMatrix * glm::vec4(this->_properties._eye, 1.0f));
-    this->_properties._lookAt    = glm::vec3(translationMatrix * glm::vec4(this->_properties._lookAt, 1.0f));
+    this->_properties._eye            = glm::vec3(translationMatrix * glm::vec4(this->_properties._eye, 1.0f));
+    this->_properties._lookAt         = glm::vec3(translationMatrix * glm::vec4(this->_properties._lookAt, 1.0f));
 
     this->_properties.computeViewMatrices();
 }
@@ -221,7 +221,7 @@ void AlgGeom::Camera::tilt(float speed)
     const glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), speed, this->_properties._u);
 
     const glm::vec3 n     = glm::vec3(rotationMatrix * glm::vec4(this->_properties._n, 0.0f));
-    float      alpha = glm::acos(glm::dot(n, glm::vec3(0.0f, 1.0f, 0.0f)));
+    float           alpha = glm::acos(glm::dot(n, glm::vec3(0.0f, 1.0f, 0.0f)));
 
     if(alpha < speed || alpha > (glm::pi<float>() - speed))
     {
@@ -258,7 +258,7 @@ void AlgGeom::Camera::copyCameraAttributes(const AlgGeom::Camera* camera)
     if(camera->_backupCamera)
     {
         const Camera* backupCamera = this->_backupCamera;
-        this->_backupCamera  = new Camera(*camera->_backupCamera);
+        this->_backupCamera        = new Camera(*camera->_backupCamera);
 
         delete backupCamera;
     }

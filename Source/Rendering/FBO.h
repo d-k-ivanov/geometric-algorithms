@@ -12,8 +12,8 @@ namespace AlgGeom
 class FBO
 {
 protected:
-    GLuint _id;
-    glm::ivec2  _size;
+    GLuint     _id;
+    glm::ivec2 _size;
 
 protected:
     void checkFBOstate();
@@ -23,7 +23,7 @@ public:
     virtual ~FBO();
 
     virtual GLuint getId() const { return _id; }
-    glm::ivec2          getSize() const { return _size; }
+    glm::ivec2     getSize() const { return _size; }
 
     virtual void bindFBO() = 0;
     virtual void modifySize(const uint16_t width, const uint16_t height);

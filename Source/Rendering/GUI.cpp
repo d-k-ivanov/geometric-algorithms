@@ -17,7 +17,6 @@
 
 #include <filesystem>
 
-
 AlgGeom::GUI::GUI()
 {
     _appState              = InputManager::getApplicationState();
@@ -134,7 +133,7 @@ void AlgGeom::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sce
 
         const glm::mat4 viewMatrix       = glm::mat4(sceneContent->_camera[_appState->_selectedCamera]->getViewMatrix());
         const glm::mat4 projectionMatrix = glm::mat4(sceneContent->_camera[_appState->_selectedCamera]->getProjectionMatrix());
-        Model3D*   model            = sceneContent->getModel(component);
+        Model3D*        model            = sceneContent->getModel(component);
 
         if(model)
         {

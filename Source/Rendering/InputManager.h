@@ -59,17 +59,17 @@ private:
 
 private:
     static ApplicationState _applicationState;
-    static const glm::vec2       _defaultCursorPosition;
+    static const glm::vec2  _defaultCursorPosition;
 
 private:
-    std::vector<glm::ivec2>  _eventKey;
-    glm::vec2                _lastCursorPosition;
-    bool                _leftClickPressed, _rightClickPressed;
-    std::vector<GLuint> _moves;
-    float               _movementMultiplier;
-    std::vector<float>  _moveSpeed;
-    float               _moveSpeedUp;
-    GLFWwindow*         _window;
+    std::vector<glm::ivec2> _eventKey;
+    glm::vec2               _lastCursorPosition;
+    bool                    _leftClickPressed, _rightClickPressed;
+    std::vector<GLuint>     _moves;
+    float                   _movementMultiplier;
+    std::vector<float>      _moveSpeed;
+    float                   _moveSpeedUp;
+    GLFWwindow*             _window;
 
 private:
     // Observer pattern

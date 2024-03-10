@@ -2,8 +2,8 @@
 
 #include "Point.h"
 
-#include <vector>
 #include <string>
+#include <vector>
 
 class PointCloud
 {

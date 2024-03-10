@@ -1,7 +1,6 @@
 #pragma once
 
 #include <chrono>
-#include <iostream>
 
 /**
  *	@brief Utilities which help us to measure execution time.
@@ -17,10 +16,7 @@ enum TimeUnit : int
     NANOSECONDS  = 1
 };
 
-namespace
-{
-    std::chrono::high_resolution_clock::time_point _initTime;
-}
+inline std::chrono::high_resolution_clock::time_point _initTime;
 
 /**
  *	@return Measured time in the selected time unit since the clock was started. By default the time unit is milliseconds.

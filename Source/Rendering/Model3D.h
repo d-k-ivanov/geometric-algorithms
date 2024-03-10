@@ -13,8 +13,8 @@
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
 
-#include <unordered_set>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #define BINARY_EXTENSION ".bin"
@@ -31,21 +31,21 @@ class Model3D
 protected:
     struct Material
     {
-        glm::vec4     _kdColor;
-        glm::vec3     _ksColor;
-        float    _metallic, _roughnessK;
-        Texture* _kadTexture;
-        bool     _useUniformColor;
-        glm::vec3     _pointColor;
-        glm::vec3     _lineColor;
+        glm::vec4 _kdColor;
+        glm::vec3 _ksColor;
+        float     _metallic, _roughnessK;
+        Texture*  _kadTexture;
+        bool      _useUniformColor;
+        glm::vec3 _pointColor;
+        glm::vec3 _lineColor;
 
         Material()
             : _kdColor(1.00, 0.81, 0.29, 1.0f)
             , _ksColor(.5f)
-            , _kadTexture(nullptr)
-            , _useUniformColor(true)
             , _metallic(.7f)
             , _roughnessK(.3f)
+            , _kadTexture(nullptr)
+            , _useUniformColor(true)
             , _pointColor(.0f)
             , _lineColor(.0f)
         {
@@ -121,7 +121,7 @@ protected:
 
 protected:
     std::vector<std::unique_ptr<Component>> _components;
-    glm::mat4                                    _modelMatrix;
+    glm::mat4                               _modelMatrix;
     std::string                             _name;
 
 protected:
@@ -135,7 +135,7 @@ public:
 
     bool         belongsModel(Component* component);
     virtual void draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive);
-    glm::mat4         getModelMatrix() { return _modelMatrix; }
+    glm::mat4    getModelMatrix() const { return _modelMatrix; }
     std::string  getName() { return _name; }
     Model3D*     moveGeometryToOrigin(const glm::mat4& origMatrix = glm::mat4(1.0f), float maxScale = FLT_MAX);
     Model3D*     overrideModelName();

@@ -5,7 +5,6 @@
 #include "SegmentLine.h"
 #include "Vect2d.h"
 #include "Vertex.h"
-#include <iostream>
 #include <vector>
 
 class Polygon

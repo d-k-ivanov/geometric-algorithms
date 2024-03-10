@@ -36,7 +36,7 @@ private:
 
 private:
     std::unordered_map<glm::vec4, AlgGeom::Texture*, ColorHash, ColorEqual> _colorTexture;
-    std::unordered_map<std::string, AlgGeom::Texture*>                 _imageTexture;
+    std::unordered_map<std::string, AlgGeom::Texture*>                      _imageTexture;
 
 private:
     TextureList();

@@ -8,7 +8,6 @@ class Singleton
 protected:
     static std::unique_ptr<T> _instance;
 
-protected:
     Singleton()  = default;
     ~Singleton() = default;
 

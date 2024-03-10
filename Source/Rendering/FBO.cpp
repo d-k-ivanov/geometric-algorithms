@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-
 AlgGeom::FBO::FBO(const uint16_t width, const uint16_t height)
     : _id(0)
     , _size(width, height)

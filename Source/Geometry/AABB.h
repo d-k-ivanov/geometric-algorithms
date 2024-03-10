@@ -3,7 +3,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-#include <iostream>
+#include <ostream>
 
 class AABB
 {
@@ -17,7 +17,7 @@ public:
     AABB& operator=(const AABB& aabb);
 
     glm::vec3 center() const { return (_max + _min) / 2.0f; }
-    AABB dot(const glm::mat4& matrix);
+    AABB      dot(const glm::mat4& matrix);
     glm::vec3 extent() const { return _max - center(); }
     glm::vec3 max() const { return _max; }
     glm::vec3 min() const { return _min; }

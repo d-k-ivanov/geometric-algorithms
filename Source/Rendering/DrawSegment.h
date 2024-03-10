@@ -14,6 +14,6 @@ protected:
 public:
     DrawSegment(SegmentLine& t);
     DrawSegment(const DrawSegment& drawSegment) = delete;
-    virtual ~DrawSegment() {};
+    ~DrawSegment() override { }
 };
 }    // namespace AlgGeom
