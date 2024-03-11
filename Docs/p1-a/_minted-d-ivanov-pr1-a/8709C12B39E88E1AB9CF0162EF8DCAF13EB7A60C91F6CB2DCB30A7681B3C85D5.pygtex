@@ -1,6 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
-    \PYG{c+c1}{REM Assuming that VCPKG cloned and bootstrapped in c:\PYGZbs{}src\PYGZbs{}vcpkg}
-    \PYG{c+c1}{REM setx for the global environment, set for the local}
-    setx PATH c:\PYGZbs{}src\PYGZbs{}vcpkg;\PYG{n+nv}{\PYGZpc{}PATH\PYGZpc{}}
-    \PYG{k}{set}  \PYG{n+nv}{PATH c:\PYGZbs{}src\PYGZbs{}vcpkg;\PYGZpc{}PATH\PYGZpc{}}
-\end{Verbatim}

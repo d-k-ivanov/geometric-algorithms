@@ -1,5 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
-    \PYG{c}{\PYGZsh{} Assuming that VCPKG cloned and bootstrapped in c:\PYGZbs{}src\PYGZbs{}vcpkg}
-    \PYG{n+no}{[Environment]}\PYG{p}{::}\PYG{n}{SetEnvironmentVariable}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}PATH\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}c:\PYGZbs{}src\PYGZbs{}vcpkg;\PYGZdl{}\PYGZob{}PATH\PYGZcb{}\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}Machine\PYGZdq{}}\PYG{p}{)}
-        \PYG{n+nb}{Set\PYGZhy{}Item} \PYG{n}{\PYGZhy{}Path} \PYG{n}{Env}\PYG{p}{:}\PYG{n}{PATH} \PYG{n}{\PYGZhy{}Value} \PYG{l+s+s2}{\PYGZdq{}c:\PYGZbs{}src\PYGZbs{}vcpkg;\PYGZdl{}\PYGZob{}PATH\PYGZcb{}\PYGZdq{}}
-\end{Verbatim}

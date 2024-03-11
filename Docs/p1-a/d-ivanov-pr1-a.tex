@@ -175,6 +175,10 @@
 \begin{document}
 
 \section{Introduction}
+I've made a couple of improvements to the project to provide a unified way to compile the project on Windows and Linux.
+Moreover, I've added a square perimeter and circumference random distribution to random utilities to draw squared and round point clouds.
+
+I've included precompiled binaries for Windows and Linux.
 
 \section{Compilation on Windows}
 
@@ -227,7 +231,7 @@
 \end{itemize}
 \textbf{Important Note:} the VCPKG requests installation of additional packages
 
-\section{Screenshots}
+\section{Point Clouds}
 
 \begin{figure}[H]
     \centering
@@ -236,12 +240,20 @@
     \label{fig:point_cloud}
 \end{figure}
 
+I've included multiple ways to generate point clouds: using Hemispherical random distribution, Spherical random distribution, circle random distribution, and square random distribution. The first point cloud is generated in a Spherical manner. Following point clouds are smaller and generated squarely for uneven point cloud IDs and circle manner for even IDs.
+
+\section{Segment, Ray, Line}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{segment_ray_line}
     \caption[]{Blue Segment, red Line, and magenta Ray.}
     \label{fig:segment_ray_line}
 \end{figure}
+
+To generate Segment, Ray, and Line, I've taken 6 random points from the central point cloud. The point selection is totally random, so one point, potentially, can belong to all three objects. To distinguish them, I draw them in different sizes. Additionally, I draw the origin and destination points in bigger sizes to emphasize them.
+
+\section{Convex Polygon}
 
 \begin{figure}[H]
     \centering
@@ -250,12 +262,20 @@
     \label{fig:convex_polygon}
 \end{figure}
 
+Four points for convex were selected from the point cloud using maximum and minimum x and y values.
+
+\section{Bezier Curve}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{bezier_curve}
     \caption[]{Bezier Curve.}
     \label{fig:bezier_curve}
 \end{figure}
+
+I've provided commented-out predefined points for the Bézier curve. In the picture, I've carefully selected them to show the beauty of the Bézier curve. The point cloud could be used as a source of control points, but there are too many to make a good curve. Additionally, I draw control points and control segments.
+
+\section{Everything on one picture}
 
 \begin{figure}[H]
     \centering
