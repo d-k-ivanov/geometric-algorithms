@@ -2,6 +2,7 @@
 
 #include "BasicGeometry.h"
 
+#include <climits>
 #include <ostream>
 #include <sstream>
 

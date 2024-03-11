@@ -71,8 +71,8 @@ void AlgGeom::SceneContent::buildScenario()
     for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
     {
         constexpr int pointsPerCloud = 100;
-        PointCloud*   pointCloud     = new PointCloud;
-        // PointCloud* pointCloud = new PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
+        auto*   pointCloud     = new PointCloud;
+        // auto* pointCloud = new PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
 
         // if(numPointClouds > 1)
         if(pcIdx == 0)
@@ -185,7 +185,7 @@ void AlgGeom::SceneContent::buildScenario()
         // const Point  b(2, 1);
         if(randomPointsFromCloud.size() >= 2)
         {
-            SegmentLine* segment = new SegmentLine(randomPointsFromCloud.at(0), randomPointsFromCloud.at(1));
+            auto* segment = new SegmentLine(randomPointsFromCloud.at(0), randomPointsFromCloud.at(1));
             this->addNewModel((new DrawSegment(*segment))->setLineColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
             this->addNewModel((new DrawPoint(randomPointsFromCloud.at(0)))->setPointColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             this->addNewModel((new DrawPoint(randomPointsFromCloud.at(1)))->setPointColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
@@ -213,7 +213,7 @@ void AlgGeom::SceneContent::buildScenario()
         // const Point b(2, -1);
         if(randomPointsFromCloud.size() >= 6)
         {
-            RayLine* ray = new RayLine(randomPointsFromCloud.at(4), randomPointsFromCloud.at(5));
+            auto* ray = new RayLine(randomPointsFromCloud.at(4), randomPointsFromCloud.at(5));
             this->addNewModel((new DrawRay(*ray))->setLineColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
             this->addNewModel((new DrawPoint(randomPointsFromCloud.at(4)))->setPointColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             this->addNewModel((new DrawPoint(randomPointsFromCloud.at(5)))->setPointColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
@@ -224,7 +224,7 @@ void AlgGeom::SceneContent::buildScenario()
     {
         if(extremumPointInCloud.size() >= 4)
         {
-            Polygon* polygon = new Polygon;
+            auto* polygon = new Polygon;
             for(auto& point : extremumPointInCloud)
             {
                 polygon->add(point);
@@ -250,13 +250,13 @@ void AlgGeom::SceneContent::buildScenario()
             this->addNewModel((new DrawPoint(controlPoints.at(i)))->setPointColor(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             if(i > 0 && i < controlPoints.size())
             {
-                SegmentLine* controlSegment = new SegmentLine(controlPoints.at(i - 1), controlPoints.at(i));
+                auto* controlSegment = new SegmentLine(controlPoints.at(i - 1), controlPoints.at(i));
                 this->addNewModel((new DrawSegment(*controlSegment))->setLineColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(0.0f)->setLineWidth(1.0f));
                 delete controlSegment;
             }
         }
 
-        Bezier* bezier = new Bezier(controlPoints, static_cast<int>(controlPoints.size()));
+        auto* bezier = new Bezier(controlPoints, static_cast<int>(controlPoints.size()));
         this->addNewModel((new DrawBezier(*bezier, 0.02f))->setPointColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
         delete bezier;
     }

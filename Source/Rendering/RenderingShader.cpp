@@ -1,5 +1,6 @@
 #include "RenderingShader.h"
 
+#include <cstring>
 #include <iostream>
 
 AlgGeom::RenderingShader::RenderingShader()
