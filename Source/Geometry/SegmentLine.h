@@ -13,7 +13,6 @@ class SegmentLine
 protected:
     Point _orig, _dest;
 
-protected:
     /**
      *	@brief Returns the parametric value T0 to calculate the distance between a point and any geometric object like lines, segments or raylines.
      */
@@ -25,24 +24,9 @@ protected:
     // virtual bool intersects(Vect2d& p1, Vect2d& p2, float& t, float& s);
 
     /**
-     *	@brief Determine the values ​​of s and t in the calculation of the intersection of two lines that they contain AB (this) and CD.
+     *	@brief Obstaints the values ​​of s and t in the calculation of the intersection of two lines that they contain AB (this) and CD.
      */
     virtual bool intersects(Vect2d& c, Vect2d& d, double& s, double& t);
-
-    /**
-     *	@brief Segment-Line Intersection (this:(A,B), r(C,D)). Intersection exists if 0<=s<=1
-     */
-    virtual bool intersects(Line& r, Vect2d& res);
-
-    /**
-     *	@brief Segment-Ray Intersection (this:(A,B), r(C,D)). Intersection exists if 0<=s<=1 and 0<=t
-     */
-    virtual bool intersects(RayLine& r, Vect2d& res);
-
-    /**
-     *	@brief Segment-Segment Intersection (this:(A,B), r(C,D)). There is an intersection if 0<=s<=1 and 0<=t<=1
-     */
-    virtual bool intersects(SegmentLine& r, Vect2d& res);
 
 public:
     /**
@@ -91,6 +75,21 @@ public:
     bool distinct(SegmentLine& segment);
 
     /**
+     *	@brief Segment-Line Intersection (this:(A,B), r(C,D)). Intersection exists if 0<=s<=1
+     */
+    virtual bool intersects(Line& r, Vect2d& res);
+
+    /**
+     *	@brief Segment-Ray Intersection (this:(A,B), r(C,D)). Intersection exists if 0<=s<=1 and 0<=t
+     */
+    virtual bool intersects(RayLine& r, Vect2d& res);
+
+    /**
+     *	@brief Segment-Segment Intersection (this:(A,B), r(C,D)). There is an intersection if 0<=s<=1 and 0<=t<=1
+     */
+    virtual bool intersects(SegmentLine& r, Vect2d& res);
+
+    /**
      *	@brief Distance from a point defined by 'vector' to this segment.
      */
     double distPointSegment(Vect2d& vector);
@@ -104,6 +103,11 @@ public:
      *	@brief It obtains the point belonging to the segment or colineal to it for a concrete t in the parametric equation: result = a + t (b-a).
      */
     Point getPoint(double t);
+
+    /**
+     *	@brief Determines whether two segments intersect in their own way, that is, when they intersect completely. Use only arithmetic.
+     */
+    virtual bool segmentIntersection(SegmentLine& l);
 
     /**
      *	@brief Determines whether two segments intersect improperly, that is, when one end of a segment is contained in the other. Use integer arithmetic.
@@ -138,17 +142,12 @@ public:
     /**
      *	@brief Assignment operator.
      */
-    virtual SegmentLine& operator=(const SegmentLine& segment);
+    SegmentLine& operator=(const SegmentLine& segment);
 
     /**
      *	@brief Overriding cout call.
      */
     friend std::ostream& operator<<(std::ostream& os, const SegmentLine& segment);
-
-    /**
-     *	@brief Determines whether two segments intersect in their own way, that is, when they intersect completely. Use only arithmetic.
-     */
-    virtual bool segmentIntersection(SegmentLine& l);
 
     /**
      *	@brief Modifies the origin of the segment.

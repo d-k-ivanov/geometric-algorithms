@@ -188,7 +188,7 @@ I've included precompiled binaries for Windows and Linux.
     \item Add VCPKG folder to PATH:
     \item Option 1: Command Line tools
 
-    \begin{minted}[fontsize=\scriptsize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Batch}
+    \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Batch}
     REM Assuming that VCPKG cloned and bootstrapped in c:\src\vcpkg
     REM setx for the global environment, set for the local
     setx PATH c:\src\vcpkg;%PATH%
@@ -196,7 +196,7 @@ I've included precompiled binaries for Windows and Linux.
     \end{minted}
 
     \item Option 2: PowerShell
-    \begin{minted}[fontsize=\scriptsize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Powershell}
+    \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Powershell}
     # Assuming that VCPKG cloned and bootstrapped in c:\src\vcpkg
     [Environment]::SetEnvironmentVariable("PATH", "c:\src\vcpkg;${PATH}", "Machine")
         Set-Item -Path Env:PATH -Value "c:\src\vcpkg;${PATH}"
@@ -214,13 +214,13 @@ I've included precompiled binaries for Windows and Linux.
     \item Install VCPKG from \url{https://vcpkg.io/en/getting-started.html}
     \item Add VCPKG folder to System PATH
     \item Option 1: Temporary local environment
-    \begin{minted}[fontsize=\scriptsize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Bash}
+    \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Bash}
         # Assuming that VCPKG cloned and bootstrapped in ~/vcpkg
         export PATH="~/vcpkg;${PATH}"
     \end{minted}
 
     \item Option 2: Local environment and Bash profile
-    \begin{minted}[fontsize=\scriptsize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Bash}
+    \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Bash}
         # Assuming that VCPKG cloned and bootstrapped in c:\src\vcpkg
         export PATH="~/vcpkg;${PATH}"
         echo 'export PATH="~/vcpkg;${PATH}"' >> ~/.bashrc
@@ -241,6 +241,15 @@ I've included precompiled binaries for Windows and Linux.
 \end{figure}
 
 I've included multiple ways to generate point clouds: using Hemispherical random distribution, Spherical random distribution, circle random distribution, and square random distribution. The first point cloud is generated in a Spherical manner. Following point clouds are smaller and generated squarely for uneven point cloud IDs and circle manner for even IDs.
+
+Point clouds could be saved to a file and loaded to a file using the following pattern:
+
+\begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em,highlightlines={1,4}]{C++}
+    auto* pointCloud = new PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
+    ...
+    ...
+    pointCloud->save("PointCloud" + std::to_string(pcIdx) + ".txt");
+\end{minted}
 
 \section{Segment, Ray, Line}
 
