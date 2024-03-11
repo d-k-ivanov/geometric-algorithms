@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Point.h"
 #include "Vect2d.h"
@@ -23,6 +23,26 @@ protected:
      *	@brief Obstaints the parameters t and s where both lines intersects, if they do.
      */
     // virtual bool intersects(Vect2d& p1, Vect2d& p2, float& t, float& s);
+
+    /**
+     *	@brief Determine the values ​​of s and t in the calculation of the intersection of two lines that they contain AB (this) and CD.
+     */
+    virtual bool intersects(Vect2d& c, Vect2d& d, double& s, double& t);
+
+    /**
+     *	@brief Segment-Line Intersection (this:(A,B), r(C,D)). Intersection exists if 0<=s<=1
+     */
+    virtual bool intersects(Line& r, Vect2d& res);
+
+    /**
+     *	@brief Segment-Ray Intersection (this:(A,B), r(C,D)). Intersection exists if 0<=s<=1 and 0<=t
+     */
+    virtual bool intersects(RayLine& r, Vect2d& res);
+
+    /**
+     *	@brief Segment-Segment Intersection (this:(A,B), r(C,D)). There is an intersection if 0<=s<=1 and 0<=t<=1
+     */
+    virtual bool intersects(SegmentLine& r, Vect2d& res);
 
 public:
     /**
@@ -53,12 +73,12 @@ public:
     /**
      *	@brief Returns the origin of the segment.
      */
-    Point getA() { return _orig; }
+    Point getA();
 
     /**
      *	@brief Returns the end of the segment.
      */
-    Point getB() { return _dest; }
+    Point getB();
 
     /**
      *	@brief Returns the constant of the equation of the implied line: c = y-mx.
@@ -73,7 +93,7 @@ public:
     /**
      *	@brief Distance from a point defined by 'vector' to this segment.
      */
-    float distPointSegment(Vect2d& vector);
+    double distPointSegment(Vect2d& vector);
 
     /**
      *	@brief Checks if a segment is equal to this one.
@@ -103,17 +123,17 @@ public:
     /**
      *	@brief Check if the parameter t is valid to get a point of the segment.
      */
-    virtual bool isTvalid(double t) { return ((t >= 0) && (t <= 1)); }
+    virtual bool isTvalid(double t);
 
     /**
      *	@brief Determines whether p is in the left of SegmentLine.
      */
-    bool left(Point& p) { return p.left(_orig, _dest); }
+    bool left(Point& p);
 
     /**
      *	@brief Returns the length of the segment.
      */
-    double length() { return _orig.distance(_dest); }
+    double length();
 
     /**
      *	@brief Assignment operator.
@@ -133,7 +153,7 @@ public:
     /**
      *	@brief Modifies the origin of the segment.
      */
-    void setA(Point& p) { _orig = p; }
+    void setA(Point& p);
 
     /**
      *	@brief Returns the slope of the implied straight line equation: m = (yb-ya) / (xb-xa).
@@ -143,5 +163,5 @@ public:
     /**
      *	@brief Returns the area formed by the triangle composed of the current SegmentLine and the union of its bounds with p.
      */
-    double triangleArea2(Point& p) { return p.triangleArea2(_orig, _dest); }
+    double triangleArea2(Point& p);
 };

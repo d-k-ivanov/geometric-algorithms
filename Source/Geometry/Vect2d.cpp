@@ -1,5 +1,15 @@
 #include "Vect2d.h"
 
+Vect2d::Vect2d()
+    : Point()
+{
+}
+
+Vect2d::Vect2d(double x, double y)
+    : Point(x, y)
+{
+}
+
 Vect2d::Vect2d(const Point& point)
     : Point(point)
 {
@@ -12,6 +22,16 @@ Vect2d::Vect2d(const Vect2d& v)
 
 Vect2d::~Vect2d()
 {
+}
+
+double Vect2d::getX()
+{
+    return _x;
+}
+
+double Vect2d::getY()
+{
+    return _y;
 }
 
 double Vect2d::dot(Vect2d& b)

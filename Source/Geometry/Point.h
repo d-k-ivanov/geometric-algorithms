@@ -11,7 +11,7 @@
 class Point
 {
 protected:
-    const static int DEFAULT_VALUE = INT_MAX;    // Value of X and Y coordinates for an incomplete Point.
+    static constexpr int DEFAULT_VALUE = INT_MAX;    // Value of X and Y coordinates for an incomplete Point.
 
 public:
     enum PointClassification
@@ -52,7 +52,7 @@ public:
     /**
      *	@brief Checks the position of the point respect to other two points (a, b).
      */
-    bool backward(Point& a, Point& b) { return this->classify(a, b) == PointClassification::BACKWARD; }
+    bool backward(Point& a, Point& b);
 
     /**
      *	@brief Determines the relative position with respect to other two (which can form a segment).
@@ -72,27 +72,27 @@ public:
     /**
      *	@brief Checks if the coordinates of this point are different from the coordinates of a point p.
      */
-    bool distinct(Point& p) { return BasicGeometry::equal(_x, p._x) or BasicGeometry::equal(_y, p._y); }
+    bool distinct(Point& p);
 
     /**
      *	@brief Checks if the coordinates of this point are equal from the coordinates of a point p.
      */
-    bool equal(Point& p) { return BasicGeometry::equal(_x, p._x) and BasicGeometry::equal(_y, p._y); }
+    bool equal(Point& p);
 
     /**
      *	@brief Checks the position of the point respect to other two points (a, b).
      */
-    bool forward(Point& a, Point& b) { return classify(a, b) == PointClassification::FORWARD; }
+    bool forward(Point& a, Point& b);
 
     /**
      *	@return X coordinate.
      */
-    virtual double getX() { return _x; }
+    virtual double getX();
 
     /**
      *	@return Y coordinate.
      */
-    virtual double getY() { return _y; }
+    virtual double getY();
 
     /**
      *	@brief Angle of this point interpreted as a polar coordinate (radians).
@@ -107,17 +107,17 @@ public:
     /**
      *	@brief Checks the position of the point respect to other two points (a, b).
      */
-    bool isBetween(Point& a, Point& b) { return classify(a, b) == PointClassification::BETWEEN; }
+    bool isBetween(Point& a, Point& b);
 
     /**
      *	@brief Checks the value of the coordinates. If the values are the DEFAULT, then the point is not valid.
      */
-    bool isValid() { return (_x != DEFAULT_VALUE) && (_y != DEFAULT_VALUE); }
+    bool isValid();
 
     /**
      *	@brief Checks the position of the point respect to other two points (a, b).
      */
-    bool left(Point& a, Point& b) { return classify(a, b) == PointClassification::LEFT; }
+    bool left(Point& a, Point& b);
 
     /**
      *	@brief Checks the position of the point respect to other two points (a, b).
@@ -162,26 +162,22 @@ public:
     /**
      *	@brief Checks the position of the point respect to other two points (a, b).
      */
-    bool right(Point& a, Point& b) { return classify(a, b) == PointClassification::RIGHT; }
+    bool right(Point& a, Point& b);
 
     /**
      *	@brief Modifies the coordinate values.
      */
-    void set(double x, double y)
-    {
-        this->_x = x;
-        this->_y = y;
-    }
+    void set(double x, double y);
 
     /**
      *	@brief Modifies the X coordinate.
      */
-    void setX(double x) { _x = x; }
+    void setX(double x);
 
     /**
      *	@brief Modifies the Y coordinate.
      */
-    void setY(double y) { _y = y; }
+    void setY(double y);
 
     /**
      *	@brief Returns the slope between this point and p.

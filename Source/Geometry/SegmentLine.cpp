@@ -31,6 +31,16 @@ SegmentLine::~SegmentLine()
 {
 }
 
+Point SegmentLine::getA()
+{
+    return _orig;
+}
+
+Point SegmentLine::getB()
+{
+    return _dest;
+}
+
 SegmentLine& SegmentLine::operator=(const SegmentLine& segment)
 {
     if(this != &segment)
@@ -59,13 +69,18 @@ bool SegmentLine::segmentIntersection(SegmentLine& l)
     }
 }
 
+void SegmentLine::setA(Point& p)
+{
+    _orig = p;
+}
+
 double SegmentLine::getC()
 {
     if(slope() == INFINITY)
     {
         return INFINITY;
     }
-    return _orig.getY() - (slope() * _orig.getX());
+    return _orig.getY() - slope() * _orig.getX();
 }
 
 bool SegmentLine::distinct(SegmentLine& segment)
@@ -73,9 +88,28 @@ bool SegmentLine::distinct(SegmentLine& segment)
     return !equal(segment);
 }
 
-float SegmentLine::distPointSegment(Vect2d& vector)
+double SegmentLine::distPointSegment(Vect2d& vector)
 {
-    return 0.0f;
+    Vect2d*      d = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
+    const double t = d->dot(*new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY())) / d->dot(*d);
+    double       distance;
+    if(t < 0 || BasicGeometry::equal(t, 0.0))
+    {
+        Vect2d* aux = new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY());
+        distance    = aux->getModule();
+    }
+    else if(t > 1 || BasicGeometry::equal(t, 1.0))
+    {
+        Vect2d* aux = new Vect2d(vector.getX() - this->getB().getX(), vector.getY() - this->getB().getY());
+        distance    = aux->getModule();
+    }
+    else
+    {
+        Vect2d* aux = new Vect2d(vector.getX() - (this->getA().getX() + d->scalarMult(t).getX()), vector.getY() - (this->getA().getY() + d->scalarMult(t).getY()));
+        distance    = aux->getModule();
+    }
+
+    return distance;
 }
 
 bool SegmentLine::equal(SegmentLine& segment)
@@ -128,6 +162,21 @@ bool SegmentLine::isVertical()
     return false;
 }
 
+bool SegmentLine::isTvalid(double t)
+{
+    return t >= 0 && t <= 1;
+}
+
+bool SegmentLine::left(Point& p)
+{
+    return p.left(_orig, _dest);
+}
+
+double SegmentLine::length()
+{
+    return _orig.distance(_dest);
+}
+
 double SegmentLine::slope()
 {
     if(this->isHorizontal())
@@ -143,6 +192,11 @@ double SegmentLine::slope()
     return (_dest.getY() - _orig.getY()) / (_dest.getX() - _orig.getX());
 }
 
+double SegmentLine::triangleArea2(Point& p)
+{
+    return p.triangleArea2(_orig, _dest);
+}
+
 std::ostream& operator<<(std::ostream& os, const SegmentLine& segment)
 {
     os << "Point A: " << segment._orig << ", Point B: " << segment._dest << "\n";
@@ -153,4 +207,63 @@ std::ostream& operator<<(std::ostream& os, const SegmentLine& segment)
 float SegmentLine::getDistanceT0(Vect2d& point)
 {
     return 0.0f;
+}
+
+bool SegmentLine::intersects(Vect2d& c, Vect2d& d, double& s, double& t)
+{
+    Vect2d* cd = new Vect2d(d.getX() - c.getX(), d.getY() - c.getY());
+    Vect2d* ab = new Vect2d(this->getB().getX() - this->getA().getX(), this->getB().getY() - this->getA().getY());
+    Vect2d* ac = new Vect2d(c.getX() - this->getA().getX(), c.getY() - this->getA().getY());
+    if(BasicGeometry::equal(0.0, cd->getX() * ab->getY() - ab->getX() * cd->getY()))
+    {
+        return false;
+    }
+    s = (cd->getX() * ac->getY() - ac->getX() * cd->getY()) / (cd->getX() * ab->getY() - ab->getX() * cd->getY());
+    t = (ab->getX() * ac->getY() - ac->getX() * ab->getY()) / (cd->getX() * ab->getY() - ab->getX() * cd->getY());
+    return true;
+}
+
+bool SegmentLine::intersects(Line& r, Vect2d& res)
+{
+    double s, t;
+    if(this->intersects(dynamic_cast<Vect2d&>(r._orig), dynamic_cast<Vect2d&>(r._dest), s, t))
+    {
+        // if(s >= 0.0 && s <= 1.0 && t >= 0.0 && t <= 1.0)
+        if((0 < s && s < 1) || BasicGeometry::equal(0.0, s) || BasicGeometry::equal(1.0, s))
+        {
+            res = this->getPoint(s);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool SegmentLine::intersects(RayLine& r, Vect2d& res)
+{
+    double s, t;
+    if(this->intersects(dynamic_cast<Vect2d&>(r._orig), dynamic_cast<Vect2d&>(r._dest), s, t))
+    {
+        // if(s >= 0.0 && s <= 1.0 && t >= 0.0)
+        if(((0 < s && s < 1) || BasicGeometry::equal(0.0, s) || BasicGeometry::equal(1.0, s)) && (t > 0 || BasicGeometry::equal(t, 0.0)))
+        {
+            res = this->getPoint(s);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool SegmentLine::intersects(SegmentLine& r, Vect2d& res)
+{
+    double s, t;
+    if(this->intersects(dynamic_cast<Vect2d&>(r._orig), dynamic_cast<Vect2d&>(r._dest), s, t))
+    {
+        // if(s >= 0.0 && s <= 1.0 && t >= 0.0 && t <= 1.0)
+        if(((0 < s && s < 1) || BasicGeometry::equal(0.0, s) || BasicGeometry::equal(1.0, s)) && ((0 < t && t < 1) || BasicGeometry::equal(0.0, t) || BasicGeometry::equal(1.0, t)))
+        {
+            res = this->getPoint(s);
+            return true;
+        }
+    }
+    return false;
 }

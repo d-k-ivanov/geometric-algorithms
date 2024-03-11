@@ -5,24 +5,8 @@
 class Vect2d : public Point
 {
 public:
-    Vect2d()
-        : Point()
-    {
-    }
-    Vect2d(double x, double y)
-        : Point(x, y)
-    {
-    }
-
-    /**
-     *	@return X coordinate.
-     */
-    double getX() override { return _x; }
-
-    /**
-     *	@return Y coordinate.
-     */
-    double getY() override { return _y; }
+    Vect2d();
+    Vect2d(double x, double y);
 
     /**
      *	@brief Copy constructor.
@@ -38,6 +22,16 @@ public:
      *	@brief Destructor.
      */
     ~Vect2d() override;
+
+    /**
+     *	@return X coordinate.
+     */
+    double getX() override;
+
+    /**
+     *	@return Y coordinate.
+     */
+    double getY() override;
 
     /**
      *	@brief Returns a . b (scalar product).

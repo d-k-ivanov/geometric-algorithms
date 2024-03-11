@@ -61,7 +61,7 @@ void AlgGeom::SceneContent::buildScenario()
 
     // Tasks
     // Pr1-a-1: point cloud
-    constexpr int      numPointClouds = 1;
+    constexpr int      numPointClouds = 5;
     float              scale          = 1.0f;
     glm::vec3          center;
     std::vector<Point> randomPointsFromCloud;
@@ -70,7 +70,7 @@ void AlgGeom::SceneContent::buildScenario()
 
     for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
     {
-        constexpr int pointsPerCloud = 50;
+        constexpr int pointsPerCloud = 100;
         PointCloud*   pointCloud     = new PointCloud;
         // PointCloud* pointCloud = new PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
 
@@ -97,6 +97,9 @@ void AlgGeom::SceneContent::buildScenario()
 
                 // Spheric point cloud
                 rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
+
+                // Disk point cloud
+                // rand = RandomUtilities::getUniformRandomInUnitDiskCircumference() / scale + center;
             }
             else if(pcIdx % 2 == 0)
             {
@@ -174,7 +177,6 @@ void AlgGeom::SceneContent::buildScenario()
 
         delete pointCloud;
     }
-
     // blue segment, red line, and magenta ray
     {
         // const Point  a(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
@@ -220,13 +222,16 @@ void AlgGeom::SceneContent::buildScenario()
     }
     // Convex polygon from the point cloud extremum points
     {
-        Polygon* polygon = new Polygon;
-        for(auto& point : extremumPointInCloud)
+        if(extremumPointInCloud.size() >= 4)
         {
-            polygon->add(point);
+            Polygon* polygon = new Polygon;
+            for(auto& point : extremumPointInCloud)
+            {
+                polygon->add(point);
+            }
+            this->addNewModel((new DrawPolygon(*polygon))->setLineColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
+            delete polygon;
         }
-        this->addNewModel((new DrawPolygon(*polygon))->setLineColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
-        delete polygon;
     }
     // Bezier curve
     {
@@ -281,7 +286,7 @@ AlgGeom::SceneContent::~SceneContent()
 
 void AlgGeom::SceneContent::addNewCamera(ApplicationState* appState)
 {
-    _camera.push_back(std::unique_ptr<Camera>(new Camera(appState->_viewportSize.x, appState->_viewportSize.y, true)));
+    _camera.push_back(std::make_unique<Camera>(appState->_viewportSize.x, appState->_viewportSize.y, true));
 }
 
 void AlgGeom::SceneContent::addNewModel(Model3D* model)

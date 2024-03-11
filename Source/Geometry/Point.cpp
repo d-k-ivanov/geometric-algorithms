@@ -33,6 +33,11 @@ Point::~Point()
 {
 }
 
+bool Point::backward(Point& a, Point& b)
+{
+    return this->classify(a, b) == PointClassification::BACKWARD;
+}
+
 Point::PointClassification Point::classify(Point& p0, Point& p1)
 {
     Point        p2 = *this;
@@ -84,6 +89,31 @@ double Point::distance(Point& p)
     return std::sqrt(std::pow(p._x - _x, 2) + std::pow(p._y - _y, 2));
 }
 
+bool Point::distinct(Point& p)
+{
+    return BasicGeometry::equal(_x, p._x) or BasicGeometry::equal(_y, p._y);
+}
+
+bool Point::equal(Point& p)
+{
+    return BasicGeometry::equal(_x, p._x) and BasicGeometry::equal(_y, p._y);
+}
+
+bool Point::forward(Point& a, Point& b)
+{
+    return classify(a, b) == PointClassification::FORWARD;
+}
+
+double Point::getX()
+{
+    return _x;
+}
+
+double Point::getY()
+{
+    return _y;
+}
+
 double Point::getAlpha()
 {
     return std::atan2(_y, _x);
@@ -92,6 +122,21 @@ double Point::getAlpha()
 double Point::getModule()
 {
     return std::sqrt(std::pow(_x, 2) + std::pow(_y, 2));
+}
+
+bool Point::isBetween(Point& a, Point& b)
+{
+    return classify(a, b) == PointClassification::BETWEEN;
+}
+
+bool Point::isValid()
+{
+    return (_x != DEFAULT_VALUE) && (_y != DEFAULT_VALUE);
+}
+
+bool Point::left(Point& a, Point& b)
+{
+    return classify(a, b) == PointClassification::LEFT;
 }
 
 bool Point::leftAbove(Point& a, Point& b)
@@ -150,6 +195,27 @@ bool Point::rightAbove(Point& a, Point& b)
 {
     PointClassification result = classify(a, b);
     return (result == PointClassification::RIGHT) || (result != PointClassification::LEFT);
+}
+
+bool Point::right(Point& a, Point& b)
+{
+    return classify(a, b) == PointClassification::RIGHT;
+}
+
+void Point::set(double x, double y)
+{
+    this->_x = x;
+    this->_y = y;
+}
+
+void Point::setX(double x)
+{
+    _x = x;
+}
+
+void Point::setY(double y)
+{
+    _y = y;
 }
 
 double Point::slope(Point& p)
