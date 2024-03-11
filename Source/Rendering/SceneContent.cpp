@@ -61,7 +61,7 @@ void AlgGeom::SceneContent::buildScenario()
 
     // Tasks
     // Pr1-a-1: point cloud
-    constexpr int      numPointClouds = 5;
+    constexpr int      numPointClouds = 3;
     float              scale          = 1.0f;
     glm::vec3          center;
     std::vector<Point> randomPointsFromCloud;
