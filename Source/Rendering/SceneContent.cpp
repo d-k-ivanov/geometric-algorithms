@@ -271,6 +271,7 @@ void AlgGeom::SceneContent::buildScenario()
         Vect2d s1_s2_intersection;
         if(s1->intersects(*s2, s1_s2_intersection))
         {
+            std::cout << "Intersection between S1 and S2 at " << s1_s2_intersection << '\n';
             this->addNewModel((new DrawPoint(s1_s2_intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
         }
 
@@ -280,6 +281,7 @@ void AlgGeom::SceneContent::buildScenario()
         Vect2d s1_r1_intersection;
         if(s1->intersects(*r1, s1_r1_intersection))
         {
+            std::cout << "Intersection between S1 and R1 at " << s1_r1_intersection << '\n';
             this->addNewModel((new DrawPoint(s1_r1_intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
         }
 
@@ -295,6 +297,7 @@ void AlgGeom::SceneContent::buildScenario()
         Vect2d l1_l2_intersection;
         if(l1->intersects(*l2, l1_l2_intersection))
         {
+            std::cout << "Intersection between L1 and L2 at " << l1_l2_intersection << '\n';
             this->addNewModel((new DrawPoint(l1_l2_intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
         }
 
@@ -314,6 +317,7 @@ void AlgGeom::SceneContent::buildScenario()
         {
             for(const auto& intersection : p_r2_intersection)
             {
+                std::cout << "Intersection between R2 and Polygon at " << intersection << '\n';
                 this->addNewModel((new DrawPoint(intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
             }
         }
@@ -323,6 +327,7 @@ void AlgGeom::SceneContent::buildScenario()
         {
             for(const auto& intersection : p_l1_intersection)
             {
+                std ::cout << "Intersection between L1 and Polygon at " << intersection << '\n';
                 this->addNewModel((new DrawPoint(intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
             }
         }
