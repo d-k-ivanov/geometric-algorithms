@@ -22,6 +22,11 @@ SegmentLine Polygon::getEdge(int i)
     return SegmentLine(getVertexAt(i), getVertexAt((i + 1) % _vertices.size()));
 }
 
+size_t Polygon::getNumVertices()
+{
+    return _vertices.size();
+}
+
 Polygon::Polygon(const std::string& filename)
 {
     std::ifstream file(filename);
@@ -42,6 +47,11 @@ Polygon::Polygon(const std::string& filename)
 
 Polygon::~Polygon()
 {
+}
+
+std::vector<Vertex>& Polygon::getVertices()
+{
+    return _vertices;
 }
 
 bool Polygon::add(const Vertex& vertex)
@@ -76,16 +86,49 @@ Vertex Polygon::getVertexAt(size_t position)
     }
 }
 
-bool Polygon::intersects(Line& line, Vect2d& interseccion)
+bool Polygon::intersects(Line& line, std::vector<Vect2d>& intersections)
 {
-    // XXXX
-    return false;
+    bool result = false;
+    for(int i = 0; i < this->getNumVertices(); ++i)
+    {
+        Vect2d intersection;
+        if(this->getEdge(i).intersects(line, intersection))
+        {
+            intersections.push_back(intersection);
+            result = true;
+        }
+    }
+    return result;
 }
 
-bool Polygon::intersects(RayLine& ray, Vect2d& interseccion)
+bool Polygon::intersects(RayLine& ray, std::vector<Vect2d>& intersections)
 {
-    // XXXX
-    return false;
+    bool result = false;
+    for(int i = 0; i < this->getNumVertices(); ++i)
+    {
+        Vect2d intersection;
+        if(this->getEdge(i).intersects(ray, intersection))
+        {
+            intersections.push_back(intersection);
+            result = true;
+        }
+    }
+    return result;
+}
+
+bool Polygon::intersects(SegmentLine& segment, std::vector<Vect2d>& intersections)
+{
+    bool result = false;
+    for(int i = 0; i < this->getNumVertices(); ++i)
+    {
+        Vect2d intersection;
+        if(this->getEdge(i).intersects(segment, intersection))
+        {
+            intersections.push_back(intersection);
+            result = true;
+        }
+    }
+    return result;
 }
 
 bool Polygon::convex()
@@ -99,11 +142,6 @@ bool Polygon::convex()
     }
 
     return true;
-}
-
-bool Polygon::intersects(SegmentLine& segment, Vect2d& interseccion)
-{
-    return false;
 }
 
 Vertex Polygon::next(size_t index)

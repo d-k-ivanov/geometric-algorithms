@@ -108,25 +108,30 @@ bool SegmentLine::distinct(SegmentLine& segment)
     return !equal(segment);
 }
 
-bool SegmentLine::intersects(Vect2d& c, Vect2d& d, double& s, double& t)
+bool SegmentLine::intersects(Point& c, Point& d, double& s, double& t)
 {
     Vect2d* cd = new Vect2d(d.getX() - c.getX(), d.getY() - c.getY());
     Vect2d* ab = new Vect2d(this->getB().getX() - this->getA().getX(), this->getB().getY() - this->getA().getY());
     Vect2d* ac = new Vect2d(c.getX() - this->getA().getX(), c.getY() - this->getA().getY());
+
+    // Check if the lines are parallel and can't intersect
     if(BasicGeometry::equal(0.0, cd->getX() * ab->getY() - ab->getX() * cd->getY()))
     {
         return false;
     }
+
+    // Compute parameters of the intersection point s and t
     s = (cd->getX() * ac->getY() - ac->getX() * cd->getY()) / (cd->getX() * ab->getY() - ab->getX() * cd->getY());
     t = (ab->getX() * ac->getY() - ac->getX() * ab->getY()) / (cd->getX() * ab->getY() - ab->getX() * cd->getY());
     return true;
 }
 
-bool SegmentLine::intersects(Line& r, Vect2d& res)
+bool SegmentLine::intersects(Line& line, Vect2d& res)
 {
     double s, t;
-    if(this->intersects(dynamic_cast<Vect2d&>(r._orig), dynamic_cast<Vect2d&>(r._dest), s, t))
+    if(this->intersects(line._orig, line._dest, s, t))
     {
+        // s in [0,1] and t any value
         if((0 < s && s < 1) || BasicGeometry::equal(0.0, s) || BasicGeometry::equal(1.0, s))
         {
             res = this->getPoint(s);
@@ -136,11 +141,12 @@ bool SegmentLine::intersects(Line& r, Vect2d& res)
     return false;
 }
 
-bool SegmentLine::intersects(RayLine& r, Vect2d& res)
+bool SegmentLine::intersects(RayLine& ray, Vect2d& res)
 {
     double s, t;
-    if(this->intersects(dynamic_cast<Vect2d&>(r._orig), dynamic_cast<Vect2d&>(r._dest), s, t))
+    if(this->intersects(ray._orig, ray._dest, s, t))
     {
+        // s in [0,1] and t greater or equal than 0
         if(((0 < s && s < 1) || BasicGeometry::equal(0.0, s) || BasicGeometry::equal(1.0, s)) && (t > 0 || BasicGeometry::equal(t, 0.0)))
         {
             res = this->getPoint(s);
@@ -150,11 +156,12 @@ bool SegmentLine::intersects(RayLine& r, Vect2d& res)
     return false;
 }
 
-bool SegmentLine::intersects(SegmentLine& r, Vect2d& res)
+bool SegmentLine::intersects(SegmentLine& segment, Vect2d& res)
 {
     double s, t;
-    if(this->intersects(dynamic_cast<Vect2d&>(r._orig), dynamic_cast<Vect2d&>(r._dest), s, t))
+    if(this->intersects(segment._orig, segment._dest, s, t))
     {
+        // s and t in [0,1]
         if(((0 < s && s < 1) || BasicGeometry::equal(0.0, s) || BasicGeometry::equal(1.0, s)) && ((0 < t && t < 1) || BasicGeometry::equal(0.0, t) || BasicGeometry::equal(1.0, t)))
         {
             res = this->getPoint(s);
@@ -166,23 +173,24 @@ bool SegmentLine::intersects(SegmentLine& r, Vect2d& res)
 
 double SegmentLine::distPointSegment(Vect2d& vector)
 {
-    Vect2d*      d = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
-    const double t = d->dot(*new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY())) / d->dot(*d);
+    Vect2d*      d  = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
+    const double t0 = d->dot(*new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY())) / d->dot(*d);
     double       distance;
-    if(t < 0 || BasicGeometry::equal(t, 0.0))
+
+    if(t0 < 0 || BasicGeometry::equal(t0, 0.0))    // A - P
     {
-        Vect2d* aux = new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY());
-        distance    = aux->getModule();
+        Vect2d* resultV = new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY());
+        distance        = resultV->getModule();
     }
-    else if(t > 1 || BasicGeometry::equal(t, 1.0))
+    else if(t0 > 1 || BasicGeometry::equal(t0, 1.0))    // A - (P + d)
     {
-        Vect2d* aux = new Vect2d(vector.getX() - this->getB().getX(), vector.getY() - this->getB().getY());
-        distance    = aux->getModule();
+        Vect2d* resultV = new Vect2d(vector.getX() - this->getB().getX(), vector.getY() - this->getB().getY());
+        distance        = resultV->getModule();
     }
-    else
+    else    // A - (P + t * d)
     {
-        Vect2d* aux = new Vect2d(vector.getX() - (this->getA().getX() + d->scalarMult(t).getX()), vector.getY() - (this->getA().getY() + d->scalarMult(t).getY()));
-        distance    = aux->getModule();
+        Vect2d* resultV = new Vect2d(vector.getX() - (this->getA().getX() + d->scalarMult(t0).getX()), vector.getY() - (this->getA().getY() + d->scalarMult(t0).getY()));
+        distance        = resultV->getModule();
     }
 
     return distance;

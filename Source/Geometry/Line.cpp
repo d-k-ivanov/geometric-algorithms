@@ -17,28 +17,44 @@ Line::~Line()
 {
 }
 
-double Line::distancePointLine(Vect2d& v)
-{
-    // XXXX
-    return 0.0;
-}
-
 bool Line::intersects(Line& line, Vect2d& intersection)
 {
-    // XXXX
+    double s;
+    double t;
+    if(SegmentLine::intersects(line._orig, line._dest, s, t))
+    {
+        intersection = this->getPoint(s);
+        return true;
+    }
     return false;
 }
 
-bool Line::intersects(RayLine& rayline, Vect2d& intersection)
+bool Line::intersects(RayLine& ray, Vect2d& intersection)
 {
-    // XXXX
+    double s;
+    double t;
+    if(SegmentLine::intersects(ray._orig, ray._dest, s, t))
+    {
+        if((0 < t || BasicGeometry::equal(t, 0.0)))
+        {
+            intersection = this->getPoint(s);
+            return true;
+        }
+    }
     return false;
 }
 
 bool Line::intersects(SegmentLine& segment, Vect2d& intersection)
 {
-    // XXXX
-    return false;
+    return segment.intersects(*this, intersection);
+}
+
+double Line::distancePointLine(Vect2d& v)
+{
+    Vect2d*      d   = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
+    const double t0  = d->dot(*new Vect2d(v.getX() - this->getA().getX(), v.getY() - this->getA().getY())) / d->dot(*d);
+    Vect2d*      resultV = new Vect2d(v.getX() - (this->getA().getX() + d->scalarMult(t0).getX()), v.getY() - (this->getA().getY() + d->scalarMult(t0).getY()));
+    return resultV->getModule();
 }
 
 bool Line::incorrectSegmentIntersection(SegmentLine& l)

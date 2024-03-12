@@ -61,7 +61,7 @@ void AlgGeom::SceneContent::buildScenario()
 
     // Tasks
     // Pr1-a-1: point cloud
-    constexpr int      numPointClouds = 3;
+    constexpr int      numPointClouds = 0;
     float              scale          = 1.0f;
     glm::vec3          center;
     std::vector<Point> randomPointsFromCloud;
@@ -71,7 +71,7 @@ void AlgGeom::SceneContent::buildScenario()
     for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
     {
         constexpr int pointsPerCloud = 100;
-        auto*   pointCloud     = new PointCloud;
+        auto*         pointCloud     = new PointCloud;
         // auto* pointCloud = new PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
 
         // if(numPointClouds > 1)
@@ -234,7 +234,7 @@ void AlgGeom::SceneContent::buildScenario()
         }
     }
     // Bezier curve
-    {
+    /*{
         std::vector<Vect2d> controlPoints;
         controlPoints.emplace_back(-2, -1);
         // controlPoints.emplace_back(-2, 1);
@@ -259,6 +259,95 @@ void AlgGeom::SceneContent::buildScenario()
         auto* bezier = new Bezier(controlPoints, static_cast<int>(controlPoints.size()));
         this->addNewModel((new DrawBezier(*bezier, 0.02f))->setPointColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
         delete bezier;
+    }*/
+    // P1-B: Two segments, Two Lines, Two Rays, and a Polygon
+    {
+        SegmentLine* s1 = new SegmentLine({0, 2} ,{1.5, 0.5});
+        this->addNewModel((new DrawSegment(*s1))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
+
+        SegmentLine* s2 = new SegmentLine({-0.5, 1.7}, {0.5, 1.8});
+        this->addNewModel((new DrawSegment(*s2))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
+
+        Vect2d s1_s2_intersection;
+        if(s1->intersects(*s2, s1_s2_intersection))
+        {
+            this->addNewModel((new DrawPoint(s1_s2_intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
+        }
+
+        RayLine* r1 = new RayLine({0.8, 0.8}, {1.0, 2.5});
+        this->addNewModel((new DrawRay(*r1))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
+
+        Vect2d s1_r1_intersection;
+        if(s1->intersects(*r1, s1_r1_intersection))
+        {
+            this->addNewModel((new DrawPoint(s1_r1_intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
+        }
+
+        RayLine* r2 = new RayLine({-0.2, -0.2}, {-1.5, -1.0});
+        this->addNewModel((new DrawRay(*r2))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
+
+        Line* l1 = new Line({0.0, 0.0}, {-1.5, 1.5});
+        this->addNewModel((new DrawLine(*l1))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
+
+        Line* l2 = new Line({0.0, -2.0}, {1.5, -0.5});
+        this->addNewModel((new DrawLine(*l2))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
+
+        Vect2d l1_l2_intersection;
+        if(l1->intersects(*l2, l1_l2_intersection))
+        {
+            this->addNewModel((new DrawPoint(l1_l2_intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
+        }
+
+        // Polygon
+        float           pAngle = .0f;
+        constexpr float pAlpha = 2.0f * glm::pi<float>() / 7.0f;
+        Polygon*        p      = new Polygon;
+        while(pAngle < 2.0f * glm::pi<float>())
+        {
+            p->add(Point(std::cos(pAngle), std::sin(pAngle)));
+            pAngle += pAlpha;
+        }
+        this->addNewModel((new DrawPolygon(*p))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
+
+        std::vector<Vect2d> p_r2_intersection;
+        if(p->intersects(*r2, p_r2_intersection))
+        {
+            for(const auto& intersection : p_r2_intersection)
+            {
+                this->addNewModel((new DrawPoint(intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
+            }
+        }
+
+        std::vector<Vect2d> p_l1_intersection;
+        if(p->intersects(*l1, p_l1_intersection))
+        {
+            for(const auto& intersection : p_l1_intersection)
+            {
+                this->addNewModel((new DrawPoint(intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
+            }
+        }
+
+        std::cout << "Distances from the poligon points: \n";
+        std::cout << "==================================================\n";
+        for(auto& vertex : p->getVertices())
+        {
+            Vect2d intersection = vertex.getPoint();
+            std::cout << "Distance from S1 to Polygon v#" << vertex.getPositionInPolygon() << " is " << s1->distPointSegment(intersection) << '\n';
+            std::cout << "Distance from S2 to Polygon v#" << vertex.getPositionInPolygon() << " is " << s2->distPointSegment(intersection) << '\n';
+            std::cout << "Distance from R1 to Polygon v#" << vertex.getPositionInPolygon() << " is " << r1->distPointSegment(intersection) << '\n';
+            std::cout << "Distance from R2 to Polygon v#" << vertex.getPositionInPolygon() << " is " << r2->distPointSegment(intersection) << '\n';
+            std::cout << "Distance from L1 to Polygon v#" << vertex.getPositionInPolygon() << " is " << l1->distPointSegment(intersection) << '\n';
+            std::cout << "Distance from L2 to Polygon v#" << vertex.getPositionInPolygon() << " is " << l2->distPointSegment(intersection) << '\n';
+        }
+        std::cout << "==================================================\n";
+
+        delete s1;
+        delete s2;
+        delete r1;
+        delete r2;
+        delete l1;
+        delete l2;
+        delete p;
     }
 }
 

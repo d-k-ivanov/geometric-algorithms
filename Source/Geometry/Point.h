@@ -101,7 +101,7 @@ public:
     double getAlpha();
 
     /**
-     *	@brief Module of _a 2D structure. This method is useful for child classes.
+     *	@brief Module of a 2D structure. This method is useful for child classes.
      */
     double getModule();
 

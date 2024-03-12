@@ -26,7 +26,7 @@ protected:
     /**
      *	@brief Obstaints the values ​​of s and t in the calculation of the intersection of two lines that they contain AB (this) and CD.
      */
-    virtual bool intersects(Vect2d& c, Vect2d& d, double& s, double& t);
+    virtual bool intersects(Point& c, Point& d, double& s, double& t);
 
 public:
     /**
@@ -77,17 +77,17 @@ public:
     /**
      *	@brief Segment-Line Intersection (this:(A,B), r(C,D)). Intersection exists if 0<=s<=1
      */
-    virtual bool intersects(Line& r, Vect2d& res);
+    virtual bool intersects(Line& line, Vect2d& res);
 
     /**
      *	@brief Segment-Ray Intersection (this:(A,B), r(C,D)). Intersection exists if 0<=s<=1 and 0<=t
      */
-    virtual bool intersects(RayLine& r, Vect2d& res);
+    virtual bool intersects(RayLine& ray, Vect2d& res);
 
     /**
      *	@brief Segment-Segment Intersection (this:(A,B), r(C,D)). There is an intersection if 0<=s<=1 and 0<=t<=1
      */
-    virtual bool intersects(SegmentLine& r, Vect2d& res);
+    virtual bool intersects(SegmentLine& segment, Vect2d& res);
 
     /**
      *	@brief Distance from a point defined by 'vector' to this segment.

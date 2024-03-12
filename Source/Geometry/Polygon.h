@@ -45,6 +45,11 @@ public:
     ~Polygon();
 
     /**
+     * @brief Returns the vertices of the Polygon.
+     */
+    std::vector<Vertex>& getVertices();
+
+    /**
      *	@brief Adds the vertex in the last position (if it doesn't intersect with any other segment).
      */
     bool add(const Vertex& vertex);
@@ -67,7 +72,7 @@ public:
     /**
      *	@brief Returns the number of vertices of the Polygon.
      */
-    size_t getNumVertices() { return _vertices.size(); }
+    size_t getNumVertices();
 
     /**
      *	@brief Returns the vertex at an index.
@@ -76,21 +81,24 @@ public:
 
     /**
      *	@brief Checks if a line intersects with the Polygon.
-     *	@param intersection If line and Polygon intersect, then this point is the intersection. Otherwise this point is not valid.
+     *	@param line
+     *	@param intersections If line and Polygon intersect, then this point is the intersection. Otherwise this point is not valid.
      */
-    bool intersects(Line& line, Vect2d& interseccion);
+    bool intersects(Line& line, std::vector<Vect2d>& intersections);
 
     /**
      *	@brief Checks if a rayline intersects with the Polygon.
-     *	@param intersection If rayline and Polygon intersect, then this point is the intersection. Otherwise this point is not valid.
+     *	@param ray
+     *	@param intersections If rayline and Polygon intersect, then this point is the intersection. Otherwise this point is not valid.
      */
-    bool intersects(RayLine& ray, Vect2d& interseccion);
+    bool intersects(RayLine& ray, std::vector<Vect2d>& intersections);
 
     /**
      *	@brief Checks if a segment intersects with the Polygon.
-     *	@param intersection If Polygon and segment intersect, then this point is the intersection. Otherwise this point is not valid.
+     *	@param segment
+     *	@param intersections If Polygon and segment intersect, then this point is the intersection. Otherwise this point is not valid.
      */
-    bool intersects(SegmentLine& segment, Vect2d& interseccion);
+    bool intersects(SegmentLine& segment, std::vector<Vect2d>& intersections);
 
     /**
      *	@brief Returns the following vertex based on the specified index.
