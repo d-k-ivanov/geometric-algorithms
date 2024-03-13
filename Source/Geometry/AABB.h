@@ -1,30 +1,90 @@
 #pragma once
 
+#include "Vect3d.h"
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-#include <ostream>
+#include <iostream>
 
 class AABB
 {
 protected:
-    glm::vec3 _max, _min;
+    Vect3d _min, _max;
 
 public:
-    AABB(const glm::vec3& min = glm::vec3(INFINITY), const glm::vec3& max = glm::vec3(-INFINITY));
+    /**
+     *	@brief Default constructor.
+     */
+    AABB();
+
+    /**
+     *	@brief Constructor.
+     */
+    AABB(const Vect3d& min = Vect3d(INFINITY), const Vect3d& max = Vect3d(-INFINITY));
+
+    /**
+     *	@brief Copy constructor,
+     */
     AABB(const AABB& aabb);
+
+    /**
+     *	@brief Destructor.
+     */
     virtual ~AABB();
-    AABB& operator=(const AABB& aabb);
 
-    glm::vec3 center() const { return (_max + _min) / 2.0f; }
-    AABB      dot(const glm::mat4& matrix);
-    glm::vec3 extent() const { return _max - center(); }
-    glm::vec3 max() const { return _max; }
-    glm::vec3 min() const { return _min; }
-    glm::vec3 size() const { return _max - _min; }
+    /**
+     *	@brief Returns the size of the cube.
+     */
+    Vect3d getSize();
 
-    void update(const AABB& aabb);
-    void update(const glm::vec3& point);
+    /**
+     *	@brief Returns the central point of the cube.
+     */
+    Vect3d getCenter();
 
+    /**
+     *	@brief Returns the vector that goes from the center to the maximum point.
+     */
+    Vect3d getExtent();
+
+    /**
+     *	@brief Returns the lowest corner of the cube.
+     */
+    Vect3d getMin();
+
+    /**
+     *	@brief Returns the maximum points of the cube.
+     */
+    Vect3d getMax();
+
+    /**
+     *	@brief Modifies the minimum point.
+     */
+    void setMin(Vect3d& min);
+
+    /**
+     *	@brief Modifies the maximum point.
+     */
+    void setMax(Vect3d& max);
+
+    /**
+     *	@brief Assignment operator.
+     */
+    AABB& operator=(const AABB& orig);
+
+    /**
+     *	@brief Updates the cube with a new cube.
+     */
+    void update(AABB& aabb);
+
+    /**
+     *	@brief Updates the cube with a new point.
+     */
+    void update(const Vect3d& point);
+
+    /**
+     *	@brief Shows some information of the vector as debugging info.
+     */
     friend std::ostream& operator<<(std::ostream& os, const AABB& aabb);
 };

@@ -1,14 +1,18 @@
 #include "AABB.h"
 
-AABB::AABB(const glm::vec3& min, const glm::vec3& max)
-    : _max(max)
-    , _min(min)
+AABB::AABB()
+{
+}
+
+AABB::AABB(const Vect3d& min, const Vect3d& max)
+    : _min(min)
+    , _max(max)
 {
 }
 
 AABB::AABB(const AABB& aabb)
-    : _max(aabb._max)
-    , _min(aabb._min)
+    : _min(aabb._min)
+    , _max(aabb._max)
 {
 }
 
@@ -16,58 +20,86 @@ AABB::~AABB()
 {
 }
 
-AABB& AABB::operator=(const AABB& aabb)
+Vect3d AABB::getSize()
 {
-    _max = aabb._max;
-    _min = aabb._min;
+    return _max - _min;
+}
+
+Vect3d AABB::getCenter()
+{
+    return (_max + _min) / 2.0f;
+}
+
+Vect3d AABB::getExtent()
+{
+    return _max - getCenter();
+}
+
+Vect3d AABB::getMin()
+{
+    return _min;
+}
+
+Vect3d AABB::getMax()
+{
+    return _max;
+}
+
+void AABB::setMin(Vect3d& min)
+{
+    _min = min;
+}
+
+void AABB::setMax(Vect3d& max)
+{
+    _max = max;
+}
+
+AABB& AABB::operator=(const AABB& orig)
+{
+    _min = orig._min;
+    _max = orig._max;
 
     return *this;
 }
 
-AABB AABB::dot(const glm::mat4& matrix)
+void AABB::update(AABB& aabb)
 {
-    return AABB(matrix * glm::vec4(_min, 1.0f), matrix * glm::vec4(_max, 1.0f));
+    this->update(aabb.getMax());
+    this->update(aabb.getMin());
 }
 
-void AABB::update(const AABB& aabb)
+void AABB::update(const Vect3d& point)
 {
-    this->update(aabb.max());
-    this->update(aabb.min());
-}
-
-void AABB::update(const glm::vec3& point)
-{
-    if(point.x < _min.x)
+    if(point._x < _min._x)
     {
-        _min.x = point.x;
+        _min._x = point._x;
     }
-    if(point.y < _min.y)
+    if(point._y < _min._y)
     {
-        _min.y = point.y;
+        _min._y = point._y;
     }
-    if(point.z < _min.z)
+    if(point._z < _min._z)
     {
-        _min.z = point.z;
+        _min._z = point._z;
     }
 
-    if(point.x > _max.x)
+    if(point._x > _max._x)
     {
-        _max.x = point.x;
+        _max._x = point._x;
     }
-    if(point.y > _max.y)
+    if(point._y > _max._y)
     {
-        _max.y = point.y;
+        _max._y = point._y;
     }
-    if(point.z > _max.z)
+    if(point._z > _max._z)
     {
-        _max.z = point.z;
+        _max._z = point._z;
     }
 }
 
 std::ostream& operator<<(std::ostream& os, const AABB& aabb)
 {
-    os << "Maximum corner: " << aabb.max().x << ", " << aabb.max().y << ", " << aabb.max().z << "\n";
-    os << "Minimum corner: " << aabb.min().x << ", " << aabb.min().y << ", " << aabb.min().z << "\n";
-
+    os << "Maximum: " << aabb._max << ", minimum: " << aabb._min;
     return os;
 }

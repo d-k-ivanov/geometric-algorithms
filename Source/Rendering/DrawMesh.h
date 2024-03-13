@@ -2,6 +2,8 @@
 
 #include "Model3D.h"
 
+#include <Geometry/TriangleModel.h>
+
 namespace AlgGeom
 {
 class DrawMesh : public Model3D
@@ -15,6 +17,9 @@ protected:
 
 public:
     DrawMesh();
+    DrawMesh(TriangleModel& triangleModel);
+    DrawMesh(const DrawMesh& drawMesh) = delete;
+
     virtual ~DrawMesh();
 
     DrawMesh* loadModelOBJ(const std::string& path);

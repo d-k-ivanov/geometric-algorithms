@@ -25,13 +25,13 @@ public:
     Triangle(const Triangle& tt);
 
     /**
-     *	@brief getter.
-     *	@return vertex A.
+     *  @brief getter.
+     *  @return vertex A.
      */
     Vect2d getA() { return _a; }
 
     /**
-     *	@brief getter.
+     *  @brief getter.
      *   @return vertex B.
      */
     Vect2d getB() { return _b; }

@@ -125,9 +125,10 @@ protected:
     std::string                             _name;
 
 protected:
-    void buildVao(Component* component);
-    void loadModelBinaryFile(const std::string& path);
-    void writeBinaryFile(const std::string& path);
+    void       buildVao(Component* component);
+    void       loadModelBinaryFile(const std::string& path);
+    void       writeBinaryFile(const std::string& path);
+    Component* getVoxel();
 
 public:
     Model3D();

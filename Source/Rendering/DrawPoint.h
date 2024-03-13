@@ -3,6 +3,7 @@
 #include "Model3D.h"
 
 #include "Geometry/Point.h"
+#include "Geometry/Vect3d.h"
 
 namespace AlgGeom
 {
@@ -13,6 +14,7 @@ protected:
 
 public:
     DrawPoint(const Point& p);
+    DrawPoint(const Vect3d& p);
     DrawPoint(const DrawPoint& drawPoint) = delete;
     ~DrawPoint() override                 = default;
 };

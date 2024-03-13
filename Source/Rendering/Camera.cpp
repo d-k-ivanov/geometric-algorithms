@@ -50,8 +50,8 @@ void AlgGeom::Camera::reset()
 
 // void AlgGeom::Camera::track(AABB& aabb)
 //{
-//	this->setLookAt(aabb.center());
-//	this->setPosition(aabb.min() + glm::vec3(.0f, aabb.extent().y, 1.0f) - glm::vec3(aabb.extent().x, .0f, .0) * (1 + (1.0f / std::max(aabb.size().x, std::max(aabb.size().y, aabb.size().z))) * 4.0f));
+//  this->setLookAt(aabb.center());
+//  this->setPosition(aabb.min() + glm::vec3(.0f, aabb.extent().y, 1.0f) - glm::vec3(aabb.extent().x, .0f, .0) * (1 + (1.0f / std::max(aabb.size().x, std::max(aabb.size().y, aabb.size().z))) * 4.0f));
 // }
 
 void AlgGeom::Camera::saveCamera()

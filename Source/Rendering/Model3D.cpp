@@ -33,6 +33,8 @@ bool AlgGeom::Model3D::belongsModel(Component* component)
 
 void AlgGeom::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive)
 {
+    shader->setSubroutineUniform(GL_VERTEX_SHADER, "instanceUniform", "singleInstanceUniform");
+
     for(auto& component : _components)
     {
         if(component->_enabled && component->_vao)
@@ -263,6 +265,46 @@ void AlgGeom::Model3D::writeBinaryFile(const std::string& path)
     }
 
     fout.close();
+}
+
+AlgGeom::Model3D::Component* AlgGeom::Model3D::getVoxel()
+{
+    Component* component = new Component;
+
+    // Geometry
+    {
+        const glm::vec3              minPosition(-.5f), maxPosition(.5f);
+        const std::vector<glm::vec3> points {
+            glm::vec3(minPosition[0], minPosition[1], maxPosition[2]), glm::vec3(maxPosition[0], minPosition[1], maxPosition[2]),
+            glm::vec3(minPosition[0], minPosition[1], minPosition[2]), glm::vec3(maxPosition[0], minPosition[1], minPosition[2]),
+            glm::vec3(minPosition[0], maxPosition[1], maxPosition[2]), glm::vec3(maxPosition[0], maxPosition[1], maxPosition[2]),
+            glm::vec3(minPosition[0], maxPosition[1], minPosition[2]), glm::vec3(maxPosition[0], maxPosition[1], minPosition[2])};
+        const std::vector<glm::vec3> normals {
+            glm::normalize(glm::vec3(-0.5f, -0.5f, 0.5f)), glm::normalize(glm::vec3(0.5f, -0.5f, 0.5f)),
+            glm::normalize(glm::vec3(-0.5f, -0.5f, -0.5f)), glm::normalize(glm::vec3(0.5f, -0.5f, -0.5f)),
+            glm::normalize(glm::vec3(-0.5f, 0.5f, 0.5f)), glm::normalize(glm::vec3(0.5f, 0.5f, 0.5f)),
+            glm::normalize(glm::vec3(-0.5f, 0.5f, -0.5f)), glm::normalize(glm::vec3(0.5f, 0.5f, -0.5f))};
+        const std::vector<glm::vec2> textCoords {glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(0.0f)};
+
+        for(int pointIdx = 0; pointIdx < points.size(); ++pointIdx)
+        {
+            component->_vertices.push_back(VAO::Vertex {points[pointIdx], normals[pointIdx], textCoords[pointIdx]});
+        }
+    }
+
+    // Topology
+    {
+        component->_indices[VAO::IBO_TRIANGLE] = std::vector<GLuint> {
+            0, 1, 2, RESTART_PRIMITIVE_INDEX, 1, 3, 2, RESTART_PRIMITIVE_INDEX, 4, 5, 6, RESTART_PRIMITIVE_INDEX,
+            5, 7, 6, RESTART_PRIMITIVE_INDEX, 0, 1, 4, RESTART_PRIMITIVE_INDEX, 1, 5, 4, RESTART_PRIMITIVE_INDEX,
+            2, 0, 4, RESTART_PRIMITIVE_INDEX, 2, 4, 6, RESTART_PRIMITIVE_INDEX, 1, 3, 5, RESTART_PRIMITIVE_INDEX,
+            3, 7, 5, RESTART_PRIMITIVE_INDEX, 3, 2, 6, RESTART_PRIMITIVE_INDEX, 3, 6, 7, RESTART_PRIMITIVE_INDEX};
+
+        component->generatePointCloud();
+        component->generateWireframe();
+    }
+
+    return component;
 }
 
 AlgGeom::Model3D::MatrixRenderInformation::MatrixRenderInformation()

@@ -11,7 +11,7 @@ protected:
 
 public:
     /**
-     *	@brief Default constructor. Coordinates are initialized with an invalid value.
+     *  @brief Default constructor. Coordinates are initialized with an invalid value.
      */
     Circle()
         : _center(Point(0, 0))
@@ -20,7 +20,7 @@ public:
     }
 
     /**
-     *	@brief Constructor.
+     *  @brief Constructor.
      */
     Circle(const Point& center, double radius)
         : _center(center)
@@ -29,7 +29,7 @@ public:
     }
 
     /**
-     *	@brief Copy constructor.
+     *  @brief Copy constructor.
      */
     Circle(const Circle& orig)
         : _center(orig._center)
@@ -38,7 +38,7 @@ public:
     }
 
     /**
-     *	@brief Destructor.
+     *  @brief Destructor.
      */
     virtual ~Circle();
 
@@ -55,7 +55,7 @@ public:
     Polygon getPointsCircle(uint32_t numSubdivisions = 256);
 
     /**
-     *	@brief Assignment operator (override).
+     *  @brief Assignment operator (override).
      */
     virtual Circle& operator=(const Circle& circle);
 };

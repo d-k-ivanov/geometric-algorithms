@@ -8,6 +8,36 @@ AlgGeom::DrawMesh::DrawMesh()
 {
 }
 
+AlgGeom::DrawMesh::DrawMesh(TriangleModel& triangleModel)
+    : Model3D()
+{
+    std::vector<Vect3d>*   vertices = triangleModel.getVertices(), *normals = triangleModel.getNormals();
+    std::vector<Vect2d>*   textCoordinates = triangleModel.getTextureCoordinates();
+    std::vector<unsigned>* indices         = triangleModel.getIndices();
+    const size_t           numFaces        = triangleModel.numTriangles();
+
+    Component* component = new Component;
+
+    for(size_t vertexIdx = 0; vertexIdx < vertices->size(); ++vertexIdx)
+    {
+        VAO::Vertex vertex {glm::vec3(vertices->at(vertexIdx).getX(), vertices->at(vertexIdx).getY(), vertices->at(vertexIdx).getZ()),
+                            glm::vec3(normals->at(vertexIdx).getX(), normals->at(vertexIdx).getY(), normals->at(vertexIdx).getZ())};
+        if(!textCoordinates->empty())
+            vertex._textCoord = glm::vec2(textCoordinates->at(vertexIdx).getX(), textCoordinates->at(vertexIdx).getY());
+        component->_vertices.push_back(vertex);
+    }
+
+    for(size_t faceIdx = 0; faceIdx < numFaces; ++faceIdx)
+    {
+        component->_indices[VAO::IBO_TRIANGLE].insert(component->_indices[VAO::IBO_TRIANGLE].end(),
+                                                      {indices->at(faceIdx * 3 + 0), indices->at(faceIdx * 3 + 1), indices->at(faceIdx * 3 + 2), RESTART_PRIMITIVE_INDEX});
+    }
+
+    component->completeTopology();
+    this->buildVao(component);
+    this->_components.push_back(std::unique_ptr<Component>(component));
+}
+
 AlgGeom::DrawMesh::~DrawMesh()
 {
 }

@@ -3,7 +3,7 @@
 #include <chrono>
 
 /**
- *	@brief Utilities which help us to measure execution time.
+ *  @brief Utilities which help us to measure execution time.
  */
 namespace ChronoUtilities
 {
@@ -19,12 +19,12 @@ enum TimeUnit : int
 inline std::chrono::high_resolution_clock::time_point _initTime;
 
 /**
- *	@return Measured time in the selected time unit since the clock was started. By default the time unit is milliseconds.
+ *  @return Measured time in the selected time unit since the clock was started. By default the time unit is milliseconds.
  */
 long long getDuration(const TimeUnit timeUnit = MILLISECONDS);
 
 /**
- *	@brief Starts the clock so we can execute whatever we want and measure the used time.
+ *  @brief Starts the clock so we can execute whatever we want and measure the used time.
  */
 void initChrono();
 }    // namespace ChronoUtilities

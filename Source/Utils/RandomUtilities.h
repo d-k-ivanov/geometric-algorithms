@@ -11,78 +11,78 @@ typedef std::minstd_rand                      RandomNumberGenerator;
 typedef std::uniform_real_distribution<float> DoubleUniformDistribution;
 
 /**
- *	@brief Set of utilities to retrieve random values.
+ *  @brief Set of utilities to retrieve random values.
  */
 namespace RandomUtilities
 {
 /**
- *	@return New random value retrieved from a random uniform distribution.
+ *  @return New random value retrieved from a random uniform distribution.
  */
 float getUniformRandom();
 
 /**
- *	@return New random value retrieved from a random uniform distribution. Note that this value is not in [0, 1].
+ *  @return New random value retrieved from a random uniform distribution. Note that this value is not in [0, 1].
  */
 float getUniformRandom(float min, float max);
 
 /**
- *	@return Random of length up to distanceSquared.
+ *  @return Random of length up to distanceSquared.
  */
 glm::vec3 getRandomToSphere(float radius, float distanceSquared);
 
 /**
- *	@brief Generates a random color in [0, 1] by using getUniformRandom function for each channel.
+ *  @brief Generates a random color in [0, 1] by using getUniformRandom function for each channel.
  */
 glm::vec3 getUniformRandomColor();
 
 /**
- *	@brief Generates a random color by using getUniformRandom using Euclidean Distance.
+ *  @brief Generates a random color by using getUniformRandom using Euclidean Distance.
  *         https://en.wikipedia.org/wiki/Color_difference
  */
 glm::vec3 getUniformRandomColorEuclideanDistance();
 
 /**
- *	@brief Generates a random color by using getUniformRandom function for each channel.
+ *  @brief Generates a random color by using getUniformRandom function for each channel.
  */
 glm::vec3 getUniformRandomColor(float min, float max);
 
 /**
- *	@return Random hemisphere vector aligned to Z axis.
+ *  @return Random hemisphere vector aligned to Z axis.
  */
 glm::vec3 getUniformRandomCosineDirection();
 
 /**
- *	@return Random point in unit sphere.
+ *  @return Random point in unit sphere.
  */
 glm::vec3 getUniformRandomInHemisphere(const glm::vec3& normal);
 
 /**
- *	@return Random single integer value.
+ *  @return Random single integer value.
  */
 int getUniformRandomInt(int min, int max);
 
 /**
- *	@return Random point in unit disk.
+ *  @return Random point in unit disk.
  */
 glm::vec3 getUniformRandomInUnitDisk();
 
 /**
- *	@return Random point in unit sphere.
+ *  @return Random point in unit sphere.
  */
 glm::vec3 getUniformRandomInUnitSphere();
 
 /**
- *	@return Random point in unit dick circumference.
+ *  @return Random point in unit dick circumference.
  */
 glm::vec3 getUniformRandomInUnitDiskCircumference();
 
 /**
- *	@return Random point in unit square.
+ *  @return Random point in unit square.
  */
 glm::vec3 getUniformRandomInUnitSquare();
 
 /**
- *	@return Random point in unit square perimeter.
+ *  @return Random point in unit square perimeter.
  */
 glm::vec3 getUniformRandomInUnitSquarePerimeter();
 }    // namespace RandomUtilities

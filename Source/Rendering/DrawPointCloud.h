@@ -3,17 +3,16 @@
 #include "Model3D.h"
 
 #include "Geometry/PointCloud.h"
+#include "Geometry/PointCloud3d.h"
 
 namespace AlgGeom
 {
 class DrawPointCloud : public Model3D
 {
-protected:
-    PointCloud _pointCloud;
-
 public:
-    DrawPointCloud(PointCloud& t);
+    DrawPointCloud(PointCloud& pointCloud);
+    DrawPointCloud(PointCloud3d& pointCloud);
     DrawPointCloud(const DrawPointCloud& drawPointCloud) = delete;
-    virtual ~DrawPointCloud() {};
+    ~DrawPointCloud() override;
 };
 }    // namespace AlgGeom

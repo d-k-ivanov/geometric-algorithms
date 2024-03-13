@@ -66,24 +66,44 @@ set(SOURCE_FILES
     Source/Geometry/Bezier.h
     Source/Geometry/Circle.cpp
     Source/Geometry/Circle.h
+    Source/Geometry/Edge3d.cpp
+    Source/Geometry/Edge3d.h
     Source/Geometry/Line.cpp
     Source/Geometry/Line.h
+    Source/Geometry/Line3d.cpp
+    Source/Geometry/Line3d.h
+    Source/Geometry/Plane.cpp
+    Source/Geometry/Plane.h
     Source/Geometry/Point.cpp
     Source/Geometry/Point.h
     Source/Geometry/PointCloud.cpp
     Source/Geometry/PointCloud.h
+    Source/Geometry/PointCloud3d.cpp
+    Source/Geometry/PointCloud3d.h
     Source/Geometry/Polygon.cpp
     Source/Geometry/Polygon.h
+    Source/Geometry/Ray3d.cpp
+    Source/Geometry/Ray3d.h
     Source/Geometry/RayLine.cpp
     Source/Geometry/RayLine.h
+    Source/Geometry/Segment3d.cpp
+    Source/Geometry/Segment3d.h
     Source/Geometry/SegmentLine.cpp
     Source/Geometry/SegmentLine.h
     Source/Geometry/Triangle.cpp
     Source/Geometry/Triangle.h
+    Source/Geometry/Triangle3d.cpp
+    Source/Geometry/Triangle3d.h
+    Source/Geometry/TriangleModel.cpp
+    Source/Geometry/TriangleModel.h
     Source/Geometry/Vect2d.cpp
     Source/Geometry/Vect2d.h
+    Source/Geometry/Vect3d.cpp
+    Source/Geometry/Vect3d.h
     Source/Geometry/Vertex.cpp
     Source/Geometry/Vertex.h
+    # Source/Geometry/Voxelization.cpp
+    # Source/Geometry/Voxelization.h
 
     # Patterns
     Source/Patterns/Singleton.h
@@ -96,6 +116,8 @@ set(SOURCE_FILES
     Source/Rendering/CameraGuiAdapter.h
     Source/Rendering/CameraProjection.cpp
     Source/Rendering/CameraProjection.h
+    Source/Rendering/DrawAABB.cpp
+    Source/Rendering/DrawAABB.h
     Source/Rendering/DrawBezier.cpp
     Source/Rendering/DrawBezier.h
     Source/Rendering/DrawCircle.cpp
@@ -104,6 +126,8 @@ set(SOURCE_FILES
     Source/Rendering/DrawLine.h
     Source/Rendering/DrawMesh.cpp
     Source/Rendering/DrawMesh.h
+    Source/Rendering/DrawPlane.cpp
+    Source/Rendering/DrawPlane.h
     Source/Rendering/DrawPoint.cpp
     Source/Rendering/DrawPoint.h
     Source/Rendering/DrawPointCloud.cpp
@@ -116,6 +140,8 @@ set(SOURCE_FILES
     Source/Rendering/DrawSegment.h
     Source/Rendering/DrawTriangle.cpp
     Source/Rendering/DrawTriangle.h
+    # Source/Rendering/DrawVoxelization.cpp
+    # Source/Rendering/DrawVoxelization.h
     Source/Rendering/FBO.cpp
     Source/Rendering/FBO.h
     Source/Rendering/FBOScreenshot.cpp
