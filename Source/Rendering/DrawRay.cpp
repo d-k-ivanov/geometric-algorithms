@@ -1,6 +1,8 @@
 #include "DrawRay.h"
 
-AlgGeom::DrawRay::DrawRay(RayLine& ray): Model3D() , _ray(ray)
+AlgGeom::DrawRay::DrawRay(RayLine& ray)
+    : Model3D()
+    , _ray(ray)
 {
     Component* component = new Component;
 

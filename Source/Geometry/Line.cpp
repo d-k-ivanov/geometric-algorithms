@@ -51,8 +51,8 @@ bool Line::intersects(SegmentLine& segment, Vect2d& intersection)
 
 double Line::distancePointLine(Vect2d& v)
 {
-    Vect2d*      d   = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
-    const double t0  = d->dot(*new Vect2d(v.getX() - this->getA().getX(), v.getY() - this->getA().getY())) / d->dot(*d);
+    Vect2d*      d       = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
+    const double t0      = d->dot(*new Vect2d(v.getX() - this->getA().getX(), v.getY() - this->getA().getY())) / d->dot(*d);
     Vect2d*      resultV = new Vect2d(v.getX() - (this->getA().getX() + d->scalarMult(t0).getX()), v.getY() - (this->getA().getY() + d->scalarMult(t0).getY()));
     return resultV->getModule();
 }

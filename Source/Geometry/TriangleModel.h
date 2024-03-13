@@ -31,13 +31,13 @@ public:
     TriangleModel(const TriangleModel& orig) = delete;
     virtual ~TriangleModel();
 
-    PointCloud3d               getCloud();
-    Triangle3d                 getFace(unsigned index);
-    std::vector<Triangle3d>    getFaces();
-    std::vector<Vect3d>*       getVertices() { return &_vertices; }
-    std::vector<Vect3d>*       getNormals() { return &_normals; }
-    std::vector<Vect2d>*       getTextureCoordinates() { return &_textCoordinates; }
-    std::vector<unsigned>*     getIndices() { return &_indices; }
-    size_t                     numTriangles();
+    PointCloud3d            getCloud();
+    Triangle3d              getFace(unsigned index);
+    std::vector<Triangle3d> getFaces();
+    std::vector<Vect3d>*    getVertices() { return &_vertices; }
+    std::vector<Vect3d>*    getNormals() { return &_normals; }
+    std::vector<Vect2d>*    getTextureCoordinates() { return &_textCoordinates; }
+    std::vector<unsigned>*  getIndices() { return &_indices; }
+    size_t                  numTriangles();
     // AlgGeom::DrawVoxelization* voxelize();
 };

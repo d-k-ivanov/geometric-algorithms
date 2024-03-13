@@ -262,7 +262,7 @@ void AlgGeom::SceneContent::buildScenario()
     }*/
     // P1-B: Two segments, Two Lines, Two Rays, and a Polygon
     {
-        SegmentLine* s1 = new SegmentLine({0, 2} ,{1.5, 0.5});
+        SegmentLine* s1 = new SegmentLine({0, 2}, {1.5, 0.5});
         this->addNewModel((new DrawSegment(*s1))->setLineColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
 
         SegmentLine* s2 = new SegmentLine({-0.5, 1.7}, {0.5, 1.8});

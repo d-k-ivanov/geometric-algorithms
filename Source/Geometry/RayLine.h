@@ -61,7 +61,7 @@ public:
     /**
      *  @brief Assignment operator.
      */
-   RayLine& operator=(const RayLine& rayline);
+    RayLine& operator=(const RayLine& rayline);
 
     /**
      *  @brief Overriding cout call.
