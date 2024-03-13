@@ -44,11 +44,6 @@ public:
     virtual ~Vect3d();
 
     /**
-     *  @brief Returns a certain coordinate of the vector.
-     */
-    double get(unsigned int index) const;
-
-    /**
      *  @brief Returns the X coordinate.
      */
     double getX() const;
@@ -69,11 +64,6 @@ public:
     std::vector<double> getVert() const;
 
     /**
-     *  @brief Modifies the value of a certain coordinate.
-     */
-    void set(unsigned int index, double value);
-
-    /**
      *  @brief Modifies the X coordinate.
      */
     void setX(double x);
@@ -92,21 +82,6 @@ public:
      *  @brief Modifies all the vector values.
      */
     void setVert(double x, double y, double z);
-
-    /**
-     *  @brief Checks if a, b and this vector are on a same line.
-     */
-    bool collinear(Vect3d& a, Vect3d& b);
-
-    /**
-     *  @brief Distance between points.
-     */
-    double distance(Vect3d& p);
-
-    /**
-     *  @brief Returns the module of the vector.
-     */
-    double module();
 
     /**
      *  @brief Assignment operator.
@@ -157,6 +132,21 @@ public:
     Vect3d sub(const Vect3d& b) const;
 
     /**
+     *  @brief Checks if a, b and this vector are on a same line.
+     */
+    bool collinear(Vect3d& a, Vect3d& b);
+
+    /**
+     *  @brief Distance between points.
+     */
+    double distance(const Vect3d& p) const;
+
+    /**
+     *  @brief Returns the module of the vector.
+     */
+    double module() const;
+
+    /**
      *  @brief Dot product.
      */
     double dot(const Vect3d& v) const;
@@ -165,4 +155,9 @@ public:
      *  @brief Vectorial product.
      */
     Vect3d xProduct(const Vect3d& b) const;
+
+    /**
+     *  @brief Return by reference the normal of the equidistant from two points plane and the value of the independent term.
+     */
+    void getPlane(const Vect3d& v, Vect3d& n, double& d) const;
 };

@@ -16,12 +16,12 @@ protected:
     /**
      *  @brief Returns the parametric value T0 to calculate the distance between a point and any geometric object like lines, segments or raylines.
      */
-    float getDistanceT0(Vect2d& point);
+    double getDistanceT0(Vect2d& point);
 
     /**
      *  @brief Obstaints the parameters t and s where both lines intersects, if they do.
      */
-    // virtual bool intersects(Vect2d& p1, Vect2d& p2, float& t, float& s);
+    // virtual bool intersects(Vect2d& p1, Vect2d& p2, double& t, double& s);
 
     /**
      *  @brief Obstaints the values ​​of s and t in the calculation of the intersection of two lines that they contain AB (this) and CD.

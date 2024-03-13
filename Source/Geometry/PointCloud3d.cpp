@@ -64,7 +64,7 @@ PointCloud3d::PointCloud3d(const std::string& filename)
     inputStream.close();    // Cerramos fichero.
 }
 
-PointCloud3d::PointCloud3d(int size, float max_x, float max_y, float max_z)
+PointCloud3d::PointCloud3d(int size, double max_x, double max_y, double max_z)
     : _maxPoint(-INFINITY, -INFINITY, -INFINITY)
     , _minPoint(INFINITY, INFINITY, INFINITY)
 {
@@ -72,9 +72,9 @@ PointCloud3d::PointCloud3d(int size, float max_x, float max_y, float max_z)
 
     while(size > 0)
     {
-        float  x = static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (max_x * 2.0f))) - max_x;
-        float  y = static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (max_y * 2.0f))) - max_y;
-        float  z = static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (max_z * 2.0f))) - max_z;
+        double  x = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_x * 2.0f))) - max_x;
+        double  y = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_y * 2.0f))) - max_y;
+        double  z = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_z * 2.0f))) - max_z;
         Vect3d val(x, y, z);
         this->addPoint(val);
 
@@ -82,7 +82,7 @@ PointCloud3d::PointCloud3d(int size, float max_x, float max_y, float max_z)
     }
 }
 
-PointCloud3d::PointCloud3d(int size, float radius)
+PointCloud3d::PointCloud3d(int size, double radius)
     : _maxPoint(-INFINITY, -INFINITY, -INFINITY)
     , _minPoint(INFINITY, INFINITY, INFINITY)
 {
@@ -90,13 +90,13 @@ PointCloud3d::PointCloud3d(int size, float radius)
 
     while(size > 0)
     {
-        float  theta = static_cast<float>(rand()) / (static_cast<float>(RAND_MAX)) * 2.0f * glm::pi<float>();
-        float  phi   = std::acos(1.0f - 2.0f * static_cast<float>(rand()) / (static_cast<float>(RAND_MAX)));
+        double  theta = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX)) * 2.0 * glm::pi<double>();
+        double  phi   = std::acos(1.0 - 2.0 * static_cast<double>(rand()) / (static_cast<double>(RAND_MAX)));
         double x     = std::sin(phi) * std::cos(theta);
         double y     = std::sin(phi) * std::sin(theta);
         double z     = std::cos(phi);
 
-        float  r = radius * std::sqrt(static_cast<float>(rand()) / (static_cast<float>(RAND_MAX)));
+        double  r = radius * std::sqrt(static_cast<double>(rand()) / (static_cast<double>(RAND_MAX)));
         Vect3d point(r * x, r * y, r * z);
         this->addPoint(point);
 

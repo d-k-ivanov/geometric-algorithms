@@ -19,7 +19,7 @@ public:
     /**
      *  @brief Constructor of a point cloud of random form giving the total number of points and the maximum range of those points ((-max_x, max_x), or (-max_y, max_y)).
      */
-    PointCloud(int size, float max_x, float max_y);
+    PointCloud(int size, double max_x, double max_y);
 
     /**
      *  @brief Constructor of a point cloud from the coordinates of points stored in file.

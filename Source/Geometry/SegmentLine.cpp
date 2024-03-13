@@ -196,7 +196,7 @@ double SegmentLine::distPointSegment(Vect2d& vector)
     return distance;
 }
 
-float SegmentLine::getDistanceT0(Vect2d& point)
+double SegmentLine::getDistanceT0(Vect2d& point)
 {
     return 0.0f;
 }

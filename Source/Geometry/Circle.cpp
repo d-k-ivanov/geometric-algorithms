@@ -13,10 +13,10 @@ bool Circle::isInside(const Point& p)
 Polygon Circle::getPointsCircle(uint32_t numSubdivisions)
 {
     Polygon     polygon;
-    float       angle = .0f;
-    const float alpha = 2.0f * glm::pi<float>() / static_cast<float>(numSubdivisions);
+    double       angle = .0f;
+    const double alpha = 2.0f * glm::pi<double>() / static_cast<double>(numSubdivisions);
 
-    while(angle < (2.0f * glm::pi<float>() + glm::epsilon<float>()))
+    while(angle < (2.0f * glm::pi<double>() + glm::epsilon<double>()))
     {
         Point point = Point(std::cos(angle), -std::sin(angle));
         polygon.add(point);

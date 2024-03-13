@@ -14,9 +14,20 @@ AlgGeom::RenderingShader::~RenderingShader()
 
 void AlgGeom::RenderingShader::applyActiveSubroutines()
 {
-    glUniformSubroutinesuiv(GL_VERTEX_SHADER, static_cast<uint32_t>(_activeSubroutineUniform[VERTEX_SHADER].size()), _activeSubroutineUniform[VERTEX_SHADER].data());
-    glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, static_cast<uint32_t>(_activeSubroutineUniform[FRAGMENT_SHADER].size()), _activeSubroutineUniform[FRAGMENT_SHADER].data());
-    glUniformSubroutinesuiv(GL_GEOMETRY_SHADER, static_cast<uint32_t>(_activeSubroutineUniform[GEOMETRY_SHADER].size()), _activeSubroutineUniform[GEOMETRY_SHADER].data());
+    if(!_activeSubroutineUniform[VERTEX_SHADER].empty())
+    {
+        glUniformSubroutinesuiv(GL_VERTEX_SHADER, static_cast<uint32_t>(_activeSubroutineUniform[VERTEX_SHADER].size()), _activeSubroutineUniform[VERTEX_SHADER].data());
+    }
+
+    if(!_activeSubroutineUniform[FRAGMENT_SHADER].empty())
+    {
+        glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, static_cast<uint32_t>(_activeSubroutineUniform[FRAGMENT_SHADER].size()), _activeSubroutineUniform[FRAGMENT_SHADER].data());
+    }
+
+    if(!_activeSubroutineUniform[GEOMETRY_SHADER].empty())
+    {
+        glUniformSubroutinesuiv(GL_GEOMETRY_SHADER, static_cast<uint32_t>(_activeSubroutineUniform[GEOMETRY_SHADER].size()), _activeSubroutineUniform[GEOMETRY_SHADER].data());
+    }
 }
 
 GLuint AlgGeom::RenderingShader::createShaderProgram(const char* filename)

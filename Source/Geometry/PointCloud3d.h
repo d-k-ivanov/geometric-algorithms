@@ -41,12 +41,12 @@ public:
     /**
      *  @brief Constructor.
      */
-    PointCloud3d(int size, float max_x, float max_y, float max_z);
+    PointCloud3d(int size, double max_x, double max_y, double max_z);
 
     /**
      *  @brief Alternative constructor with an uniform sphere distribution.
      */
-    PointCloud3d(int size, float radius);
+    PointCloud3d(int size, double radius);
 
     /**
      *  @brief Copy constructor.

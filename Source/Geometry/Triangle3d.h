@@ -29,7 +29,7 @@ public:
     struct TriangleAABBIntersData
     {
         Vect3d _v0, _v1, _v2;
-        float  _min, _max, _rad;
+        double  _min, _max, _rad;
         Vect3d _normal, _edge0, _edge1, _edge2, _p, _fedge;
         Vect3d _boxCenter;
         Vect3d _boxRadius;

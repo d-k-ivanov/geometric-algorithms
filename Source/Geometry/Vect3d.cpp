@@ -79,24 +79,6 @@ void Vect3d::setVert(double x, double y, double z)
     this->_z = z;
 }
 
-bool Vect3d::collinear(Vect3d& a, Vect3d& b)
-{
-    Triangle3d tr(a, b, *this);
-
-    return BasicGeometry::equal(tr.area(), BasicGeometry::EPSILON);
-}
-
-double Vect3d::distance(Vect3d& p)
-{
-    // XXXX
-    return 0;
-}
-
-double Vect3d::module()
-{
-    return sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
-}
-
 Vect3d& Vect3d::operator=(const Vect3d& vector)
 {
     this->_x = vector._x;
@@ -198,6 +180,23 @@ Vect3d Vect3d::sub(const Vect3d& b) const
     return {getX() - b.getX(), getY() - b.getY(), getZ() - b.getZ()};
 }
 
+bool Vect3d::collinear(Vect3d& a, Vect3d& b)
+{
+    Triangle3d tr(a, b, *this);
+
+    return BasicGeometry::equal(tr.area(), BasicGeometry::EPSILON);
+}
+
+double Vect3d::distance(const Vect3d& p) const
+{
+    return std::sqrt(std::pow(this->getX() - p.getX(), 2) + std::pow(this->getY() - p.getY(), 2) + std::pow(this->getZ() - p.getZ(), 2));
+}
+
+double Vect3d::module() const
+{
+    return sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
+}
+
 double Vect3d::dot(const Vect3d& v) const
 {
     return (getX() * v.getX() + getY() * v.getY() + getZ() * v.getZ());
@@ -206,4 +205,10 @@ double Vect3d::dot(const Vect3d& v) const
 Vect3d Vect3d::xProduct(const Vect3d& b) const
 {
     return {getY() * b.getZ() - getZ() * b.getY(), getZ() * b.getX() - getX() * b.getZ(), getX() * b.getY() - getY() * b.getX()};
+}
+
+void Vect3d::getPlane(const Vect3d& v, Vect3d& n, double& d) const
+{
+    n = v.sub(*this);
+    d = (std::pow(v.getX(), 2) - std::pow(this->getX(), 2) + std::pow(v.getY(), 2) - std::pow(this->getY(), 2) + std::pow(v.getZ(), 2) - std::pow(this->getZ(), 2)) / 2.0;
 }
