@@ -80,9 +80,7 @@ void AlgGeom::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* ma
                 continue;
 
             shader->setUniform("mModelViewProj", matrixInformation->multiplyMatrix(MatrixRenderInformation::VIEW_PROJECTION, this->_modelMatrix));
-#if _MSC_VER
             shader->applyActiveSubroutines();
-#endif
 
             component->_vao->drawObject(rendering, primitive, static_cast<GLuint>(component->_indices[rendering].size()));
 

@@ -3,6 +3,7 @@
 #include "BasicGeometry.h"
 #include "Triangle3d.h"
 
+#include <cfloat>
 #include <iostream>
 #include <string>
 #include <vector>
