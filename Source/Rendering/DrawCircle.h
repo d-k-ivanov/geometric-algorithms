@@ -13,8 +13,8 @@ protected:
     uint32_t _numSubdivisions;
 
 public:
-    DrawCircle(const Circle& circle, uint32_t numSubdivisions = 256);
-    DrawCircle(const DrawCircle& ddt) = delete;
-    ~DrawCircle() override            = default;
+    DrawCircle(Circle& circle, uint32_t numSubdivisions = 256);
+    DrawCircle(const DrawCircle& circle) = delete;
+    ~DrawCircle() override               = default;
 };
 }

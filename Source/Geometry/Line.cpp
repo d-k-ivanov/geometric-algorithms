@@ -17,6 +17,11 @@ Line::~Line()
 {
 }
 
+bool Line::isTvalid(double t)
+{
+    return true;
+}
+
 bool Line::intersects(Line& line, Vect2d& intersection)
 {
     double s;
@@ -57,9 +62,14 @@ double Line::distancePointLine(Vect2d& v)
     return resultV->getModule();
 }
 
-bool Line::incorrectSegmentIntersection(SegmentLine& l)
+bool Line::segmentIntersection(SegmentLine& segment)
 {
-    return false;
+    return segment.segmentIntersection(*this);
+}
+
+bool Line::impSegmentIntersection(SegmentLine& segment)
+{
+    return segment.impSegmentIntersection(*this);
 }
 
 Line& Line::operator=(const Line& line)
@@ -77,10 +87,4 @@ std::ostream& operator<<(std::ostream& os, const Line& line)
     os << "Line --->\n\tPoint A: " << line._orig << "\n\tPoint B: " << line._dest << "\n";
 
     return os;
-}
-
-bool Line::segmentIntersection(SegmentLine& l)
-{
-    // XXXX
-    return false;
 }

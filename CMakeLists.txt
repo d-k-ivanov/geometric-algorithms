@@ -163,6 +163,8 @@ set(SOURCE_FILES
     Source/Rendering/RenderingShader.h
     Source/Rendering/SceneContent.cpp
     Source/Rendering/SceneContent.h
+    Source/Rendering/Scenes.cpp
+    Source/Rendering/Scenes.h
     Source/Rendering/ShaderProgram.cpp
     Source/Rendering/ShaderProgram.h
     Source/Rendering/ShaderProgramDB.cpp

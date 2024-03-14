@@ -112,7 +112,7 @@ public:
     /**
      *  @brief Determines whether two segments intersect improperly, that is, when one end of a segment is contained in the other. Use integer arithmetic.
      */
-    bool impSegmentIntersection(SegmentLine& segment);
+    virtual bool impSegmentIntersection(SegmentLine& segment);
 
     /**
      *  @brief Determines whether a segment is horizontal or not (using EPSILON).

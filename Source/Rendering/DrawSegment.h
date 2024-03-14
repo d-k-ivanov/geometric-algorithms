@@ -10,8 +10,8 @@ namespace AlgGeom
 class DrawSegment : public Model3D
 {
 public:
-    DrawSegment(SegmentLine& t);
-    DrawSegment(Segment3d& t);
+    DrawSegment(SegmentLine& segment);
+    DrawSegment(Segment3d& segment);
     DrawSegment(const DrawSegment& drawSegment) = delete;
     ~DrawSegment() override { }
 };

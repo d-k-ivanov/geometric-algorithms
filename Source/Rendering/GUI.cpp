@@ -15,7 +15,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-#include <cstring>
+#include <string>
 #include <filesystem>
 
 AlgGeom::GUI::GUI()
@@ -113,9 +113,13 @@ void AlgGeom::GUI::processSelectedFile(FileDialog fileDialog, const std::string&
 {
     if(fileDialog == FileDialog::OPEN_MESH)
     {
+        // TriangleModel* triangleModel = new TriangleModel(filename);
         Model3D* model = (new DrawMesh())->loadModelOBJ(filename);
+        // Model3D* model = (new DrawMesh(*triangleModel))->overrideModelName();
         model->moveGeometryToOrigin();
         sceneContent->addNewModel(model);
+
+        // delete triangleModel;
     }
 }
 

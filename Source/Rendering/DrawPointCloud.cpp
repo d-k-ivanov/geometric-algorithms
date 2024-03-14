@@ -25,9 +25,7 @@ AlgGeom::DrawPointCloud::DrawPointCloud(PointCloud3d& pointCloud)
 
     for(unsigned vertexIdx = 0; vertexIdx < numPoints; vertexIdx++)
     {
-
         Vect3d point = pointCloud.getPoint(vertexIdx);
-
         component->_vertices.push_back(VAO::Vertex {glm::vec3(point.getX(), point.getY(), point.getZ())});
         component->_indices[VAO::IBO_POINT].push_back(vertexIdx);
     }
