@@ -11,19 +11,23 @@ AlgGeom::DrawMesh::DrawMesh()
 AlgGeom::DrawMesh::DrawMesh(TriangleModel& triangleModel)
     : Model3D()
 {
-    std::vector<Vect3d>*   vertices = triangleModel.getVertices(), *normals = triangleModel.getNormals();
-    std::vector<Vect2d>*   textCoordinates = triangleModel.getTextureCoordinates();
-    std::vector<unsigned>* indices         = triangleModel.getIndices();
-    const size_t           numFaces        = triangleModel.numTriangles();
+    const std::vector<Vect3d>* vertices        = triangleModel.getVertices();
+    const std::vector<Vect3d>* normals         = triangleModel.getNormals();
+    std::vector<Vect2d>*       textCoordinates = triangleModel.getTextureCoordinates();
+    std::vector<unsigned>*     indices         = triangleModel.getIndices();
+    const size_t               numFaces        = triangleModel.numTriangles();
 
     Component* component = new Component;
 
     for(size_t vertexIdx = 0; vertexIdx < vertices->size(); ++vertexIdx)
     {
+        // const auto  textCoord = (textCoordinates->size() > vertexIdx - 1) ? glm::vec2 {textCoordinates->at(vertexIdx).getX(), textCoordinates->at(vertexIdx).getY()} : glm::vec2 {0.0f, 0.0f};
         VAO::Vertex vertex {glm::vec3(vertices->at(vertexIdx).getX(), vertices->at(vertexIdx).getY(), vertices->at(vertexIdx).getZ()),
                             glm::vec3(normals->at(vertexIdx).getX(), normals->at(vertexIdx).getY(), normals->at(vertexIdx).getZ())};
-        if(!textCoordinates->empty())
-            vertex._textCoord = glm::vec2(textCoordinates->at(vertexIdx).getX(), textCoordinates->at(vertexIdx).getY());
+        // if(!textCoordinates->empty())
+        // {
+        //     vertex._textCoord = glm::vec2(textCoordinates->at(vertexIdx).getX(), );
+        // }
         component->_vertices.push_back(vertex);
     }
 
@@ -38,13 +42,9 @@ AlgGeom::DrawMesh::DrawMesh(TriangleModel& triangleModel)
     this->_components.push_back(std::unique_ptr<Component>(component));
 }
 
-AlgGeom::DrawMesh::~DrawMesh()
-{
-}
-
 AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
 {
-    std::string binaryFile = path.substr(0, path.find_last_of('.')) + BINARY_EXTENSION;
+    const std::string binaryFile = path.substr(0, path.find_last_of('.')) + BINARY_EXTENSION;
 
     if(std::filesystem::exists(binaryFile))
     {
@@ -56,12 +56,12 @@ AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
 
         if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
         {
-            std::cout << "ERROR::ASSIMP::" << _assimpImporter.GetErrorString() << std::endl;
+            std::cout << "ERROR::ASSIMP::" << _assimpImporter.GetErrorString() << '\n';
             return this;
         }
 
-        std::string shortName = scene->GetShortFilename(path.c_str());
-        std::string folder    = path.substr(0, path.length() - shortName.length());
+        const std::string shortName = scene->GetShortFilename(path.c_str());
+        const std::string folder    = path.substr(0, path.length() - shortName.length());
 
         this->processNode(scene->mRootNode, scene, folder);
         this->writeBinaryFile(binaryFile);
@@ -75,13 +75,13 @@ AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
     return this;
 }
 
-AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(aiMesh* mesh, const aiScene* scene, const std::string& folder)
+AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder) const
 {
     std::vector<VAO::Vertex> vertices(mesh->mNumVertices);
     std::vector<GLuint>      indices(mesh->mNumFaces * 4);
 
     // Vertices
-    int numVertices = static_cast<int>(mesh->mNumVertices);
+    const int numVertices = static_cast<int>(mesh->mNumVertices);
 
     for(int i = 0; i < numVertices; i++)
     {
@@ -97,7 +97,7 @@ AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(aiMesh* mesh, const 
     // Indices
     for(unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
-        aiFace face = mesh->mFaces[i];
+        const aiFace face = mesh->mFaces[i];
         for(unsigned int j = 0; j < face.mNumIndices; j++)
             indices[i * 4 + j] = face.mIndices[j];
 
@@ -112,7 +112,7 @@ AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(aiMesh* mesh, const 
     return component;
 }
 
-void AlgGeom::DrawMesh::processNode(aiNode* node, const aiScene* scene, const std::string& folder)
+void AlgGeom::DrawMesh::processNode(const aiNode* node, const aiScene* scene, const std::string& folder)
 {
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {

@@ -138,6 +138,30 @@ Vect3d Vect3d::operator*(const Vect3d& b)
     return *this *= b;
 }
 
+Vect3d Vect3d::mul(const Vect3d& b) const
+{
+    return {getX() * b.getX(), getY() * b.getY(), getZ() * b.getZ()};
+}
+
+Vect3d Vect3d::operator*=(const double value)
+{
+    this->_x *= value;
+    this->_y *= value;
+    this->_z *= value;
+
+    return *this;
+}
+
+Vect3d Vect3d::operator*(const double value)
+{
+    return *this *= value;
+}
+
+Vect3d Vect3d::mul(const double value) const
+{
+    return {getX() * value, getY() * value, getZ() * value};
+}
+
 Vect3d Vect3d::scalarMul(const double value) const
 {
     return {getX() * value, getY() * value, getZ() * value};

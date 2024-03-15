@@ -46,15 +46,15 @@ void AlgGeom::SceneContent::buildScenario()
 
     // Practice 2:
     // Scenes::p2a(*this, numPointClouds, pointsPerCloud, scaleFactor);
-    Scenes::p2b(*this);
-
+    // Scenes::p2b(*this);
+    Scenes::p2c(*this);
 }
 
 void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)
 {
-    Camera* camera = new Camera(width, height, false);
-    camera->setPosition(glm::vec3(.0f, .0f, 4.0f));
-    camera->setLookAt(glm::vec3(.0f, .0f, 0.0f));
+    Camera* camera = new Camera(width, height, /*2D*/ false);
+    camera->setPosition(glm::vec3(0.0f, 0.0f, 4.0f));
+    camera->setLookAt(glm::vec3(0.0f, 0.0f, 0.0f));
     camera->saveCamera();
 
     this->_camera.push_back(std::unique_ptr<Camera>(camera));
@@ -74,7 +74,7 @@ AlgGeom::SceneContent::~SceneContent()
 
 void AlgGeom::SceneContent::addNewCamera(ApplicationState* appState)
 {
-    _camera.push_back(std::make_unique<Camera>(appState->_viewportSize.x, appState->_viewportSize.y, false));
+    _camera.push_back(std::make_unique<Camera>(appState->_viewportSize.x, appState->_viewportSize.y, /*2D*/ false));
 }
 
 void AlgGeom::SceneContent::addNewModel(Model3D* model)

@@ -13,6 +13,6 @@ public:
     DrawTriangle(Triangle& triangle);
     DrawTriangle(Triangle3d& triangle);
     DrawTriangle(const DrawTriangle& drawTriangle) = delete;
-    ~DrawTriangle() override {};
+    ~DrawTriangle() override                       = default;
 };
 }    // namespace AlgGeom

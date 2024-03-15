@@ -22,8 +22,8 @@ AlgGeom::DrawTriangle::DrawTriangle(Triangle3d& triangle)
 {
     Component* component = new Component;
 
-    Vect3d    normal    = triangle.normal();
-    glm::vec3 normalGlm = glm::vec3(normal.getX(), normal.getY(), normal.getZ());
+    const Vect3d    normal    = triangle.normal();
+    const glm::vec3 normalGlm = glm::vec3(normal.getX(), normal.getY(), normal.getZ());
     component->_vertices.insert(
         component->_vertices.end(),
         {VAO::Vertex {glm::vec3(triangle.getA().getX(), triangle.getA().getY(), triangle.getA().getZ()), normalGlm},

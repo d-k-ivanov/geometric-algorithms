@@ -3,20 +3,24 @@
 #include "DrawAABB.h"
 #include "DrawBezier.h"
 #include "DrawLine.h"
+#include "DrawMesh.h"
 #include "DrawPlane.h"
 #include "DrawPoint.h"
 #include "DrawPointCloud.h"
 #include "DrawPolygon.h"
 #include "DrawRay.h"
 #include "DrawSegment.h"
+#include "DrawTriangle.h"
 
 #include "Geometry/Bezier.h"
 #include "Geometry/Plane.h"
 #include "Geometry/PointCloud.h"
 #include "Geometry/Polygon.h"
 #include "Geometry/SegmentLine.h"
+#include "Geometry/TriangleModel.h"
 
 #include "Utils/ChronoUtilities.h"
+#include "Utils/FilesystemUtilities.h"
 #include "Utils/RandomUtilities.h"
 
 #include <iostream>
@@ -58,6 +62,77 @@ void AlgGeom::Scenes::p0(SceneContent& sc)
 
     sc.addNewModel((new DrawPolygon(*polygon))->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName()->setModelMatrix(rotate(glm::mat4(1.0f), (glm::abs(4 * polygonAlpha - glm::pi<float>() / 2.0f * 3.0f)), glm::vec3(.0f, .0f, 1.0f))));
     delete polygon;
+
+    constexpr int   numTriangles = 30;
+    constexpr float alpha        = 2 * glm::pi<float>() / static_cast<float>(numTriangles);
+
+    for(int triangleIdx = 0; triangleIdx < numTriangles; ++triangleIdx)
+    {
+        const float randB = RandomUtilities::getUniformRandom(.5f, .9f);
+        const float randC = RandomUtilities::getUniformRandom(.6f, .8f);
+        Vect2d      a(.0f, .0f);
+        Vect2d      b(glm::cos(alpha * static_cast<float>(triangleIdx)) * randB, glm::sin(alpha * static_cast<float>(triangleIdx)) * randB);
+        Vect2d      c(glm::cos(alpha * static_cast<float>(triangleIdx + 1)) * randC, glm::sin(alpha * static_cast<float>(triangleIdx + 1)) * randC);
+        Triangle*   triangle = new Triangle(a, b, c);
+
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+}
+
+void AlgGeom::Scenes::p0a(SceneContent& sc)
+{
+    constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
+    constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
+
+    {
+        Vect3d      a {0.5f, -0.5f, 0.0f};
+        Vect3d      b {0.5f, -0.5f, 0.0f};
+        Vect3d      c {0.0f, 0.5f, 0.0f};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {-0.5f, -0.5f, 0.0f};
+        Vect3d      b {0.0f, -0.5f, 0.5f};
+        Vect3d      c {0.0f, 0.5f, 0.0f};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {-0.5f, -0.5f, 0.0f};
+        Vect3d      b {0.0f, -0.5f, -0.5f};
+        Vect3d      c {0.0f, 0.5f, 0.0f};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {0.5f, -0.5f, 0.0f};
+        Vect3d      b {0.0f, -0.5f, 0.5f};
+        Vect3d      c {0.0f, 0.5f, 0.0f};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {0.5f, -0.5f, 0.0f};
+        Vect3d      b {0.0f, -0.5f, -0.5f};
+        Vect3d      c {0.0f, 0.5f, 0.0f};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {-0.5f, -0.5f, 0.0f};
+        Vect3d      b {0.5f, -0.5f, 0.0f};
+        Vect3d      c {0.0f, -0.5f, -0.5f};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
 }
 
 void AlgGeom::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Point>& randomPointsFromCloud, std::vector<Point>& extremumPointInCloud)
@@ -659,4 +734,65 @@ void AlgGeom::Scenes::p2b(SceneContent& sc)
 
     delete randomPlane;
     delete newPlane;
+}
+
+void AlgGeom::Scenes::p2c(SceneContent& sc)
+{
+    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
+    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
+
+    TriangleModel* triangleModel = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
+    const auto     model(new DrawMesh(*triangleModel));
+    model->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    model->setModelMatrix(glm::rotate(model->getModelMatrix(), -0.2f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    sc.addNewModel(model);
+
+    {
+        Vect3d      a {0.0, 0.0, 0.0};
+        Vect3d      b {2.0, 0.0, 0.0};
+        Vect3d      c {1.0, 1.0, 0.0};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {0.0, 0.0, 0.0};
+        Vect3d      b {0.0, 2.0, 0.0};
+        Vect3d      c {-1.0, 1.0, 0.0};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {0.0, 0.0, 0.0};
+        Vect3d      b {-2.0, 0.0, 0.0};
+        Vect3d      c {-1.0, -1.0, 0.0};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {0.0, 0.0, 0.0};
+        Vect3d      b {0.0, -2.0, 0.0};
+        Vect3d      c {1.0, -1.0, 0.0};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {0.0, 0.0, 0.0};
+        Vect3d      b {0.0, 0.0, 2.0};
+        Vect3d      c {1.0, 0.0, 1.0};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
+    {
+        Vect3d      a {0.0, 0.0, 0.0};
+        Vect3d      b {0.0, 0.0, -2.0};
+        Vect3d      c {1.0, 0.0, -1.0};
+        Triangle3d* triangle = new Triangle3d(a, b, c);
+        sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+        delete triangle;
+    }
 }

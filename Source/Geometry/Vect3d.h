@@ -115,6 +115,11 @@ public:
      */
     Vect3d operator*=(const Vect3d& b);
     Vect3d operator*(const Vect3d& b);
+    Vect3d mul(const Vect3d& b) const;
+
+    Vect3d operator*=(double value);
+    Vect3d operator*(double value);
+    Vect3d mul(double value) const;
     Vect3d scalarMul(double value) const;
 
     /**

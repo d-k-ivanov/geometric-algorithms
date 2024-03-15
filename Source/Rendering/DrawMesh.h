@@ -12,15 +12,15 @@ protected:
     Assimp::Importer _assimpImporter;
 
 protected:
-    Model3D::Component* processMesh(aiMesh* mesh, const aiScene* scene, const std::string& folder);
-    void                processNode(aiNode* node, const aiScene* scene, const std::string& folder);
+    Model3D::Component* processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder) const;
+    void                processNode(const aiNode* node, const aiScene* scene, const std::string& folder);
 
 public:
     DrawMesh();
     DrawMesh(TriangleModel& triangleModel);
     DrawMesh(const DrawMesh& drawMesh) = delete;
 
-    virtual ~DrawMesh();
+    ~DrawMesh() override = default;
 
     DrawMesh* loadModelOBJ(const std::string& path);
 };

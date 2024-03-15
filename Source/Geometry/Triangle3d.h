@@ -65,67 +65,67 @@ public:
     virtual ~Triangle3d();
 
     /**
-     *  @brief Returns the are of the triangle.
-     */
-    double area();
-
-    /**
-     *  @brief Returns the position of the point respect to the triangle plane.
-     */
-    PointPosition classify(Vect3d& point);
-
-    /**
-     *  @brief Returns a new triangle with the same values than this one.
-     */
-    Triangle3d copy() { return Triangle3d(_a, _b, _c); }
-
-    /**
      *  @brief Returns the first point.
      */
-    Vect3d getA() { return _a; }
+    Vect3d getA();
 
     /**
      *  @brief Returns the second point.
      */
-    Vect3d getB() { return _b; }
+    Vect3d getB();
 
     /**
      *  @brief Returns the third point.
      */
-    Vect3d getC() { return _c; }
+    Vect3d getC();
+
+    /**
+     *  @brief Modifies the first point.
+     */
+    void setA(const Vect3d& pa);
+
+    /**
+     *  @brief Modifies the second point.
+     */
+    void setB(const Vect3d& pb);
+
+    /**
+     *  @brief Modifies the third point.
+     */
+    void setC(const Vect3d& pc);
+
+    /**
+     *  @brief Modifies all the points.
+     */
+    void set(const Vect3d& va, const Vect3d& vb, const Vect3d& vc);
+
+    /**
+     *  @brief Returns the are of the triangle.
+     */
+    double area() const;
+
+    /**
+     *  @brief Returns the position of the point respect to the triangle plane.
+     */
+    PointPosition classify(const Vect3d& point);
+
+    /**
+     *  @brief Returns a new triangle with the same values than this one.
+     */
+    Triangle3d copy();
 
     /**
      *  @brief Returns the normal of the triangle.
      */
-    Vect3d normal();
+    Vect3d normal() const;
 
     /**
      *  @brief Assignment operator.
      */
-    virtual Triangle3d& operator=(const Triangle3d& triangle);
+    Triangle3d& operator=(const Triangle3d& triangle);
 
     /**
      *  @brief Cout overloading.
      */
     friend std::ostream& operator<<(std::ostream& os, const Triangle3d& triangle);
-
-    /**
-     *  @brief Modifies the first point.
-     */
-    void setA(Vect3d& pa) { _a = pa; }
-
-    /**
-     *  @brief Modifies the second point.
-     */
-    void setB(Vect3d& pb) { _b = pb; }
-
-    /**
-     *  @brief Modifies the third point.
-     */
-    void setC(Vect3d& pc) { _c = pc; }
-
-    /**
-     *  @brief Modifies all the points.
-     */
-    void set(Vect3d& va, Vect3d& vb, Vect3d& vc);
 };
