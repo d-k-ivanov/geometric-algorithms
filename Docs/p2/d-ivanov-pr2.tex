@@ -1,0 +1,370 @@
+%============================================================================%
+% DOCUMENT DEFINITION
+%============================================================================%
+\documentclass[12pt,a4paper,english]{article}
+
+%-----------------------------------------------------------------------------
+% Page layout
+%-----------------------------------------------------------------------------
+% page outer frames (debug-only)
+% \usepackage{showframe}
+
+% define page styles using geometry
+\usepackage[a4paper]{geometry}
+
+% Margins
+\geometry{top=2cm, bottom=2cm, left=1cm, right=1cm}
+
+%-----------------------------------------------------------------------------
+% Packages
+%-----------------------------------------------------------------------------
+% Math
+\usepackage{amsmath}
+
+% Extended implementation of the arrays and tabules
+\usepackage{array}
+
+% Languages
+\usepackage[main=english, spanish]{babel}
+\usepackage[spanish]{datetime2}
+\usepackage{indentfirst}
+
+% Enhances the quality of tables.
+\usepackage{booktabs}
+
+% To use the slash to cancel out stuff
+\usepackage{cancel}
+
+% Customise the captions in figures and table
+\usepackage{caption}
+
+% Enumeration
+\usepackage{enumitem}
+
+% fancy headers and footers
+\usepackage{fancyhdr}
+
+% Improves the interface for defining floating objects such as figures and tables.
+\usepackage{float}
+\restylefloat{table}
+\usepackage{diagbox}
+
+% The enhanced graphics package.
+\usepackage{graphicx}
+\graphicspath{{./}{./images}{./figures}} % Default graphics path
+\DeclareGraphicsExtensions{.pdf, .png, .jpg} % Extensions to read in order
+
+% Hyper links
+\usepackage[hidelinks]{hyperref}
+
+% Fonts
+% \usepackage[semibold]{raleway}
+% \usepackage{lmodern}
+% \usepackage[defaultsans]{droidsans}
+% \usepackage{cmbright}
+% \usepackage[light,math]{iwona}
+
+% Select font encodings.
+\PassOptionsToPackage{T1}{fontenc} % T2A for cyrillics
+\usepackage{fontenc}
+
+% Select  input encodings.
+\PassOptionsToPackage{utf8}{inputenc}
+\usepackage{inputenc}
+
+% Code listings
+\usepackage{accsupp}
+\newcommand{\noncopy}[1]{\BeginAccSupp{method=escape,ActualText={}}#1\EndAccSupp{}}
+
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\renewcommand{\theFancyVerbLine}{\sffamily{\scriptsize {\arabic{FancyVerbLine}}}}
+
+% Columns
+\usepackage{multicol}
+
+% Set the 5-point spacing between paragraphs and 20-point indent for the first line.
+\usepackage[skip=5pt plus1pt, indent=20pt]{parskip}
+
+% High-quality function plots
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{dateplot}
+
+% TikZ
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+
+% Easily annotate math equations using TikZ
+\usepackage{annotate-equations}
+
+% Named colors
+\usepackage[dvipsnames,table]{xcolor}
+
+% Conditional space
+\usepackage{xspace}
+
+\let\OldTexttrademark\texttrademark
+\renewcommand{\texttrademark}{\OldTexttrademark\xspace}%
+
+% Fancy quotations
+\usepackage[style=british]{csquotes}
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip1em
+    \hbox{}\nobreak\hfill #1%
+    \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+    {\savebox\mybox{#1}\begin{quote}\openautoquote\hspace*{-.7ex}}
+    {\unskip\closeautoquote\vspace*{1mm}\signed{\usebox\mybox}\end{quote}}
+
+%-----------------------------------------------------------------------------
+% Re-usable information
+%-----------------------------------------------------------------------------
+\newcommand{\myName}{Dmitry Ivanov\xspace}%
+\newcommand{\myEmail}{divanov@correo.ugr.es\xspace}%
+\newcommand{\myDate}{\datespanish\today\xspace}%
+\newcommand{\myTitle}{Practice 3. Geometric Data Types in 3D\xspace}%
+\newcommand{\mySubject}{EDGSG 23/24\xspace}%
+\newcommand{\myKeyWords}{Geometric Algorithms\xspace}%
+
+\title{\mySubject\\\myTitle}
+\author{\myName (\myEmail)}
+\date{\today}
+
+%-----------------------------------------------------------------------------
+% Header
+%-----------------------------------------------------------------------------
+\pagestyle{fancy}
+\setlength{\headheight}{28pt}
+\fancyhead[LO,L]{\mySubject\\\myTitle}
+\fancyhead[CO,C]{}
+\fancyhead[RO,R]{\myName(\myEmail)\\\today}
+\fancyfoot[LO,L]{}
+\fancyfoot[CO,C]{\thepage}
+\fancyfoot[RO,R]{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%-----------------------------------------------------------------------------
+% PDF information
+%-----------------------------------------------------------------------------
+\hypersetup{
+  pdfauthor = {\myName (\myEmail)},
+  pdftitle = {\myTitle},
+  pdfsubject = {\mySubject},
+  pdfkeywords = {\myKeyWords},
+  pdfcreator = {Visual Studio Code with TeX Live 2023},
+  pdfproducer = {pdflatex}
+}
+
+\newcommand{\BlueHref}[3][blue]{\href{#2}{\color{#1}{#3}}}%
+
+\usepackage{titlesec}
+\titleformat{\section}{\normalsize\bfseries}{\thesection.}{0.5em}{}
+\titlespacing{\section}{0em}{*4}{*1.5}
+
+\titleformat{\subsection}{\normalsize\itshape}{\alph{subsection}.}{0.5em}{}
+\titlespacing{\subsection}{2em}{*4}{*1.5}
+
+%============================================================================%
+% DOCUMENT CONTENT
+%============================================================================%
+\begin{document}
+
+\section{Introduction}
+I've made a couple of improvements to the project to provide a unified way to compile the project on Windows and Linux.
+I've included precompiled binaries for Windows and Linux.
+
+\section{Compilation on Windows}
+
+\begin{itemize}
+    \item Install Visual Studio from \url{https://visualstudio.microsoft.com/downloads/}
+    \item Install VCPKG from \url{https://vcpkg.io/en/getting-started.html}
+    \item Add VCPKG folder to PATH:
+    \item Option 1: Command Line tools
+
+    \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Batch}
+    REM Assuming that VCPKG cloned and bootstrapped in c:\src\vcpkg
+    REM setx for the global environment, set for the local
+    setx PATH c:\src\vcpkg;%PATH%
+    set  PATH c:\src\vcpkg;%PATH%
+    \end{minted}
+
+    \item Option 2: PowerShell
+    \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Powershell}
+    # Assuming that VCPKG cloned and bootstrapped in c:\src\vcpkg
+    [Environment]::SetEnvironmentVariable("PATH", "c:\src\vcpkg;${PATH}", "Machine")
+        Set-Item -Path Env:PATH -Value "c:\src\vcpkg;${PATH}"
+    \end{minted}
+
+    \item Option 3: Manually in \textbf{System Properties \text{-->} Environment Variables}
+    \item Navigate to the folder with the project
+    \item Run \textit{build.bat}
+    \item Open \textit{build\\EDGSG.sln} in Visual Studio to work with the source code
+\end{itemize}
+
+\section{Compilation on Linux}
+
+\begin{itemize}
+    \item Install VCPKG from \url{https://vcpkg.io/en/getting-started.html}
+    \item Add VCPKG folder to System PATH
+    \item Option 1: Temporary local environment
+    \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Bash}
+        # Assuming that VCPKG cloned and bootstrapped in ~/vcpkg
+        export PATH="~/vcpkg;${PATH}"
+    \end{minted}
+
+    \item Option 2: Local environment and Bash profile
+    \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Bash}
+        # Assuming that VCPKG cloned and bootstrapped in c:\src\vcpkg
+        export PATH="~/vcpkg;${PATH}"
+        echo 'export PATH="~/vcpkg;${PATH}"' >> ~/.bashrc
+    \end{minted}
+
+    \item Navigate to the folder with the project
+    \item Run build.sh
+\end{itemize}
+\textbf{Important Note:} the VCPKG requests installation of additional packages
+
+\section{Practice 2.a}
+\subsection{Point Cloud 3D}
+
+In this release, I've switched the camera from 2D to 3D, to allow the following 3D movements:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{movements}
+    \captionsetup{labelformat=empty}
+    \caption[]{}
+    \label{fig:movements}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{p2a-1}
+    \caption[]{Point cloud 3D.}
+    \label{fig:p2a-1}
+\end{figure}
+
+\subsection{Two Lines, Ray and Segment}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{p2a-2}
+    \caption[]{Two Lines, Ray and Segment.}
+    \label{fig:p2a-2}
+\end{figure}
+
+There are two checks for lines parallelism and perpendicularity. Both checks go to the standard output.
+
+\begin{minted}[fontsize=\footnotesize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Bash}
+==================================================
+L1 and L2 are not perpendicular
+L1 and L2 are not parallel
+==================================================
+L1 and L2 are not perpendicular
+L1 and L2 are parallel
+==================================================
+L1 and L2 are perpendicular
+L1 and L2 are not parallel
+==================================================
+\end{minted}
+
+\subsection{The furthest point from the Segment}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{p2a-3}
+    \caption[]{The furthest point from the Segment.}
+    \label{fig:p2a-3}
+\end{figure}
+
+\begin{minted}[fontsize=\footnotesize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{C++}
+double maxDistance = 0;
+Vect3d theMostDistantPoint;
+auto sLine = new Line3d(s->getOrigin(), s->getDestination());
+for(auto& point : pointCloud->getPoints())
+{
+    double distance = sLine->distance(point);
+    if(distance > maxDistance)
+    {
+        maxDistance = distance;
+        theMostDistantPoint = point;
+    }
+}
+this.addNewModel((new DrawPoint(theMostDistantPoint))->setPointSize(20.0f));
+\end{minted}
+
+\subsection{Perpendicular line through the furthest point from the Segment}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{p2a-4}
+    \caption[]{Perpendicular line through the furthest point from the Segment.\\ Distance between L1 and L2.}
+    \label{fig:p2a-4}
+\end{figure}
+
+\subsection{AABB from the Point Cloud}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{p2a-5}
+    \caption[]{AABB box from the Point Cloud}
+    \label{fig:p2a-5}
+\end{figure}
+
+There are two important problems in providing \lstinline{PointCloud3d} class. \textbf{The default \lstinline{_maxPoint} value is defined by positive infinity}, which makes it impossible to calculate the updated maximum and minimum for newly added points. This should be fixed using the following patch:
+
+\begin{minted}[fontsize=\footnotesize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{diff}
+diff --git c/Source/Geometry/PointCloud3d.cpp w/Source/Geometry/PointCloud3d.cpp
+index e5750c2..c4a7781 100644
+--- c/Source/Geometry/PointCloud3d.cpp
++++ w/Source/Geometry/PointCloud3d.cpp
+@@ -7,14 +7,14 @@
+ PointCloud3d::PointCloud3d()
+-    : _maxPoint(INFINITY, -INFINITY, -INFINITY)
++    : _maxPoint(-INFINITY, -INFINITY, -INFINITY)
+     , _minPoint(INFINITY, INFINITY, INFINITY)
+ {
+ }
+PointCloud3d::PointCloud3d(std::vector<Vect3d>& pointCloud)
+     : _points(pointCloud)
+-    , _maxPoint(INFINITY, -INFINITY, -INFINITY)
++    , _maxPoint(-INFINITY, -INFINITY, -INFINITY)
+     , _minPoint(INFINITY, INFINITY, INFINITY)
+ {
+ }
+\end{minted}
+
+\subsection{Plane on the lower edge of AABB}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{p2a-6}
+    \caption[]{Plane on the lower edge of AABB.}
+    \label{fig:p2a-6}
+\end{figure}
+
+\section{Practice 2.b}
+\subsection{Random Plane}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{p2b-1}
+    \caption[]{Random Plane.}
+    \label{fig:p2b-1}
+\end{figure}
+
+\subsection{Plane intersection}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{p2b-2}
+    \caption[]{Yellow line painted on the intersection of the two planes.}
+    \label{fig:p2b-2}
+\end{figure}
+
+\end{document}

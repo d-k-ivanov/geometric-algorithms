@@ -38,4 +38,12 @@ public:
      *  @brief Shows some information about the ray at the debug window.
      */
     friend std::ostream& operator<<(std::ostream& os, const Ray3d& ray);
+
+    /**
+     *  @brief Returns the direction of the ray.
+     */
+    Vect3d getDirection()
+    {
+        return this->getDestination() - this->getOrigin();
+    }
 };

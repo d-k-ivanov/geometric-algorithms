@@ -1,14 +1,17 @@
 #include "Scenes.h"
 
+#include "DrawAABB.h"
 #include "DrawBezier.h"
 #include "DrawLine.h"
+#include "DrawPlane.h"
 #include "DrawPoint.h"
 #include "DrawPointCloud.h"
 #include "DrawPolygon.h"
 #include "DrawRay.h"
 #include "DrawSegment.h"
-#include "Geometry/Bezier.h"
 
+#include "Geometry/Bezier.h"
+#include "Geometry/Plane.h"
 #include "Geometry/PointCloud.h"
 #include "Geometry/Polygon.h"
 #include "Geometry/SegmentLine.h"
@@ -80,7 +83,7 @@ void AlgGeom::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, 
         else
         {
             scale *= 2.0f;
-            center = glm::vec3(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+            center = glm::vec3(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x), RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y), 0.0f);
         }
 
         for(int idx = 0; idx < pointsPerCloud; ++idx)
@@ -396,4 +399,256 @@ void AlgGeom::Scenes::p1All(SceneContent& sc)
     p1Polygon(sc, extremumPointInCloud);
     p1Bezier(sc);
     p1Intersections(sc);
+}
+
+void AlgGeom::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud, float scaleFactor)
+{
+    constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
+    constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
+
+    // Tasks
+    // Pr2-a-1: point cloud
+    glm::vec3 center;
+    for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
+    {
+        auto* pointCloud = new PointCloud3d;
+
+        float scale = scaleFactor;
+        if(pcIdx == 0)
+        {
+            scale /= 2.0f;
+            center = glm::vec3(0, 0, 0);
+        }
+        else
+        {
+            scale *= 2.0f;
+            center = glm::vec3(
+                RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+                RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y),
+                RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        }
+
+        for(int idx = 0; idx < pointsPerCloud; ++idx)
+        {
+            glm::vec3 rand;
+
+            if(pcIdx == 0)
+            {
+                // Hemispheric point cloud
+                // rand = RandomUtilities::getUniformRandomInHemisphere(vec3(0, -1, 0)) / scale + center;
+
+                // Spheric point cloud
+                rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
+
+                // Disk point cloud
+                // rand = RandomUtilities::getUniformRandomInUnitDiskCircumference() / scale + center;
+            }
+            else if(pcIdx % 2 == 0)
+            {
+                // Disk point cloud
+                rand = RandomUtilities::getUniformRandomInUnitDiskCircumference() / scale + center;
+                // rand = RandomUtilities::getUniformRandomCosineDirection() / scale + center;
+                // rand = RandomUtilities::getUniformRandomInUnitDisk() / scale + center;
+            }
+            else
+            {
+                // Rectangular point cloud
+                // rand = RandomUtilities::getUniformRandomInUnitSquare() / scale + center;
+                rand = RandomUtilities::getUniformRandomInUnitSquarePerimeter() / scale + center;
+            }
+            pointCloud->addPoint({rand.x, rand.y, rand.z});
+        }
+
+        sc.addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(5.0f));
+        // sc.addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(RandomUtilities::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(7.0f));
+
+        if(pcIdx == 0 and pointCloud->size() >= 2)
+        {
+            // Line L1
+            auto l1A = pointCloud->getPoint(RandomUtilities::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            auto l1B = pointCloud->getPoint(RandomUtilities::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+
+            // Test parallel:
+            // Vect3d l1A(-2, 0, -1);
+            // Vect3d l1B(2, 0, -1);
+
+            // Test perpendicular:
+            // Vect3d l1A(0, -2, -1);
+            // Vect3d l1B(0, 2, -1);
+            auto* l1       = new Line3d(l1A, l1B);
+            auto  l1Colour = RandomUtilities::getUniformRandomColor();
+            sc.addNewModel((new DrawLine(*l1))->setLineColor(l1Colour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
+            sc.addNewModel((new DrawPoint(l1A))->setPointColor(l1Colour)->overrideModelName()->setPointSize(10.0f));
+            sc.addNewModel((new DrawPoint(l1B))->setPointColor(l1Colour)->overrideModelName()->setPointSize(10.0f));
+
+            // Line L2
+            auto l2A = pointCloud->getPoint(RandomUtilities::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            auto l2B = pointCloud->getPoint(RandomUtilities::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+
+            // Replace to test if lines are parallel or perpendicular.
+            // Vect3d l2A(-2, 1, -1);
+            // Vect3d l2B(2, 1, -1);
+            auto* l2       = new Line3d(l2A, l2B);
+            auto  l2Colour = RandomUtilities::getUniformRandomColor();
+            sc.addNewModel((new DrawLine(*l2))->setLineColor(l2Colour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
+            sc.addNewModel((new DrawPoint(l2A))->setPointColor(l2Colour)->overrideModelName()->setPointSize(10.0f));
+            sc.addNewModel((new DrawPoint(l2B))->setPointColor(l2Colour)->overrideModelName()->setPointSize(10.0f));
+
+            // Ray R
+            auto rA = pointCloud->getPoint(RandomUtilities::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            auto rB = pointCloud->getPoint(RandomUtilities::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            // Vect3d rA(-2, 2, -1);
+            // Vect3d rB(2, 2, -1);
+            auto* r       = new Ray3d(rA, rB);
+            auto  rColour = RandomUtilities::getUniformRandomColor();
+            sc.addNewModel((new DrawRay(*r))->setLineColor(rColour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
+            sc.addNewModel((new DrawPoint(rA))->setPointColor(rColour)->overrideModelName()->setPointSize(10.0f));
+            sc.addNewModel((new DrawPoint(rB))->setPointColor(rColour)->overrideModelName()->setPointSize(10.0f));
+
+            // Segment S
+            auto sA = pointCloud->getPoint(RandomUtilities::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            auto sB = pointCloud->getPoint(RandomUtilities::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            // Vect3d sA(-2,-1, -1);
+            // Vect3d sB(2, -1, -1);
+            auto* s       = new Segment3d(sA, sB);
+            auto  sColour = RandomUtilities::getUniformRandomColor();
+            sc.addNewModel((new DrawSegment(*s))->setLineColor(sColour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
+            sc.addNewModel((new DrawPoint(s->getOrigin()))->setPointColor(sColour)->overrideModelName()->setPointSize(10.0f));
+            sc.addNewModel((new DrawPoint(s->getDestination()))->setPointColor(sColour)->overrideModelName()->setPointSize(10.0f));
+
+            std::cout << "==================================================\n";
+
+            if(l1->isPerpendicular(*l2))
+            {
+                std::cout << "L1 and L2 are perpendicular\n";
+            }
+            else
+            {
+                std::cout << "L1 and L2 are not perpendicular\n";
+            }
+
+            if(l1->isParallel(*l2))
+            {
+                std::cout << "L1 and L2 are parallel\n";
+            }
+            else
+            {
+                std::cout << "L1 and L2 are not parallel\n";
+            }
+
+            std::cout << "==================================================\n";
+
+            double maxDistance = 0;
+            Vect3d theMostDistantPoint;
+            auto   sLine = new Line3d(s->getOrigin(), s->getDestination());
+            for(auto& point : pointCloud->getPoints())
+            {
+                double distance = sLine->distance(point);
+                if(distance > maxDistance)
+                {
+                    maxDistance         = distance;
+                    theMostDistantPoint = point;
+                }
+            }
+            sc.addNewModel((new DrawPoint(theMostDistantPoint))->setPointColor(RandomUtilities::getUniformRandomColor())->overrideModelName()->setPointSize(20.0f));
+
+            // Line L3
+            auto* l3       = new Line3d(l1->normalLine(theMostDistantPoint));
+            auto  l3Colour = RandomUtilities::getUniformRandomColor();
+            sc.addNewModel((new DrawLine(*l3))->setLineColor(l3Colour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
+            sc.addNewModel((new DrawPoint(l3->getOrigin()))->setPointColor(l3Colour)->overrideModelName()->setPointSize(10.0f));
+            sc.addNewModel((new DrawPoint(l3->getDestination()))->setPointColor(l3Colour)->overrideModelName()->setPointSize(10.0f));
+
+            if(l1->isPerpendicular(*l3))
+            {
+                std::cout << "L1 and L3 are perpendicular\n";
+            }
+            else
+            {
+                std::cout << "L1 and L3 are not perpendicular\n";
+            }
+            std::cout << "==================================================\n";
+            std::cout << "Distance between L1 and L2 is " << l1->distance(*l2) << '\n';
+            std::cout << "==================================================\n";
+
+            AABB* pointCloudAABB = new AABB(pointCloud->getAABB());
+            sc.addNewModel((new DrawAABB(*pointCloudAABB))->overrideModelName());
+
+            Vect3d min1(pointCloudAABB->getMin());
+            Vect3d min2(pointCloudAABB->getMax().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMin().getZ());
+            Vect3d min3(pointCloudAABB->getMax().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMax().getZ());
+            Plane* lowerPlane = new Plane(min1, min2, min3, true);
+            sc.addNewModel((new DrawPlane(*lowerPlane))->overrideModelName()->setLineWidth(5.0)->setLineColor(glm::vec3(1, 1, 1)));
+
+            delete l1;
+            delete l2;
+            delete l3;
+            delete s;
+            delete r;
+            delete sLine;
+            delete pointCloudAABB;
+            delete lowerPlane;
+        }
+
+        delete pointCloud;
+    }
+}
+
+void AlgGeom::Scenes::p2b(SceneContent& sc)
+{
+    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
+    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
+
+    const Vect3d pRand(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+                       RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y),
+                       RandomUtilities::getUniformRandom(minBoundaries.z, maxBoundaries.z));
+
+    const Vect3d uRand(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+                       RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y),
+                       RandomUtilities::getUniformRandom(minBoundaries.z, maxBoundaries.z));
+
+    const Vect3d vRand(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+                       RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y),
+                       RandomUtilities::getUniformRandom(minBoundaries.z, maxBoundaries.z));
+
+    // const Vect3d pRand(0, 0, 0);
+    // const Vect3d uRand(1, 1, 0);
+    // const Vect3d vRand(-1, 1, 0);
+
+    const auto randomColour = RandomUtilities::getUniformRandomColor();
+    // sc.addNewModel((new DrawPoint(pRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
+    // sc.addNewModel((new DrawPoint(uRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
+    // sc.addNewModel((new DrawPoint(vRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
+
+    Plane* randomPlane = new Plane(pRand, uRand, vRand, true);
+    sc.addNewModel((new DrawPlane(*randomPlane))->overrideModelName()->setLineWidth(3.0)->setLineColor(glm::vec3(1, 1, 1)));
+
+    const Vect3d vRand2(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+                        RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y),
+                        RandomUtilities::getUniformRandom(minBoundaries.z, maxBoundaries.z));
+
+
+    Vect3d newPlaneNormal;
+    double newPlaneD;
+    pRand.getPlane(uRand, newPlaneNormal, newPlaneD);
+    Vect3d newPlaneP1(0, 0, -newPlaneD / newPlaneNormal.getZ());
+    Vect3d newPlaneP2(-newPlaneD / newPlaneNormal.getX(), 0, 0);
+    Vect3d newPlaneP3(0, -newPlaneD / newPlaneNormal.getY(), 0);
+    Plane* newPlane = new Plane(newPlaneP1, newPlaneP2, newPlaneP3, true);
+    // Plane* newPlane = new Plane(newPlaneNormal, newPlaneD);
+    sc.addNewModel((new DrawPlane(*newPlane))->overrideModelName()->setLineWidth(3.0)->setLineColor(glm::vec3(1, 1, 1)));
+
+
+    Line3d intersectionLine;
+    if(randomPlane->intersect(*newPlane, intersectionLine))
+    {
+        sc.addNewModel((new DrawLine(intersectionLine))->overrideModelName()->setLineWidth(5.0)->setLineColor(glm::vec3(1, 1, 0)));
+    }
+    else
+    {
+        std::cout << "Planes don't intersect\n";
+    }
+
+    delete randomPlane;
+    delete newPlane;
 }

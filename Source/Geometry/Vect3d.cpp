@@ -157,7 +157,7 @@ Vect3d Vect3d::operator+(const Vect3d& b)
     return *this += b;
 }
 
-Vect3d Vect3d::add(Vect3d& b) const
+Vect3d Vect3d::add(const Vect3d& b) const
 {
     return {getX() + b.getX(), getY() + b.getY(), getZ() + b.getZ()};
 }
@@ -179,6 +179,11 @@ Vect3d Vect3d::operator-(const Vect3d& b)
 Vect3d Vect3d::sub(const Vect3d& b) const
 {
     return {getX() - b.getX(), getY() - b.getY(), getZ() - b.getZ()};
+}
+
+Vect3d Vect3d::normalize() const
+{
+    return this->scalarDiv(module());
 }
 
 bool Vect3d::collinear(Vect3d& a, Vect3d& b)

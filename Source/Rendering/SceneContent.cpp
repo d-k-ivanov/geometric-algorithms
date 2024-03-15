@@ -29,25 +29,30 @@ void AlgGeom::SceneContent::buildScenario()
     // Define the scene
     // Scenes::p0(*this);
 
-    // Practice 1:
-    constexpr int      numPointClouds = 0;
-    constexpr int      pointsPerCloud = 100;
+    constexpr int      numPointClouds = 1;
+    constexpr int      pointsPerCloud = 50;
     constexpr float    scaleFactor    = 1.0f;
     std::vector<Point> randomPointsFromCloud;
     std::vector<Point> extremumPointInCloud;
 
+    // Practice 1:
     // Scenes::p1PointClouds(*this, numPointClouds, pointsPerCloud, scaleFactor, randomPointsFromCloud, extremumPointInCloud);
     // Scenes::p1Lines(*this, randomPointsFromCloud);
     // Scenes::p1Polygon(*this, extremumPointInCloud);
     // Scenes::p1Bezier(*this);
     // Scenes::p1Bezier(*this, true, 5);
     // Scenes::p1Intersections(*this);
-    Scenes::p1All(*this);
+    // Scenes::p1All(*this);
+
+    // Practice 2:
+    // Scenes::p2a(*this, numPointClouds, pointsPerCloud, scaleFactor);
+    Scenes::p2b(*this);
+
 }
 
 void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)
 {
-    Camera* camera = new Camera(width, height, true);
+    Camera* camera = new Camera(width, height, false);
     camera->setPosition(glm::vec3(.0f, .0f, 4.0f));
     camera->setLookAt(glm::vec3(.0f, .0f, 0.0f));
     camera->saveCamera();

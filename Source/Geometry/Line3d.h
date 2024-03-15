@@ -18,7 +18,7 @@ protected:
     /**
      *  @brief Checks if the parametric value t is valid. Any value is valid for a line.
      */
-    virtual bool isTvalid(double t) { return true; }
+    bool isTvalid(double t) override;
 
 public:
     /**
@@ -39,7 +39,7 @@ public:
     /**
      *  @brief Destructor.
      */
-    virtual ~Line3d();
+    ~Line3d() override;
 
     /**
      *  @brief Distance between two lines.
@@ -47,14 +47,14 @@ public:
     double distance(Line3d& line);
 
     /**
-     *    @brief Distance between point 'p' and this.
+     *  @brief Distance between point 'p' and this.
      */
-    double distance(Vect3d& p);
+    double distance(const Vect3d& p) const;
 
     /**
      *  @brief Returns the normal to this line that passes through point 'p'.
      */
-    Line3d normalLine(Vect3d& p);
+    Line3d normalLine(Vect3d& p) const;
 
     /**
      *  @brief Returns true if the lines are parallel.

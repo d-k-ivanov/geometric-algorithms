@@ -191,7 +191,7 @@ public:
     double triangleArea2(Point& a, Point& b);
 
     /**
-     *  @brief Checks the position of the point respect to other two points (a, b).
+     *  @brief Calculates the scalar multiplication of this point.
      */
     Point scalarMult(double t);
 };

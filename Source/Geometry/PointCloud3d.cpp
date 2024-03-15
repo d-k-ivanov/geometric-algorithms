@@ -7,14 +7,14 @@
 #include <vector>
 
 PointCloud3d::PointCloud3d()
-    : _maxPoint(INFINITY, -INFINITY, -INFINITY)
+    : _maxPoint(-INFINITY, -INFINITY, -INFINITY)
     , _minPoint(INFINITY, INFINITY, INFINITY)
 {
 }
 
-PointCloud3d::PointCloud3d(std::vector<Vect3d>& pointCloud)
+PointCloud3d::PointCloud3d(const std::vector<Vect3d>& pointCloud)
     : _points(pointCloud)
-    , _maxPoint(INFINITY, -INFINITY, -INFINITY)
+    , _maxPoint(-INFINITY, -INFINITY, -INFINITY)
     , _minPoint(INFINITY, INFINITY, INFINITY)
 {
 }
@@ -23,7 +23,7 @@ PointCloud3d::PointCloud3d(const std::string& filename)
     : _maxPoint(-INFINITY, -INFINITY, -INFINITY)
     , _minPoint(INFINITY, INFINITY, INFINITY)
 {
-    auto splitByComma = [this](std::string& string) -> std::vector<std::string>
+    auto splitByComma = [this](const std::string& string) -> std::vector<std::string>
     {
         std::stringstream        ss(string);
         std::vector<std::string> result;
@@ -38,8 +38,8 @@ PointCloud3d::PointCloud3d(const std::string& filename)
         return result;
     };
 
-    std::string   currentLine;    // Línea actual del fichero.
-    std::ifstream inputStream;    // Flujo de entrada.
+    std::string   currentLine;
+    std::ifstream inputStream;
     inputStream.open(filename.c_str());
 
     while(std::getline(inputStream, currentLine))
@@ -61,10 +61,10 @@ PointCloud3d::PointCloud3d(const std::string& filename)
             }
         }
     }
-    inputStream.close();    // Cerramos fichero.
+    inputStream.close();
 }
 
-PointCloud3d::PointCloud3d(int size, double max_x, double max_y, double max_z)
+PointCloud3d::PointCloud3d(int size, const double max_x, const double max_y, const double max_z)
     : _maxPoint(-INFINITY, -INFINITY, -INFINITY)
     , _minPoint(INFINITY, INFINITY, INFINITY)
 {
@@ -72,17 +72,17 @@ PointCloud3d::PointCloud3d(int size, double max_x, double max_y, double max_z)
 
     while(size > 0)
     {
-        double  x = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_x * 2.0f))) - max_x;
-        double  y = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_y * 2.0f))) - max_y;
-        double  z = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_z * 2.0f))) - max_z;
-        Vect3d val(x, y, z);
+        const double x = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_x * 2.0f))) - max_x;
+        const double y = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_y * 2.0f))) - max_y;
+        const double z = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_z * 2.0f))) - max_z;
+        Vect3d       val(x, y, z);
         this->addPoint(val);
 
         --size;
     }
 }
 
-PointCloud3d::PointCloud3d(int size, double radius)
+PointCloud3d::PointCloud3d(int size, const double radius)
     : _maxPoint(-INFINITY, -INFINITY, -INFINITY)
     , _minPoint(INFINITY, INFINITY, INFINITY)
 {
@@ -90,13 +90,13 @@ PointCloud3d::PointCloud3d(int size, double radius)
 
     while(size > 0)
     {
-        double  theta = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX)) * 2.0 * glm::pi<double>();
-        double  phi   = std::acos(1.0 - 2.0 * static_cast<double>(rand()) / (static_cast<double>(RAND_MAX)));
-        double x     = std::sin(phi) * std::cos(theta);
-        double y     = std::sin(phi) * std::sin(theta);
-        double z     = std::cos(phi);
+        const double theta = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX)) * 2.0 * glm::pi<double>();
+        const double phi   = std::acos(1.0 - 2.0 * static_cast<double>(rand()) / (static_cast<double>(RAND_MAX)));
+        const double x     = std::sin(phi) * std::cos(theta);
+        const double y     = std::sin(phi) * std::sin(theta);
+        const double z     = std::cos(phi);
+        const double r     = radius * std::sqrt(static_cast<double>(rand()) / (static_cast<double>(RAND_MAX)));
 
-        double  r = radius * std::sqrt(static_cast<double>(rand()) / (static_cast<double>(RAND_MAX)));
         Vect3d point(r * x, r * y, r * z);
         this->addPoint(point);
 
@@ -115,24 +115,29 @@ PointCloud3d::~PointCloud3d()
 {
 }
 
-void PointCloud3d::addPoint(Vect3d& p)
+void PointCloud3d::addPoint(const Vect3d& p)
 {
     _points.push_back(p);
     this->updateMaxMin(_points.size() - 1);
 }
 
-AABB PointCloud3d::getAABB()
+AABB PointCloud3d::getAABB() const
 {
-    return AABB(_minPoint, _maxPoint);
+    return {_minPoint, _maxPoint};
 }
 
-Vect3d PointCloud3d::getPoint(int pos)
+Vect3d PointCloud3d::getPoint(const size_t pos)
 {
-    if((pos >= 0) && (pos < _points.size()))
+    if((pos < _points.size()))
     {
         return _points[pos];
     }
-    return Vect3d();
+    return {};
+}
+
+std::vector<Vect3d> PointCloud3d::getPoints()
+{
+    return _points;
 }
 
 PointCloud3d& PointCloud3d::operator=(const PointCloud3d& pointCloud)
@@ -147,58 +152,72 @@ PointCloud3d& PointCloud3d::operator=(const PointCloud3d& pointCloud)
     return *this;
 }
 
-void PointCloud3d::save(const std::string& filename)
+void PointCloud3d::save(const std::string& filename) const
 {
     std::ofstream file(filename);
 
     for(int i = 0; i < _points.size(); ++i)
     {
-        file << _points[i].getX() << ", " << _points[i].getY() << ", " << _points[i].getZ() << std::endl;
+        file << _points[i].getX() << ", " << _points[i].getY() << ", " << _points[i].getZ() << '\n';
     }
 
     file.close();
 }
 
-void PointCloud3d::updateMaxMin(int index)
+void PointCloud3d::updateMaxMin(size_t index)
 {
-    Vect3d point = _points[index];
+    const Vect3d point = _points[index];
 
     if(point.getX() < _minPoint.getX())
     {
         _minPoint.setX(point.getX());
-        _minPointIndex.setX(index);
+        _minPointIndex.setX(static_cast<double>(index));
     }
     if(point.getY() < _minPoint.getY())
     {
         _minPoint.setY(point.getY());
-        _minPointIndex.setY(index);
+        _minPointIndex.setY(static_cast<double>(index));
     }
     if(point.getZ() < _minPoint.getZ())
     {
         _minPoint.setZ(point.getZ());
-        _minPointIndex.setZ(index);
+        _minPointIndex.setZ(static_cast<double>(index));
     }
 
     if(point.getX() > _maxPoint.getX())
     {
         _maxPoint.setX(point.getX());
-        _maxPointIndex.setX(index);
+        _maxPointIndex.setX(static_cast<double>(index));
     }
     if(point.getY() > _maxPoint.getY())
     {
         _maxPoint.setY(point.getY());
-        _maxPointIndex.setY(index);
+        _maxPointIndex.setY(static_cast<double>(index));
     }
     if(point.getZ() > _maxPoint.getZ())
     {
         _maxPoint.setZ(point.getZ());
-        _maxPointIndex.setZ(index);
+        _maxPointIndex.setZ(static_cast<double>(index));
     }
 }
 
-void PointCloud3d::getMostDistanced(int& a, int& b)
+void PointCloud3d::getMostDistanced(int& a, int& b) const
 {
-    // XXXX
     a = 0;
     b = 0;
+
+    double maxDistance = -INFINITY;
+    for(int i = 0; i < _points.size(); ++i)
+    {
+        for(int j = i + 1; j < _points.size(); ++j)
+        {
+            const double distance = _points[i].distance(_points[j]);
+            if(distance > maxDistance)
+            {
+                maxDistance = distance;
+                a           = i;
+                b           = j;
+            }
+        }
+    }
 }

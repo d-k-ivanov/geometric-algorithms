@@ -122,14 +122,16 @@ public:
      */
     Vect3d operator+=(const Vect3d& b);
     Vect3d operator+(const Vect3d& b);
-    Vect3d add(Vect3d& b) const;
+    Vect3d add(const Vect3d& b) const;
 
-    /**
-     *  @brief Vector subtraction.
-     */
     Vect3d operator-=(const Vect3d& b);
     Vect3d operator-(const Vect3d& b);
     Vect3d sub(const Vect3d& b) const;
+
+    /**
+     *  @brief Vector normalization.
+     */
+    Vect3d normalize() const;
 
     /**
      *  @brief Checks if a, b and this vector are on a same line.

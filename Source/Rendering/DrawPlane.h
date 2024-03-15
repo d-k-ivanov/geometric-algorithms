@@ -14,6 +14,6 @@ protected:
 public:
     DrawPlane(Plane& plane);
     DrawPlane(const DrawPlane& plane) = delete;
-    virtual ~DrawPlane();
+    ~DrawPlane() override;
 };
-}
+}    // namespace AlgGeom

@@ -23,12 +23,12 @@ Edge3d::~Edge3d()
 {
 }
 
-Vect3d Edge3d::getDestination()
+Vect3d& Edge3d::getDestination()
 {
     return _dest;
 }
 
-Vect3d Edge3d::getOrigin()
+Vect3d& Edge3d::getOrigin()
 {
     return _orig;
 }

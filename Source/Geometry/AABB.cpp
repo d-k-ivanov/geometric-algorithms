@@ -22,17 +22,17 @@ AABB::~AABB()
 
 Vect3d AABB::getSize()
 {
-    return _max - _min;
+    return _max.sub(_min);
 }
 
 Vect3d AABB::getCenter()
 {
-    return (_max + _min) / 2.0f;
+    return _max.add(_min) / 2.0f;
 }
 
 Vect3d AABB::getExtent()
 {
-    return _max - getCenter();
+    return _max.sub(getCenter());
 }
 
 Vect3d AABB::getMin()

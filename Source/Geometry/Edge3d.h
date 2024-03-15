@@ -40,12 +40,12 @@ public:
     /**
      *  @brief Returns the destination point.
      */
-    Vect3d getDestination();
+    Vect3d& getDestination();
 
     /**
      *  @brief Returns the initial point.
      */
-    Vect3d getOrigin();
+    Vect3d& getOrigin();
 
     /**
      *  @brief Returns a point given the parametric value. It may be wrong if the t value is not valid for the specific subclass.

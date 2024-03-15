@@ -25,17 +25,18 @@ public:
     };
 
 protected:
-    Vect3d _a, _b, _c;
+    Vect3d _a, _b, _c, _d;
 
 public:
+
     /**
-     *
      *  @param p in pi = p + u * lambda + v * mu -> r from the points (R, S, T).
      *  @param u in pi = p + u * lambda + v * mu -> d from the points (R, S, T).
      *  @param v in pi = p + u * lambda + v * mu -> t from the points (R, S, T).
-     *  @param If arePoints is false, then params are p + u * lambda + v * mu, otherwise are points (R, S, T).
+     *  @param arePoints If arePoints is false, then params are p + u * lambda + v * mu, otherwise are points (R, S, T).
      */
-    Plane(Vect3d& p, Vect3d& u, Vect3d& v, bool arePoints);
+    Plane(const Vect3d& p, const Vect3d& u, const Vect3d& v, bool arePoints);
+
 
     /**
      *  @brief Copy constructor.
@@ -48,59 +49,84 @@ public:
     virtual ~Plane();
 
     /**
-     *  @brief Returns true if p is in the plane.
+     *  @brief Returns member A.
      */
-    bool coplanar(Vect3d& point);
+    Vect3d& get_A();
 
     /**
-     *  @brief Distance between the plane and the point.
+     *  @brief Returns member B.
      */
-    double distance(Vect3d& point);
+    Vect3d& get_B();
+
+    /**
+     *  @brief Returns member C.
+     */
+    Vect3d& get_C();
+
+    /**
+     *  @brief Returns member D.
+     */
+    Vect3d& get_D();
 
     /**
      *  @brief Returns A in AX + BY + CZ + D = 0.
      */
-    double getA();
+    double getA() const;
 
     /**
      *  @brief Returns B in AX + BY + CZ + D = 0.
      */
-    double getB();
+    double getB() const;
 
     /**
      *  @brief Returns C in AX + BY + CZ + D = 0.
      */
-    double getC();
+    double getC() const;
 
     /**
      *  @return D in AX + BY + CZ + D = 0.
      */
-    double getD() { return (-1.0) * (getA() * _a.getX() + getB() * _a.getY() + getC() * _a.getZ()); }
+    double getD() const;
 
     /**
      *  @brief Returns the normal vector of (A, B, C) in Ax + By + Cz + D = 0.
      */
-    Vect3d getNormal();
+    Vect3d getNormal() const;
 
     /**
-     *  @brief Calculates the intersection point of a line and this plane, if exists.
+     *  @brief Returns true if p is in the plane.
      */
-    bool intersect(Line3d& line, Vect3d& point);
+    bool coplanar(const Vect3d& point) const;
 
     /**
-     *  @brief Calculates the intersection point of three planes.
+     *  @brief Distance between the plane and the point.
      */
-    bool intersect(Plane& pa, Plane& pb, Vect3d& pinter);
+    double distance(const Vect3d& point) const;
 
     /**
      *  @brief Calculates the intersection line of a plane with this plane.
      */
-    bool intersect(Plane& plane, Line3d& line);
+    bool intersect(const Plane& plane, Line3d& intersectionLine) const;
+
+    /**
+     *  @brief Calculates the intersection point of a line and this plane, if exists.
+     */
+    bool intersect(Line3d& line, Vect3d& intersectionPoint) const;
+
+    /**
+     *  @brief Calculates the intersection point of three planes.
+     */
+    bool intersect(const Plane& planeA, const Plane& planeB, Vect3d& intersectionPoint) const;
+
+    /**
+     *  @brief Returns the reflected point of a point in the plane.
+     */
+    Vect3d reflectedPoint(const Vect3d& p) const;
 
     /**
      *  @brief Assignment operator.
      */
-    virtual Plane& operator=(const Plane& plane);
+    Plane& operator=(const Plane& plane);
 
     /**
      *  @brief Shows the plane values at the debug window.

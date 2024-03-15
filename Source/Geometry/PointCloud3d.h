@@ -20,7 +20,7 @@ protected:
     /**
      *  @brief Updates the new maximum and minimum points taking into account a new point.
      */
-    void updateMaxMin(int index);
+    void updateMaxMin(size_t index);
 
 public:
     /**
@@ -36,7 +36,7 @@ public:
     /**
      *  @brief Construct the point cloud from a vector of points
      */
-    PointCloud3d(std::vector<Vect3d>& pointCloud);
+    PointCloud3d(const std::vector<Vect3d>& pointCloud);
 
     /**
      *  @brief Constructor.
@@ -61,7 +61,7 @@ public:
     /**
      *  @brief Adds a new point to the cloud.
      */
-    void addPoint(Vect3d& p);
+    void addPoint(const Vect3d& p);
 
     /**
      *  @brief Removes all the points.
@@ -76,12 +76,12 @@ public:
     /**
      *  @brief Returns the bounding box that delimites the point cloud space.
      */
-    AABB getAABB();
+    AABB getAABB() const;
 
     /**
      *    @brief get the index of the most distanced points in the cloud.
      */
-    void getMostDistanced(int& a, int& b);
+    void getMostDistanced(int& a, int& b) const;
 
     /**
      *  @brief Generates a complete convex hull.
@@ -96,22 +96,22 @@ public:
     /**
      *  @brief Returns a certain point.
      */
-    Vect3d getPoint(int pos);
+    Vect3d getPoint(size_t pos);
 
     /**
      *  @brief Returns all the cloud points.
      */
-    std::vector<Vect3d> getPoints() { return _points; }
+    std::vector<Vect3d> getPoints();
 
     /**
      *  @brief Assigment operator.
      */
-    virtual PointCloud3d& operator=(const PointCloud3d& pointCloud);
+    PointCloud3d& operator=(const PointCloud3d& pointCloud);
 
     /**
      *  @brief Saves the cloud points in a file.
      */
-    void save(const std::string& filename);
+    void save(const std::string& filename) const;
 
     /**
      *  @brief Returns the number of points that this cloud contains.
