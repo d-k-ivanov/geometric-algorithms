@@ -75,6 +75,11 @@ Vect3d Plane::getNormal() const
     return {this->getA(), this->getB(), this->getC()};
 }
 
+Vect3d Plane::getCenter() const
+{
+    return _a.add(_b).add(_c).scalarMul(1.0 / 3.0);
+}
+
 bool Plane::coplanar(const Vect3d& point) const
 {
     if(BasicGeometry::equal(0.0, distance(point)))

@@ -94,6 +94,11 @@ public:
     Vect3d getNormal() const;
 
     /**
+     *  @brief Returns the center of the plane.
+     */
+    Vect3d getCenter() const;
+
+    /**
      *  @brief Returns true if p is in the plane.
      */
     bool coplanar(const Vect3d& point) const;

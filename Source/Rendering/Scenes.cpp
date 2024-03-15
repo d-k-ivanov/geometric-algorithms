@@ -612,8 +612,8 @@ void AlgGeom::Scenes::p2b(SceneContent& sc)
                        RandomUtilities::getUniformRandom(minBoundaries.z, maxBoundaries.z));
 
     // const Vect3d pRand(0, 0, 0);
-    // const Vect3d uRand(1, 1, 0);
-    // const Vect3d vRand(-1, 1, 0);
+    // const Vect3d uRand(1, 1, 1);
+    // const Vect3d vRand(-1, 1, -1);
 
     const auto randomColour = RandomUtilities::getUniformRandomColor();
     // sc.addNewModel((new DrawPoint(pRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
@@ -627,7 +627,6 @@ void AlgGeom::Scenes::p2b(SceneContent& sc)
                         RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y),
                         RandomUtilities::getUniformRandom(minBoundaries.z, maxBoundaries.z));
 
-
     Vect3d newPlaneNormal;
     double newPlaneD;
     pRand.getPlane(uRand, newPlaneNormal, newPlaneD);
@@ -635,9 +634,7 @@ void AlgGeom::Scenes::p2b(SceneContent& sc)
     Vect3d newPlaneP2(-newPlaneD / newPlaneNormal.getX(), 0, 0);
     Vect3d newPlaneP3(0, -newPlaneD / newPlaneNormal.getY(), 0);
     Plane* newPlane = new Plane(newPlaneP1, newPlaneP2, newPlaneP3, true);
-    // Plane* newPlane = new Plane(newPlaneNormal, newPlaneD);
-    sc.addNewModel((new DrawPlane(*newPlane))->overrideModelName()->setLineWidth(3.0)->setLineColor(glm::vec3(1, 1, 1)));
-
+    // sc.addNewModel((new DrawPlane(*newPlane))->overrideModelName()->setLineWidth(3.0)->setLineColor(glm::vec3(0, 1, 1)));
 
     Line3d intersectionLine;
     if(randomPlane->intersect(*newPlane, intersectionLine))
@@ -648,6 +645,17 @@ void AlgGeom::Scenes::p2b(SceneContent& sc)
     {
         std::cout << "Planes don't intersect\n";
     }
+
+    Vect3d v1(RandomUtilities::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+              RandomUtilities::getUniformRandom(minBoundaries.y, maxBoundaries.y),
+              RandomUtilities::getUniformRandom(minBoundaries.z, maxBoundaries.z));
+
+    sc.addNewModel((new DrawPoint(v1))->setPointColor(glm::vec3(0, 0, 1))->overrideModelName()->setPointSize(20.0));
+    std::cout << "The distance from V1 to randomPlane: " << randomPlane->distance(v1) << '\n';
+
+    Vect3d v2(randomPlane->reflectedPoint(v1));
+    sc.addNewModel((new DrawPoint(v2))->setPointColor(glm::vec3(0, 1, 1))->overrideModelName()->setPointSize(20.0));
+    std::cout << "The distance from V2(reflected) to randomPlane: " << randomPlane->distance(v2) << '\n';
 
     delete randomPlane;
     delete newPlane;

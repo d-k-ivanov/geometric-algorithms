@@ -348,12 +348,14 @@ PointCloud3d::PointCloud3d(std::vector<Vect3d>& pointCloud)
     \label{fig:p2a-6}
 \end{figure}
 
+\newpage
+
 \section{Practice 2.b}
 \subsection{Random Plane}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{p2b-1}
+    \includegraphics[width=0.65\textwidth]{p2b-1}
     \caption[]{Random Plane.}
     \label{fig:p2b-1}
 \end{figure}
@@ -362,9 +364,23 @@ PointCloud3d::PointCloud3d(std::vector<Vect3d>& pointCloud)
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{p2b-2}
+    \includegraphics[width=0.65\textwidth]{p2b-2}
     \caption[]{Yellow line painted on the intersection of the two planes.}
     \label{fig:p2b-2}
 \end{figure}
+
+\subsection{Plane to point distance}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{p2b-3}
+    \caption[]{Distance to the blue point V1.}
+    \label{fig:p2b-3}
+\end{figure}
+
+\begin{minted}[fontsize=\footnotesize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{diff}
+    The distance from V1 to randomPlane: 0.250153
+    The distance from V2(reflected) to randomPlane: 0.250153
+\end{minted}
 
 \end{document}
