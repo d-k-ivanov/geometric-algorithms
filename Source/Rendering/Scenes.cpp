@@ -575,8 +575,8 @@ void AlgGeom::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerClo
             sc.addNewModel((new DrawAABB(*pointCloudAABB))->overrideModelName());
 
             Vect3d min1(pointCloudAABB->getMin());
-            Vect3d min2(pointCloudAABB->getMax().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMin().getZ());
-            Vect3d min3(pointCloudAABB->getMax().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMax().getZ());
+            Vect3d min2(pointCloudAABB->getMin().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMax().getZ());
+            Vect3d min3(pointCloudAABB->getMax().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMin().getZ());
             Plane* lowerPlane = new Plane(min1, min2, min3, true);
             sc.addNewModel((new DrawPlane(*lowerPlane))->overrideModelName()->setLineWidth(5.0)->setLineColor(glm::vec3(1, 1, 1)));
 

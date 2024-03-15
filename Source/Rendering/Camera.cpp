@@ -15,7 +15,7 @@ AlgGeom::Camera::Camera(uint16_t width, uint16_t height, bool is2D)
     this->_properties._up     = glm::vec3(0.0f, 1.0f, 0.0f);
 
     this->_properties._zNear = 0.1f;
-    this->_properties._zFar  = 100.0f;
+    this->_properties._zFar  = 500.0f;
 
     this->_properties._width  = width;
     this->_properties._height = height;

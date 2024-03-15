@@ -74,7 +74,7 @@ AlgGeom::SceneContent::~SceneContent()
 
 void AlgGeom::SceneContent::addNewCamera(ApplicationState* appState)
 {
-    _camera.push_back(std::make_unique<Camera>(appState->_viewportSize.x, appState->_viewportSize.y, true));
+    _camera.push_back(std::make_unique<Camera>(appState->_viewportSize.x, appState->_viewportSize.y, false));
 }
 
 void AlgGeom::SceneContent::addNewModel(Model3D* model)

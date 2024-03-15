@@ -5,6 +5,21 @@
 
 Plane::Plane(const Vect3d& p, const Vect3d& u, const Vect3d& v, const bool arePoints)
 {
+    // Vectors: pi = p + u * lambda + v * mu
+    // const Vect3d uN    = u.normalize();
+    // const Vect3d vN    = v.normalize();
+    // const double l     = (uN.dot(vN) * vN.dot(p) - uN.dot(p)) / (1 - (uN.dot(vN)) * (uN.dot(vN)));
+    // const double mu    = (uN.dot(vN) * uN.dot(p) - uN.dot(p)) / (1 - (uN.dot(vN)) * (uN.dot(vN)));
+    // const double x     = p.getX() + l * uN.getX() + mu * vN.getX();
+    // const double y     = p.getY() + l * uN.getY() + mu * vN.getY();
+    // const double z     = p.getZ() + l * uN.getZ() + mu * vN.getZ();
+    // const Vect3d n     = {x, y, z};
+    // const double nlong = n.module();
+    // _a = x / nlong;
+    // _b = y / nlong;
+    // _c = z / nlong;
+    // _d = -1.0 * nlong;
+
     if(!arePoints)
     {    // Vectors: pi = p + u * lambda + v * mu
         _a = p;
