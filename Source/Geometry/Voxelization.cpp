@@ -7,32 +7,32 @@
 #include <set>
 
 Voxelization::Voxelization()
-    : _size()
-    , _maxX(0)
-    , _maxY(0)
-    , _maxZ(0)
+    : _size(0)
     , _minX(0)
     , _minY(0)
     , _minZ(0)
+    , _maxX(0)
+    , _maxY(0)
+    , _maxZ(0)
     , _numX(0)
     , _numY(0)
     , _numZ(0)
 {
 }
 
-Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 size, int tipo)
+Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
 {
-    _size            = size;
-    AABB aabb_modelo = modelo->getAABB();
-    _maxX            = aabb_modelo.getMax().getX();
-    _maxY            = aabb_modelo.getMax().getY();
-    _maxZ            = aabb_modelo.getMax().getZ();
-    _minX            = aabb_modelo.getMin().getX();
-    _minY            = aabb_modelo.getMin().getY();
-    _minZ            = aabb_modelo.getMin().getZ();
-    _numX            = ((_maxX - _minX) / _size[0]) + 1;
-    _numY            = ((_maxY - _minY) / _size[1]) + 1;
-    _numZ            = ((_maxZ - _minZ) / _size[2]) + 1;
+    _size          = size;
+    AABB modelAABB = model->getAABB();
+    _maxX          = modelAABB.getMax().getX();
+    _maxY          = modelAABB.getMax().getY();
+    _maxZ          = modelAABB.getMax().getZ();
+    _minX          = modelAABB.getMin().getX();
+    _minY          = modelAABB.getMin().getY();
+    _minZ          = modelAABB.getMin().getZ();
+    _numX          = (_maxX - _minX) / _size[0] + 1;
+    _numY          = (_maxY - _minY) / _size[1] + 1;
+    _numZ          = (_maxZ - _minZ) / _size[2] + 1;
 
     double auxX, auxY, auxZ;
     auxX = _minX;
@@ -59,9 +59,9 @@ Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 size, int tipo)
         auxX += _size[0];
         _voxels.push_back(nivel1);
     }
-    int                     aux1       = modelo->getFaces().size();
-    std::vector<Triangle3d> triangulos = modelo->getFaces();
-    switch(tipo)
+    int                     aux1       = model->getFaces().size();
+    std::vector<Triangle3d> triangulos = model->getFaces();
+    switch(algorithm)
     {
         case 0:
             for(int i = 0; i < _numX; i++)
@@ -83,22 +83,25 @@ Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 size, int tipo)
             }
             break;
         case 1:
-            lineaBarrido(modelo->getFaces());
+            lineSweep(model->getFaces());
             break;
         case 2:
 
             for(int j = 0; j < aux1; j++)
             {
                 AABB                aabb_ti               = triangulos[j].getAABB();
-                std::vector<Voxel*> voxeles_seleccionados = obtenerVoxeles(aabb_ti);
+                std::vector<Voxel*> voxeles_seleccionados = getVoxels(aabb_ti);
                 for(int i = 0; i < voxeles_seleccionados.size(); i++)
                 {
-                    if(voxeles_seleccionados[i]->bruteForce(modelo->getFaces()[j]))
+                    if(voxeles_seleccionados[i]->bruteForce(model->getFaces()[j]))
                     {
                         voxeles_seleccionados[i]->setFormato(VoxelStatus::OCCUPIED);
                     }
                 }
             }
+            break;
+        default:
+            lineSweep(model->getFaces());
             break;
     }
     this->flood();
@@ -113,9 +116,9 @@ Voxelization::Voxelization(double _xmax, double _ymax, double _zmax, double _xmi
     _minX = _xmin;
     _minY = _ymin;
     _minZ = _zmin;
-    _numX = ((_maxX - _minX) / _size[0]) + 1;
-    _numY = ((_maxY - _minY) / _size[1]) + 1;
-    _numZ = ((_maxZ - _minZ) / _size[2]) + 1;
+    _numX = (_maxX - _minX) / _size[0] + 1;
+    _numY = (_maxY - _minY) / _size[1] + 1;
+    _numZ = (_maxZ - _minZ) / _size[2] + 1;
 
     double auxX, auxY, auxZ;
     auxX = _minX;
@@ -152,7 +155,7 @@ Voxelization::~Voxelization()
 {
 }
 
-Voxel* Voxelization::obtenerVoxel(double x, double y, double z)
+Voxel* Voxelization::getVoxel(double x, double y, double z)
 {
     int    i   = int(glm::abs(x / _size[0])) % _numX;
     int    j   = int(glm::abs(y / _size[1])) % _numY;
@@ -162,14 +165,14 @@ Voxel* Voxelization::obtenerVoxel(double x, double y, double z)
     return res;
 }
 
-void Voxelization::insertar(Vect3d dato)
+void Voxelization::add(Vect3d data)
 {
-    double x = dato.getX();
-    double y = dato.getY();
-    double z = dato.getZ();
+    double x = data.getX();
+    double y = data.getY();
+    double z = data.getZ();
 
-    Voxel* v = obtenerVoxel(x, y, z);
-    v->add(dato);
+    Voxel* v = getVoxel(x, y, z);
+    v->add(data);
 }
 
 bool Voxelization::comp(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2)
@@ -180,7 +183,7 @@ bool Voxelization::comp(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d
     return aux.first.getY() < aux2.first.getY();
 }
 
-void Voxelization::lineaBarrido(std::vector<Triangle3d> triangulos)
+void Voxelization::lineSweep(std::vector<Triangle3d> triangulos)
 {
 
     std::vector<std::pair<Vect3d, int>> vertices;
@@ -257,7 +260,7 @@ void Voxelization::lineaBarrido(std::vector<Triangle3d> triangulos)
     }
 }
 
-std::vector<Voxel*> Voxelization::obtenerVoxeles(AABB aabb_ti)
+std::vector<Voxel*> Voxelization::getVoxels(AABB aabb_ti)
 {
 
     std::vector<std::pair<Voxel*, glm::vec3>> solucion;
@@ -280,8 +283,8 @@ std::vector<Voxel*> Voxelization::obtenerVoxeles(AABB aabb_ti)
 
                 if(_voxels[i][x][y]->getStatus() != VoxelStatus::OCCUPIED)
                 {
-                    if(insideVoxel(_voxels[i][x][y], e1) || insideVoxel(_voxels[i][x][y], e2) || insideVoxel(_voxels[i][x][y], e3) || insideVoxel(_voxels[i][x][y], e4)
-                       || insideVoxel(_voxels[i][x][y], e5) || insideVoxel(_voxels[i][x][y], e6) || insideVoxel(_voxels[i][x][y], e7) || insideVoxel(_voxels[i][x][y], e8))
+                    if(isInVoxel(_voxels[i][x][y], e1) || isInVoxel(_voxels[i][x][y], e2) || isInVoxel(_voxels[i][x][y], e3) || isInVoxel(_voxels[i][x][y], e4)
+                       || isInVoxel(_voxels[i][x][y], e5) || isInVoxel(_voxels[i][x][y], e6) || isInVoxel(_voxels[i][x][y], e7) || isInVoxel(_voxels[i][x][y], e8))
                     {
                         glm::vec3 aux(i, x, y);
                         solucion.push_back(std::pair(_voxels[i][x][y], aux));
@@ -299,7 +302,7 @@ std::vector<Voxel*> Voxelization::obtenerVoxeles(AABB aabb_ti)
     return res;
 }
 
-bool Voxelization::insideVoxel(Voxel* voxel, Vect3d v)
+bool Voxelization::isInVoxel(Voxel* voxel, Vect3d v)
 {
     return v.getX() >= voxel->getMin().getX() && v.getX() <= voxel->getMax().getX() && v.getY() >= voxel->getMin().getY() && v.getY() <= voxel->getMax().getY() && v.getZ() >= voxel->getMin().getZ() && v.getZ() <= voxel->getMax().getZ();
 }
@@ -384,9 +387,9 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
         {
             for(int y = 0; y < _numZ; y++)
             {
-                if(this->getVoxeles()[i][x][y]->getStatus() == status)
+                if(this->getVoxels()[i][x][y]->getStatus() == status)
                 {
-                    Vect3d centro = this->getVoxeles()[i][x][y]->getMin().add(displace);
+                    Vect3d centro = this->getVoxels()[i][x][y]->getMin().add(displace);
                     vector.push_back(glm::vec3(centro.getX(), centro.getY(), centro.getZ()));
                 }
             }
@@ -575,7 +578,7 @@ bool Voxelization::rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, doub
         tMin = tZMin;
     if(tZMax < tMax)
         tMax = tZMax;
-    return (tMin < t1 && tMax > t0);
+    return tMin < t1 && tMax > t0;
 }
 
 Voxelization* Voxelization::AND(Voxelization& vox)
@@ -599,23 +602,23 @@ Voxelization* Voxelization::AND(Voxelization& vox)
         {
             for(int z = 0; z < num_voxeles.z; z++)
             {
-                if(comprobarPertenencia(res->getVoxeles()[i][y][z], this, xV, yV, zV))
+                if(comprobarPertenencia(res->getVoxels()[i][y][z], this, xV, yV, zV))
                 {
-                    if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
+                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && vox.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                        res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                 }
                 else
                 {
-                    res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                    res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                 }
             }
         }
@@ -646,35 +649,35 @@ Voxelization* Voxelization::OR(Voxelization& vox)
         {
             for(int z = 0; z < num_voxeles.z; z++)
             {
-                if(comprobarPertenencia(res->getVoxeles()[i][y][z], this, xV, yV, zV))
+                if(comprobarPertenencia(res->getVoxels()[i][y][z], this, xV, yV, zV))
                 {
-                    if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
+                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER || vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER || vox.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                 }
                 else
                 {
-                    if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
+                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(vox.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                        res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                 }
             }
@@ -706,26 +709,26 @@ Voxelization* Voxelization::XOR(Voxelization& vox)
         {
             for(int z = 0; z < num_voxeles.z; z++)
             {
-                if(comprobarPertenencia(res->getVoxeles()[i][y][z], this, xV, yV, zV))
+                if(comprobarPertenencia(res->getVoxels()[i][y][z], this, xV, yV, zV))
                 {
-                    if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
+                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && vox.getVoxeles()[x2][y2][z2]->getStatus() == VoxelStatus::OUTER)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && vox.getVoxels()[x2][y2][z2]->getStatus() == VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                 }
                 else
                 {
-                    res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                    res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
                 }
             }
         }

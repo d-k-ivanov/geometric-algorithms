@@ -22,20 +22,20 @@ public:
     Voxelization();
     Voxelization(const Voxelization& voxel);
     Voxelization(double _xmax, double _ymax, double _zmax, double _xmin, double _ymin, double _zmin, glm::vec3 _tam);
-    Voxelization(TriangleModel* modelo, glm::vec3 tam, int tipo);
+    Voxelization(TriangleModel* model, glm::vec3 size, int algorithm);
     virtual ~Voxelization();
 
-    Voxel*                                        obtenerVoxel(double x, double y, double z);
-    void                                          insertar(Vect3d dato);
-    void                                          lineaBarrido(std::vector<Triangle3d> triangulos);
+    Voxel*                                        getVoxel(double x, double y, double z);
+    void                                          add(Vect3d data);
+    void                                          lineSweep(std::vector<Triangle3d> triangulos);
     static bool                                   comp(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
-    std::vector<Voxel*>                           obtenerVoxeles(AABB aabb_ti);
-    std::vector<std::vector<std::vector<Voxel*>>> getVoxeles() { return _voxels; }
+    std::vector<Voxel*>                           getVoxels(AABB aabb_ti);
+    std::vector<std::vector<std::vector<Voxel*>>> getVoxels() { return _voxels; }
 
     bool rayTraversal(Ray3d& r, std::vector<Voxel*>& v);
     bool rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1);
 
-    bool insideVoxel(Voxel* v, Vect3d vertice);
+    bool isInVoxel(Voxel* v, Vect3d vertice);
 
     AlgGeom::DrawVoxelization* getRenderingObject(bool gris);
 
