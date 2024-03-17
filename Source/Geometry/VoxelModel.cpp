@@ -71,12 +71,12 @@ VoxelStatus Voxel::getStatus() const
     return this->_status;
 }
 
-bool Voxel::bruteForce(Triangle3d t)
+bool Voxel::bruteForce(Triangle3d trianlge)
 {
     std::vector<Vect3d> vertices;
-    vertices.push_back(t.getA());
-    vertices.push_back(t.getB());
-    vertices.push_back(t.getC());
+    vertices.push_back(trianlge.getA());
+    vertices.push_back(trianlge.getB());
+    vertices.push_back(trianlge.getC());
     const glm::vec3 halfsize(_size[0] / 2, _size[1] / 2, _size[2] / 2);
 
     if(triBoxOverlap(this->_center, halfsize, vertices))
@@ -86,42 +86,42 @@ bool Voxel::bruteForce(Triangle3d t)
     return false;
 }
 
-bool Voxel::planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 maxBox) const
+bool Voxel::planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 maxPoint) const
 {
     Vect3d vmin, vmax, v;
     v = vert;
 
     if(normal.getX() > 0.0f)
     {
-        vmin.setX(-maxBox[0] - v.getX());
-        vmax.setX(maxBox[0] - v.getX());
+        vmin.setX(-maxPoint[0] - v.getX());
+        vmax.setX(maxPoint[0] - v.getX());
     }
     else
     {
-        vmin.setX(maxBox[0] - v.getX());
-        vmax.setX(-maxBox[0] - v.getX());
+        vmin.setX(maxPoint[0] - v.getX());
+        vmax.setX(-maxPoint[0] - v.getX());
     }
 
     if(normal.getY() > 0.0f)
     {
-        vmin.setY(-maxBox[1] - v.getY());
-        vmax.setY(maxBox[1] - v.getY());
+        vmin.setY(-maxPoint[1] - v.getY());
+        vmax.setY(maxPoint[1] - v.getY());
     }
     else
     {
-        vmin.setY(maxBox[1] - v.getY());
-        vmax.setY(-maxBox[1] - v.getY());
+        vmin.setY(maxPoint[1] - v.getY());
+        vmax.setY(-maxPoint[1] - v.getY());
     }
 
     if(normal.getZ() > 0.0f)
     {
-        vmin.setZ(-maxBox[2] - v.getZ());
-        vmax.setZ(maxBox[2] - v.getZ());
+        vmin.setZ(-maxPoint[2] - v.getZ());
+        vmax.setZ(maxPoint[2] - v.getZ());
     }
     else
     {
-        vmin.setZ(maxBox[2] - v.getZ());
-        vmax.setZ(-maxBox[2] - v.getZ());
+        vmin.setZ(maxPoint[2] - v.getZ());
+        vmax.setZ(-maxPoint[2] - v.getZ());
     }
 
     if(normal.dot(vmin) > 0.0f)
@@ -218,7 +218,7 @@ bool Voxel::triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect
 
     //   float axis[3];
 
-    float min, max, p0, p1, p2, rad, fex, fey, fez;    // -NJMP- "d" local variable removed
+    float min, max, p0, p1, p2, rad, fex, fey, fez;
 
     Vect3d normal, e0, e1, e2;
 

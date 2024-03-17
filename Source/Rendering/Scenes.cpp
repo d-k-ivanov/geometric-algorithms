@@ -832,5 +832,5 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     // const auto voxModel(voxelizationAABB->getRenderingObject(true));
     sc.addNewModel(voxModel);
 
-    // delete model;
+    // delete voxModel;
 }

@@ -7,74 +7,74 @@
 #include <set>
 
 Voxelization::Voxelization()
-    : tam()
-    , xmax(0)
-    , ymax(0)
-    , zmax(0)
-    , xmin(0)
-    , ymin(0)
-    , zmin(0)
-    , numX(0)
-    , numY(0)
-    , numZ(0)
+    : _size()
+    , _maxX(0)
+    , _maxY(0)
+    , _maxZ(0)
+    , _minX(0)
+    , _minY(0)
+    , _minZ(0)
+    , _numX(0)
+    , _numY(0)
+    , _numZ(0)
 {
 }
 
-Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 _tam, int tipo)
+Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 size, int tipo)
 {
-    tam              = _tam;
+    _size            = size;
     AABB aabb_modelo = modelo->getAABB();
-    xmax             = aabb_modelo.getMax().getX();
-    ymax             = aabb_modelo.getMax().getY();
-    zmax             = aabb_modelo.getMax().getZ();
-    xmin             = aabb_modelo.getMin().getX();
-    ymin             = aabb_modelo.getMin().getY();
-    zmin             = aabb_modelo.getMin().getZ();
-    numX             = ((xmax - xmin) / tam[0]) + 1;
-    numY             = ((ymax - ymin) / tam[1]) + 1;
-    numZ             = ((zmax - zmin) / tam[2]) + 1;
+    _maxX            = aabb_modelo.getMax().getX();
+    _maxY            = aabb_modelo.getMax().getY();
+    _maxZ            = aabb_modelo.getMax().getZ();
+    _minX            = aabb_modelo.getMin().getX();
+    _minY            = aabb_modelo.getMin().getY();
+    _minZ            = aabb_modelo.getMin().getZ();
+    _numX            = ((_maxX - _minX) / _size[0]) + 1;
+    _numY            = ((_maxY - _minY) / _size[1]) + 1;
+    _numZ            = ((_maxZ - _minZ) / _size[2]) + 1;
 
     double auxX, auxY, auxZ;
-    auxX = xmin;
-    auxY = ymin;
-    auxZ = zmin;
-    for(int i = 0; i < numX; i++)
+    auxX = _minX;
+    auxY = _minY;
+    auxZ = _minZ;
+    for(int i = 0; i < _numX; i++)
     {
         std::vector<std::vector<Voxel*>> nivel1;
-        for(int x = 0; x < numY; x++)
+        for(int x = 0; x < _numY; x++)
         {
             std::vector<Voxel*> nivel2;
-            for(int y = 0; y < numZ; y++)
+            for(int y = 0; y < _numZ; y++)
             {
                 Vect3d puntoMinVoxel(auxX, auxY, auxZ);
-                Voxel* insertado = new Voxel(puntoMinVoxel, tam);
+                Voxel* insertado = new Voxel(puntoMinVoxel, _size);
                 nivel2.push_back(insertado);
-                auxZ += tam[2];
+                auxZ += _size[2];
             }
-            auxZ = zmin;
-            auxY += tam[1];
+            auxZ = _minZ;
+            auxY += _size[1];
             nivel1.push_back(nivel2);
         }
-        auxY = ymin;
-        auxX += tam[0];
-        voxeles.push_back(nivel1);
+        auxY = _minY;
+        auxX += _size[0];
+        _voxels.push_back(nivel1);
     }
     int                     aux1       = modelo->getFaces().size();
     std::vector<Triangle3d> triangulos = modelo->getFaces();
     switch(tipo)
     {
         case 0:
-            for(int i = 0; i < numX; i++)
+            for(int i = 0; i < _numX; i++)
             {
-                for(int x = 0; x < numY; x++)
+                for(int x = 0; x < _numY; x++)
                 {
-                    for(int y = 0; y < numZ; y++)
+                    for(int y = 0; y < _numZ; y++)
                     {
                         for(int j = 0; j < aux1; j++)
                         {
-                            if(voxeles[i][x][y]->bruteForce(triangulos[j]))
+                            if(_voxels[i][x][y]->bruteForce(triangulos[j]))
                             {
-                                voxeles[i][x][y]->setFormato(VoxelStatus::OCCUPIED);
+                                _voxels[i][x][y]->setFormato(VoxelStatus::OCCUPIED);
                                 j = aux1;
                             }
                         }
@@ -106,41 +106,41 @@ Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 _tam, int tipo)
 
 Voxelization::Voxelization(double _xmax, double _ymax, double _zmax, double _xmin, double _ymin, double _zmin, glm::vec3 _tam)
 {
-    tam  = _tam;
-    xmax = _xmax;
-    ymax = _ymax;
-    zmax = _zmax;
-    xmin = _xmin;
-    ymin = _ymin;
-    zmin = _zmin;
-    numX = ((xmax - xmin) / tam[0]) + 1;
-    numY = ((ymax - ymin) / tam[1]) + 1;
-    numZ = ((zmax - zmin) / tam[2]) + 1;
+    _size = _tam;
+    _maxX = _xmax;
+    _maxY = _ymax;
+    _maxZ = _zmax;
+    _minX = _xmin;
+    _minY = _ymin;
+    _minZ = _zmin;
+    _numX = ((_maxX - _minX) / _size[0]) + 1;
+    _numY = ((_maxY - _minY) / _size[1]) + 1;
+    _numZ = ((_maxZ - _minZ) / _size[2]) + 1;
 
     double auxX, auxY, auxZ;
-    auxX = xmin;
-    auxY = ymin;
-    auxZ = zmin;
-    for(int i = 0; i < numX; i++)
+    auxX = _minX;
+    auxY = _minY;
+    auxZ = _minZ;
+    for(int i = 0; i < _numX; i++)
     {
         std::vector<std::vector<Voxel*>> nivel1;
-        for(int x = 0; x < numY; x++)
+        for(int x = 0; x < _numY; x++)
         {
             std::vector<Voxel*> nivel2;
-            for(int y = 0; y < numZ; y++)
+            for(int y = 0; y < _numZ; y++)
             {
                 Vect3d puntoMinVoxel(auxX, auxY, auxZ);
-                Voxel* insertado = new Voxel(puntoMinVoxel, tam);
+                Voxel* insertado = new Voxel(puntoMinVoxel, _size);
                 nivel2.push_back(insertado);
-                auxZ += tam[2];
+                auxZ += _size[2];
             }
-            auxZ = zmin;
-            auxY += tam[1];
+            auxZ = _minZ;
+            auxY += _size[1];
             nivel1.push_back(nivel2);
         }
-        auxY = ymin;
-        auxX += tam[0];
-        voxeles.push_back(nivel1);
+        auxY = _minY;
+        auxX += _size[0];
+        _voxels.push_back(nivel1);
     }
 }
 
@@ -154,10 +154,10 @@ Voxelization::~Voxelization()
 
 Voxel* Voxelization::obtenerVoxel(double x, double y, double z)
 {
-    int    i   = int(glm::abs(x / tam[0])) % numX;
-    int    j   = int(glm::abs(y / tam[1])) % numY;
-    int    k   = int(glm::abs(z / tam[2])) % numZ;
-    Voxel* res = voxeles[i][j][k];
+    int    i   = int(glm::abs(x / _size[0])) % _numX;
+    int    j   = int(glm::abs(y / _size[1])) % _numY;
+    int    k   = int(glm::abs(z / _size[2])) % _numZ;
+    Voxel* res = _voxels[i][j][k];
 
     return res;
 }
@@ -199,15 +199,15 @@ void Voxelization::lineaBarrido(std::vector<Triangle3d> triangulos)
     std::vector<Voxel*>          voxeles_linea;
     std::map<int, int>::iterator it;
     int                          indice = 0;
-    for(int i = 0; i < numY; i++)
+    for(int i = 0; i < _numY; i++)
     {
-        double nivelMaxY = this->voxeles[0][i][0]->getMax().getY();
-        double nivelMinY = this->voxeles[0][i][0]->getMin().getY();
-        for(int x = 0; x < numX; x++)
+        double nivelMaxY = this->_voxels[0][i][0]->getMax().getY();
+        double nivelMinY = this->_voxels[0][i][0]->getMin().getY();
+        for(int x = 0; x < _numX; x++)
         {
-            for(int y = 0; y < numZ; y++)
+            for(int y = 0; y < _numZ; y++)
             {
-                voxeles_linea.push_back(this->voxeles[x][i][y]);
+                voxeles_linea.push_back(this->_voxels[x][i][y]);
             }
         }
         for(int v = 0; v < vertices.size(); v++)
@@ -271,20 +271,20 @@ std::vector<Voxel*> Voxelization::obtenerVoxeles(AABB aabb_ti)
     Vect3d e7(aabb_ti.getMin().getX(), aabb_ti.getMax().getY(), aabb_ti.getMin().getZ());
     Vect3d e8(aabb_ti.getMax().getX(), aabb_ti.getMax().getY(), aabb_ti.getMin().getZ());
 
-    for(int i = 0; i < numX; i++)
+    for(int i = 0; i < _numX; i++)
     {
-        for(int x = 0; x < numY; x++)
+        for(int x = 0; x < _numY; x++)
         {
-            for(int y = 0; y < numZ; y++)
+            for(int y = 0; y < _numZ; y++)
             {
 
-                if(voxeles[i][x][y]->getStatus() != VoxelStatus::OCCUPIED)
+                if(_voxels[i][x][y]->getStatus() != VoxelStatus::OCCUPIED)
                 {
-                    if(insideVoxel(voxeles[i][x][y], e1) || insideVoxel(voxeles[i][x][y], e2) || insideVoxel(voxeles[i][x][y], e3) || insideVoxel(voxeles[i][x][y], e4)
-                       || insideVoxel(voxeles[i][x][y], e5) || insideVoxel(voxeles[i][x][y], e6) || insideVoxel(voxeles[i][x][y], e7) || insideVoxel(voxeles[i][x][y], e8))
+                    if(insideVoxel(_voxels[i][x][y], e1) || insideVoxel(_voxels[i][x][y], e2) || insideVoxel(_voxels[i][x][y], e3) || insideVoxel(_voxels[i][x][y], e4)
+                       || insideVoxel(_voxels[i][x][y], e5) || insideVoxel(_voxels[i][x][y], e6) || insideVoxel(_voxels[i][x][y], e7) || insideVoxel(_voxels[i][x][y], e8))
                     {
                         glm::vec3 aux(i, x, y);
-                        solucion.push_back(std::pair(voxeles[i][x][y], aux));
+                        solucion.push_back(std::pair(_voxels[i][x][y], aux));
                     }
                 }
             }
@@ -307,27 +307,27 @@ bool Voxelization::insideVoxel(Voxel* voxel, Vect3d v)
 void Voxelization::flood()
 {
     int centralX, centralY, centralZ;
-    centralX = numX / 2;
-    centralY = numY / 2;
-    centralZ = numZ / 2;
+    centralX = _numX / 2;
+    centralY = _numY / 2;
+    centralZ = _numZ / 2;
 
-    if(this->voxeles[centralX][centralY][centralZ]->getStatus() == VoxelStatus::OCCUPIED)
+    if(this->_voxels[centralX][centralY][centralZ]->getStatus() == VoxelStatus::OCCUPIED)
     {
-        while(this->voxeles[centralX][centralY][centralZ]->getStatus() == VoxelStatus::OCCUPIED)
+        while(this->_voxels[centralX][centralY][centralZ]->getStatus() == VoxelStatus::OCCUPIED)
         {
             centralX++;
         }
     }
-    recursivo(this->voxeles[centralX][centralY][centralZ], centralX, centralY, centralZ);
-    for(int i = 0; i < numX; i++)
+    recursivo(this->_voxels[centralX][centralY][centralZ], centralX, centralY, centralZ);
+    for(int i = 0; i < _numX; i++)
     {
-        for(int x = 0; x < numY; x++)
+        for(int x = 0; x < _numY; x++)
         {
-            for(int y = 0; y < numZ; y++)
+            for(int y = 0; y < _numZ; y++)
             {
-                if(this->voxeles[i][x][y]->getStatus() == VoxelStatus::NP)
+                if(this->_voxels[i][x][y]->getStatus() == VoxelStatus::NP)
                 {
-                    this->voxeles[i][x][y]->setFormato(VoxelStatus::OUTER);
+                    this->_voxels[i][x][y]->setFormato(VoxelStatus::OUTER);
                 }
             }
         }
@@ -342,49 +342,49 @@ void Voxelization::recursivo(Voxel* v, int x, int y, int z)
     }
     v->setFormato(VoxelStatus::INNER);
 
-    if(x + 1 < numX)
+    if(x + 1 < _numX)
     {
-        recursivo(this->voxeles[x + 1][y][z], x + 1, y, z);
+        recursivo(this->_voxels[x + 1][y][z], x + 1, y, z);
     }
     if(x - 1 > 0)
     {
-        recursivo(this->voxeles[x - 1][y][z], x - 1, y, z);
+        recursivo(this->_voxels[x - 1][y][z], x - 1, y, z);
     }
-    if(y + 1 < numY)
+    if(y + 1 < _numY)
     {
-        recursivo(this->voxeles[x][y + 1][z], x, y + 1, z);
+        recursivo(this->_voxels[x][y + 1][z], x, y + 1, z);
     }
     if(y - 1 > 0)
     {
-        recursivo(this->voxeles[x][y - 1][z], x, y - 1, z);
+        recursivo(this->_voxels[x][y - 1][z], x, y - 1, z);
     }
-    if(z + 1 < numZ)
+    if(z + 1 < _numZ)
     {
-        recursivo(this->voxeles[x][y][z + 1], x, y, z + 1);
+        recursivo(this->_voxels[x][y][z + 1], x, y, z + 1);
     }
     if(z - 1 > 0)
     {
-        recursivo(this->voxeles[x][y][z - 1], x, y, z - 1);
+        recursivo(this->_voxels[x][y][z - 1], x, y, z - 1);
     }
 }
 
 AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
 {
-    VoxelStatus formatin;
+    VoxelStatus status;
     if(gris)
-        formatin = VoxelStatus::OCCUPIED;
+        status = VoxelStatus::OCCUPIED;
     else
-        formatin = VoxelStatus::INNER;
+        status = VoxelStatus::INNER;
 
     std::vector<glm::vec3> vector;
-    Vect3d                 despl(tam[0] / 2, tam[1] / 2, tam[2] / 2);
-    for(int i = 0; i < numX; i++)
+    Vect3d                 despl(_size[0] / 2, _size[1] / 2, _size[2] / 2);
+    for(int i = 0; i < _numX; i++)
     {
-        for(int x = 0; x < numY; x++)
+        for(int x = 0; x < _numY; x++)
         {
-            for(int y = 0; y < numZ; y++)
+            for(int y = 0; y < _numZ; y++)
             {
-                if(this->getVoxeles()[i][x][y]->getStatus() == formatin)
+                if(this->getVoxeles()[i][x][y]->getStatus() == status)
                 {
                     Vect3d centro = this->getVoxeles()[i][x][y]->getMin().add(despl);
                     vector.push_back(glm::vec3(centro.getX(), centro.getY(), centro.getZ()));
@@ -400,7 +400,7 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
         color[i]     = glm::vec3(0, 0, 0);
     }
 
-    AlgGeom::DrawVoxelization* voxelization = new AlgGeom::DrawVoxelization(positions, vector.size(), tam, color);
+    AlgGeom::DrawVoxelization* voxelization = new AlgGeom::DrawVoxelization(positions, vector.size(), _size, color);
 
     // delete positions;
     // delete color;
@@ -421,23 +421,23 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
     Vect3d ray_start = r.getDirection().scalarMul(tMin).add(aux);
     Vect3d ray_end   = r.getDirection().scalarMul(tMax).add(aux);
 
-    size_t       current_X_index = BasicGeometry::max2(1, std::ceil((ray_start.getX() - this->getXMin()) / this->tam.x));
-    const size_t end_X_index     = BasicGeometry::max2(1, std::ceil((ray_end.getX() - this->getXMin()) / this->tam.x));
+    size_t       current_X_index = BasicGeometry::max2(1, std::ceil((ray_start.getX() - this->getXMin()) / this->_size.x));
+    const size_t end_X_index     = BasicGeometry::max2(1, std::ceil((ray_end.getX() - this->getXMin()) / this->_size.x));
     int          stepX;
     double       tDeltaX;
     double       tMaxX;
     if(r.getDirection().getX() > 0.0)
     {
         stepX   = 1;
-        tDeltaX = this->tam[0] / r.getDirection().getX();
-        tMaxX   = tMin + (this->getXMin() + current_X_index * this->tam.x - ray_start.getX()) / r.getDirection().getX();
+        tDeltaX = this->_size[0] / r.getDirection().getX();
+        tMaxX   = tMin + (this->getXMin() + current_X_index * this->_size.x - ray_start.getX()) / r.getDirection().getX();
     }
     else if(r.getDirection().getX() < 0.0)
     {
         stepX                         = -1;
-        tDeltaX                       = this->tam[0] / -r.getDirection().getX();
+        tDeltaX                       = this->_size[0] / -r.getDirection().getX();
         const size_t previous_X_index = current_X_index - 1;
-        tMaxX                         = tMin + (this->getXMin() + previous_X_index * this->tam.x - ray_start.getX()) / r.getDirection().getX();
+        tMaxX                         = tMin + (this->getXMin() + previous_X_index * this->_size.x - ray_start.getX()) / r.getDirection().getX();
     }
     else
     {
@@ -446,23 +446,23 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
         tMaxX   = tMax;
     }
 
-    size_t       current_Y_index = BasicGeometry::max2(1, std::ceil((ray_start.getY() - this->getYMin()) / this->tam.y));
-    const size_t end_Y_index     = BasicGeometry::max2(1, std::ceil((ray_end.getY() - this->getYMin()) / this->tam.y));
+    size_t       current_Y_index = BasicGeometry::max2(1, std::ceil((ray_start.getY() - this->getYMin()) / this->_size.y));
+    const size_t end_Y_index     = BasicGeometry::max2(1, std::ceil((ray_end.getY() - this->getYMin()) / this->_size.y));
     int          stepY;
     double       tDeltaY;
     double       tMaxY;
     if(r.getDirection().getY() > 0.0)
     {
         stepY   = 1;
-        tDeltaY = this->tam[1] / r.getDirection().getY();
-        tMaxY   = tMin + (this->getYMin() + current_Y_index * this->tam.y - ray_start.getY()) / r.getDirection().getY();
+        tDeltaY = this->_size[1] / r.getDirection().getY();
+        tMaxY   = tMin + (this->getYMin() + current_Y_index * this->_size.y - ray_start.getY()) / r.getDirection().getY();
     }
     else if(r.getDirection().getY() < 0.0)
     {
         stepY                         = -1;
-        tDeltaY                       = this->tam[1] / -r.getDirection().getY();
+        tDeltaY                       = this->_size[1] / -r.getDirection().getY();
         const size_t previous_Y_index = current_Y_index - 1;
-        tMaxY                         = tMin + (this->getYMin() + previous_Y_index * this->tam.y - ray_start.getY()) / r.getDirection().getY();
+        tMaxY                         = tMin + (this->getYMin() + previous_Y_index * this->_size.y - ray_start.getY()) / r.getDirection().getY();
     }
     else
     {
@@ -471,23 +471,23 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
         tMaxY   = tMax;
     }
 
-    size_t       current_Z_index = BasicGeometry::max2(1, std::ceil((ray_start.getZ() - this->getZMin()) / this->tam.z));
-    const size_t end_Z_index     = BasicGeometry::max2(1, std::ceil((ray_end.getZ() - this->getZMin()) / this->tam.z));
+    size_t       current_Z_index = BasicGeometry::max2(1, std::ceil((ray_start.getZ() - this->getZMin()) / this->_size.z));
+    const size_t end_Z_index     = BasicGeometry::max2(1, std::ceil((ray_end.getZ() - this->getZMin()) / this->_size.z));
     int          stepZ;
     double       tDeltaZ;
     double       tMaxZ;
     if(r.getDirection().getZ() > 0.0)
     {
         stepZ   = 1;
-        tDeltaZ = this->tam[2] / r.getDirection().getZ();
-        tMaxZ   = tMin + (this->getZMin() + current_Z_index * this->tam.z - ray_start.getZ()) / r.getDirection().getZ();
+        tDeltaZ = this->_size[2] / r.getDirection().getZ();
+        tMaxZ   = tMin + (this->getZMin() + current_Z_index * this->_size.z - ray_start.getZ()) / r.getDirection().getZ();
     }
     else if(r.getDirection().getZ() < 0.0)
     {
         stepZ                         = -1;
-        tDeltaZ                       = this->tam[2] / -r.getDirection().getZ();
+        tDeltaZ                       = this->_size[2] / -r.getDirection().getZ();
         const size_t previous_Z_index = current_Z_index - 1;
-        tMaxZ                         = tMin + (this->getZMin() + previous_Z_index * this->tam.z - ray_start.getZ()) / r.getDirection().getZ();
+        tMaxZ                         = tMin + (this->getZMin() + previous_Z_index * this->_size.z - ray_start.getZ()) / r.getDirection().getZ();
     }
     else
     {
@@ -495,10 +495,10 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
         tDeltaZ = tMax;
         tMaxZ   = tMax;
     }
-    while(glm::all(glm::greaterThanEqual(glm::vec3(current_X_index, current_Y_index, current_Z_index), glm::vec3(1, 1, 1))) && glm::all(glm::lessThanEqual(glm::vec3(current_X_index, current_Y_index, current_Z_index), glm::vec3(numX, numY, numZ))))
+    while(glm::all(glm::greaterThanEqual(glm::vec3(current_X_index, current_Y_index, current_Z_index), glm::vec3(1, 1, 1))) && glm::all(glm::lessThanEqual(glm::vec3(current_X_index, current_Y_index, current_Z_index), glm::vec3(_numX, _numY, _numZ))))
     {
         /*while (current_X_index != end_X_index && current_Y_index != end_Y_index && current_Z_index != end_Z_index) {*/
-        v.push_back(this->voxeles[current_X_index - 1][current_Y_index - 1][current_Z_index - 1]);
+        v.push_back(this->_voxels[current_X_index - 1][current_Y_index - 1][current_Z_index - 1]);
         if(tMaxX < tMaxY && tMaxX < tMaxZ)
         {
             // X-axis traversal.
@@ -588,9 +588,9 @@ Voxelization* Voxelization::AND(Voxelization& vox)
 
     res = new Voxelization(BasicGeometry::max2(this->getXMax(), vox.getXMax()), BasicGeometry::max2(this->getYMax(), vox.getYMax()),
                            BasicGeometry::max2(this->getZMax(), vox.getZMax()), BasicGeometry::min2(this->getXMin(), vox.getXMin()),
-                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(tam.x));
+                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(_size.x));
 
-    num_voxeles = glm::vec3(res->numX, res->numY, res->numZ);
+    num_voxeles = glm::vec3(res->_numX, res->_numY, res->_numZ);
     int xV, yV, zV;
     int x2, y2, z2;
     for(int i = 0; i < num_voxeles.x; i++)
@@ -634,9 +634,9 @@ Voxelization* Voxelization::OR(Voxelization& vox)
 
     res = new Voxelization(BasicGeometry::max2(this->getXMax(), vox.getXMax()), BasicGeometry::max2(this->getYMax(), vox.getYMax()),
                            BasicGeometry::max2(this->getZMax(), vox.getZMax()), BasicGeometry::min2(this->getXMin(), vox.getXMin()),
-                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(tam.x));
+                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(_size.x));
 
-    num_voxeles = glm::vec3(res->numX, res->numY, res->numZ);
+    num_voxeles = glm::vec3(res->_numX, res->_numY, res->_numZ);
 
     int xV, yV, zV;
     int x2, y2, z2;
@@ -694,9 +694,9 @@ Voxelization* Voxelization::XOR(Voxelization& vox)
 
     res = new Voxelization(BasicGeometry::max2(this->getXMax(), vox.getXMax()), BasicGeometry::max2(this->getYMax(), vox.getYMax()),
                            BasicGeometry::max2(this->getZMax(), vox.getZMax()), BasicGeometry::min2(this->getXMin(), vox.getXMin()),
-                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(tam.x));
+                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(_size.x));
 
-    num_voxeles = glm::vec3(res->numX, res->numY, res->numZ);
+    num_voxeles = glm::vec3(res->_numX, res->_numY, res->_numZ);
 
     int xV, yV, zV;
     int x2, y2, z2;

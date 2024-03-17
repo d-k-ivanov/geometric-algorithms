@@ -10,10 +10,11 @@ class Voxelization
 {
 
 private:
-    glm::vec3                                     tam;
-    std::vector<std::vector<std::vector<Voxel*>>> voxeles;
-    double                                        xmax, ymax, zmax, xmin, ymin, zmin;
-    int                                           numX, numY, numZ;
+    glm::vec3                                     _size;
+    std::vector<std::vector<std::vector<Voxel*>>> _voxels;
+    double                                        _minX, _minY, _minZ;
+    double                                        _maxX, _maxY, _maxZ;
+    int                                           _numX, _numY, _numZ;
 
     bool comprobarPertenencia(Voxel* v, Voxelization* voxelizacion, int& x, int& y, int& z);
 
@@ -29,7 +30,7 @@ public:
     void                                          lineaBarrido(std::vector<Triangle3d> triangulos);
     static bool                                   comp(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
     std::vector<Voxel*>                           obtenerVoxeles(AABB aabb_ti);
-    std::vector<std::vector<std::vector<Voxel*>>> getVoxeles() { return voxeles; }
+    std::vector<std::vector<std::vector<Voxel*>>> getVoxeles() { return _voxels; }
 
     bool rayTraversal(Ray3d& r, std::vector<Voxel*>& v);
     bool rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1);
@@ -38,13 +39,13 @@ public:
 
     AlgGeom::DrawVoxelization* getRenderingObject(bool gris);
 
-    double    getXMax() const { return xmax; }
-    double    getYMax() const { return ymax; }
-    double    getZMax() const { return zmax; }
-    double    getXMin() const { return xmin; }
-    double    getYMin() const { return ymin; }
-    double    getZMin() const { return zmin; }
-    glm::vec3 getTam() const { return tam; }
+    double    getXMax() const { return _maxX; }
+    double    getYMax() const { return _maxY; }
+    double    getZMax() const { return _maxZ; }
+    double    getXMin() const { return _minX; }
+    double    getYMin() const { return _minY; }
+    double    getZMin() const { return _minZ; }
+    glm::vec3 getTam() const { return _size; }
 
     Voxelization* AND(Voxelization& v);
     Voxelization* OR(Voxelization& v);
