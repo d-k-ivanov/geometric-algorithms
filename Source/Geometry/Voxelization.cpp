@@ -377,7 +377,7 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
         status = VoxelStatus::INNER;
 
     std::vector<glm::vec3> vector;
-    Vect3d                 despl(_size[0] / 2, _size[1] / 2, _size[2] / 2);
+    const Vect3d           displace(_size[0] / 2, _size[1] / 2, _size[2] / 2);
     for(int i = 0; i < _numX; i++)
     {
         for(int x = 0; x < _numY; x++)
@@ -386,7 +386,7 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
             {
                 if(this->getVoxeles()[i][x][y]->getStatus() == status)
                 {
-                    Vect3d centro = this->getVoxeles()[i][x][y]->getMin().add(despl);
+                    Vect3d centro = this->getVoxeles()[i][x][y]->getMin().add(displace);
                     vector.push_back(glm::vec3(centro.getX(), centro.getY(), centro.getZ()));
                 }
             }
