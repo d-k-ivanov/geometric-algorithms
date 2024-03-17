@@ -21,16 +21,16 @@ private:
 public:
     Voxelization();
     Voxelization(const Voxelization& voxel);
-    Voxelization(double _xmax, double _ymax, double _zmax, double _xmin, double _ymin, double _zmin, glm::vec3 _tam);
+    Voxelization(double maxX, double maxY, double maxZ, double minX, double minY, double minZ, glm::vec3 size);
     Voxelization(TriangleModel* model, glm::vec3 size, int algorithm);
-    virtual ~Voxelization();
+    virtual ~Voxelization() = default;
 
     Voxel*                                        getVoxel(double x, double y, double z);
     void                                          add(Vect3d data);
     void                                          lineSweep(std::vector<Triangle3d> triangulos);
     static bool                                   comp(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
     std::vector<Voxel*>                           getVoxels(AABB aabb_ti);
-    std::vector<std::vector<std::vector<Voxel*>>> getVoxels() { return _voxels; }
+    std::vector<std::vector<std::vector<Voxel*>>> getVoxels();
 
     bool rayTraversal(Ray3d& r, std::vector<Voxel*>& v);
     bool rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1);

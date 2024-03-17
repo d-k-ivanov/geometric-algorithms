@@ -107,15 +107,15 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
     this->flood();
 }
 
-Voxelization::Voxelization(double _xmax, double _ymax, double _zmax, double _xmin, double _ymin, double _zmin, glm::vec3 _tam)
+Voxelization::Voxelization(double maxX, double maxY, double maxZ, double minX, double minY, double minZ, glm::vec3 size)
 {
-    _size = _tam;
-    _maxX = _xmax;
-    _maxY = _ymax;
-    _maxZ = _zmax;
-    _minX = _xmin;
-    _minY = _ymin;
-    _minZ = _zmin;
+    _size = size;
+    _maxX = maxX;
+    _maxY = maxY;
+    _maxZ = maxZ;
+    _minX = minX;
+    _minY = minY;
+    _minZ = minZ;
     _numX = (_maxX - _minX) / _size[0] + 1;
     _numY = (_maxY - _minY) / _size[1] + 1;
     _numZ = (_maxZ - _minZ) / _size[2] + 1;
@@ -148,10 +148,16 @@ Voxelization::Voxelization(double _xmax, double _ymax, double _zmax, double _xmi
 }
 
 Voxelization::Voxelization(const Voxelization& voxel)
-{
-}
-
-Voxelization::~Voxelization()
+    : _size(voxel._size)
+    , _minX(voxel._minX)
+    , _minY(voxel._minY)
+    , _minZ(voxel._minZ)
+    , _maxX(voxel._maxX)
+    , _maxY(voxel._maxY)
+    , _maxZ(voxel._maxZ)
+    , _numX(voxel._numX)
+    , _numY(voxel._numY)
+    , _numZ(voxel._numZ)
 {
 }
 
@@ -300,6 +306,11 @@ std::vector<Voxel*> Voxelization::getVoxels(AABB aabb_ti)
     }
 
     return res;
+}
+
+std::vector<std::vector<std::vector<Voxel*>>> Voxelization::getVoxels()
+{
+    return _voxels;
 }
 
 bool Voxelization::isInVoxel(Voxel* voxel, Vect3d v)
