@@ -163,46 +163,43 @@ Voxelization::Voxelization(const Voxelization& voxel)
 
 Voxel* Voxelization::getVoxel(double x, double y, double z)
 {
-    int    i   = int(glm::abs(x / _size[0])) % _numX;
-    int    j   = int(glm::abs(y / _size[1])) % _numY;
-    int    k   = int(glm::abs(z / _size[2])) % _numZ;
-    Voxel* res = _voxels[i][j][k];
+    const int i   = static_cast<int>(glm::abs(x / _size[0])) % _numX;
+    const int j   = static_cast<int>(glm::abs(y / _size[1])) % _numY;
+    const int k   = static_cast<int>(glm::abs(z / _size[2])) % _numZ;
+    Voxel*    res = _voxels[i][j][k];
 
     return res;
 }
 
-void Voxelization::add(Vect3d data)
+void Voxelization::add(const Vect3d& data)
 {
-    double x = data.getX();
-    double y = data.getY();
-    double z = data.getZ();
+    const double x = data.getX();
+    const double y = data.getY();
+    const double z = data.getZ();
 
     Voxel* v = getVoxel(x, y, z);
     v->add(data);
 }
 
-bool Voxelization::comp(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2)
+bool Voxelization::compare(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2)
 {
-    std::pair<Vect3d, int> aux  = v1;
-    std::pair<Vect3d, int> aux2 = v2;
-
-    return aux.first.getY() < aux2.first.getY();
+    return v1.first.getY() < v2.first.getY();
 }
 
-void Voxelization::lineSweep(std::vector<Triangle3d> triangulos)
+void Voxelization::lineSweep(const std::vector<Triangle3d>& triangles) const
 {
 
     std::vector<std::pair<Vect3d, int>> vertices;
 
-    for(int i = 0; i < triangulos.size(); i++)
+    for(int i = 0; i < triangles.size(); i++)
     {
-        Triangle3d triangulo = triangulos[i];
-        vertices.push_back(std::pair(triangulo.getA(), i));
-        vertices.push_back(std::pair(triangulo.getB(), i));
-        vertices.push_back(std::pair(triangulo.getC(), i));
+        Triangle3d triangle = triangles[i];
+        vertices.emplace_back(triangle.getA(), i);
+        vertices.emplace_back(triangle.getB(), i);
+        vertices.emplace_back(triangle.getC(), i);
     }
 
-    std::sort(vertices.begin(), vertices.end(), &comp);
+    std::sort(vertices.begin(), vertices.end(), &compare);
 
     std::map<int, int>           triangulos_linea;
     std::vector<Voxel*>          voxeles_linea;
@@ -210,8 +207,8 @@ void Voxelization::lineSweep(std::vector<Triangle3d> triangulos)
     int                          indice = 0;
     for(int i = 0; i < _numY; i++)
     {
-        double nivelMaxY = this->_voxels[0][i][0]->getMax().getY();
-        double nivelMinY = this->_voxels[0][i][0]->getMin().getY();
+        const double nivelMaxY = this->_voxels[0][i][0]->getMax().getY();
+        const double nivelMinY = this->_voxels[0][i][0]->getMin().getY();
         for(int x = 0; x < _numX; x++)
         {
             for(int y = 0; y < _numZ; y++)
@@ -243,7 +240,7 @@ void Voxelization::lineSweep(std::vector<Triangle3d> triangulos)
         {
             for(it = triangulos_linea.begin(); it != triangulos_linea.end(); ++it)
             {
-                if(voxeles_linea[j]->bruteForce(triangulos[it->first]))
+                if(voxeles_linea[j]->bruteForce(triangles[it->first]))
                 {
                     voxeles_linea[j]->setFormato(VoxelStatus::OCCUPIED);
                     break;
@@ -313,9 +310,14 @@ std::vector<std::vector<std::vector<Voxel*>>> Voxelization::getVoxels()
     return _voxels;
 }
 
-bool Voxelization::isInVoxel(Voxel* voxel, Vect3d v)
+bool Voxelization::isInVoxel(Voxel* voxel, const Vect3d& vertice) const
 {
-    return v.getX() >= voxel->getMin().getX() && v.getX() <= voxel->getMax().getX() && v.getY() >= voxel->getMin().getY() && v.getY() <= voxel->getMax().getY() && v.getZ() >= voxel->getMin().getZ() && v.getZ() <= voxel->getMax().getZ();
+    return vertice.getX() >= voxel->getMin().getX()
+        && vertice.getX() <= voxel->getMax().getX()
+        && vertice.getY() >= voxel->getMin().getY()
+        && vertice.getY() <= voxel->getMax().getY()
+        && vertice.getZ() >= voxel->getMin().getZ()
+        && vertice.getZ() <= voxel->getMax().getZ();
 }
 
 void Voxelization::flood()

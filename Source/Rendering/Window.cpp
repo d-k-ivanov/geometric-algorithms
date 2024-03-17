@@ -13,13 +13,15 @@ AlgGeom::Window::Window()
 
 void AlgGeom::Window::releaseResources()
 {
-    glfwDestroyWindow(_window);    // We close and destroy the application window.
+    try
+    {
+        glfwDestroyWindow(_window);    // We close and destroy the application window.
+    }
+    catch(const std::exception&)  // NOLINT(bugprone-empty-catch)
+    {
+    }
     _window = nullptr;
     glfwTerminate();    // We freed up the resources that GLFW was occupying.
-}
-
-AlgGeom::Window::~Window()
-{
 }
 
 void AlgGeom::Window::init(const std::string& title, const uint16_t width, const uint16_t height)

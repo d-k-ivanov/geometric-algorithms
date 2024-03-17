@@ -26,16 +26,16 @@ public:
     virtual ~Voxelization() = default;
 
     Voxel*                                        getVoxel(double x, double y, double z);
-    void                                          add(Vect3d data);
-    void                                          lineSweep(std::vector<Triangle3d> triangulos);
-    static bool                                   comp(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
+    void                                          add(const Vect3d& data);
+    void                                          lineSweep(const std::vector<Triangle3d>& triangles) const;
+    static bool                                   compare(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
     std::vector<Voxel*>                           getVoxels(AABB aabb_ti);
     std::vector<std::vector<std::vector<Voxel*>>> getVoxels();
 
     bool rayTraversal(Ray3d& r, std::vector<Voxel*>& v);
     bool rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1);
 
-    bool isInVoxel(Voxel* v, Vect3d vertice);
+    bool isInVoxel(Voxel* voxel, const Vect3d& vertice) const;
 
     AlgGeom::DrawVoxelization* getRenderingObject(bool gris);
 
