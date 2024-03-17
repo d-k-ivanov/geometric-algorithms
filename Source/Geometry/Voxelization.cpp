@@ -72,7 +72,7 @@ Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 _tam, int tipo)
                     {
                         for(int j = 0; j < aux1; j++)
                         {
-                            if(voxeles[i][x][y]->fuerzaBruta(triangulos[j]))
+                            if(voxeles[i][x][y]->bruteForce(triangulos[j]))
                             {
                                 voxeles[i][x][y]->setFormato(VoxelStatus::GRIS);
                                 j = aux1;
@@ -93,7 +93,7 @@ Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 _tam, int tipo)
                 std::vector<Voxel*> voxeles_seleccionados = obtenerVoxeles(aabb_ti);
                 for(int i = 0; i < voxeles_seleccionados.size(); i++)
                 {
-                    if(voxeles_seleccionados[i]->fuerzaBruta(modelo->getFaces()[j]))
+                    if(voxeles_seleccionados[i]->bruteForce(modelo->getFaces()[j]))
                     {
                         voxeles_seleccionados[i]->setFormato(VoxelStatus::GRIS);
                     }
@@ -169,7 +169,7 @@ void Voxelization::insertar(Vect3d dato)
     double z = dato.getZ();
 
     Voxel* v = obtenerVoxel(x, y, z);
-    v->inserta(dato);
+    v->add(dato);
 }
 
 bool Voxelization::comp(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2)
@@ -234,7 +234,7 @@ void Voxelization::lineaBarrido(std::vector<Triangle3d> triangulos)
         {
             for(it = triangulos_linea.begin(); it != triangulos_linea.end(); ++it)
             {
-                if(voxeles_linea[j]->fuerzaBruta(triangulos[it->first]))
+                if(voxeles_linea[j]->bruteForce(triangulos[it->first]))
                 {
                     voxeles_linea[j]->setFormato(VoxelStatus::GRIS);
                     break;
@@ -278,7 +278,7 @@ std::vector<Voxel*> Voxelization::obtenerVoxeles(AABB aabb_ti)
             for(int y = 0; y < numZ; y++)
             {
 
-                if(voxeles[i][x][y]->getFormato() != VoxelStatus::GRIS)
+                if(voxeles[i][x][y]->getStatus() != VoxelStatus::GRIS)
                 {
                     if(insideVoxel(voxeles[i][x][y], e1) || insideVoxel(voxeles[i][x][y], e2) || insideVoxel(voxeles[i][x][y], e3) || insideVoxel(voxeles[i][x][y], e4)
                        || insideVoxel(voxeles[i][x][y], e5) || insideVoxel(voxeles[i][x][y], e6) || insideVoxel(voxeles[i][x][y], e7) || insideVoxel(voxeles[i][x][y], e8))
@@ -311,9 +311,9 @@ void Voxelization::flood()
     centralY = numY / 2;
     centralZ = numZ / 2;
 
-    if(this->voxeles[centralX][centralY][centralZ]->getFormato() == VoxelStatus::GRIS)
+    if(this->voxeles[centralX][centralY][centralZ]->getStatus() == VoxelStatus::GRIS)
     {
-        while(this->voxeles[centralX][centralY][centralZ]->getFormato() == VoxelStatus::GRIS)
+        while(this->voxeles[centralX][centralY][centralZ]->getStatus() == VoxelStatus::GRIS)
         {
             centralX++;
         }
@@ -325,7 +325,7 @@ void Voxelization::flood()
         {
             for(int y = 0; y < numZ; y++)
             {
-                if(this->voxeles[i][x][y]->getFormato() == VoxelStatus::NP)
+                if(this->voxeles[i][x][y]->getStatus() == VoxelStatus::NP)
                 {
                     this->voxeles[i][x][y]->setFormato(VoxelStatus::BLANCO);
                 }
@@ -336,7 +336,7 @@ void Voxelization::flood()
 
 void Voxelization::recursivo(Voxel* v, int x, int y, int z)
 {
-    if(v->getFormato() == VoxelStatus::GRIS || v->getFormato() == VoxelStatus::NEGRO)
+    if(v->getStatus() == VoxelStatus::GRIS || v->getStatus() == VoxelStatus::NEGRO)
     {
         return;
     }
@@ -377,14 +377,14 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
         formatin = VoxelStatus::NEGRO;
 
     std::vector<glm::vec3> vector;
-    Vect3d            despl(tam[0] / 2, tam[1] / 2, tam[2] / 2);
+    Vect3d                 despl(tam[0] / 2, tam[1] / 2, tam[2] / 2);
     for(int i = 0; i < numX; i++)
     {
         for(int x = 0; x < numY; x++)
         {
             for(int y = 0; y < numZ; y++)
             {
-                if(this->getVoxeles()[i][x][y]->getFormato() == formatin)
+                if(this->getVoxeles()[i][x][y]->getStatus() == formatin)
                 {
                     Vect3d centro = this->getVoxeles()[i][x][y]->getMin().add(despl);
                     vector.push_back(glm::vec3(centro.getX(), centro.getY(), centro.getZ()));
@@ -409,8 +409,8 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
 
 bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
 {
-    double      tMin;
-    double      tMax;
+    double     tMin;
+    double     tMax;
     const bool ray_intersects_grid = rayBoxIntersection(r, tMin, tMax, 0, 1);
     if(!ray_intersects_grid)
         return 0;
@@ -424,8 +424,8 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
     size_t       current_X_index = BasicGeometry::max2(1, std::ceil((ray_start.getX() - this->getXMin()) / this->tam.x));
     const size_t end_X_index     = BasicGeometry::max2(1, std::ceil((ray_end.getX() - this->getXMin()) / this->tam.x));
     int          stepX;
-    double        tDeltaX;
-    double        tMaxX;
+    double       tDeltaX;
+    double       tMaxX;
     if(r.getDirection().getX() > 0.0)
     {
         stepX   = 1;
@@ -449,8 +449,8 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
     size_t       current_Y_index = BasicGeometry::max2(1, std::ceil((ray_start.getY() - this->getYMin()) / this->tam.y));
     const size_t end_Y_index     = BasicGeometry::max2(1, std::ceil((ray_end.getY() - this->getYMin()) / this->tam.y));
     int          stepY;
-    double        tDeltaY;
-    double        tMaxY;
+    double       tDeltaY;
+    double       tMaxY;
     if(r.getDirection().getY() > 0.0)
     {
         stepY   = 1;
@@ -474,8 +474,8 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
     size_t       current_Z_index = BasicGeometry::max2(1, std::ceil((ray_start.getZ() - this->getZMin()) / this->tam.z));
     const size_t end_Z_index     = BasicGeometry::max2(1, std::ceil((ray_end.getZ() - this->getZMin()) / this->tam.z));
     int          stepZ;
-    double        tDeltaZ;
-    double        tMaxZ;
+    double       tDeltaZ;
+    double       tMaxZ;
     if(r.getDirection().getZ() > 0.0)
     {
         stepZ   = 1;
@@ -603,7 +603,7 @@ Voxelization* Voxelization::AND(Voxelization& vox)
                 {
                     if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != VoxelStatus::BLANCO && vox.getVoxeles()[x2][y2][z2]->getFormato() != VoxelStatus::BLANCO)
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO && vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::BLANCO)
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
                         else
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
@@ -650,14 +650,14 @@ Voxelization* Voxelization::OR(Voxelization& vox)
                 {
                     if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != VoxelStatus::BLANCO || vox.getVoxeles()[x2][y2][z2]->getFormato() != VoxelStatus::BLANCO)
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO || vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::BLANCO)
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
                         else
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
                     }
                     else
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != VoxelStatus::BLANCO)
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO)
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
                         else
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
@@ -667,7 +667,7 @@ Voxelization* Voxelization::OR(Voxelization& vox)
                 {
                     if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(vox.getVoxeles()[x2][y2][z2]->getFormato() != VoxelStatus::BLANCO)
+                        if(vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::BLANCO)
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
                         else
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
@@ -710,14 +710,14 @@ Voxelization* Voxelization::XOR(Voxelization& vox)
                 {
                     if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != VoxelStatus::BLANCO && vox.getVoxeles()[x2][y2][z2]->getFormato() == VoxelStatus::BLANCO)
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO && vox.getVoxeles()[x2][y2][z2]->getStatus() == VoxelStatus::BLANCO)
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
                         else
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
                     }
                     else
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != VoxelStatus::BLANCO)
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO)
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
                         else
                             res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);

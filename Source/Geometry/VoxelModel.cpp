@@ -19,22 +19,22 @@ Voxel::Voxel(Vect3d minPoint, glm::vec3 size)
     this->_size = size;
 }
 
-Voxel::Voxel(const Voxel& v)
+Voxel::Voxel(const Voxel& voxel)
 {
-    _status = v._status;
-    _points = v._points;
+    _status = voxel._status;
+    _points = voxel._points;
 }
 
-void Voxel::inserta(Vect3d punto)
+void Voxel::add(Vect3d point)
 {
-    _points.insert(_points.end(), punto);
+    _points.insert(_points.end(), point);
 }
 
-bool Voxel::busca(Vect3d punto)
+bool Voxel::find(Vect3d point)
 {
     for(int i = 0; i < _points.size(); i++)
     {
-        if(_points[i] == punto)
+        if(_points[i] == point)
         {
             return true;
         }
@@ -42,12 +42,12 @@ bool Voxel::busca(Vect3d punto)
     return false;
 }
 
-bool Voxel::borra(Vect3d punto)
+bool Voxel::remove(Vect3d point)
 {
     std::vector<Vect3d>::iterator it = _points.begin();
     while(it != _points.end())
     {
-        if(*it == punto)
+        if(*it == point)
         {
             _points.erase(it);
             return true;
@@ -56,7 +56,22 @@ bool Voxel::borra(Vect3d punto)
     return false;
 }
 
-bool Voxel::fuerzaBruta(Triangle3d t)
+Vect3d Voxel::getMin()
+{
+    return this->_min;
+}
+
+Vect3d Voxel::getMax()
+{
+    return this->_max;
+}
+
+VoxelStatus Voxel::getStatus() const
+{
+    return this->_status;
+}
+
+bool Voxel::bruteForce(Triangle3d t)
 {
     std::vector<Vect3d> vertices;
     vertices.push_back(t.getA());
