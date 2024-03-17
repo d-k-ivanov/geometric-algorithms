@@ -2,7 +2,7 @@
 
 #include "Ray3d.h"
 #include "TriangleModel.h"
-#include "Voxel.h"
+#include "VoxelModel.h"
 
 #include "Rendering/DrawVoxelization.h"
 

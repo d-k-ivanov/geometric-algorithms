@@ -1,4 +1,4 @@
-#include "Voxel.h"
+#include "VoxelModel.h"
 
 #include "BasicGeometry.h"
 
