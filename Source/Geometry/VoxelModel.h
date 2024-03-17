@@ -42,7 +42,7 @@ public:
     bool AABBTri(Triangle3d triangulo);
 
     bool planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 maxBox) const;
-    bool triBoxOverlap(Vect3d centro, glm::vec3 tam, std::vector<Vect3d> vertices);
+    bool triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices);
 
     bool axisTestX(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad);
     bool axisTestY(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad);

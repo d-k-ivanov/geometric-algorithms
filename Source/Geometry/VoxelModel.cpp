@@ -89,46 +89,46 @@ bool Voxel::bruteForce(Triangle3d t)
 bool Voxel::planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 maxBox) const
 {
     Vect3d vmin, vmax, v;
-    v = vert;    // -NJMP-
+    v = vert;
 
     if(normal.getX() > 0.0f)
     {
-        vmin.setX(-maxBox[0] - v.getX());    // -NJMP-
-        vmax.setX(maxBox[0] - v.getX());     // -NJMP-
+        vmin.setX(-maxBox[0] - v.getX());
+        vmax.setX(maxBox[0] - v.getX());
     }
     else
     {
-        vmin.setX(maxBox[0] - v.getX());     // -NJMP-
-        vmax.setX(-maxBox[0] - v.getX());    // -NJMP-
+        vmin.setX(maxBox[0] - v.getX());
+        vmax.setX(-maxBox[0] - v.getX());
     }
 
     if(normal.getY() > 0.0f)
     {
-        vmin.setY(-maxBox[1] - v.getY());    // -NJMP-
-        vmax.setY(maxBox[1] - v.getY());     // -NJMP-
+        vmin.setY(-maxBox[1] - v.getY());
+        vmax.setY(maxBox[1] - v.getY());
     }
     else
     {
-        vmin.setY(maxBox[1] - v.getY());     // -NJMP-
-        vmax.setY(-maxBox[1] - v.getY());    // -NJMP-
+        vmin.setY(maxBox[1] - v.getY());
+        vmax.setY(-maxBox[1] - v.getY());
     }
 
     if(normal.getZ() > 0.0f)
     {
-        vmin.setZ(-maxBox[2] - v.getZ());    // -NJMP-
-        vmax.setZ(maxBox[2] - v.getZ());     // -NJMP-
+        vmin.setZ(-maxBox[2] - v.getZ());
+        vmax.setZ(maxBox[2] - v.getZ());
     }
     else
     {
-        vmin.setZ(maxBox[2] - v.getZ());     // -NJMP-
-        vmax.setZ(-maxBox[2] - v.getZ());    // -NJMP-
+        vmin.setZ(maxBox[2] - v.getZ());
+        vmax.setZ(-maxBox[2] - v.getZ());
     }
 
     if(normal.dot(vmin) > 0.0f)
-        return 0;    // -NJMP-
+        return 0;
 
     if(normal.dot(vmax) >= 0.0f)
-        return 1;    // -NJMP-
+        return 1;
 
     return 0;
 }
@@ -202,7 +202,7 @@ bool Voxel::axisTestZ(double& a, double& b, float& fa, float& fb, float& p0, flo
         return 0;
 }
 
-bool Voxel::triBoxOverlap(Vect3d centro, glm::vec3 tam, std::vector<Vect3d> vertices)
+bool Voxel::triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices)
 
 {
 
@@ -225,9 +225,9 @@ bool Voxel::triBoxOverlap(Vect3d centro, glm::vec3 tam, std::vector<Vect3d> vert
     /* This is the fastest branch on Sun */
 
     /* move everything so that the boxcenter is in (0,0,0) */
-    v0 = vertices[0].sub(centro);
-    v1 = vertices[1].sub(centro);
-    v2 = vertices[2].sub(centro);
+    v0 = vertices[0].sub(center);
+    v1 = vertices[1].sub(center);
+    v2 = vertices[2].sub(center);
 
     /* compute triangle edges */
     e0 = v1.sub(v0);
@@ -245,9 +245,9 @@ bool Voxel::triBoxOverlap(Vect3d centro, glm::vec3 tam, std::vector<Vect3d> vert
     double aux2 = e0.getY();
     double aux3 = e0.getX();
 
-    axisTestX(aux, aux2, fez, fey, p0, p2, v0, v2, tam, min, max, rad);
-    axisTestY(aux, aux3, fez, fex, p0, p2, v0, v2, tam, min, max, rad);
-    axisTestZ(aux2, aux3, fey, fez, p2, p1, v1, v2, tam, min, max, rad);
+    axisTestX(aux, aux2, fez, fey, p0, p2, v0, v2, size, min, max, rad);
+    axisTestY(aux, aux3, fez, fex, p0, p2, v0, v2, size, min, max, rad);
+    axisTestZ(aux2, aux3, fey, fez, p2, p1, v1, v2, size, min, max, rad);
 
     fex = glm::abs(e1.getX());
     fey = glm::abs(e1.getY());
@@ -257,9 +257,9 @@ bool Voxel::triBoxOverlap(Vect3d centro, glm::vec3 tam, std::vector<Vect3d> vert
     aux2 = e1.getY();
     aux3 = e1.getX();
 
-    axisTestX(aux, aux2, fez, fey, p0, p2, v0, v2, tam, min, max, rad);
-    axisTestY(aux, aux3, fez, fex, p0, p2, v0, v2, tam, min, max, rad);
-    axisTestZ(aux2, aux3, fey, fez, p0, p1, v0, v1, tam, min, max, rad);
+    axisTestX(aux, aux2, fez, fey, p0, p2, v0, v2, size, min, max, rad);
+    axisTestY(aux, aux3, fez, fex, p0, p2, v0, v2, size, min, max, rad);
+    axisTestZ(aux2, aux3, fey, fez, p0, p1, v0, v1, size, min, max, rad);
 
     fex = glm::abs(e2.getX());
     fey = glm::abs(e2.getY());
@@ -269,32 +269,28 @@ bool Voxel::triBoxOverlap(Vect3d centro, glm::vec3 tam, std::vector<Vect3d> vert
     aux2 = e2.getY();
     aux3 = e2.getX();
 
-    axisTestX(aux, aux2, fez, fey, p0, p1, v0, v1, tam, min, max, rad);
-    axisTestY(aux, aux3, fez, fex, p0, p1, v0, v1, tam, min, max, rad);
-    axisTestZ(aux2, aux3, fey, fez, p2, p1, v1, v2, tam, min, max, rad);
+    axisTestX(aux, aux2, fez, fey, p0, p1, v0, v1, size, min, max, rad);
+    axisTestY(aux, aux3, fez, fex, p0, p1, v0, v1, size, min, max, rad);
+    axisTestZ(aux2, aux3, fey, fez, p2, p1, v1, v2, size, min, max, rad);
 
     /* Bullet 1: */
-
     /*  first test overlap in the {x,y,z}-directions */
-
     /*  find min, max of the triangle each direction, and test for overlap in */
-
     /*  that direction -- this is equivalent to testing a minimal AABB around */
-
     /*  the triangle against the AABB */
 
     /* test in X-direction */
     min = BasicGeometry::min3(v0.getX(), v1.getX(), v2.getX());
     max = BasicGeometry::max3(v0.getX(), v1.getX(), v2.getX());
 
-    if(min > tam[0] || max < -tam[0])
+    if(min > size[0] || max < -size[0])
         return 0;
 
     /* test in Y-direction */
     min = BasicGeometry::min3(v0.getY(), v1.getY(), v2.getY());
     max = BasicGeometry::max3(v0.getY(), v1.getY(), v2.getY());
 
-    if(min > tam[1] || max < -tam[1])
+    if(min > size[1] || max < -size[1])
         return 0;
 
     /* test in Z-direction */
@@ -302,7 +298,7 @@ bool Voxel::triBoxOverlap(Vect3d centro, glm::vec3 tam, std::vector<Vect3d> vert
     min = BasicGeometry::min3(v0.getZ(), v1.getZ(), v2.getZ());
     max = BasicGeometry::max3(v0.getZ(), v1.getZ(), v2.getZ());
 
-    if(min > tam[2] || max < -tam[2])
+    if(min > size[2] || max < -size[2])
         return 0;
 
     /* Bullet 2: */
@@ -310,9 +306,7 @@ bool Voxel::triBoxOverlap(Vect3d centro, glm::vec3 tam, std::vector<Vect3d> vert
     /*  compute plane equation of triangle: normal*x+d=0 */
     normal = e0.xProduct(e1);
 
-    // -NJMP- (line removed here)
-
-    if(!planeBoxOverlap(normal, v0, tam))
+    if(!planeBoxOverlap(normal, v0, size))
         return 0;    // -NJMP-
 
     return 1; /* box and triangle overlaps */
