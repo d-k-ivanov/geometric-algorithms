@@ -1,382 +1,760 @@
 #include "Voxelization.h"
 
-#include "Utils/RandomUtilities.h"
+#include "Utils/ChronoUtilities.h"
 
-Voxelization::Voxelization(TriangleModel* model, const glm::vec3& voxelSize)
-    : _model(model)
-    , _voxelSize(voxelSize)
+#include <algorithm>
+#include <map>
+#include <set>
+
+Voxelization::Voxelization()
+    : tam()
+    , xmax(0)
+    , ymax(0)
+    , zmax(0)
+    , xmin(0)
+    , ymin(0)
+    , zmin(0)
+    , numX(0)
+    , numY(0)
+    , numZ(0)
 {
-    AABB      aabb     = model->getAABB();
-    glm::vec3 aabbSize = aabb.getSize().toGlmVec3();
-    _splits            = glm::ceil(aabbSize / voxelSize);
-    _min               = aabb.getCenter().toGlmVec3() - glm::vec3(_splits) / glm::vec3(2.0f) * _voxelSize;
-    _max               = aabb.getCenter().toGlmVec3() + glm::vec3(_splits) / glm::vec3(2.0f) * _voxelSize;
-    _aabb              = AABB(Vect3d(_min.x, _min.y, _min.z), Vect3d(_max.x, _max.y, _max.z));
+}
 
-    _voxel = new Voxel**[_splits.x];
-    for(unsigned x = 0; x < _splits.x; ++x)
+Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 _tam, int tipo)
+{
+    tam              = _tam;
+    AABB aabb_modelo = modelo->getAABB();
+    xmax             = aabb_modelo.getMax().getX();
+    ymax             = aabb_modelo.getMax().getY();
+    zmax             = aabb_modelo.getMax().getZ();
+    xmin             = aabb_modelo.getMin().getX();
+    ymin             = aabb_modelo.getMin().getY();
+    zmin             = aabb_modelo.getMin().getZ();
+    numX             = ((xmax - xmin) / tam[0]) + 1;
+    numY             = ((ymax - ymin) / tam[1]) + 1;
+    numZ             = ((zmax - zmin) / tam[2]) + 1;
+
+    double auxX, auxY, auxZ;
+    auxX = xmin;
+    auxY = ymin;
+    auxZ = zmin;
+    for(int i = 0; i < numX; i++)
     {
-        _voxel[x] = new Voxel*[_splits.y];
-        for(unsigned y = 0; y < _splits.y; ++y)
+        std::vector<std::vector<Voxel*>> nivel1;
+        for(int x = 0; x < numY; x++)
         {
-            _voxel[x][y] = new Voxel[_splits.z];
-            for(unsigned z = 0; z < _splits.z; ++z)
+            std::vector<Voxel*> nivel2;
+            for(int y = 0; y < numZ; y++)
             {
-                _min                  = _aabb.getMin().toGlmVec3() + glm::vec3(x, y, z) * _voxelSize;
-                _max                  = _aabb.getMin().toGlmVec3() + glm::vec3(x + 1, y + 1, z + 1) * _voxelSize;
-                _voxel[x][y][z]._aabb = AABB(Vect3d(_min.x, _min.y, _min.z), Vect3d(_max.x, _max.y, _max.z));
+                Vect3d puntoMinVoxel(auxX, auxY, auxZ);
+                Voxel* insertado = new Voxel(puntoMinVoxel, tam);
+                nivel2.push_back(insertado);
+                auxZ += tam[2];
             }
+            auxZ = zmin;
+            auxY += tam[1];
+            nivel1.push_back(nivel2);
         }
+        auxY = ymin;
+        auxX += tam[0];
+        voxeles.push_back(nivel1);
     }
+    int                     aux1       = modelo->getFaces().size();
+    std::vector<Triangle3d> triangulos = modelo->getFaces();
+    switch(tipo)
+    {
+        case 0:
+            for(int i = 0; i < numX; i++)
+            {
+                for(int x = 0; x < numY; x++)
+                {
+                    for(int y = 0; y < numZ; y++)
+                    {
+                        for(int j = 0; j < aux1; j++)
+                        {
+                            if(voxeles[i][x][y]->fuerzaBruta(triangulos[j]))
+                            {
+                                voxeles[i][x][y]->setFormato(Formato_Voxel::GRIS);
+                                j = aux1;
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        case 1:
+            lineaBarrido(modelo->getFaces());
+            break;
+        case 2:
+
+            for(int j = 0; j < aux1; j++)
+            {
+                AABB                aabb_ti               = triangulos[j].getAABB();
+                std::vector<Voxel*> voxeles_seleccionados = obtenerVoxeles(aabb_ti);
+                for(int i = 0; i < voxeles_seleccionados.size(); i++)
+                {
+                    if(voxeles_seleccionados[i]->fuerzaBruta(modelo->getFaces()[j]))
+                    {
+                        voxeles_seleccionados[i]->setFormato(Formato_Voxel::GRIS);
+                    }
+                }
+            }
+            break;
+    }
+    this->flood();
+}
+
+Voxelization::Voxelization(double _xmax, double _ymax, double _zmax, double _xmin, double _ymin, double _zmin, glm::vec3 _tam)
+{
+    tam  = _tam;
+    xmax = _xmax;
+    ymax = _ymax;
+    zmax = _zmax;
+    xmin = _xmin;
+    ymin = _ymin;
+    zmin = _zmin;
+    numX = ((xmax - xmin) / tam[0]) + 1;
+    numY = ((ymax - ymin) / tam[1]) + 1;
+    numZ = ((zmax - zmin) / tam[2]) + 1;
+
+    double auxX, auxY, auxZ;
+    auxX = xmin;
+    auxY = ymin;
+    auxZ = zmin;
+    for(int i = 0; i < numX; i++)
+    {
+        std::vector<std::vector<Voxel*>> nivel1;
+        for(int x = 0; x < numY; x++)
+        {
+            std::vector<Voxel*> nivel2;
+            for(int y = 0; y < numZ; y++)
+            {
+                Vect3d puntoMinVoxel(auxX, auxY, auxZ);
+                Voxel* insertado = new Voxel(puntoMinVoxel, tam);
+                nivel2.push_back(insertado);
+                auxZ += tam[2];
+            }
+            auxZ = zmin;
+            auxY += tam[1];
+            nivel1.push_back(nivel2);
+        }
+        auxY = ymin;
+        auxX += tam[0];
+        voxeles.push_back(nivel1);
+    }
+}
+
+Voxelization::Voxelization(const Voxelization& voxel)
+{
 }
 
 Voxelization::~Voxelization()
 {
-    for(unsigned x = 0; x < _splits.x; ++x)
-    {
-        for(unsigned y = 0; y < _splits.y; ++y)
-        {
-            delete[] _voxel[x][y];
-        }
-        delete _voxel[x];
-    }
-    delete[] _voxel;
 }
 
-void Voxelization::bruteForce() const
+Voxel* Voxelization::obtenerVoxel(double x, double y, double z)
 {
-    unsigned triangleIdx = 0;
-    auto     triangles   = _model->getFaces();
+    int    i   = int(glm::abs(x / tam[0])) % numX;
+    int    j   = int(glm::abs(y / tam[1])) % numY;
+    int    k   = int(glm::abs(z / tam[2])) % numZ;
+    Voxel* res = voxeles[i][j][k];
 
-    for(Triangle3d& triangle : triangles)
+    return res;
+}
+
+void Voxelization::insertar(Vect3d dato)
+{
+    double x = dato.getX();
+    double y = dato.getY();
+    double z = dato.getZ();
+
+    Voxel* v = obtenerVoxel(x, y, z);
+    v->inserta(dato);
+}
+
+bool Voxelization::comp(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2)
+{
+    std::pair<Vect3d, int> aux  = v1;
+    std::pair<Vect3d, int> aux2 = v2;
+
+    return aux.first.getY() < aux2.first.getY();
+}
+
+void Voxelization::lineaBarrido(std::vector<Triangle3d> triangulos)
+{
+
+    std::vector<std::pair<Vect3d, int>> vertices;
+
+    for(int i = 0; i < triangulos.size(); i++)
     {
-        for(unsigned x = 0; x < _splits.x; ++x)
+        Triangle3d triangulo = triangulos[i];
+        vertices.push_back(std::pair(triangulo.getA(), i));
+        vertices.push_back(std::pair(triangulo.getB(), i));
+        vertices.push_back(std::pair(triangulo.getC(), i));
+    }
+
+    std::sort(vertices.begin(), vertices.end(), &comp);
+
+    std::map<int, int>           triangulos_linea;
+    std::vector<Voxel*>          voxeles_linea;
+    std::map<int, int>::iterator it;
+    int                          indice = 0;
+    for(int i = 0; i < numY; i++)
+    {
+        double nivelMaxY = this->voxeles[0][i][0]->getMax().getY();
+        double nivelMinY = this->voxeles[0][i][0]->getMin().getY();
+        for(int x = 0; x < numX; x++)
         {
-            for(unsigned y = 0; y < _splits.y; ++y)
+            for(int y = 0; y < numZ; y++)
             {
-                for(unsigned z = 0; z < _splits.z; ++z)
+                voxeles_linea.push_back(this->voxeles[x][i][y]);
+            }
+        }
+        for(int v = 0; v < vertices.size(); v++)
+        {
+            if((vertices[v].first.getY() > nivelMinY || BasicGeometry::equal(vertices[v].first.getY(), nivelMinY))
+               && (vertices[v].first.getY() < nivelMaxY || BasicGeometry::equal(vertices[v].first.getY(), nivelMaxY)))
+            {
+                it = triangulos_linea.find(vertices[v].second);
+                if(it != triangulos_linea.end())
                 {
-                    if(Intersections3d::intersectTA(triangle, _voxel[x][y][z]._aabb))
+                    it->second += 1;
+                }
+                else
+                {
+                    triangulos_linea.insert(std::pair(vertices[v].second, 0));
+                }
+            }
+            else if(vertices[v].first.getY() > nivelMaxY)
+            {
+                break;
+            }
+        }
+        for(int j = 0; j < voxeles_linea.size(); j++)
+        {
+            for(it = triangulos_linea.begin(); it != triangulos_linea.end(); ++it)
+            {
+                if(voxeles_linea[j]->fuerzaBruta(triangulos[it->first]))
+                {
+                    voxeles_linea[j]->setFormato(Formato_Voxel::GRIS);
+                    break;
+                }
+            }
+        }
+        it = triangulos_linea.begin();
+        while(it != triangulos_linea.end())
+        {
+            if(it->second == 2)
+            {
+                it = triangulos_linea.erase(it);
+            }
+            else
+            {
+                it++;
+            }
+        }
+        voxeles_linea.clear();
+    }
+}
+
+std::vector<Voxel*> Voxelization::obtenerVoxeles(AABB aabb_ti)
+{
+
+    std::vector<std::pair<Voxel*, glm::vec3>> solucion;
+
+    Vect3d e1(aabb_ti.getMin());
+    Vect3d e2(aabb_ti.getMax());
+    Vect3d e3(aabb_ti.getMin().getX(), aabb_ti.getMin().getY(), aabb_ti.getMax().getZ());
+    Vect3d e4(aabb_ti.getMax().getX(), aabb_ti.getMin().getY(), aabb_ti.getMax().getZ());
+    Vect3d e5(aabb_ti.getMin().getX(), aabb_ti.getMax().getY(), aabb_ti.getMax().getZ());
+    Vect3d e6(aabb_ti.getMax().getX(), aabb_ti.getMin().getY(), aabb_ti.getMin().getZ());
+    Vect3d e7(aabb_ti.getMin().getX(), aabb_ti.getMax().getY(), aabb_ti.getMin().getZ());
+    Vect3d e8(aabb_ti.getMax().getX(), aabb_ti.getMax().getY(), aabb_ti.getMin().getZ());
+
+    for(int i = 0; i < numX; i++)
+    {
+        for(int x = 0; x < numY; x++)
+        {
+            for(int y = 0; y < numZ; y++)
+            {
+
+                if(voxeles[i][x][y]->getFormato() != Formato_Voxel::GRIS)
+                {
+                    if(insideVoxel(voxeles[i][x][y], e1) || insideVoxel(voxeles[i][x][y], e2) || insideVoxel(voxeles[i][x][y], e3) || insideVoxel(voxeles[i][x][y], e4)
+                       || insideVoxel(voxeles[i][x][y], e5) || insideVoxel(voxeles[i][x][y], e6) || insideVoxel(voxeles[i][x][y], e7) || insideVoxel(voxeles[i][x][y], e8))
                     {
-                        _voxel[x][y][z]._triangles.insert(triangleIdx);
-                        _voxel[x][y][z]._status = Voxel::OCCUPIED;
+                        glm::vec3 aux(i, x, y);
+                        solucion.push_back(std::pair(voxeles[i][x][y], aux));
                     }
                 }
             }
         }
-
-        ++triangleIdx;
     }
+    std::vector<Voxel*> res;
+    for(int i = 0; i < solucion.size(); i++)
+    {
+        res.push_back(solucion[i].first);
+    }
+
+    return res;
+}
+
+bool Voxelization::insideVoxel(Voxel* voxel, Vect3d v)
+{
+    return v.getX() >= voxel->getMin().getX() && v.getX() <= voxel->getMax().getX() && v.getY() >= voxel->getMin().getY() && v.getY() <= voxel->getMax().getY() && v.getZ() >= voxel->getMin().getZ() && v.getZ() <= voxel->getMax().getZ();
 }
 
 void Voxelization::flood()
 {
-    glm::ivec3                                                          centre = _splits / glm::uvec3(2);
-    std::unordered_set<std::pair<glm::ivec3, Voxelization*>, VoxelHash> voxels {std::make_pair(centre, this)};
+    int centralX, centralY, centralZ;
+    centralX = numX / 2;
+    centralY = numY / 2;
+    centralZ = numZ / 2;
 
-    while(!voxels.empty())
+    if(this->voxeles[centralX][centralY][centralZ]->getFormato() == Formato_Voxel::GRIS)
     {
-        std::unordered_set<std::pair<glm::ivec3, Voxelization*>, VoxelHash> newVoxels;
-
-        while(!voxels.empty())
+        while(this->voxeles[centralX][centralY][centralZ]->getFormato() == Formato_Voxel::GRIS)
         {
-            auto voxel = *voxels.begin();
-            voxels.erase(voxels.begin());
-            this->flood(voxel.first.x, voxel.first.y, voxel.first.z, newVoxels);
+            centralX++;
         }
-
-        for(auto& voxelPair : newVoxels)
+    }
+    recursivo(this->voxeles[centralX][centralY][centralZ], centralX, centralY, centralZ);
+    for(int i = 0; i < numX; i++)
+    {
+        for(int x = 0; x < numY; x++)
         {
-            voxels.insert(voxelPair);
+            for(int y = 0; y < numZ; y++)
+            {
+                if(this->voxeles[i][x][y]->getFormato() == Formato_Voxel::NP)
+                {
+                    this->voxeles[i][x][y]->setFormato(Formato_Voxel::BLANCO);
+                }
+            }
         }
     }
 }
 
-AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool useColors) const
+void Voxelization::recursivo(Voxel* v, int x, int y, int z)
 {
-    AlgGeom::DrawVoxelization* voxelization = nullptr;
-
-    if(useColors)
+    if(v->getFormato() == Formato_Voxel::GRIS || v->getFormato() == Formato_Voxel::NEGRO)
     {
-        const unsigned      numVoxels = _splits.x * _splits.y * _splits.z;
-        glm::vec3*          positions = new glm::vec3[numVoxels];
-        glm::vec3*          colors    = new glm::vec3[numVoxels];
-        constexpr glm::vec3 color[]   = {glm::vec3(.0f), glm::vec3(.5f), glm::vec3(1.0f)};
-
-        for(unsigned x = 0; x < _splits.x; ++x)
-        {
-            for(unsigned y = 0; y < _splits.y; ++y)
-            {
-                for(unsigned z = 0; z < _splits.z; ++z)
-                {
-                    const unsigned linearIndex = z + y * _splits.z + x * _splits.z * _splits.y;
-                    positions[linearIndex]     = _voxel[x][y][z]._aabb.getCenter().toGlmVec3();
-                    colors[linearIndex]        = color[_voxel[x][y][z]._status];
-                }
-            }
-        }
-
-        voxelization = new AlgGeom::DrawVoxelization(positions, numVoxels, _voxelSize, colors);
-        delete[] positions;
-        delete[] colors;
+        return;
     }
+    v->setFormato(Formato_Voxel::NEGRO);
+
+    if(x + 1 < numX)
+    {
+        recursivo(this->voxeles[x + 1][y][z], x + 1, y, z);
+    }
+    if(x - 1 > 0)
+    {
+        recursivo(this->voxeles[x - 1][y][z], x - 1, y, z);
+    }
+    if(y + 1 < numY)
+    {
+        recursivo(this->voxeles[x][y + 1][z], x, y + 1, z);
+    }
+    if(y - 1 > 0)
+    {
+        recursivo(this->voxeles[x][y - 1][z], x, y - 1, z);
+    }
+    if(z + 1 < numZ)
+    {
+        recursivo(this->voxeles[x][y][z + 1], x, y, z + 1);
+    }
+    if(z - 1 > 0)
+    {
+        recursivo(this->voxeles[x][y][z - 1], x, y, z - 1);
+    }
+}
+
+AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
+{
+    Formato_Voxel formatin;
+    if(gris)
+        formatin = Formato_Voxel::GRIS;
     else
-    {
-        std::vector<glm::vec3> positions;
+        formatin = Formato_Voxel::NEGRO;
 
-        for(unsigned x = 0; x < _splits.x; ++x)
+    std::vector<glm::vec3> vector;
+    Vect3d            despl(tam[0] / 2, tam[1] / 2, tam[2] / 2);
+    for(int i = 0; i < numX; i++)
+    {
+        for(int x = 0; x < numY; x++)
         {
-            for(unsigned y = 0; y < _splits.y; ++y)
+            for(int y = 0; y < numZ; y++)
             {
-                for(unsigned z = 0; z < _splits.z; ++z)
+                if(this->getVoxeles()[i][x][y]->getFormato() == formatin)
                 {
-                    if(_voxel[x][y][z]._status == Voxel::INNER)
-                        positions.push_back(_voxel[x][y][z]._aabb.getCenter().toGlmVec3());
+                    Vect3d centro = this->getVoxeles()[i][x][y]->getMin().add(despl);
+                    vector.push_back(glm::vec3(centro.getX(), centro.getY(), centro.getZ()));
                 }
             }
         }
-
-        voxelization = new AlgGeom::DrawVoxelization(positions.data(), positions.size(), _voxelSize, nullptr);
+    }
+    glm::vec3* positions = new glm::vec3[vector.size()];
+    glm::vec3* color     = new glm::vec3[vector.size()];
+    for(int i = 0; i < vector.size(); i++)
+    {
+        positions[i] = vector[i];
+        color[i]     = glm::vec3(0, 0, 0);
     }
 
+    AlgGeom::DrawVoxelization* voxelization = new AlgGeom::DrawVoxelization(positions, vector.size(), tam, color);
+
+    // delete positions;
+    // delete color;
     return voxelization;
 }
 
-void Voxelization::printData() const
+bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
 {
-    unsigned numOccupiedVoxels = 0;
-    unsigned numInnerVoxels    = 0;
-    unsigned numOuterVoxels    = 0;
+    double      tMin;
+    double      tMax;
+    const bool ray_intersects_grid = rayBoxIntersection(r, tMin, tMax, 0, 1);
+    if(!ray_intersects_grid)
+        return 0;
 
-    for(unsigned x = 0; x < _splits.x; ++x)
+    tMin             = BasicGeometry::max2(tMin, 0);
+    tMax             = BasicGeometry::max2(tMax, 1);
+    Vect3d aux       = r.getOrigin();
+    Vect3d ray_start = r.getDirection().scalarMul(tMin).add(aux);
+    Vect3d ray_end   = r.getDirection().scalarMul(tMax).add(aux);
+
+    size_t       current_X_index = BasicGeometry::max2(1, std::ceil((ray_start.getX() - this->getXMin()) / this->tam.x));
+    const size_t end_X_index     = BasicGeometry::max2(1, std::ceil((ray_end.getX() - this->getXMin()) / this->tam.x));
+    int          stepX;
+    double        tDeltaX;
+    double        tMaxX;
+    if(r.getDirection().getX() > 0.0)
     {
-        for(unsigned y = 0; y < _splits.y; ++y)
-        {
-            for(unsigned z = 0; z < _splits.z; ++z)
-            {
-                numOccupiedVoxels += static_cast<unsigned>(_voxel[x][y][z]._status == Voxel::OCCUPIED);
-                numInnerVoxels += static_cast<unsigned>(_voxel[x][y][z]._status == Voxel::INNER);
-                numOuterVoxels += static_cast<unsigned>(_voxel[x][y][z]._status == Voxel::OUTER);
-            }
-        }
+        stepX   = 1;
+        tDeltaX = this->tam[0] / r.getDirection().getX();
+        tMaxX   = tMin + (this->getXMin() + current_X_index * this->tam.x - ray_start.getX()) / r.getDirection().getX();
+    }
+    else if(r.getDirection().getX() < 0.0)
+    {
+        stepX                         = -1;
+        tDeltaX                       = this->tam[0] / -r.getDirection().getX();
+        const size_t previous_X_index = current_X_index - 1;
+        tMaxX                         = tMin + (this->getXMin() + previous_X_index * this->tam.x - ray_start.getX()) / r.getDirection().getX();
+    }
+    else
+    {
+        stepX   = 0;
+        tDeltaX = tMax;
+        tMaxX   = tMax;
     }
 
-    std::cout << "Number of filled voxels: " << numOccupiedVoxels << '\n';
-    std::cout << "Number of inner voxels: " << numInnerVoxels << '\n';
-    std::cout << "Number of outer voxels: " << numOuterVoxels << '\n';
-}
-
-void Voxelization::voxelNeighbourhood()
-{
-    unsigned triangleIdx = 0;
-    auto     triangles   = _model->getFaces();
-
-    for(Triangle3d& triangle : triangles)
+    size_t       current_Y_index = BasicGeometry::max2(1, std::ceil((ray_start.getY() - this->getYMin()) / this->tam.y));
+    const size_t end_Y_index     = BasicGeometry::max2(1, std::ceil((ray_end.getY() - this->getYMin()) / this->tam.y));
+    int          stepY;
+    double        tDeltaY;
+    double        tMaxY;
+    if(r.getDirection().getY() > 0.0)
     {
-        const glm::ivec3 minIndices = this->getIndices(triangle.getAABB().getMin().toGlmVec3());
-        const glm::ivec3 maxIndices = this->getIndices(triangle.getAABB().getMax().toGlmVec3());
-
-        for(unsigned x = minIndices.x; x <= maxIndices.x; ++x)
-        {
-            for(unsigned y = minIndices.y; y <= maxIndices.y; ++y)
-            {
-                for(unsigned z = minIndices.z; z <= maxIndices.z; ++z)
-                {
-                    if(Intersections3d::intersectTA(triangle, _voxel[x][y][z]._aabb))
-                    {
-                        _voxel[x][y][z]._triangles.insert(triangleIdx);
-                        _voxel[x][y][z]._status = Voxel::OCCUPIED;
-                    }
-                }
-            }
-        }
-
-        ++triangleIdx;
+        stepY   = 1;
+        tDeltaY = this->tam[1] / r.getDirection().getY();
+        tMaxY   = tMin + (this->getYMin() + current_Y_index * this->tam.y - ray_start.getY()) / r.getDirection().getY();
     }
-}
-
-void Voxelization::sampleTriangle(unsigned numSamples)
-{
-    std::vector<glm::vec2> randomFloats;
-    for(unsigned idx = 0; idx < numSamples; ++idx)
+    else if(r.getDirection().getY() < 0.0)
     {
-        glm::vec2 uv(RandomUtilities::getUniformRandom(), RandomUtilities::getUniformRandom());
-        if(uv.x + uv.y >= 1.0f)
-        {
-            uv = 1.0f - uv;
-        }
-        randomFloats.push_back(uv);
+        stepY                         = -1;
+        tDeltaY                       = this->tam[1] / -r.getDirection().getY();
+        const size_t previous_Y_index = current_Y_index - 1;
+        tMaxY                         = tMin + (this->getYMin() + previous_Y_index * this->tam.y - ray_start.getY()) / r.getDirection().getY();
+    }
+    else
+    {
+        stepY   = 0;
+        tDeltaY = tMax;
+        tMaxY   = tMax;
     }
 
-    glm::vec3 point;
-    unsigned  triangleIdx = 0;
-    auto      triangles   = _model->getFaces();
-
-    for(Triangle3d& triangle : triangles)
+    size_t       current_Z_index = BasicGeometry::max2(1, std::ceil((ray_start.getZ() - this->getZMin()) / this->tam.z));
+    const size_t end_Z_index     = BasicGeometry::max2(1, std::ceil((ray_end.getZ() - this->getZMin()) / this->tam.z));
+    int          stepZ;
+    double        tDeltaZ;
+    double        tMaxZ;
+    if(r.getDirection().getZ() > 0.0)
     {
-        for(unsigned sampleIdx = 0; sampleIdx < numSamples; ++sampleIdx)
-        {
-            point = triangle.samplePoint(randomFloats[sampleIdx].x, randomFloats[sampleIdx].y).toGlmVec3();
-            this->insertPoint(point, triangleIdx);
-        }
-
-        ++triangleIdx;
+        stepZ   = 1;
+        tDeltaZ = this->tam[2] / r.getDirection().getZ();
+        tMaxZ   = tMin + (this->getZMin() + current_Z_index * this->tam.z - ray_start.getZ()) / r.getDirection().getZ();
     }
-}
-
-void Voxelization::sweep() const
-{
-    unsigned minIndex = 0, maxIndex = 0;
-    auto     triangles = _model->getFaces();
-    std::sort(triangles.begin(), triangles.end(), TriangleComparison());
-
-    for(unsigned y = 0; y < _splits.y; ++y)
+    else if(r.getDirection().getZ() < 0.0)
     {
-        const double max_y = _voxel[0][y][0]._aabb.getMax()._y + BasicGeometry::EPSILON;
-        const double min_y = _voxel[0][y][0]._aabb.getMin()._y + BasicGeometry::EPSILON;
-
-        while(maxIndex < triangles.size() && triangles[maxIndex].getAABB().getMin()._y < max_y)
-            ++maxIndex;
-
-        while(triangles[minIndex].getAABB().getMax()._y < min_y)
-            ++minIndex;
-
-        for(unsigned idx = minIndex; idx < maxIndex; ++idx)
-        {
-            for(unsigned x = 0; x < _splits.x; ++x)
-            {
-                for(unsigned z = 0; z < _splits.z; ++z)
-                {
-                    if(Intersections3d::intersectTA(triangles[idx], _voxel[x][y][z]._aabb))
-                    {
-                        _voxel[x][y][z]._triangles.insert(idx);
-                        _voxel[x][y][z]._status = Voxel::OCCUPIED;
-                    }
-                }
-            }
-        }
+        stepZ                         = -1;
+        tDeltaZ                       = this->tam[2] / -r.getDirection().getZ();
+        const size_t previous_Z_index = current_Z_index - 1;
+        tMaxZ                         = tMin + (this->getZMin() + previous_Z_index * this->tam.z - ray_start.getZ()) / r.getDirection().getZ();
     }
-}
-
-void Voxelization::testRayTraversedVoxels(const Ray3d& ray, std::vector<AABB>& traversedVoxels) const
-{
-    const EisemannRay eisRay(ray);
-
-    for(unsigned x = 0; x < _splits.x; ++x)
+    else
     {
-        for(unsigned y = 0; y < _splits.y; ++y)
-        {
-            for(unsigned z = 0; z < _splits.z; ++z)
-            {
-                if(Intersections3d::intersectAR(_voxel[x][y][z]._aabb, eisRay))
-                    traversedVoxels.push_back(_voxel[x][y][z]._aabb);
-            }
-        }
+        stepZ   = 0;
+        tDeltaZ = tMax;
+        tMaxZ   = tMax;
     }
-}
-
-void Voxelization::testRayTraversedVoxelsAccelerated(Ray3d& ray, std::vector<AABB>& traversedVoxels)
-{
-    glm::uvec3 voxel = this->getIndices(ray.getOrigin().toGlmVec3()), previousVoxel = glm::uvec3(UINT_MAX);
-    glm::vec3  rayPosition = ray.getOrigin().toGlmVec3();
-
-    while(glm::all(glm::greaterThanEqual(voxel, glm::uvec3(0))) && glm::all(glm::lessThan(voxel, _splits)))
+    while(glm::all(glm::greaterThanEqual(glm::vec3(current_X_index, current_Y_index, current_Z_index), glm::vec3(1, 1, 1))) && glm::all(glm::lessThanEqual(glm::vec3(current_X_index, current_Y_index, current_Z_index), glm::vec3(numX, numY, numZ))))
     {
-        if(!glm::all(glm::equal(voxel, previousVoxel)))
+        /*while (current_X_index != end_X_index && current_Y_index != end_Y_index && current_Z_index != end_Z_index) {*/
+        v.push_back(this->voxeles[current_X_index - 1][current_Y_index - 1][current_Z_index - 1]);
+        if(tMaxX < tMaxY && tMaxX < tMaxZ)
         {
-            traversedVoxels.push_back(_voxel[voxel.x][voxel.y][voxel.z]._aabb);
-            previousVoxel = voxel;
+            // X-axis traversal.
+            current_X_index += stepX;
+            tMaxX += tDeltaX;
         }
-
-        rayPosition += _voxelSize * glm::normalize(ray.getDirection().toGlmVec3()) / 50.0f;
-        voxel = this->getIndices(rayPosition);
-    }
-}
-
-void Voxelization::testRayTraversedVoxelsAcceleratedNeighbourhood(Ray3d& ray, std::vector<AABB>& traversedVoxels)
-{
-    EisemannRay eissRay(ray);
-    float       distance;
-    glm::ivec3  voxel = this->getIndices(ray.getOrigin().toGlmVec3()), previousVoxel = glm::uvec3(UINT_MAX), splits = _splits - glm::uvec3(1), closestVoxel;
-    glm::vec3   rayPosition  = ray.getOrigin().toGlmVec3();
-    glm::vec3   rayDirection = ray.getDirection().toGlmVec3();
-    glm::ivec3  minIndices   = glm::uvec3(static_cast<unsigned>(rayDirection.x < .0f), static_cast<unsigned>(rayDirection.y < .0f), static_cast<unsigned>(rayDirection.z < .0f));
-    minIndices *= -1;
-    glm::ivec3 maxIndices = glm::uvec3(static_cast<unsigned>(rayDirection.x > .0f), static_cast<unsigned>(rayDirection.y > .0f), static_cast<unsigned>(rayDirection.z > .0f));
-
-    traversedVoxels.push_back(_voxel[voxel.x][voxel.y][voxel.z]._aabb);
-
-    while(true)
-    {
-        float      minDistance = FLT_MAX;
-        glm::ivec3 minVoxel = glm::clamp(voxel + minIndices, glm::ivec3(0), splits), maxVoxel = glm::clamp(voxel + maxIndices, glm::ivec3(0), splits);
-        closestVoxel = glm::ivec3(-1);
-
-        for(int x = minVoxel.x; x <= maxVoxel.x; ++x)
+        else if(tMaxY < tMaxZ)
         {
-            for(int y = minVoxel.y; y <= maxVoxel.y; ++y)
-            {
-                for(int z = minVoxel.z; z <= maxVoxel.z; ++z)
-                {
-                    if(!glm::all(glm::equal(voxel, glm::ivec3(x, y, z))) && Intersections3d::intersectAR(_voxel[x][y][z]._aabb, eissRay))
-                    {
-                        distance = glm::distance2(_voxel[voxel.x][voxel.y][voxel.z]._aabb.getCenter().toGlmVec3(), _voxel[x][y][z]._aabb.getCenter().toGlmVec3());
-                        if(distance < minDistance)
-                        {
-                            minDistance  = distance;
-                            closestVoxel = glm::ivec3(x, y, z);
-                        }
-                    }
-                }
-            }
-        }
-
-        if(closestVoxel.x >= 0)
-        {
-            traversedVoxels.push_back(_voxel[closestVoxel.x][closestVoxel.y][closestVoxel.z]._aabb);
-            voxel = closestVoxel;
+            // Y-axis traversal.
+            current_Y_index += stepY;
+            tMaxY += tDeltaY;
         }
         else
-            break;
+        {
+            // Z-axis traversal.
+            current_Z_index += stepZ;
+            tMaxZ += tDeltaZ;
+        }
     }
+    if(v.size() == 0)
+        return false;
+    return true;
 }
 
-void Voxelization::flood(int x, int y, int z, std::unordered_set<std::pair<glm::ivec3, Voxelization*>, VoxelHash>& exploredVoxels)
+bool Voxelization::rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1)
 {
-    if(_voxel[x][y][z]._status == Voxel::OCCUPIED)
-        return;
-
-    _voxel[x][y][z]._status = Voxel::INNER;
-
-    for(int x_idx = x - 1; x_idx < x + 2; ++x_idx)
+    double       tYMin, tYMax, tZMin, tZMax;
+    const double x_inv_dir = 1 / r.getDirection().getX();
+    if(x_inv_dir >= 0)
     {
-        if(x_idx >= 0 && x_idx < _splits.x)
+        tMin = (this->getXMin() - r.getOrigin().getX()) * x_inv_dir;
+        tMax = (this->getXMax() - r.getOrigin().getX()) * x_inv_dir;
+    }
+    else
+    {
+        tMin = (this->getXMax() - r.getOrigin().getX()) * x_inv_dir;
+        tMax = (this->getXMin() - r.getOrigin().getX()) * x_inv_dir;
+    }
+
+    const double y_inv_dir = 1 / r.getDirection().getY();
+    if(y_inv_dir >= 0)
+    {
+        tYMin = (this->getYMin() - r.getOrigin().getY()) * y_inv_dir;
+        tYMax = (this->getYMax() - r.getOrigin().getY()) * y_inv_dir;
+    }
+    else
+    {
+        tYMin = (this->getYMax() - r.getOrigin().getY()) * y_inv_dir;
+        tYMax = (this->getYMin() - r.getOrigin().getY()) * y_inv_dir;
+    }
+
+    if(tMin > tYMax || tYMin > tMax)
+        return false;
+    if(tYMin > tMin)
+        tMin = tYMin;
+    if(tYMax < tMax)
+        tMax = tYMax;
+
+    const double z_inv_dir = 1 / r.getDirection().getZ();
+    if(z_inv_dir >= 0)
+    {
+        tZMin = (this->getZMin() - r.getOrigin().getZ()) * z_inv_dir;
+        tZMax = (this->getZMax() - r.getOrigin().getZ()) * z_inv_dir;
+    }
+    else
+    {
+        tZMin = (this->getZMax() - r.getOrigin().getZ()) * z_inv_dir;
+        tZMax = (this->getZMin() - r.getOrigin().getZ()) * z_inv_dir;
+    }
+
+    if(tMin > tZMax || tZMin > tMax)
+        return false;
+    if(tZMin > tMin)
+        tMin = tZMin;
+    if(tZMax < tMax)
+        tMax = tZMax;
+    return (tMin < t1 && tMax > t0);
+}
+
+Voxelization* Voxelization::AND(Voxelization& vox)
+{
+
+    Voxelization* res;
+    glm::vec3     num_voxeles;
+
+    glm::vec3 tamNuevo(BasicGeometry::max2(this->getXMax() - this->getXMin(), vox.getXMax() - vox.getXMin()), BasicGeometry::max2(this->getYMax() - this->getYMin(), vox.getYMax() - vox.getYMin()), BasicGeometry::max2(this->getZMax() - this->getZMin(), vox.getZMax() - vox.getZMin()));
+
+    res = new Voxelization(BasicGeometry::max2(this->getXMax(), vox.getXMax()), BasicGeometry::max2(this->getYMax(), vox.getYMax()),
+                           BasicGeometry::max2(this->getZMax(), vox.getZMax()), BasicGeometry::min2(this->getXMin(), vox.getXMin()),
+                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(tam.x));
+
+    num_voxeles = glm::vec3(res->numX, res->numY, res->numZ);
+    int xV, yV, zV;
+    int x2, y2, z2;
+    for(int i = 0; i < num_voxeles.x; i++)
+    {
+        for(int y = 0; y < num_voxeles.y; y++)
         {
-            for(int y_idx = y - 1; y_idx < y + 2; ++y_idx)
+            for(int z = 0; z < num_voxeles.z; z++)
             {
-                if(y_idx >= 0 && y_idx < _splits.y)
+                if(comprobarPertenencia(res->getVoxeles()[i][y][z], this, xV, yV, zV))
                 {
-                    for(int z_idx = z - 1; z_idx < z + 2; ++z_idx)
+                    if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(z_idx >= 0 && z_idx < _splits.z && !(x == x_idx && y == y_idx && z == z_idx) && _voxel[x_idx][y_idx][z_idx]._status != Voxel::INNER)
-                        {
-                            exploredVoxels.insert(std::make_pair(glm::ivec3(x_idx, y_idx, z_idx), this));
-                        }
+                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != Formato_Voxel::BLANCO && vox.getVoxeles()[x2][y2][z2]->getFormato() != Formato_Voxel::BLANCO)
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::NEGRO);
+                        else
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
+                    }
+                    else
+                    {
+                        res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
+                    }
+                }
+                else
+                {
+                    res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
+                }
+            }
+        }
+    }
+
+    return res;
+}
+
+Voxelization* Voxelization::OR(Voxelization& vox)
+{
+
+    Voxelization* res;
+    glm::vec3     num_voxeles;
+
+    glm::vec3 tamNuevo(BasicGeometry::max2(this->getXMax() - this->getXMin(), vox.getXMax() - vox.getXMin()), BasicGeometry::max2(this->getYMax() - this->getYMin(), vox.getYMax() - vox.getYMin()), BasicGeometry::max2(this->getZMax() - this->getZMin(), vox.getZMax() - vox.getZMin()));
+
+    res = new Voxelization(BasicGeometry::max2(this->getXMax(), vox.getXMax()), BasicGeometry::max2(this->getYMax(), vox.getYMax()),
+                           BasicGeometry::max2(this->getZMax(), vox.getZMax()), BasicGeometry::min2(this->getXMin(), vox.getXMin()),
+                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(tam.x));
+
+    num_voxeles = glm::vec3(res->numX, res->numY, res->numZ);
+
+    int xV, yV, zV;
+    int x2, y2, z2;
+    for(int i = 0; i < num_voxeles.x; i++)
+    {
+        for(int y = 0; y < num_voxeles.y; y++)
+        {
+            for(int z = 0; z < num_voxeles.z; z++)
+            {
+                if(comprobarPertenencia(res->getVoxeles()[i][y][z], this, xV, yV, zV))
+                {
+                    if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
+                    {
+                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != Formato_Voxel::BLANCO || vox.getVoxeles()[x2][y2][z2]->getFormato() != Formato_Voxel::BLANCO)
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::NEGRO);
+                        else
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
+                    }
+                    else
+                    {
+                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != Formato_Voxel::BLANCO)
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::NEGRO);
+                        else
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
+                    }
+                }
+                else
+                {
+                    if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
+                    {
+                        if(vox.getVoxeles()[x2][y2][z2]->getFormato() != Formato_Voxel::BLANCO)
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::NEGRO);
+                        else
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
+                    }
+                    else
+                    {
+                        res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
                     }
                 }
             }
         }
     }
+
+    return res;
 }
 
-glm::ivec3 Voxelization::getIndices(const glm::vec3& point)
+Voxelization* Voxelization::XOR(Voxelization& vox)
 {
-    return {(point - _aabb.getMin().toGlmVec3()) / _voxelSize};
+
+    Voxelization* res;
+    glm::vec3     num_voxeles;
+
+    glm::vec3 tamNuevo(BasicGeometry::max2(this->getXMax() - this->getXMin(), vox.getXMax() - vox.getXMin()), BasicGeometry::max2(this->getYMax() - this->getYMin(), vox.getYMax() - vox.getYMin()), BasicGeometry::max2(this->getZMax() - this->getZMin(), vox.getZMax() - vox.getZMin()));
+
+    res = new Voxelization(BasicGeometry::max2(this->getXMax(), vox.getXMax()), BasicGeometry::max2(this->getYMax(), vox.getYMax()),
+                           BasicGeometry::max2(this->getZMax(), vox.getZMax()), BasicGeometry::min2(this->getXMin(), vox.getXMin()),
+                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(tam.x));
+
+    num_voxeles = glm::vec3(res->numX, res->numY, res->numZ);
+
+    int xV, yV, zV;
+    int x2, y2, z2;
+    for(int i = 0; i < num_voxeles.x; i++)
+    {
+        for(int y = 0; y < num_voxeles.y; y++)
+        {
+            for(int z = 0; z < num_voxeles.z; z++)
+            {
+                if(comprobarPertenencia(res->getVoxeles()[i][y][z], this, xV, yV, zV))
+                {
+                    if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
+                    {
+                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != Formato_Voxel::BLANCO && vox.getVoxeles()[x2][y2][z2]->getFormato() == Formato_Voxel::BLANCO)
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::NEGRO);
+                        else
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
+                    }
+                    else
+                    {
+                        if(this->getVoxeles()[xV][yV][zV]->getFormato() != Formato_Voxel::BLANCO)
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::NEGRO);
+                        else
+                            res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
+                    }
+                }
+                else
+                {
+                    res->getVoxeles()[i][y][z]->setFormato(Formato_Voxel::BLANCO);
+                }
+            }
+        }
+    }
+
+    return res;
 }
 
-void Voxelization::insertPoint(const glm::vec3& point, const unsigned triangleIdx)
+bool Voxelization::comprobarPertenencia(Voxel* v, Voxelization* voxelizacion, int& x, int& y, int& z)
 {
-    const glm::ivec3 indices = this->getIndices(point);
-    _voxel[indices.x][indices.y][indices.z]._triangles.insert(triangleIdx);
-    _voxel[indices.x][indices.y][indices.z]._status = Voxel::OCCUPIED;
+    if((BasicGeometry::equal(v->getMin().getX(), voxelizacion->getXMin()) || v->getMin().getX() > voxelizacion->getXMin())
+       && (BasicGeometry::equal(v->getMax().getX(), voxelizacion->getXMax()) || v->getMax().getX() < voxelizacion->getXMax()))
+    {
+
+        if((BasicGeometry::equal(v->getMin().getY(), voxelizacion->getYMin()) || v->getMin().getY() > voxelizacion->getYMin())
+           && (BasicGeometry::equal(v->getMax().getY(), voxelizacion->getYMax()) || v->getMax().getY() < voxelizacion->getYMax()))
+        {
+
+            if((BasicGeometry::equal(v->getMin().getZ(), voxelizacion->getZMin()) || v->getMin().getZ() > voxelizacion->getZMin())
+               && (BasicGeometry::equal(v->getMax().getZ(), voxelizacion->getZMax()) || v->getMax().getZ() < voxelizacion->getZMax()))
+            {
+
+                x = (v->getMin().getX() - voxelizacion->getXMin()) / voxelizacion->getTam().x;
+                y = (v->getMin().getY() - voxelizacion->getYMin()) / voxelizacion->getTam().y;
+                z = (v->getMin().getZ() - voxelizacion->getZMin()) / voxelizacion->getTam().z;
+
+                return true;
+            }
+        }
+    }
+    return false;
 }

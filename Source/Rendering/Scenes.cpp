@@ -807,16 +807,29 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     const auto     model(new DrawMesh(*triangleModel));
     model->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
-    sc.addNewModel(model);
+    // sc.addNewModel(model);
 
-    const glm::vec3& voxelSize = glm::vec3(0.05f);
+    const glm::vec3& voxelSize = glm::vec3(0.1f);
     ChronoUtilities::initChrono();
-    std::cout << "Voxelization started\n";
-    const Voxelization* voxelization = new Voxelization(triangleModel, voxelSize);
-    std::cout << "Voxelization ended. Duration: " << ChronoUtilities::getDuration() << '\n';
-    auto l2Colour = RandomUtilities::getUniformRandomColor();
+    std::cout << "Voxelization (Brute Force) started\n";
+    // Voxelization* voxelization = new Voxelization(triangleModel, voxelSize, 0);
+    std::cout << "Voxelization (Brute Force) ended. Duration: " << ChronoUtilities::getDuration(ChronoUtilities::NANOSECONDS) << '\n';
 
-    const auto voxModel(voxelization->getRenderingObject(true));
+    ChronoUtilities::initChrono();
+    std::cout << "Voxelization (Line Sweep) started\n";
+    Voxelization* voxelizationLineSweep = new Voxelization(triangleModel, voxelSize, 1);
+    std::cout << "Voxelization (Line Sweep) ended. Duration: " << ChronoUtilities::getDuration(ChronoUtilities::NANOSECONDS) << '\n';
+
+    ChronoUtilities::initChrono();
+    std::cout << "Voxelization (AABB) started\n";
+    // Voxelization* voxelizationAABB = new Voxelization(triangleModel, voxelSize, 2);
+    std::cout << "Voxelization (AABB) ended. Duration: " << ChronoUtilities::getDuration(ChronoUtilities::NANOSECONDS) << '\n';
+
+
+    // auto l2Colour = RandomUtilities::getUniformRandomColor();
+    // const auto voxModel(voxelization->getRenderingObject(true));
+    const auto voxModel(voxelizationLineSweep->getRenderingObject(true));
+    // const auto voxModel(voxelizationAABB->getRenderingObject(true));
     sc.addNewModel(voxModel);
 
     // delete model;

@@ -105,6 +105,8 @@ set(SOURCE_FILES
     Source/Geometry/Vect3d.h
     Source/Geometry/Vertex.cpp
     Source/Geometry/Vertex.h
+    Source/Geometry/Voxel.cpp
+    Source/Geometry/Voxel.h
     Source/Geometry/Voxelization.cpp
     Source/Geometry/Voxelization.h
 
