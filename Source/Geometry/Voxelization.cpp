@@ -2,8 +2,6 @@
 
 #include "Utils/RandomUtilities.h"
 
-// Public methods
-
 Voxelization::Voxelization(TriangleModel* model, const glm::vec3& voxelSize)
     : _model(model)
     , _voxelSize(voxelSize)
@@ -144,7 +142,7 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool useColors) cons
     return voxelization;
 }
 
-void Voxelization::printData()
+void Voxelization::printData() const
 {
     unsigned numOccupiedVoxels = 0;
     unsigned numInnerVoxels    = 0;
@@ -234,8 +232,8 @@ void Voxelization::sweep() const
 
     for(unsigned y = 0; y < _splits.y; ++y)
     {
-        const float max_y = _voxel[0][y][0]._aabb.getMax()._y + glm::epsilon<float>();
-        const float min_y = _voxel[0][y][0]._aabb.getMin()._y + glm::epsilon<float>();
+        const double max_y = _voxel[0][y][0]._aabb.getMax()._y + BasicGeometry::EPSILON;
+        const double min_y = _voxel[0][y][0]._aabb.getMin()._y + BasicGeometry::EPSILON;
 
         while(maxIndex < triangles.size() && triangles[maxIndex].getAABB().getMin()._y < max_y)
             ++maxIndex;
@@ -342,8 +340,6 @@ void Voxelization::testRayTraversedVoxelsAcceleratedNeighbourhood(Ray3d& ray, st
             break;
     }
 }
-
-// Protected methods
 
 void Voxelization::flood(int x, int y, int z, std::unordered_set<std::pair<glm::ivec3, Voxelization*>, VoxelHash>& exploredVoxels)
 {

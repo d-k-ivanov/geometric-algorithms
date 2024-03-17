@@ -30,7 +30,7 @@ public:
     struct TriangleAABBIntersData
     {
         Vect3d _v0, _v1, _v2;
-        double  _min, _max, _rad;
+        double _min, _max, _rad;
         Vect3d _normal, _edge0, _edge1, _edge2, _p, _fedge;
         Vect3d _boxCenter;
         Vect3d _boxRadius;
@@ -120,8 +120,16 @@ public:
      */
     Vect3d normal() const;
 
+    /**
+     *  @brief Returns bounding box of the triangle.
+     *
+     */
     AABB getAABB() const;
 
+    /**
+     *  @brief Returns a sample point of the triangle.
+     *
+     */
     Vect3d samplePoint(double x, double y) const;
 
     /**

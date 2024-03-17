@@ -33,7 +33,7 @@ protected:
 
     struct TriangleComparison
     {
-        inline bool operator()(const Triangle3d& t1, const Triangle3d& t2)
+        inline bool operator()(const Triangle3d& t1, const Triangle3d& t2) const
         {
             return t1.getAABB().getMin()._y < t2.getAABB().getMin()._y;
         }
@@ -69,7 +69,7 @@ public:
     void                       bruteForce() const;
     void                       flood();
     AlgGeom::DrawVoxelization* getRenderingObject(bool useColors = true) const;
-    void                       printData();
+    void                       printData() const;
     void                       voxelNeighbourhood();
     void                       sampleTriangle(unsigned numSamples = 200);
     void                       sweep() const;

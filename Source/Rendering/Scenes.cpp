@@ -806,17 +806,18 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     TriangleModel* triangleModel = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model(new DrawMesh(*triangleModel));
     model->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
-    model->setModelMatrix(glm::rotate(model->getModelMatrix(), -0.2f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    model->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     sc.addNewModel(model);
 
     const glm::vec3& voxelSize = glm::vec3(0.05f);
     ChronoUtilities::initChrono();
     std::cout << "Voxelization started\n";
-    Voxelization* voxelization = new Voxelization(triangleModel, voxelSize);
+    const Voxelization* voxelization = new Voxelization(triangleModel, voxelSize);
     std::cout << "Voxelization ended. Duration: " << ChronoUtilities::getDuration() << '\n';
     auto l2Colour = RandomUtilities::getUniformRandomColor();
 
-    sc.addNewModel(voxelization->getRenderingObject());
+    const auto voxModel(voxelization->getRenderingObject(true));
+    sc.addNewModel(voxModel);
 
-
+    // delete model;
 }
