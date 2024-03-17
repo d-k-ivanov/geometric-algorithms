@@ -26,5 +26,8 @@ public:
     static void p2b(SceneContent& sc);
     static void p2c(SceneContent& sc);
 
+    // Practice 3:
+    static void p3(SceneContent& sc);
+
 };
 }    // namespace AlgGeom

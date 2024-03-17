@@ -16,6 +16,12 @@ double min3(double a, double b, double c);
 double max3(double a, double b, double c);
 double min2(double a, double b);
 double max2(double a, double b);
+
+/**
+ *	@return 1 or -1 depending on the value sign.
+ */
+template <typename T>
+int sign(const T value);
 };
 
 inline bool BasicGeometry::equal(double a, double b)
@@ -51,4 +57,10 @@ inline double BasicGeometry::min2(double a, double b)
 inline double BasicGeometry::max2(double a, double b)
 {
     return (a > b ? a : b);
+}
+
+template <typename T>
+int BasicGeometry::sign(const T value)
+{
+    return (T(0) < value) - (value < T(0));
 }

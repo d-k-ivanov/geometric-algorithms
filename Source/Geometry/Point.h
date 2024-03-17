@@ -26,10 +26,9 @@ public:
         DEST
     };
 
-protected:
+public:
     double _x, _y;
 
-public:
     /**
      *  @brief Default constructor. Coordinates are initialized with an invalid value.
      */

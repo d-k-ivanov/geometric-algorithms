@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AABB.h"
 #include "Vect3d.h"
 
 /**
@@ -118,6 +119,10 @@ public:
      *  @brief Returns the normal of the triangle.
      */
     Vect3d normal() const;
+
+    AABB getAABB() const;
+
+    Vect3d samplePoint(double x, double y) const;
 
     /**
      *  @brief Assignment operator.

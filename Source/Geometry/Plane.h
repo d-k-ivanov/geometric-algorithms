@@ -27,8 +27,8 @@ public:
 protected:
     Vect3d _a, _b, _c, _d;
 
-public:
 
+public:
     /**
      *  @param p in pi = p + u * lambda + v * mu -> r from the points (R, S, T).
      *  @param u in pi = p + u * lambda + v * mu -> d from the points (R, S, T).
@@ -36,7 +36,6 @@ public:
      *  @param arePoints If arePoints is false, then params are p + u * lambda + v * mu, otherwise are points (R, S, T).
      */
     Plane(const Vect3d& p, const Vect3d& u, const Vect3d& v, bool arePoints);
-
 
     /**
      *  @brief Copy constructor.
@@ -97,6 +96,11 @@ public:
      *  @brief Returns the center of the plane.
      */
     Vect3d getCenter() const;
+
+    /**
+     *	@return Point computed from the parametric function (plane = p + u * lambda + v * mu).
+     */
+    Vect3d getPoint(float lambda, float mu) const;
 
     /**
      *  @brief Returns true if p is in the plane.

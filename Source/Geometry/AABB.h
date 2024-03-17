@@ -16,12 +16,12 @@ public:
     /**
      *	@brief Default constructor.
      */
-    AABB();
+    // AABB();
 
     /**
      *	@brief Constructor.
      */
-    AABB(const Vect3d& min = Vect3d(INFINITY), const Vect3d& max = Vect3d(-INFINITY));
+    AABB(const Vect3d& min = Vect3d(HUGE_VAL), const Vect3d& max = Vect3d(-HUGE_VAL));
 
     /**
      *	@brief Copy constructor,
@@ -36,17 +36,17 @@ public:
     /**
      *	@brief Returns the size of the cube.
      */
-    Vect3d getSize();
+    Vect3d getSize() const;
 
     /**
      *	@brief Returns the central point of the cube.
      */
-    Vect3d getCenter();
+    Vect3d getCenter() const;
 
     /**
      *	@brief Returns the vector that goes from the center to the maximum point.
      */
-    Vect3d getExtent();
+    Vect3d getExtent() const;
 
     /**
      *	@brief Returns the lowest corner of the cube.
@@ -61,12 +61,12 @@ public:
     /**
      *	@brief Modifies the minimum point.
      */
-    void setMin(Vect3d& min);
+    void setMin(const Vect3d& min);
 
     /**
      *	@brief Modifies the maximum point.
      */
-    void setMax(Vect3d& max);
+    void setMax(const Vect3d& max);
 
     /**
      *	@brief Assignment operator.

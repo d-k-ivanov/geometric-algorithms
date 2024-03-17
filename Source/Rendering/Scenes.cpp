@@ -18,6 +18,7 @@
 #include "Geometry/Polygon.h"
 #include "Geometry/SegmentLine.h"
 #include "Geometry/TriangleModel.h"
+#include "Geometry/Voxelization.h"
 
 #include "Utils/ChronoUtilities.h"
 #include "Utils/FilesystemUtilities.h"
@@ -795,4 +796,27 @@ void AlgGeom::Scenes::p2c(SceneContent& sc)
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
+}
+
+void AlgGeom::Scenes::p3(SceneContent& sc)
+{
+    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
+    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
+
+    TriangleModel* triangleModel = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
+    const auto     model(new DrawMesh(*triangleModel));
+    model->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    model->setModelMatrix(glm::rotate(model->getModelMatrix(), -0.2f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    sc.addNewModel(model);
+
+    const glm::vec3& voxelSize = glm::vec3(0.05f);
+    ChronoUtilities::initChrono();
+    std::cout << "Voxelization started\n";
+    Voxelization* voxelization = new Voxelization(triangleModel, voxelSize);
+    std::cout << "Voxelization ended. Duration: " << ChronoUtilities::getDuration() << '\n';
+    auto l2Colour = RandomUtilities::getUniformRandomColor();
+
+    sc.addNewModel(voxelization->getRenderingObject());
+
+
 }

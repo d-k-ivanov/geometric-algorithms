@@ -3,6 +3,7 @@
 #include "BasicGeometry.h"
 #include "Triangle3d.h"
 
+#include <algorithm>
 #include <cfloat>
 #include <iostream>
 #include <string>
@@ -10,7 +11,7 @@
 
 Vect3d::Vect3d()
 {
-    this->setVert(FLT_MAX, FLT_MAX, FLT_MAX);
+    this->setVert(DBL_MAX, DBL_MAX, DBL_MAX);
 }
 
 Vect3d::Vect3d(const double value)
@@ -53,6 +54,21 @@ double Vect3d::getZ() const
     return _z;
 }
 
+double Vect3d::getAt(int index) const
+{
+    switch(index)
+    {
+        case 0:
+            return getX();
+        case 1:
+            return getY();
+        case 2:
+            return getZ();
+        default:
+            return 0.0;
+    }
+}
+
 std::vector<double> Vect3d::getVert() const
 {
     return {getX(), getY(), getZ()};
@@ -71,6 +87,29 @@ void Vect3d::setY(double y)
 void Vect3d::setZ(double z)
 {
     this->_z = z;
+}
+
+void Vect3d::setAt(int index, const double value)
+{
+    switch(index)
+    {
+        case 0:
+            setX(value);
+            break;
+        case 1:
+            setY(value);
+            break;
+        case 2:
+            setZ(value);
+            break;
+        default:
+            break;
+    }
+}
+
+glm::vec3 Vect3d::toGlmVec3() const
+{
+    return {getX(), getY(), getZ()};
 }
 
 void Vect3d::setVert(double x, double y, double z)
@@ -119,7 +158,31 @@ Vect3d Vect3d::operator/(const Vect3d& b)
     return *this /= b;
 }
 
-Vect3d Vect3d::scalarDiv(double value) const
+Vect3d Vect3d::div(const Vect3d& b) const
+{
+    return {getX() / b.getX(), getY() / b.getY(), getZ() / b.getZ()};
+}
+
+Vect3d Vect3d::operator/=(const double value)
+{
+    this->_x /= value;
+    this->_y /= value;
+    this->_z /= value;
+
+    return *this;
+}
+
+Vect3d Vect3d::operator/(const double value)
+{
+    return *this /= value;
+}
+
+Vect3d Vect3d::div(const double value) const
+{
+    return {getX() / value, getY() / value, getZ() / value};
+}
+
+Vect3d Vect3d::scalarDiv(const double value) const
 {
     return {getX() / value, getY() / value, getZ() / value};
 }
@@ -203,6 +266,16 @@ Vect3d Vect3d::operator-(const Vect3d& b)
 Vect3d Vect3d::sub(const Vect3d& b) const
 {
     return {getX() - b.getX(), getY() - b.getY(), getZ() - b.getZ()};
+}
+
+Vect3d& Vect3d::ceil(const Vect3d& v)
+{
+    return *new Vect3d(std::ceil(v.getX()), std::ceil(v.getY()), std::ceil(v.getZ()));
+}
+
+Vect3d Vect3d::clamp(const Vect3d& v, const Vect3d& min, const Vect3d& max)
+{
+    return {std::clamp(v.getX(), min.getX(), max.getX()), std::clamp(v.getY(), min.getY(), max.getY()), std::clamp(v.getZ(), min.getZ(), max.getZ())};
 }
 
 Vect3d Vect3d::normalize() const

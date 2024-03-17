@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 
+#include <glm/vec3.hpp>
+
 /**
  *  @brief Base class for any structure which needs 3 coordinates (point, vector...).
  */
@@ -59,6 +61,11 @@ public:
     double getZ() const;
 
     /**
+     *  @brief Returns the coordinate at the index.
+     */
+    double getAt(int index) const;
+
+    /**
      *  @brief Returns the coordinates of this vector as an array.
      */
     std::vector<double> getVert() const;
@@ -77,6 +84,16 @@ public:
      *  @brief Modifies the Z coordinate.
      */
     void setZ(double z);
+
+    /**
+     *  @brief Modifies the coordinate at the index.
+     */
+    void setAt(int index, double value);
+
+    /**
+     * @brief Returns the vector as a glm::vec3.
+     */
+    glm::vec3 toGlmVec3() const;
 
     /**
      *  @brief Modifies all the vector values.
@@ -108,6 +125,11 @@ public:
      */
     Vect3d operator/=(const Vect3d& b);
     Vect3d operator/(const Vect3d& b);
+    Vect3d div(const Vect3d& b) const;
+
+    Vect3d operator/=(double value);
+    Vect3d operator/(double value);
+    Vect3d div(double value) const;
     Vect3d scalarDiv(double value) const;
 
     /**
@@ -132,6 +154,9 @@ public:
     Vect3d operator-=(const Vect3d& b);
     Vect3d operator-(const Vect3d& b);
     Vect3d sub(const Vect3d& b) const;
+
+    static Vect3d& ceil(const Vect3d& v);
+    static Vect3d  clamp(const Vect3d& v, const Vect3d& min, const Vect3d& max);
 
     /**
      *  @brief Vector normalization.

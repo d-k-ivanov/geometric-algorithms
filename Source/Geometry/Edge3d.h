@@ -9,6 +9,7 @@ class Edge3d
 {
 protected:
     Vect3d _orig, _dest;
+    Vect3d _direction;
 
 protected:
     /**
@@ -48,6 +49,11 @@ public:
     Vect3d& getOrigin();
 
     /**
+     *	@return Edge direction.
+     */
+    Vect3d getDirection() const;
+
+    /**
      *  @brief Returns a point given the parametric value. It may be wrong if the t value is not valid for the specific subclass.
      */
     virtual Vect3d getPoint(double t);
@@ -55,12 +61,27 @@ public:
     /**
      *  @brief Returns a vector with all the coordinate values of the segment (origin and dest).
      */
-    std::vector<double> getVertices();
+    std::vector<double> getVertices() const;
+
+    /**
+     *	@brief Modifies the final point.
+     */
+    void setDest(const Vect3d& dest);
+
+    /**
+     *	@brief Modifies the edge direction.
+     */
+    void setDirection(const Vect3d& direction);
+
+    /**
+     *	@brief Modifies the edge starting point.
+     */
+    void setOrigin(const Vect3d& orig);
 
     /**
      *  @brief Assignment operator.
      */
-    virtual Edge3d& operator=(const Edge3d& edge);
+    Edge3d& operator=(const Edge3d& edge);
 
     /**
      *  @brief Overriding cout call.

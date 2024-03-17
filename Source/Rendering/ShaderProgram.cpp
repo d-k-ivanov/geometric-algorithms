@@ -20,10 +20,6 @@ AlgGeom::ShaderProgram::ShaderProgram()
 {
 }
 
-AlgGeom::ShaderProgram::~ShaderProgram()
-{
-}
-
 bool AlgGeom::ShaderProgram::setSubroutineUniform(const GLenum shaderType, const std::string& subroutine, const std::string& functionName)
 {
     GLint subroutineID = glGetSubroutineUniformLocation(_handler, shaderType, subroutine.c_str());

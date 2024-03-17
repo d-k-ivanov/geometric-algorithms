@@ -46,7 +46,7 @@ protected:
 
 public:
     ShaderProgram();
-    virtual ~ShaderProgram();
+    virtual ~ShaderProgram() = default;
 
     virtual void   applyActiveSubroutines()                  = 0;
     virtual GLuint createShaderProgram(const char* filename) = 0;

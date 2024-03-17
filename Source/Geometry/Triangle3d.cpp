@@ -121,6 +121,30 @@ Vect3d Triangle3d::normal() const
     return n.scalarMul(1.0f / module);
 }
 
+AABB Triangle3d::getAABB() const
+{
+    double minX, minY, minZ, maxX, maxY, maxZ;
+    maxX = BasicGeometry::max3(_a.getX(), _b.getX(), _c.getX());
+    minX = BasicGeometry::min3(_a.getX(), _b.getX(), _c.getX());
+    maxY = BasicGeometry::max3(_a.getY(), _b.getY(), _c.getY());
+    minY = BasicGeometry::min3(_a.getY(), _b.getY(), _c.getY());
+    maxZ = BasicGeometry::max3(_a.getZ(), _b.getZ(), _c.getZ());
+    minZ = BasicGeometry::min3(_a.getZ(), _b.getZ(), _c.getZ());
+
+    const Vect3d min(minX, minY, minZ);
+    const Vect3d max(maxX, maxY, maxZ);
+    return {min, max};
+}
+
+Vect3d Triangle3d::samplePoint(const double x, const double y) const
+{
+    const double a = 1 - x - y;
+    const double b = x;
+    const double c = y;
+
+    return _a.scalarMul(a).add(_b.scalarMul(b)).add(_c.scalarMul(c));
+}
+
 Triangle3d& Triangle3d::operator=(const Triangle3d& triangle)
 {
     _a = triangle._a;

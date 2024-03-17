@@ -95,6 +95,11 @@ Vect3d Plane::getCenter() const
     return _a.add(_b).add(_c).scalarMul(1.0 / 3.0);
 }
 
+Vect3d Plane::getPoint(float lambda, float mu) const
+{
+    return _a.add(_b.scalarMul(lambda)).add(_c.scalarMul(mu));
+}
+
 bool Plane::coplanar(const Vect3d& point) const
 {
     if(BasicGeometry::equal(0.0, distance(point)))

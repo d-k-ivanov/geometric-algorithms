@@ -68,6 +68,9 @@ set(SOURCE_FILES
     Source/Geometry/Circle.h
     Source/Geometry/Edge3d.cpp
     Source/Geometry/Edge3d.h
+    Source/Geometry/EisemannRay.cpp
+    Source/Geometry/EisemannRay.h
+    Source/Geometry/Intersections3d.h
     Source/Geometry/Line.cpp
     Source/Geometry/Line.h
     Source/Geometry/Line3d.cpp
@@ -102,8 +105,8 @@ set(SOURCE_FILES
     Source/Geometry/Vect3d.h
     Source/Geometry/Vertex.cpp
     Source/Geometry/Vertex.h
-    # Source/Geometry/Voxelization.cpp
-    # Source/Geometry/Voxelization.h
+    Source/Geometry/Voxelization.cpp
+    Source/Geometry/Voxelization.h
 
     # Patterns
     Source/Patterns/Singleton.h
@@ -140,8 +143,8 @@ set(SOURCE_FILES
     Source/Rendering/DrawSegment.h
     Source/Rendering/DrawTriangle.cpp
     Source/Rendering/DrawTriangle.h
-    # Source/Rendering/DrawVoxelization.cpp
-    # Source/Rendering/DrawVoxelization.h
+    Source/Rendering/DrawVoxelization.cpp
+    Source/Rendering/DrawVoxelization.h
     Source/Rendering/FBO.cpp
     Source/Rendering/FBO.h
     Source/Rendering/FBOScreenshot.cpp

@@ -4,19 +4,24 @@
 #include <vector>
 
 Edge3d::Edge3d()
+    : _orig(0.0f)
+    , _dest(0.0f)
+    , _direction(0.0f)
 {
 }
 
 Edge3d::Edge3d(Vect3d& orig, Vect3d& dest)
     : _orig(orig)
     , _dest(dest)
+    , _direction(_dest - _orig)
 {
 }
 
 Edge3d::Edge3d(const Edge3d& edge)
 {
-    _orig = edge._orig;
-    _dest = edge._dest;
+    _orig      = edge._orig;
+    _dest      = edge._dest;
+    _direction = edge._direction;
 }
 
 Edge3d::~Edge3d()
@@ -33,17 +38,20 @@ Vect3d& Edge3d::getOrigin()
     return _orig;
 }
 
+Vect3d Edge3d::getDirection() const
+{
+    return _direction;
+}
+
 Vect3d Edge3d::getPoint(double t)
 {
     if(!isTvalid(t))
-        return Vect3d();
-    Vect3d aux1 = _dest.sub(_orig);
-    Vect3d aux2 = aux1.scalarMul(t);
+        return {};
 
-    return Vect3d(_orig.add(aux2));
+    return _orig + _direction * t;
 }
 
-std::vector<double> Edge3d::getVertices()
+std::vector<double> Edge3d::getVertices() const
 {
     std::vector<double> vertices;
     std::vector<double> origVertices = _orig.getVert(), destVertices = _dest.getVert();
@@ -53,10 +61,29 @@ std::vector<double> Edge3d::getVertices()
     return vertices;
 }
 
+void Edge3d::setDest(const Vect3d& dest)
+{
+    _dest      = dest;
+    _direction = _dest - _orig;
+}
+
+void Edge3d::setDirection(const Vect3d& direction)
+{
+    _direction = direction;
+    _dest      = _orig + _direction;
+}
+
+void Edge3d::setOrigin(const Vect3d& orig)
+{
+    _orig      = orig;
+    _direction = _dest - _orig;
+}
+
 Edge3d& Edge3d::operator=(const Edge3d& edge)
 {
-    _orig = edge._orig;
-    _dest = edge._dest;
+    _orig      = edge._orig;
+    _dest      = edge._dest;
+    _direction = edge._direction;
 
     return *this;
 }

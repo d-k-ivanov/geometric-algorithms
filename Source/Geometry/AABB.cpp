@@ -1,8 +1,8 @@
 #include "AABB.h"
 
-AABB::AABB()
-{
-}
+// AABB::AABB()
+// {
+// }
 
 AABB::AABB(const Vect3d& min, const Vect3d& max)
     : _min(min)
@@ -20,17 +20,17 @@ AABB::~AABB()
 {
 }
 
-Vect3d AABB::getSize()
+Vect3d AABB::getSize() const
 {
     return _max.sub(_min);
 }
 
-Vect3d AABB::getCenter()
+Vect3d AABB::getCenter() const
 {
     return _max.add(_min) / 2.0f;
 }
 
-Vect3d AABB::getExtent()
+Vect3d AABB::getExtent() const
 {
     return _max.sub(getCenter());
 }
@@ -45,12 +45,12 @@ Vect3d AABB::getMax()
     return _max;
 }
 
-void AABB::setMin(Vect3d& min)
+void AABB::setMin(const Vect3d& min)
 {
     _min = min;
 }
 
-void AABB::setMax(Vect3d& max)
+void AABB::setMax(const Vect3d& max)
 {
     _max = max;
 }

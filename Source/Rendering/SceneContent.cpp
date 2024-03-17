@@ -28,6 +28,7 @@ void AlgGeom::SceneContent::buildScenario()
 
     // Define the scene
     // Scenes::p0(*this);
+    // Scenes::p0a(*this);
 
     constexpr int      numPointClouds = 1;
     constexpr int      pointsPerCloud = 50;
@@ -47,7 +48,10 @@ void AlgGeom::SceneContent::buildScenario()
     // Practice 2:
     // Scenes::p2a(*this, numPointClouds, pointsPerCloud, scaleFactor);
     // Scenes::p2b(*this);
-    Scenes::p2c(*this);
+    // Scenes::p2c(*this);
+
+    // Practice 3:
+    Scenes::p3(*this);
 }
 
 void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)
