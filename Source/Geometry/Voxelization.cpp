@@ -74,7 +74,7 @@ Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 _tam, int tipo)
                         {
                             if(voxeles[i][x][y]->bruteForce(triangulos[j]))
                             {
-                                voxeles[i][x][y]->setFormato(VoxelStatus::GRIS);
+                                voxeles[i][x][y]->setFormato(VoxelStatus::OCCUPIED);
                                 j = aux1;
                             }
                         }
@@ -95,7 +95,7 @@ Voxelization::Voxelization(TriangleModel* modelo, glm::vec3 _tam, int tipo)
                 {
                     if(voxeles_seleccionados[i]->bruteForce(modelo->getFaces()[j]))
                     {
-                        voxeles_seleccionados[i]->setFormato(VoxelStatus::GRIS);
+                        voxeles_seleccionados[i]->setFormato(VoxelStatus::OCCUPIED);
                     }
                 }
             }
@@ -236,7 +236,7 @@ void Voxelization::lineaBarrido(std::vector<Triangle3d> triangulos)
             {
                 if(voxeles_linea[j]->bruteForce(triangulos[it->first]))
                 {
-                    voxeles_linea[j]->setFormato(VoxelStatus::GRIS);
+                    voxeles_linea[j]->setFormato(VoxelStatus::OCCUPIED);
                     break;
                 }
             }
@@ -278,7 +278,7 @@ std::vector<Voxel*> Voxelization::obtenerVoxeles(AABB aabb_ti)
             for(int y = 0; y < numZ; y++)
             {
 
-                if(voxeles[i][x][y]->getStatus() != VoxelStatus::GRIS)
+                if(voxeles[i][x][y]->getStatus() != VoxelStatus::OCCUPIED)
                 {
                     if(insideVoxel(voxeles[i][x][y], e1) || insideVoxel(voxeles[i][x][y], e2) || insideVoxel(voxeles[i][x][y], e3) || insideVoxel(voxeles[i][x][y], e4)
                        || insideVoxel(voxeles[i][x][y], e5) || insideVoxel(voxeles[i][x][y], e6) || insideVoxel(voxeles[i][x][y], e7) || insideVoxel(voxeles[i][x][y], e8))
@@ -311,9 +311,9 @@ void Voxelization::flood()
     centralY = numY / 2;
     centralZ = numZ / 2;
 
-    if(this->voxeles[centralX][centralY][centralZ]->getStatus() == VoxelStatus::GRIS)
+    if(this->voxeles[centralX][centralY][centralZ]->getStatus() == VoxelStatus::OCCUPIED)
     {
-        while(this->voxeles[centralX][centralY][centralZ]->getStatus() == VoxelStatus::GRIS)
+        while(this->voxeles[centralX][centralY][centralZ]->getStatus() == VoxelStatus::OCCUPIED)
         {
             centralX++;
         }
@@ -327,7 +327,7 @@ void Voxelization::flood()
             {
                 if(this->voxeles[i][x][y]->getStatus() == VoxelStatus::NP)
                 {
-                    this->voxeles[i][x][y]->setFormato(VoxelStatus::BLANCO);
+                    this->voxeles[i][x][y]->setFormato(VoxelStatus::OUTER);
                 }
             }
         }
@@ -336,11 +336,11 @@ void Voxelization::flood()
 
 void Voxelization::recursivo(Voxel* v, int x, int y, int z)
 {
-    if(v->getStatus() == VoxelStatus::GRIS || v->getStatus() == VoxelStatus::NEGRO)
+    if(v->getStatus() == VoxelStatus::OCCUPIED || v->getStatus() == VoxelStatus::INNER)
     {
         return;
     }
-    v->setFormato(VoxelStatus::NEGRO);
+    v->setFormato(VoxelStatus::INNER);
 
     if(x + 1 < numX)
     {
@@ -372,9 +372,9 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
 {
     VoxelStatus formatin;
     if(gris)
-        formatin = VoxelStatus::GRIS;
+        formatin = VoxelStatus::OCCUPIED;
     else
-        formatin = VoxelStatus::NEGRO;
+        formatin = VoxelStatus::INNER;
 
     std::vector<glm::vec3> vector;
     Vect3d                 despl(tam[0] / 2, tam[1] / 2, tam[2] / 2);
@@ -603,19 +603,19 @@ Voxelization* Voxelization::AND(Voxelization& vox)
                 {
                     if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO && vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::BLANCO)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                        res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                 }
                 else
                 {
-                    res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                    res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                 }
             }
         }
@@ -650,31 +650,31 @@ Voxelization* Voxelization::OR(Voxelization& vox)
                 {
                     if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO || vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::BLANCO)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER || vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                 }
                 else
                 {
                     if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::BLANCO)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
+                        if(vox.getVoxeles()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                        res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                 }
             }
@@ -710,22 +710,22 @@ Voxelization* Voxelization::XOR(Voxelization& vox)
                 {
                     if(comprobarPertenencia(res->getVoxeles()[i][y][z], &vox, x2, y2, z2))
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO && vox.getVoxeles()[x2][y2][z2]->getStatus() == VoxelStatus::BLANCO)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && vox.getVoxeles()[x2][y2][z2]->getStatus() == VoxelStatus::OUTER)
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::BLANCO)
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::NEGRO);
+                        if(this->getVoxeles()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::INNER);
                         else
-                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                            res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                     }
                 }
                 else
                 {
-                    res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::BLANCO);
+                    res->getVoxeles()[i][y][z]->setFormato(VoxelStatus::OUTER);
                 }
             }
         }

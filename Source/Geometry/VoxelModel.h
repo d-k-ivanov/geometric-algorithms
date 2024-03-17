@@ -8,9 +8,9 @@
 
 enum VoxelStatus
 {
-    GRIS,
-    BLANCO,
-    NEGRO,
+    OCCUPIED,
+    OUTER,
+    INNER,
     NP
 };
 
