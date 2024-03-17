@@ -17,25 +17,25 @@ enum VoxelStatus
 class Voxel
 {
 private:
-    VoxelStatus  formatin;
-    std::vector<Vect3d> puntos;
-    Vect3d         centro, min, max;
-    glm::vec3      tam;
+    VoxelStatus         _status;
+    std::vector<Vect3d> _points;
+    Vect3d              _center, _min, _max;
+    glm::vec3           _size;
 
 public:
     Voxel();
     ~Voxel() = default;
     Voxel(const Voxel& v);
-    Voxel(Vect3d puntoMin, glm::vec3 tamVoxel);
+    Voxel(Vect3d minPoint, glm::vec3 tamVoxel);
     void inserta(Vect3d punto);
     bool busca(Vect3d punto);
     bool borra(Vect3d punto);
 
-    void setFormato(VoxelStatus formato) { formatin = formato; }
+    void setFormato(VoxelStatus formato) { _status = formato; }
 
-    Vect3d        getMin() { return this->min; }
-    Vect3d        getMax() { return this->max; }
-    VoxelStatus getFormato() { return this->formatin; }
+    Vect3d      getMin() { return this->_min; }
+    Vect3d      getMax() { return this->_max; }
+    VoxelStatus getFormato() { return this->_status; }
 
     bool fuerzaBruta(Triangle3d triangulo);
     bool lineaBarrido(Triangle3d triangulo);

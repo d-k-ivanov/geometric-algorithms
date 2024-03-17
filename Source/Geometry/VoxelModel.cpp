@@ -6,38 +6,35 @@
 
 Voxel::Voxel()
 {
-    formatin = VoxelStatus::NP;
-    puntos   = std::vector<Vect3d>();
+    _status = VoxelStatus::NP;
+    _points = std::vector<Vect3d>();
 }
 
-Voxel::Voxel(Vect3d puntoMin, glm::vec3 tam)
+Voxel::Voxel(Vect3d minPoint, glm::vec3 size)
 {
-    formatin = VoxelStatus::NP;
-
-    Vect3d aux(puntoMin.getX() + tam[0] / 2, puntoMin.getY() + tam[1] / 2, puntoMin.getZ() + tam[2] / 2);
-    centro    = aux;
-    this->min = puntoMin;
-    Vect3d aux2(min.getX() + tam[0], min.getY() + tam[1], min.getZ() + tam[2]);
-    this->max = aux2;
-    this->tam = tam;
+    _status     = VoxelStatus::NP;
+    _center     = {minPoint.getX() + size[0] / 2, minPoint.getY() + size[1] / 2, minPoint.getZ() + size[2] / 2};
+    this->_min  = minPoint;
+    this->_max  = {_min.getX() + size[0], _min.getY() + size[1], _min.getZ() + size[2]};
+    this->_size = size;
 }
 
 Voxel::Voxel(const Voxel& v)
 {
-    formatin = v.formatin;
-    puntos   = v.puntos;
+    _status = v._status;
+    _points = v._points;
 }
 
 void Voxel::inserta(Vect3d punto)
 {
-    puntos.insert(puntos.end(), punto);
+    _points.insert(_points.end(), punto);
 }
 
 bool Voxel::busca(Vect3d punto)
 {
-    for(int i = 0; i < puntos.size(); i++)
+    for(int i = 0; i < _points.size(); i++)
     {
-        if(puntos[i] == punto)
+        if(_points[i] == punto)
         {
             return true;
         }
@@ -47,12 +44,12 @@ bool Voxel::busca(Vect3d punto)
 
 bool Voxel::borra(Vect3d punto)
 {
-    std::vector<Vect3d>::iterator it = puntos.begin();
-    while(it != puntos.end())
+    std::vector<Vect3d>::iterator it = _points.begin();
+    while(it != _points.end())
     {
         if(*it == punto)
         {
-            puntos.erase(it);
+            _points.erase(it);
             return true;
         }
     }
@@ -65,9 +62,9 @@ bool Voxel::fuerzaBruta(Triangle3d t)
     vertices.push_back(t.getA());
     vertices.push_back(t.getB());
     vertices.push_back(t.getC());
-    const glm::vec3 halfsize(tam[0] / 2, tam[1] / 2, tam[2] / 2);
+    const glm::vec3 halfsize(_size[0] / 2, _size[1] / 2, _size[2] / 2);
 
-    if(triBoxOverlap(this->centro, halfsize, vertices))
+    if(triBoxOverlap(this->_center, halfsize, vertices))
     {
         return true;
     }
@@ -82,33 +79,33 @@ bool Voxel::planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 
     if(normal.getX() > 0.0f)
     {
         vmin.setX(-maxBox[0] - v.getX());    // -NJMP-
-        vmax.setX(maxBox[0] - v.getX());    // -NJMP-
+        vmax.setX(maxBox[0] - v.getX());     // -NJMP-
     }
     else
     {
-        vmin.setX(maxBox[0] - v.getX());    // -NJMP-
+        vmin.setX(maxBox[0] - v.getX());     // -NJMP-
         vmax.setX(-maxBox[0] - v.getX());    // -NJMP-
     }
 
     if(normal.getY() > 0.0f)
     {
         vmin.setY(-maxBox[1] - v.getY());    // -NJMP-
-        vmax.setY(maxBox[1] - v.getY());    // -NJMP-
+        vmax.setY(maxBox[1] - v.getY());     // -NJMP-
     }
     else
     {
-        vmin.setY(maxBox[1] - v.getY());    // -NJMP-
+        vmin.setY(maxBox[1] - v.getY());     // -NJMP-
         vmax.setY(-maxBox[1] - v.getY());    // -NJMP-
     }
 
     if(normal.getZ() > 0.0f)
     {
         vmin.setZ(-maxBox[2] - v.getZ());    // -NJMP-
-        vmax.setZ(maxBox[2] - v.getZ());    // -NJMP-
+        vmax.setZ(maxBox[2] - v.getZ());     // -NJMP-
     }
     else
     {
-        vmin.setZ(maxBox[2] - v.getZ());    // -NJMP-
+        vmin.setZ(maxBox[2] - v.getZ());     // -NJMP-
         vmax.setZ(-maxBox[2] - v.getZ());    // -NJMP-
     }
 
