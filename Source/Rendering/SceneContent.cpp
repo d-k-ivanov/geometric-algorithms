@@ -66,10 +66,6 @@ void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)
 
 // ------------------------------------------------------------------------------------------
 
-AlgGeom::SceneContent::SceneContent()
-{
-}
-
 AlgGeom::SceneContent::~SceneContent()
 {
     _camera.clear();
@@ -86,9 +82,9 @@ void AlgGeom::SceneContent::addNewModel(Model3D* model)
     _model.push_back(std::unique_ptr<Model3D>(model));
 }
 
-AlgGeom::Model3D* AlgGeom::SceneContent::getModel(Model3D::Component* component)
+AlgGeom::Model3D* AlgGeom::SceneContent::getModel(Model3D::Component* component) const
 {
-    for(auto& model : _model)
+    for(const auto& model : _model)
     {
         if(model->belongsModel(component))
             return model.get();

@@ -39,14 +39,14 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
     double tMinZ = _minZ;
     for(int i = 0; i < _numX; i++)
     {
-        std::vector<std::vector<Voxel*>> nivel1;
+        std::vector<std::vector<VoxelModel*>> nivel1;
         for(int x = 0; x < _numY; x++)
         {
-            std::vector<Voxel*> nivel2;
+            std::vector<VoxelModel*> nivel2;
             for(int y = 0; y < _numZ; y++)
             {
                 Vect3d puntoMinVoxel(tMinX, tMinY, tMinZ);
-                Voxel* insertado = new Voxel(puntoMinVoxel, _size);
+                VoxelModel* insertado = new VoxelModel(puntoMinVoxel, _size);
                 nivel2.push_back(insertado);
                 tMinZ += _size[2];
             }
@@ -126,14 +126,14 @@ Voxelization::Voxelization(double maxX, double maxY, double maxZ, double minX, d
     double tMinZ = _minZ;
     for(int i = 0; i < _numX; i++)
     {
-        std::vector<std::vector<Voxel*>> level1;
+        std::vector<std::vector<VoxelModel*>> level1;
         for(int x = 0; x < _numY; x++)
         {
-            std::vector<Voxel*> level2;
+            std::vector<VoxelModel*> level2;
             for(int y = 0; y < _numZ; y++)
             {
                 const Vect3d voxel(tMinX, tMinY, tMinZ);
-                Voxel*       voxelInserted = new Voxel(voxel, _size);
+                VoxelModel*       voxelInserted = new VoxelModel(voxel, _size);
                 level2.push_back(voxelInserted);
                 tMinZ += _size[2];
             }
@@ -161,12 +161,12 @@ Voxelization::Voxelization(const Voxelization& voxel)
 {
 }
 
-Voxel* Voxelization::getVoxel(double x, double y, double z)
+VoxelModel* Voxelization::getVoxel(double x, double y, double z)
 {
     const int i   = static_cast<int>(glm::abs(x / _size[0])) % _numX;
     const int j   = static_cast<int>(glm::abs(y / _size[1])) % _numY;
     const int k   = static_cast<int>(glm::abs(z / _size[2])) % _numZ;
-    Voxel*    res = _voxels[i][j][k];
+    VoxelModel*    res = _voxels[i][j][k];
 
     return res;
 }
@@ -177,7 +177,7 @@ void Voxelization::add(const Vect3d& data)
     const double y = data.getY();
     const double z = data.getZ();
 
-    Voxel* v = getVoxel(x, y, z);
+    VoxelModel* v = getVoxel(x, y, z);
     v->add(data);
 }
 
@@ -201,7 +201,7 @@ void Voxelization::sweep(const std::vector<Triangle3d>& triangles) const
     std::ranges::sort(vertices, &compare);
 
     std::map<int, int>           triangularPairs;
-    std::vector<Voxel*>          voxels;
+    std::vector<VoxelModel*>          voxels;
     std::map<int, int>::iterator it;
     for(int i = 0; i < _numY; i++)
     {
@@ -265,10 +265,10 @@ void Voxelization::sweep(const std::vector<Triangle3d>& triangles) const
     }
 }
 
-std::vector<Voxel*> Voxelization::getVoxelsInAABB(AABB& aabb)
+std::vector<VoxelModel*> Voxelization::getVoxelsInAABB(AABB& aabb)
 {
 
-    std::vector<Voxel*> result;
+    std::vector<VoxelModel*> result;
 
     const Vect3d corner1(aabb.getMin());
     const Vect3d corner2(aabb.getMax());
@@ -303,12 +303,12 @@ std::vector<Voxel*> Voxelization::getVoxelsInAABB(AABB& aabb)
     return result;
 }
 
-std::vector<std::vector<std::vector<Voxel*>>> Voxelization::getVoxels()
+std::vector<std::vector<std::vector<VoxelModel*>>> Voxelization::getVoxels()
 {
     return _voxels;
 }
 
-bool Voxelization::isInVoxel(Voxel* voxel, const Vect3d& vertice) const
+bool Voxelization::isInVoxel(VoxelModel* voxel, const Vect3d& vertice) const
 {
     return vertice.getX() >= voxel->getMin().getX()
         && vertice.getX() <= voxel->getMax().getX()
@@ -347,7 +347,7 @@ void Voxelization::flood()
     }
 }
 
-void Voxelization::recursiveFill(Voxel* v, const int x, const int y, int z)
+void Voxelization::recursiveFill(VoxelModel* v, const int x, const int y, int z)
 {
     if(v->getStatus() == VoxelStatus::OCCUPIED || v->getStatus() == VoxelStatus::INNER)
     {
@@ -421,7 +421,7 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(const bool useColors
     return voxelization;
 }
 
-bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
+bool Voxelization::rayTraversal(Ray3d& r, std::vector<VoxelModel*>& v)
 {
     double tMin;
     double tMax;

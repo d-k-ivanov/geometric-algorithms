@@ -12,13 +12,13 @@ public:
     std::vector<std::unique_ptr<Camera>>  _camera;
     std::vector<std::unique_ptr<Model3D>> _model;
 
-    SceneContent();
+    SceneContent() = default;
     virtual ~SceneContent();
 
     void     addNewCamera(ApplicationState* appState);
     void     addNewModel(Model3D* model);
     void     buildCamera(uint16_t width, uint16_t height);
     void     buildScenario();
-    Model3D* getModel(Model3D::Component* component);
+    Model3D* getModel(Model3D::Component* component) const;
 };
 }    // namespace AlgGeom

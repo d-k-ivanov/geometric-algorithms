@@ -11,7 +11,7 @@ class Voxelization
 
 private:
     glm::vec3                                     _size;
-    std::vector<std::vector<std::vector<Voxel*>>> _voxels;
+    std::vector<std::vector<std::vector<VoxelModel*>>> _voxels;
     double                                        _minX, _minY, _minZ;
     double                                        _maxX, _maxY, _maxZ;
     int                                           _numX, _numY, _numZ;
@@ -23,17 +23,17 @@ public:
     Voxelization(TriangleModel* model, glm::vec3 size, int algorithm);
     virtual ~Voxelization() = default;
 
-    Voxel*                                        getVoxel(double x, double y, double z);
+    VoxelModel*                                        getVoxel(double x, double y, double z);
     void                                          add(const Vect3d& data);
     void                                          sweep(const std::vector<Triangle3d>& triangles) const;
     static bool                                   compare(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
-    std::vector<Voxel*>                           getVoxelsInAABB(AABB& aabb);
-    std::vector<std::vector<std::vector<Voxel*>>> getVoxels();
+    std::vector<VoxelModel*>                           getVoxelsInAABB(AABB& aabb);
+    std::vector<std::vector<std::vector<VoxelModel*>>> getVoxels();
 
-    bool rayTraversal(Ray3d& r, std::vector<Voxel*>& v);
+    bool rayTraversal(Ray3d& r, std::vector<VoxelModel*>& v);
     bool rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1) const;
 
-    bool isInVoxel(Voxel* voxel, const Vect3d& vertice) const;
+    bool isInVoxel(VoxelModel* voxel, const Vect3d& vertice) const;
 
     AlgGeom::DrawVoxelization* getRenderingObject(bool useColors, bool showOuterVoxeles);
 
@@ -47,5 +47,5 @@ public:
 
 protected:
     void flood();
-    void recursiveFill(Voxel* v, int x, int y, int z);
+    void recursiveFill(VoxelModel* v, int x, int y, int z);
 };

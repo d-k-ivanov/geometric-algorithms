@@ -14,7 +14,7 @@ enum VoxelStatus
     NP       = 3
 };
 
-class Voxel
+class VoxelModel
 {
 private:
     VoxelStatus         _status;
@@ -23,13 +23,13 @@ private:
     glm::vec3           _size;
 
 public:
-    Voxel();
-    ~Voxel() = default;
-    Voxel(const Voxel& voxel);
-    Voxel(Vect3d minPoint, glm::vec3 size);
-    void add(Vect3d point);
-    bool find(Vect3d point);
-    bool remove(Vect3d point);
+    VoxelModel();
+    ~VoxelModel() = default;
+    VoxelModel(const VoxelModel& voxel);
+    VoxelModel(const Vect3d& minPoint, glm::vec3 size);
+    void add(const Vect3d& point);
+    bool find(const Vect3d& point);
+    bool remove(const Vect3d& point);
 
     void setStatus(VoxelStatus status) { _status = status; }
 
