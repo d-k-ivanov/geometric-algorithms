@@ -1,5 +1,6 @@
 #include "VoxelModel.h"
 
+#include "AABB.h"
 #include "BasicGeometry.h"
 
 #include "Utils/ChronoUtilities.h"
@@ -34,7 +35,7 @@ void VoxelModel::add(const Vect3d& point)
 
 bool VoxelModel::find(const Vect3d& point)
 {
-    for(int i = 0; i < _points.size(); i++)
+    for(size_t i = 0; i < _points.size(); i++)
     {
         if(_points[i] == point)
         {
@@ -64,112 +65,108 @@ bool VoxelModel::bruteForce(Triangle3d triangle)
     vertices.push_back(triangle.getA());
     vertices.push_back(triangle.getB());
     vertices.push_back(triangle.getC());
-    const glm::vec3 halfsize(_size[0] / 2, _size[1] / 2, _size[2] / 2);
+    const glm::vec3 boxHalfSize(_size[0] / 2, _size[1] / 2, _size[2] / 2);
 
-    if(triBoxOverlap(this->_center, halfsize, vertices))
+    if(triangleOverlap(this->_center, boxHalfSize, vertices))
     {
         return true;
     }
     return false;
 }
 
-bool VoxelModel::planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 maxPoint) const
+bool VoxelModel::planeBoxOverlap(const Vect3d& normal, const Vect3d& vertex, glm::vec3 maxPoint) const
 {
-    Vect3d vmin, vmax, v;
-    v = vert;
+    Vect3d vmin, vmax;
 
-    if(normal.getX() > 0.0f)
+    if(normal.getX() > 0.0)
     {
-        vmin.setX(-maxPoint[0] - v.getX());
-        vmax.setX(maxPoint[0] - v.getX());
+        vmin.setX(-maxPoint[0] - vertex.getX());
+        vmax.setX(maxPoint[0] - vertex.getX());
     }
     else
     {
-        vmin.setX(maxPoint[0] - v.getX());
-        vmax.setX(-maxPoint[0] - v.getX());
+        vmin.setX(maxPoint[0] - vertex.getX());
+        vmax.setX(-maxPoint[0] - vertex.getX());
     }
 
-    if(normal.getY() > 0.0f)
+    if(normal.getY() > 0.0)
     {
-        vmin.setY(-maxPoint[1] - v.getY());
-        vmax.setY(maxPoint[1] - v.getY());
+        vmin.setY(-maxPoint[1] - vertex.getY());
+        vmax.setY(maxPoint[1] - vertex.getY());
     }
     else
     {
-        vmin.setY(maxPoint[1] - v.getY());
-        vmax.setY(-maxPoint[1] - v.getY());
+        vmin.setY(maxPoint[1] - vertex.getY());
+        vmax.setY(-maxPoint[1] - vertex.getY());
     }
 
-    if(normal.getZ() > 0.0f)
+    if(normal.getZ() > 0.0)
     {
-        vmin.setZ(-maxPoint[2] - v.getZ());
-        vmax.setZ(maxPoint[2] - v.getZ());
+        vmin.setZ(-maxPoint[2] - vertex.getZ());
+        vmax.setZ(maxPoint[2] - vertex.getZ());
     }
     else
     {
-        vmin.setZ(maxPoint[2] - v.getZ());
-        vmax.setZ(-maxPoint[2] - v.getZ());
+        vmin.setZ(maxPoint[2] - vertex.getZ());
+        vmax.setZ(-maxPoint[2] - vertex.getZ());
     }
 
-    if(normal.dot(vmin) > 0.0f)
+    if(normal.dot(vmin) > 0.0)
         return false;
 
-    if(normal.dot(vmax) >= 0.0f)
+    if(normal.dot(vmax) > 0.0 || BasicGeometry ::equal(0.0, normal.dot(vmax)))
         return true;
 
     return false;
 }
 
-bool VoxelModel::triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices)
+bool VoxelModel::triangleOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices) const
 {
     Vect3d v0, v1, v2;
-    float  min, max, p0, p1, p2, rad, fex, fey, fez;
+    double min, max, p0, p1, p2, rad, fex, fey, fez;
 
-    Vect3d normal, e0, e1, e2;
+    Vect3d normal, edge0, edge1, edge2;
 
     v0 = vertices[0].sub(center);
     v1 = vertices[1].sub(center);
     v2 = vertices[2].sub(center);
 
-    e0 = v1.sub(v0);
-    e1 = v2.sub(v1);
-    e2 = v0.sub(v2);
+    edge0 = v1.sub(v0);
+    edge1 = v2.sub(v1);
+    edge2 = v0.sub(v2);
 
-    fex = glm::abs(e0.getX());
-    fey = glm::abs(e0.getY());
-    fez = glm::abs(e0.getZ());
+    fex = glm::abs(edge0.getX());
+    fey = glm::abs(edge0.getY());
+    fez = glm::abs(edge0.getZ());
 
-    double aux  = e0.getZ();
-    double aux2 = e0.getY();
-    double aux3 = e0.getX();
+    if(!xAxisTest(edge0.getZ(), edge0.getY(), fez, fey, p0, p2, v0, v2, size, min, max, rad))
+        return false;
+    if(!yAxisTest(edge0.getZ(), edge0.getX(), fez, fex, p0, p2, v0, v2, size, min, max, rad))
+        return false;
+    if(!zAxisTest(edge0.getY(), edge0.getX(), fey, fez, p2, p1, v1, v2, size, min, max, rad))
+        return false;
 
-    axisTestX(aux, aux2, fez, fey, p0, p2, v0, v2, size, min, max, rad);
-    axisTestY(aux, aux3, fez, fex, p0, p2, v0, v2, size, min, max, rad);
-    axisTestZ(aux2, aux3, fey, fez, p2, p1, v1, v2, size, min, max, rad);
+    fex = glm::abs(edge1.getX());
+    fey = glm::abs(edge1.getY());
+    fez = glm::abs(edge1.getZ());
 
-    fex = glm::abs(e1.getX());
-    fey = glm::abs(e1.getY());
-    fez = glm::abs(e1.getZ());
+    if(!xAxisTest(edge1.getZ(), edge1.getY(), fez, fey, p0, p2, v0, v2, size, min, max, rad))
+        return false;
+    if(!yAxisTest(edge1.getZ(), edge1.getX(), fez, fex, p0, p2, v0, v2, size, min, max, rad))
+        return false;
+    if(!zAxisTest(edge1.getY(), edge1.getX(), fey, fez, p0, p1, v0, v1, size, min, max, rad))
+        return false;
 
-    aux  = e1.getZ();
-    aux2 = e1.getY();
-    aux3 = e1.getX();
+    fex = glm::abs(edge2.getX());
+    fey = glm::abs(edge2.getY());
+    fez = glm::abs(edge2.getZ());
 
-    axisTestX(aux, aux2, fez, fey, p0, p2, v0, v2, size, min, max, rad);
-    axisTestY(aux, aux3, fez, fex, p0, p2, v0, v2, size, min, max, rad);
-    axisTestZ(aux2, aux3, fey, fez, p0, p1, v0, v1, size, min, max, rad);
-
-    fex = glm::abs(e2.getX());
-    fey = glm::abs(e2.getY());
-    fez = glm::abs(e2.getZ());
-
-    aux  = e2.getZ();
-    aux2 = e2.getY();
-    aux3 = e2.getX();
-
-    axisTestX(aux, aux2, fez, fey, p0, p1, v0, v1, size, min, max, rad);
-    axisTestY(aux, aux3, fez, fex, p0, p1, v0, v1, size, min, max, rad);
-    axisTestZ(aux2, aux3, fey, fez, p2, p1, v1, v2, size, min, max, rad);
+    if(!xAxisTest(edge2.getZ(), edge2.getY(), fez, fey, p0, p1, v0, v1, size, min, max, rad))
+        return false;
+    if(!yAxisTest(edge2.getZ(), edge2.getX(), fez, fex, p0, p1, v0, v1, size, min, max, rad))
+        return false;
+    if(!zAxisTest(edge2.getY(), edge2.getX(), fey, fez, p2, p1, v1, v2, size, min, max, rad))
+        return false;
 
     min = BasicGeometry::min3(v0.getX(), v1.getX(), v2.getX());
     max = BasicGeometry::max3(v0.getX(), v1.getX(), v2.getX());
@@ -189,7 +186,7 @@ bool VoxelModel::triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector
     if(min > size[2] || max < -size[2])
         return false;
 
-    normal = e0.xProduct(e1);
+    normal = edge0.xProduct(edge1);
 
     if(!planeBoxOverlap(normal, v0, size))
         return false;
@@ -197,7 +194,7 @@ bool VoxelModel::triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector
     return true;
 }
 
-bool VoxelModel::axisTestX(const double& a, const double& b, const float& fa, const float& fb, float& p0, float& px, const Vect3d& v0, const Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad) const
+bool VoxelModel::xAxisTest(const double& a, const double& b, const double& fa, const double& fb, double& p0, double& px, const Vect3d& v0, const Vect3d& vx, const glm::vec3& boxRadius, double& min, double& max, double& rad) const
 {
     p0 = a * v0.getY() - b * v0.getZ();
     px = a * vx.getY() - b * vx.getZ();
@@ -213,7 +210,7 @@ bool VoxelModel::axisTestX(const double& a, const double& b, const float& fa, co
         max = p0;
     }
 
-    rad = fa * boxHalfSize[1] + fb * boxHalfSize[2];
+    rad = fa * boxRadius.y + fb * boxRadius.z;
 
     if(min > rad || max < -rad)
         return false;
@@ -221,7 +218,7 @@ bool VoxelModel::axisTestX(const double& a, const double& b, const float& fa, co
     return true;
 }
 
-bool VoxelModel::axisTestY(const double& a, const double& b, const float& fa, const float& fb, float& p0, float& px, const Vect3d& v0, const Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad) const
+bool VoxelModel::yAxisTest(const double& a, const double& b, const double& fa, const double& fb, double& p0, double& px, const Vect3d& v0, const Vect3d& vx, const glm::vec3& boxRadius, double& min, double& max, double& rad) const
 {
     p0 = -a * v0.getX() + b * v0.getZ();
     px = -a * vx.getX() + b * vx.getZ();
@@ -237,7 +234,7 @@ bool VoxelModel::axisTestY(const double& a, const double& b, const float& fa, co
         max = p0;
     }
 
-    rad = fa * boxHalfSize[0] + fb * boxHalfSize[2];
+    rad = fa * boxRadius.x + fb * boxRadius.z;
 
     if(min > rad || max < -rad)
         return false;
@@ -245,7 +242,7 @@ bool VoxelModel::axisTestY(const double& a, const double& b, const float& fa, co
     return true;
 }
 
-bool VoxelModel::axisTestZ(const double& a, const double& b, const float& fa, const float& fb, float& p0, float& px, const Vect3d& v0, const Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad) const
+bool VoxelModel::zAxisTest(const double& a, const double& b, const double& fa, const double& fb, double& p0, double& px, const Vect3d& v0, const Vect3d& vx, const glm::vec3& boxRadius, double& min, double& max, double& rad) const
 {
     p0 = a * v0.getX() - b * v0.getY();
     px = a * vx.getX() - b * vx.getY();
@@ -261,7 +258,7 @@ bool VoxelModel::axisTestZ(const double& a, const double& b, const float& fa, co
         max = p0;
     }
 
-    rad = fa * boxHalfSize[0] + fb * boxHalfSize[1];
+    rad = fa * boxRadius.x + fb * boxRadius.y;
 
     if(min > rad || max < -rad)
         return false;

@@ -84,7 +84,6 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
             sweep(triangles);
             break;
         case 2:
-
             for(size_t i = 0; i < numTriangles; i++)
             {
                 AABB aabb = triangles[i].getAABB();
@@ -113,9 +112,9 @@ Voxelization::Voxelization(double maxX, double maxY, double maxZ, double minX, d
     _minX = minX;
     _minY = minY;
     _minZ = minZ;
-    _numX = (_maxX - _minX) / _size[0] + 1;
-    _numY = (_maxY - _minY) / _size[1] + 1;
-    _numZ = (_maxZ - _minZ) / _size[2] + 1;
+    _numX = static_cast<int>((_maxX - _minX) / _size[0] + 1);
+    _numY = static_cast<int>((_maxY - _minY) / _size[1] + 1);
+    _numZ = static_cast<int>((_maxZ - _minZ) / _size[2] + 1);
 
     double tMinX = _minX;
     double tMinY = _minY;

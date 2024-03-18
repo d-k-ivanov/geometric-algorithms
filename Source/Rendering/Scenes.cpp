@@ -803,42 +803,48 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
 
-    TriangleModel* triangleModel = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
-    // TriangleModel* triangleModel = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/TreeGrowing.obj");
-    const auto     model(new DrawMesh(*triangleModel));
-    model->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
-    model->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
-    // sc.addNewModel(model);
+    TriangleModel* triangleModel1 = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
+    const auto     model1(new DrawMesh(*triangleModel1));
+    model1->moveGeometryToOrigin(model1->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    model1->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    // sc.addNewModel(model1);
+
+    TriangleModel* triangleModel2 = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Cheburashka.obj");
+    const auto     model2(new DrawMesh(*triangleModel2));
+    model2->moveGeometryToOrigin(model2->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model2->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    model2->setModelMatrix(glm::rotate(model2->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    // sc.addNewModel(model2);
+
 
     const glm::vec3& voxelSize = glm::vec3(0.05f);
 
     // ChronoUtilities::initChrono();
     // std::cout << "Voxelization (Brute Force) started\n";
-    // Voxelization* voxelizationBruteForce = new Voxelization(triangleModel, voxelSize, 0);
+    // Voxelization* voxelizationBruteForce = new Voxelization(triangleModel1, voxelSize, 0);
     // std::cout << "Voxelization (Brute Force) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
 
     ChronoUtilities::initChrono();
     std::cout << "Voxelization (Line Sweep) started\n";
-    Voxelization* voxelizationLineSweep = new Voxelization(triangleModel, voxelSize, 1);
+    Voxelization* voxelizationLineSweep = new Voxelization(triangleModel1, voxelSize, 1);
     std::cout << "Voxelization (Line Sweep) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
 
     // ChronoUtilities::initChrono();
     // std::cout << "Voxelization (AABB) started\n";
-    // Voxelization* voxelizationAABB = new Voxelization(triangleModel, voxelSize, 2);
+    // Voxelization* voxelizationAABB = new Voxelization(triangleModel1, voxelSize, 2);
     // std::cout << "Voxelization (AABB) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
 
     // const auto voxModelBruteForce(voxelizationBruteForce->getRenderingObject(/*outline mode*/ false));
-    // voxModelBruteForce->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
-    // voxModelBruteForce->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    // voxModelBruteForce->moveGeometryToOrigin(model1->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    // voxModelBruteForce->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(voxModelBruteForce);
 
     const auto voxModelLineSweep(voxelizationLineSweep->getRenderingObject(/*outline mode*/ false));
-    voxModelLineSweep->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
-    voxModelLineSweep->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    voxModelLineSweep->moveGeometryToOrigin(model1->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    voxModelLineSweep->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     sc.addNewModel(voxModelLineSweep);
 
     // const auto voxModelAABB(voxelizationAABB->getRenderingObject(/*outline mode*/ false));
-    // voxModelAABB->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
-    // voxModelAABB->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    // voxModelAABB->moveGeometryToOrigin(model1->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    // voxModelAABB->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(voxModelAABB);
 }

@@ -41,10 +41,10 @@ public:
 
     bool bruteForce(Triangle3d triangle);
 
-    bool planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 maxPoint) const;
-    bool triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices);
+    bool planeBoxOverlap(const Vect3d& normal, const Vect3d& vertex, glm::vec3 maxPoint) const;
+    bool triangleOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices) const;
 
-    bool axisTestX(const double& a, const double& b, const float& fa, const float& fb, float& p0, float& px, const Vect3d& v0, const Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad) const;
-    bool axisTestY(const double& a, const double& b, const float& fa, const float& fb, float& p0, float& px, const Vect3d& v0, const Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad) const;
-    bool axisTestZ(const double& a, const double& b, const float& fa, const float& fb, float& p0, float& px, const Vect3d& v0, const Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad) const;
+    bool xAxisTest(const double& a, const double& b, const double& fa, const double& fb, double& p0, double& px, const Vect3d& v0, const Vect3d& vx, const glm::vec3& boxRadius, double& min, double& max, double& rad) const;
+    bool yAxisTest(const double& a, const double& b, const double& fa, const double& fb, double& p0, double& px, const Vect3d& v0, const Vect3d& vx, const glm::vec3& boxRadius, double& min, double& max, double& rad) const;
+    bool zAxisTest(const double& a, const double& b, const double& fa, const double& fb, double& p0, double& px, const Vect3d& v0, const Vect3d& vx, const glm::vec3& boxRadius, double& min, double& max, double& rad) const;
 };
