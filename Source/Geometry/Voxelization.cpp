@@ -30,14 +30,13 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
     _minX          = modelAABB.getMin().getX();
     _minY          = modelAABB.getMin().getY();
     _minZ          = modelAABB.getMin().getZ();
-    _numX          = (_maxX - _minX) / _size[0] + 1;
-    _numY          = (_maxY - _minY) / _size[1] + 1;
-    _numZ          = (_maxZ - _minZ) / _size[2] + 1;
+    _numX          = static_cast<int>((_maxX - _minX) / _size[0] + 1);
+    _numY          = static_cast<int>((_maxY - _minY) / _size[1] + 1);
+    _numZ          = static_cast<int>((_maxZ - _minZ) / _size[2] + 1);
 
-    double auxX, auxY, auxZ;
-    auxX = _minX;
-    auxY = _minY;
-    auxZ = _minZ;
+    double tMinX = _minX;
+    double tMinY = _minY;
+    double tMinZ = _minZ;
     for(int i = 0; i < _numX; i++)
     {
         std::vector<std::vector<Voxel*>> nivel1;
@@ -46,21 +45,23 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
             std::vector<Voxel*> nivel2;
             for(int y = 0; y < _numZ; y++)
             {
-                Vect3d puntoMinVoxel(auxX, auxY, auxZ);
+                Vect3d puntoMinVoxel(tMinX, tMinY, tMinZ);
                 Voxel* insertado = new Voxel(puntoMinVoxel, _size);
                 nivel2.push_back(insertado);
-                auxZ += _size[2];
+                tMinZ += _size[2];
             }
-            auxZ = _minZ;
-            auxY += _size[1];
+            tMinZ = _minZ;
+            tMinY += _size[1];
             nivel1.push_back(nivel2);
         }
-        auxY = _minY;
-        auxX += _size[0];
+        tMinY = _minY;
+        tMinX += _size[0];
         _voxels.push_back(nivel1);
     }
-    int                     aux1       = model->getFaces().size();
-    std::vector<Triangle3d> triangulos = model->getFaces();
+
+    std::vector<Triangle3d> triangles = model->getFaces();
+
+    size_t fSize = model->getFaces().size();
     switch(algorithm)
     {
         case 0:
@@ -70,12 +71,12 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
                 {
                     for(int y = 0; y < _numZ; y++)
                     {
-                        for(int j = 0; j < aux1; j++)
+                        for(size_t j = 0; j < fSize; j++)
                         {
-                            if(_voxels[i][x][y]->bruteForce(triangulos[j]))
+                            if(_voxels[i][x][y]->bruteForce(triangles[j]))
                             {
                                 _voxels[i][x][y]->setStatus(VoxelStatus::OCCUPIED);
-                                j = aux1;
+                                j = fSize;
                             }
                         }
                     }
@@ -87,15 +88,15 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
             break;
         case 2:
 
-            for(int j = 0; j < aux1; j++)
+            for(size_t j = 0; j < fSize; j++)
             {
-                AABB                aabb_ti               = triangulos[j].getAABB();
-                std::vector<Voxel*> voxeles_seleccionados = getVoxels(aabb_ti);
-                for(int i = 0; i < voxeles_seleccionados.size(); i++)
+                AABB aabb = triangles[j].getAABB();
+
+                for(auto& secondaryVoxel : getVoxels(aabb))
                 {
-                    if(voxeles_seleccionados[i]->bruteForce(model->getFaces()[j]))
+                    if(secondaryVoxel->bruteForce(model->getFaces()[j]))
                     {
-                        voxeles_seleccionados[i]->setStatus(VoxelStatus::OCCUPIED);
+                        secondaryVoxel->setStatus(VoxelStatus::OCCUPIED);
                     }
                 }
             }
@@ -120,30 +121,29 @@ Voxelization::Voxelization(double maxX, double maxY, double maxZ, double minX, d
     _numY = (_maxY - _minY) / _size[1] + 1;
     _numZ = (_maxZ - _minZ) / _size[2] + 1;
 
-    double auxX, auxY, auxZ;
-    auxX = _minX;
-    auxY = _minY;
-    auxZ = _minZ;
+    double tMinX = _minX;
+    double tMinY = _minY;
+    double tMinZ = _minZ;
     for(int i = 0; i < _numX; i++)
     {
-        std::vector<std::vector<Voxel*>> nivel1;
+        std::vector<std::vector<Voxel*>> level1;
         for(int x = 0; x < _numY; x++)
         {
-            std::vector<Voxel*> nivel2;
+            std::vector<Voxel*> level2;
             for(int y = 0; y < _numZ; y++)
             {
-                Vect3d puntoMinVoxel(auxX, auxY, auxZ);
-                Voxel* insertado = new Voxel(puntoMinVoxel, _size);
-                nivel2.push_back(insertado);
-                auxZ += _size[2];
+                const Vect3d voxel(tMinX, tMinY, tMinZ);
+                Voxel*       voxelInserted = new Voxel(voxel, _size);
+                level2.push_back(voxelInserted);
+                tMinZ += _size[2];
             }
-            auxZ = _minZ;
-            auxY += _size[1];
-            nivel1.push_back(nivel2);
+            tMinZ = _minZ;
+            tMinY += _size[1];
+            level1.push_back(level2);
         }
-        auxY = _minY;
-        auxX += _size[0];
-        _voxels.push_back(nivel1);
+        tMinY = _minY;
+        tMinX += _size[0];
+        _voxels.push_back(level1);
     }
 }
 
@@ -199,74 +199,77 @@ void Voxelization::lineSweep(const std::vector<Triangle3d>& triangles) const
         vertices.emplace_back(triangle.getC(), i);
     }
 
-    std::sort(vertices.begin(), vertices.end(), &compare);
+    std::ranges::sort(vertices, &compare);
 
-    std::map<int, int>           triangulos_linea;
-    std::vector<Voxel*>          voxeles_linea;
+    std::map<int, int>           triangularPairs;
+    std::vector<Voxel*>          voxels;
     std::map<int, int>::iterator it;
-    int                          indice = 0;
     for(int i = 0; i < _numY; i++)
     {
-        const double nivelMaxY = this->_voxels[0][i][0]->getMax().getY();
-        const double nivelMinY = this->_voxels[0][i][0]->getMin().getY();
+        const double levelMaxY = this->_voxels[0][i][0]->getMax().getY();
+        const double levelMinY = this->_voxels[0][i][0]->getMin().getY();
+
         for(int x = 0; x < _numX; x++)
         {
             for(int y = 0; y < _numZ; y++)
             {
-                voxeles_linea.push_back(this->_voxels[x][i][y]);
+                voxels.push_back(this->_voxels[x][i][y]);
             }
         }
-        for(int v = 0; v < vertices.size(); v++)
+
+        for(auto& vertex : vertices)
         {
-            if((vertices[v].first.getY() > nivelMinY || BasicGeometry::equal(vertices[v].first.getY(), nivelMinY))
-               && (vertices[v].first.getY() < nivelMaxY || BasicGeometry::equal(vertices[v].first.getY(), nivelMaxY)))
+            if((vertex.first.getY() > levelMinY || BasicGeometry::equal(vertex.first.getY(), levelMinY))
+               && (vertex.first.getY() < levelMaxY || BasicGeometry::equal(vertex.first.getY(), levelMaxY)))
             {
-                it = triangulos_linea.find(vertices[v].second);
-                if(it != triangulos_linea.end())
+                it = triangularPairs.find(vertex.second);
+                if(it != triangularPairs.end())
                 {
                     it->second += 1;
                 }
                 else
                 {
-                    triangulos_linea.insert(std::pair(vertices[v].second, 0));
+                    triangularPairs.insert(std::pair(vertex.second, 0));
                 }
             }
-            else if(vertices[v].first.getY() > nivelMaxY)
+            else if(vertex.first.getY() > levelMaxY)
             {
                 break;
             }
         }
-        for(int j = 0; j < voxeles_linea.size(); j++)
+
+        for(const auto& voxel : voxels)
         {
-            for(it = triangulos_linea.begin(); it != triangulos_linea.end(); ++it)
+            for(it = triangularPairs.begin(); it != triangularPairs.end(); ++it)
             {
-                if(voxeles_linea[j]->bruteForce(triangles[it->first]))
+                if(voxel->bruteForce(triangles[it->first]))
                 {
-                    voxeles_linea[j]->setStatus(VoxelStatus::OCCUPIED);
+                    voxel->setStatus(VoxelStatus::OCCUPIED);
                     break;
                 }
             }
         }
-        it = triangulos_linea.begin();
-        while(it != triangulos_linea.end())
+
+        it = triangularPairs.begin();
+        while(it != triangularPairs.end())
         {
             if(it->second == 2)
             {
-                it = triangulos_linea.erase(it);
+                it = triangularPairs.erase(it);
             }
             else
             {
-                it++;
+                ++it;
             }
         }
-        voxeles_linea.clear();
+        voxels.clear();
     }
 }
 
 std::vector<Voxel*> Voxelization::getVoxels(AABB aabb)
 {
 
-    std::vector<std::pair<Voxel*, glm::vec3>> solucion;
+    std::vector<Voxel*> result;
 
     Vect3d e1(aabb.getMin());
     Vect3d e2(aabb.getMax());
@@ -289,20 +292,14 @@ std::vector<Voxel*> Voxelization::getVoxels(AABB aabb)
                     if(isInVoxel(_voxels[i][x][y], e1) || isInVoxel(_voxels[i][x][y], e2) || isInVoxel(_voxels[i][x][y], e3) || isInVoxel(_voxels[i][x][y], e4)
                        || isInVoxel(_voxels[i][x][y], e5) || isInVoxel(_voxels[i][x][y], e6) || isInVoxel(_voxels[i][x][y], e7) || isInVoxel(_voxels[i][x][y], e8))
                     {
-                        glm::vec3 aux(i, x, y);
-                        solucion.push_back(std::pair(_voxels[i][x][y], aux));
+                        result.emplace_back(_voxels[i][x][y]);
                     }
                 }
             }
         }
     }
-    std::vector<Voxel*> res;
-    for(int i = 0; i < solucion.size(); i++)
-    {
-        res.push_back(solucion[i].first);
-    }
 
-    return res;
+    return result;
 }
 
 std::vector<std::vector<std::vector<Voxel*>>> Voxelization::getVoxels()

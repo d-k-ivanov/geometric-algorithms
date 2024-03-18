@@ -810,27 +810,36 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     // sc.addNewModel(model);
 
     const glm::vec3& voxelSize = glm::vec3(0.1f);
-    ChronoUtilities::initChrono();
-    std::cout << "Voxelization (Brute Force) started\n";
-    // Voxelization* voxelization = new Voxelization(triangleModel, voxelSize, 0);
-    std::cout << "Voxelization (Brute Force) ended. Duration: " << ChronoUtilities::getDuration(ChronoUtilities::NANOSECONDS) << '\n';
 
-    ChronoUtilities::initChrono();
-    std::cout << "Voxelization (Line Sweep) started\n";
-    Voxelization* voxelizationLineSweep = new Voxelization(triangleModel, voxelSize, 1);
-    std::cout << "Voxelization (Line Sweep) ended. Duration: " << ChronoUtilities::getDuration(ChronoUtilities::NANOSECONDS) << '\n';
+    // ChronoUtilities::initChrono();
+    // std::cout << "Voxelization (Brute Force) started\n";
+    // Voxelization* voxelization = new Voxelization(triangleModel, voxelSize, 0);
+    // std::cout << "Voxelization (Brute Force) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
+
+    // ChronoUtilities::initChrono();
+    // std::cout << "Voxelization (Line Sweep) started\n";
+    // Voxelization* voxelizationLineSweep = new Voxelization(triangleModel, voxelSize, 1);
+    // std::cout << "Voxelization (Line Sweep) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
 
     ChronoUtilities::initChrono();
     std::cout << "Voxelization (AABB) started\n";
-    // Voxelization* voxelizationAABB = new Voxelization(triangleModel, voxelSize, 2);
-    std::cout << "Voxelization (AABB) ended. Duration: " << ChronoUtilities::getDuration(ChronoUtilities::NANOSECONDS) << '\n';
+    Voxelization* voxelizationAABB = new Voxelization(triangleModel, voxelSize, 2);
+    std::cout << "Voxelization (AABB) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
 
+    // const auto voxModelBruteForce(voxelization->getRenderingObject(true));
+    // voxModelBruteForce->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    // voxModelBruteForce->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    // sc.addNewModel(voxModelBruteForce);
 
-    // auto l2Colour = RandomUtilities::getUniformRandomColor();
-    // const auto voxModel(voxelization->getRenderingObject(true));
-    const auto voxModel(voxelizationLineSweep->getRenderingObject(true));
-    // const auto voxModel(voxelizationAABB->getRenderingObject(true));
-    sc.addNewModel(voxModel);
+    // const auto voxModelLineSweep(voxelizationLineSweep->getRenderingObject(true));
+    // voxModelLineSweep->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    // voxModelLineSweep->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    // sc.addNewModel(voxModelLineSweep);
+
+    const auto voxModelAABB(voxelizationAABB->getRenderingObject(true));
+    voxModelAABB->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    voxModelAABB->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    sc.addNewModel(voxModelAABB);
 
     // delete voxModel;
 }
