@@ -44,7 +44,7 @@ public:
     bool planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 maxPoint) const;
     bool triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices);
 
-    bool axisTestX(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad);
-    bool axisTestY(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad);
-    bool axisTestZ(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad);
+    bool axisTestX(const double& a, const double& b, const float& fa, const float& fb, float& p0, float& px, const Vect3d& v0, const Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad) const;
+    bool axisTestY(const double& a, const double& b, const float& fa, const float& fb, float& p0, float& px, const Vect3d& v0, const Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad) const;
+    bool axisTestZ(const double& a, const double& b, const float& fa, const float& fb, float& p0, float& px, const Vect3d& v0, const Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad) const;
 };
