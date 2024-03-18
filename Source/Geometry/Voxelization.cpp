@@ -350,7 +350,7 @@ void Voxelization::flood()
     }
 }
 
-auto Voxelization::recursiveFill(Voxel* v, const int x, const int y, int z)
+void Voxelization::recursiveFill(Voxel* v, const int x, const int y, int z)
 {
     if(v->getStatus() == VoxelStatus::OCCUPIED || v->getStatus() == VoxelStatus::INNER)
     {
@@ -428,34 +428,34 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(const bool useColors
 
 bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
 {
-    double     tMin;
-    double     tMax;
-    const bool ray_intersects_grid = rayBoxIntersection(r, tMin, tMax, 0, 1);
-    if(!ray_intersects_grid)
-        return 0;
+    double tMin;
+    double tMax;
 
-    tMin                   = BasicGeometry::max2(tMin, 0);
-    tMax                   = BasicGeometry::max2(tMax, 1);
-    const Vect3d ray_start = r.getDirection().scalarMul(tMin).add(r.getOrigin());
-    const Vect3d ray_end   = r.getDirection().scalarMul(tMax).add(r.getOrigin());
+    if(!rayBoxIntersection(r, tMin, tMax, 0, 1))
+        return false;
 
-    size_t       current_X_index = BasicGeometry::max2(1, std::ceil((ray_start.getX() - this->getXMin()) / this->_size.x));
-    const size_t end_X_index     = BasicGeometry::max2(1, std::ceil((ray_end.getX() - this->getXMin()) / this->_size.x));
-    int          stepX;
-    double       tDeltaX;
-    double       tMaxX;
+    tMin = BasicGeometry::max2(tMin, 0);
+    tMax = BasicGeometry::max2(tMax, 1);
+
+    const Vect3d rayStart = r.getDirection().scalarMul(tMin).add(r.getOrigin());
+    const Vect3d rayEnd   = r.getDirection().scalarMul(tMax).add(r.getOrigin());
+
+    size_t currentXIndex = static_cast<size_t>(BasicGeometry::max2(1, std::ceil((rayStart.getX() - this->getXMin()) / this->_size.x)));
+    int    stepX;
+    double tDeltaX;
+    double tMaxX;
     if(r.getDirection().getX() > 0.0)
     {
         stepX   = 1;
         tDeltaX = this->_size[0] / r.getDirection().getX();
-        tMaxX   = tMin + (this->getXMin() + current_X_index * this->_size.x - ray_start.getX()) / r.getDirection().getX();
+        tMaxX   = tMin + (this->getXMin() + static_cast<float>(currentXIndex) * this->_size.x - rayStart.getX()) / r.getDirection().getX();
     }
     else if(r.getDirection().getX() < 0.0)
     {
         stepX                         = -1;
         tDeltaX                       = this->_size[0] / -r.getDirection().getX();
-        const size_t previous_X_index = current_X_index - 1;
-        tMaxX                         = tMin + (this->getXMin() + previous_X_index * this->_size.x - ray_start.getX()) / r.getDirection().getX();
+        const size_t previous_X_index = currentXIndex - 1;
+        tMaxX                         = tMin + (this->getXMin() + static_cast<float>(previous_X_index) * this->_size.x - rayStart.getX()) / r.getDirection().getX();
     }
     else
     {
@@ -464,23 +464,22 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
         tMaxX   = tMax;
     }
 
-    size_t       current_Y_index = BasicGeometry::max2(1, std::ceil((ray_start.getY() - this->getYMin()) / this->_size.y));
-    const size_t end_Y_index     = BasicGeometry::max2(1, std::ceil((ray_end.getY() - this->getYMin()) / this->_size.y));
-    int          stepY;
-    double       tDeltaY;
-    double       tMaxY;
+    size_t currentYIndex = static_cast<size_t>(BasicGeometry::max2(1, std::ceil((rayStart.getY() - this->getYMin()) / this->_size.y)));
+    int    stepY;
+    double tDeltaY;
+    double tMaxY;
     if(r.getDirection().getY() > 0.0)
     {
         stepY   = 1;
         tDeltaY = this->_size[1] / r.getDirection().getY();
-        tMaxY   = tMin + (this->getYMin() + current_Y_index * this->_size.y - ray_start.getY()) / r.getDirection().getY();
+        tMaxY   = tMin + (this->getYMin() + static_cast<float>(currentYIndex) * this->_size.y - rayStart.getY()) / r.getDirection().getY();
     }
     else if(r.getDirection().getY() < 0.0)
     {
         stepY                         = -1;
         tDeltaY                       = this->_size[1] / -r.getDirection().getY();
-        const size_t previous_Y_index = current_Y_index - 1;
-        tMaxY                         = tMin + (this->getYMin() + previous_Y_index * this->_size.y - ray_start.getY()) / r.getDirection().getY();
+        const size_t previous_Y_index = currentYIndex - 1;
+        tMaxY                         = tMin + (this->getYMin() + static_cast<float>(previous_Y_index) * this->_size.y - rayStart.getY()) / r.getDirection().getY();
     }
     else
     {
@@ -489,23 +488,22 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
         tMaxY   = tMax;
     }
 
-    size_t       current_Z_index = BasicGeometry::max2(1, std::ceil((ray_start.getZ() - this->getZMin()) / this->_size.z));
-    const size_t end_Z_index     = BasicGeometry::max2(1, std::ceil((ray_end.getZ() - this->getZMin()) / this->_size.z));
-    int          stepZ;
-    double       tDeltaZ;
-    double       tMaxZ;
+    size_t currentZIndex = static_cast<size_t>(BasicGeometry::max2(1, std::ceil((rayStart.getZ() - this->getZMin()) / this->_size.z)));
+    int    stepZ;
+    double tDeltaZ;
+    double tMaxZ;
     if(r.getDirection().getZ() > 0.0)
     {
         stepZ   = 1;
         tDeltaZ = this->_size[2] / r.getDirection().getZ();
-        tMaxZ   = tMin + (this->getZMin() + current_Z_index * this->_size.z - ray_start.getZ()) / r.getDirection().getZ();
+        tMaxZ   = tMin + (this->getZMin() + static_cast<float>(currentZIndex) * this->_size.z - rayStart.getZ()) / r.getDirection().getZ();
     }
     else if(r.getDirection().getZ() < 0.0)
     {
         stepZ                         = -1;
         tDeltaZ                       = this->_size[2] / -r.getDirection().getZ();
-        const size_t previous_Z_index = current_Z_index - 1;
-        tMaxZ                         = tMin + (this->getZMin() + previous_Z_index * this->_size.z - ray_start.getZ()) / r.getDirection().getZ();
+        const size_t previous_Z_index = currentZIndex - 1;
+        tMaxZ                         = tMin + (this->getZMin() + static_cast<float>(previous_Z_index) * this->_size.z - rayStart.getZ()) / r.getDirection().getZ();
     }
     else
     {
@@ -513,31 +511,29 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
         tDeltaZ = tMax;
         tMaxZ   = tMax;
     }
-    while(glm::all(glm::greaterThanEqual(glm::vec3(current_X_index, current_Y_index, current_Z_index), glm::vec3(1, 1, 1))) && glm::all(glm::lessThanEqual(glm::vec3(current_X_index, current_Y_index, current_Z_index), glm::vec3(_numX, _numY, _numZ))))
+    while(glm::all(glm::greaterThanEqual(glm::vec3(currentXIndex, currentYIndex, currentZIndex), glm::vec3(1, 1, 1))) && glm::all(glm::lessThanEqual(glm::vec3(currentXIndex, currentYIndex, currentZIndex), glm::vec3(_numX, _numY, _numZ))))
     {
-        /*while (current_X_index != end_X_index && current_Y_index != end_Y_index && current_Z_index != end_Z_index) {*/
-        v.push_back(this->_voxels[current_X_index - 1][current_Y_index - 1][current_Z_index - 1]);
+        v.push_back(this->_voxels[currentXIndex - 1][currentYIndex - 1][currentZIndex - 1]);
         if(tMaxX < tMaxY && tMaxX < tMaxZ)
         {
-            // X-axis traversal.
-            current_X_index += stepX;
+            currentXIndex += stepX;
             tMaxX += tDeltaX;
         }
         else if(tMaxY < tMaxZ)
         {
-            // Y-axis traversal.
-            current_Y_index += stepY;
+            currentYIndex += stepY;
             tMaxY += tDeltaY;
         }
         else
         {
-            // Z-axis traversal.
-            current_Z_index += stepZ;
+            currentZIndex += stepZ;
             tMaxZ += tDeltaZ;
         }
     }
-    if(v.size() == 0)
+
+    if(v.empty())
         return false;
+
     return true;
 }
 
