@@ -120,76 +120,10 @@ bool VoxelModel::planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::
     return false;
 }
 
-bool VoxelModel::axisTestX(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad)
-{
-    p0 = a * v0.getY() - b * v0.getZ();
-    px = a * vx.getY() - b * vx.getZ();
-
-    if(p0 < px)
-    {
-        min = p0;
-        max = px;
-    }
-    else
-    {
-        min = px;
-        max = p0;
-    }
-
-    rad = fa * boxHalfSize[1] + fb * boxHalfSize[2];
-
-    if(min > rad || max < -rad)
-        return 0;
-}
-
-bool VoxelModel::axisTestY(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad)
-{
-    p0 = -a * v0.getX() + b * v0.getZ();
-    px = -a * vx.getX() + b * vx.getZ();
-
-    if(p0 < px)
-    {
-        min = p0;
-        max = px;
-    }
-    else
-    {
-        min = px;
-        max = p0;
-    }
-
-    rad = fa * boxHalfSize[0] + fb * boxHalfSize[2];
-
-    if(min > rad || max < -rad)
-        return 0;
-}
-
-bool VoxelModel::axisTestZ(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad)
-{
-    p0 = a * v0.getX() - b * v0.getY();
-    px = a * vx.getX() - b * vx.getY();
-
-    if(p0 < px)
-    {
-        min = p0;
-        max = px;
-    }
-    else
-    {
-        min = px;
-        max = p0;
-    }
-
-    rad = fa * boxHalfSize[0] + fb * boxHalfSize[1];
-
-    if(min > rad || max < -rad)
-        return 0;
-}
-
 bool VoxelModel::triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices)
 {
     Vect3d v0, v1, v2;
-    float min, max, p0, p1, p2, rad, fex, fey, fez;
+    float  min, max, p0, p1, p2, rad, fex, fey, fez;
 
     Vect3d normal, e0, e1, e2;
 
@@ -261,4 +195,70 @@ bool VoxelModel::triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector
         return 0;
 
     return 1;
+}
+
+bool VoxelModel::axisTestX(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad)
+{
+    p0 = a * v0.getY() - b * v0.getZ();
+    px = a * vx.getY() - b * vx.getZ();
+
+    if(p0 < px)
+    {
+        min = p0;
+        max = px;
+    }
+    else
+    {
+        min = px;
+        max = p0;
+    }
+
+    rad = fa * boxHalfSize[1] + fb * boxHalfSize[2];
+
+    if(min > rad || max < -rad)
+        return 0;
+}
+
+bool VoxelModel::axisTestY(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad)
+{
+    p0 = -a * v0.getX() + b * v0.getZ();
+    px = -a * vx.getX() + b * vx.getZ();
+
+    if(p0 < px)
+    {
+        min = p0;
+        max = px;
+    }
+    else
+    {
+        min = px;
+        max = p0;
+    }
+
+    rad = fa * boxHalfSize[0] + fb * boxHalfSize[2];
+
+    if(min > rad || max < -rad)
+        return 0;
+}
+
+bool VoxelModel::axisTestZ(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad)
+{
+    p0 = a * v0.getX() - b * v0.getY();
+    px = a * vx.getX() - b * vx.getY();
+
+    if(p0 < px)
+    {
+        min = p0;
+        max = px;
+    }
+    else
+    {
+        min = px;
+        max = p0;
+    }
+
+    rad = fa * boxHalfSize[0] + fb * boxHalfSize[1];
+
+    if(min > rad || max < -rad)
+        return 0;
 }

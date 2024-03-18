@@ -10,11 +10,11 @@ class Voxelization
 {
 
 private:
-    glm::vec3                                     _size;
+    glm::vec3                                          _size;
     std::vector<std::vector<std::vector<VoxelModel*>>> _voxels;
-    double                                        _minX, _minY, _minZ;
-    double                                        _maxX, _maxY, _maxZ;
-    int                                           _numX, _numY, _numZ;
+    double                                             _minX, _minY, _minZ;
+    double                                             _maxX, _maxY, _maxZ;
+    int                                                _numX, _numY, _numZ;
 
 public:
     Voxelization();
@@ -24,9 +24,9 @@ public:
     virtual ~Voxelization() = default;
 
     VoxelModel*                                        getVoxel(double x, double y, double z);
-    void                                          add(const Vect3d& data);
-    void                                          sweep(const std::vector<Triangle3d>& triangles) const;
-    static bool                                   compare(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
+    void                                               add(const Vect3d& data);
+    void                                               sweep(const std::vector<Triangle3d>& triangles) const;
+    static bool                                        compare(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
     std::vector<VoxelModel*>                           getVoxelsInAABB(AABB& aabb);
     std::vector<std::vector<std::vector<VoxelModel*>>> getVoxels();
 
@@ -35,7 +35,9 @@ public:
 
     bool isInVoxel(VoxelModel* voxel, const Vect3d& vertice) const;
 
-    AlgGeom::DrawVoxelization* getRenderingObject(bool useColors, bool showOuterVoxeles);
+    AlgGeom::DrawVoxelization* getRenderingObject(bool outlineMode);
+
+    void printData() const;
 
     double    getXMax() const { return _maxX; }
     double    getYMax() const { return _maxY; }

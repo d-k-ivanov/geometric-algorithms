@@ -22,7 +22,7 @@ double max2(double a, double b);
  */
 template <typename T>
 int sign(const T value);
-};
+};    // namespace BasicGeometry
 
 inline bool BasicGeometry::equal(double a, double b)
 {
