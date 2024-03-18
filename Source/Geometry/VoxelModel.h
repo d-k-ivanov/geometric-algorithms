@@ -8,10 +8,10 @@
 
 enum VoxelStatus
 {
-    OCCUPIED,
-    OUTER,
-    INNER,
-    NP
+    OUTER    = 0,
+    OCCUPIED = 1,
+    INNER    = 2,
+    NP       = 3
 };
 
 class Voxel
@@ -33,13 +33,13 @@ public:
 
     void setStatus(VoxelStatus status) { _status = status; }
 
-    Vect3d      getMin();
-    Vect3d      getMax();
-    VoxelStatus getStatus() const;
+    Vect3d      getMin() { return this->_min; }
+    Vect3d      getMax() { return this->_max; }
+    Vect3d      getCenter() { return this->_center; }
+    VoxelStatus getStatus() const { return this->_status; }
+    glm::vec3   getSize() const { return this->_size; }
 
     bool bruteForce(Triangle3d triangle);
-    bool lineSweep(Triangle3d triangle);
-    bool AABBTri(Triangle3d triangle);
 
     bool planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 maxPoint) const;
     bool triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices);

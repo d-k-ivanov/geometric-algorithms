@@ -56,27 +56,12 @@ bool Voxel::remove(Vect3d point)
     return false;
 }
 
-Vect3d Voxel::getMin()
-{
-    return this->_min;
-}
-
-Vect3d Voxel::getMax()
-{
-    return this->_max;
-}
-
-VoxelStatus Voxel::getStatus() const
-{
-    return this->_status;
-}
-
-bool Voxel::bruteForce(Triangle3d trianlge)
+bool Voxel::bruteForce(Triangle3d triangle)
 {
     std::vector<Vect3d> vertices;
-    vertices.push_back(trianlge.getA());
-    vertices.push_back(trianlge.getB());
-    vertices.push_back(trianlge.getC());
+    vertices.push_back(triangle.getA());
+    vertices.push_back(triangle.getB());
+    vertices.push_back(triangle.getC());
     const glm::vec3 halfsize(_size[0] / 2, _size[1] / 2, _size[2] / 2);
 
     if(triBoxOverlap(this->_center, halfsize, vertices))

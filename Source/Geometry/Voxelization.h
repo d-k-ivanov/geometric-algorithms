@@ -18,6 +18,14 @@ private:
 
     bool checkMembership(Voxel* voxel, const Voxelization* voxelization, int& x, int& y, int& z) const;
 
+    struct TriangleComparison
+    {
+        bool operator()(const Triangle3d& t1, const Triangle3d& t2) const
+        {
+            return t1.getAABB().getMin()._y < t2.getAABB().getMin()._y;
+        }
+    };
+
 public:
     Voxelization();
     Voxelization(const Voxelization& voxel);
@@ -27,17 +35,17 @@ public:
 
     Voxel*                                        getVoxel(double x, double y, double z);
     void                                          add(const Vect3d& data);
-    void                                          lineSweep(const std::vector<Triangle3d>& triangles) const;
+    void                                          sweep(const std::vector<Triangle3d>& triangles) const;
     static bool                                   compare(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
-    std::vector<Voxel*>                           getVoxels(AABB aabb);
+    std::vector<Voxel*>                           getVoxelsInAABB(AABB& aabb);
     std::vector<std::vector<std::vector<Voxel*>>> getVoxels();
 
     bool rayTraversal(Ray3d& r, std::vector<Voxel*>& v);
-    bool rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1);
+    bool rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1) const;
 
     bool isInVoxel(Voxel* voxel, const Vect3d& vertice) const;
 
-    AlgGeom::DrawVoxelization* getRenderingObject(bool occupied);
+    AlgGeom::DrawVoxelization* getRenderingObject(bool useColors, bool showOuterVoxeles);
 
     double    getXMax() const { return _maxX; }
     double    getYMax() const { return _maxY; }
@@ -53,5 +61,5 @@ public:
 
 protected:
     void flood();
-    void recursive(Voxel* v, int x, int y, int z);
+    void recursiveFill(Voxel* v, int x, int y, int z);
 };

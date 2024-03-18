@@ -1,5 +1,7 @@
 #include "Voxelization.h"
 
+#include "Intersections3d.h"
+
 #include "Utils/ChronoUtilities.h"
 
 #include <algorithm>
@@ -84,7 +86,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
             }
             break;
         case 1:
-            lineSweep(model->getFaces());
+            sweep(model->getFaces());
             break;
         case 2:
 
@@ -92,7 +94,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
             {
                 AABB aabb = triangles[j].getAABB();
 
-                for(auto& secondaryVoxel : getVoxels(aabb))
+                for(auto& secondaryVoxel : getVoxelsInAABB(aabb))
                 {
                     if(secondaryVoxel->bruteForce(model->getFaces()[j]))
                     {
@@ -102,7 +104,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
             }
             break;
         default:
-            lineSweep(model->getFaces());
+            sweep(model->getFaces());
             break;
     }
     this->flood();
@@ -186,12 +188,12 @@ bool Voxelization::compare(const std::pair<Vect3d, int>& v1, const std::pair<Vec
     return v1.first.getY() < v2.first.getY();
 }
 
-void Voxelization::lineSweep(const std::vector<Triangle3d>& triangles) const
+void Voxelization::sweep(const std::vector<Triangle3d>& triangles) const
 {
 
     std::vector<std::pair<Vect3d, int>> vertices;
 
-    for(int i = 0; i < triangles.size(); i++)
+    for(size_t i = 0; i < triangles.size(); i++)
     {
         Triangle3d triangle = triangles[i];
         vertices.emplace_back(triangle.getA(), i);
@@ -266,19 +268,19 @@ void Voxelization::lineSweep(const std::vector<Triangle3d>& triangles) const
     }
 }
 
-std::vector<Voxel*> Voxelization::getVoxels(AABB aabb)
+std::vector<Voxel*> Voxelization::getVoxelsInAABB(AABB& aabb)
 {
 
     std::vector<Voxel*> result;
 
-    Vect3d e1(aabb.getMin());
-    Vect3d e2(aabb.getMax());
-    Vect3d e3(aabb.getMin().getX(), aabb.getMin().getY(), aabb.getMax().getZ());
-    Vect3d e4(aabb.getMax().getX(), aabb.getMin().getY(), aabb.getMax().getZ());
-    Vect3d e5(aabb.getMin().getX(), aabb.getMax().getY(), aabb.getMax().getZ());
-    Vect3d e6(aabb.getMax().getX(), aabb.getMin().getY(), aabb.getMin().getZ());
-    Vect3d e7(aabb.getMin().getX(), aabb.getMax().getY(), aabb.getMin().getZ());
-    Vect3d e8(aabb.getMax().getX(), aabb.getMax().getY(), aabb.getMin().getZ());
+    const Vect3d corner1(aabb.getMin());
+    const Vect3d corner2(aabb.getMax());
+    const Vect3d corner3(aabb.getMin().getX(), aabb.getMin().getY(), aabb.getMax().getZ());
+    const Vect3d corner4(aabb.getMax().getX(), aabb.getMin().getY(), aabb.getMax().getZ());
+    const Vect3d corner5(aabb.getMin().getX(), aabb.getMax().getY(), aabb.getMax().getZ());
+    const Vect3d corner6(aabb.getMax().getX(), aabb.getMin().getY(), aabb.getMin().getZ());
+    const Vect3d corner7(aabb.getMin().getX(), aabb.getMax().getY(), aabb.getMin().getZ());
+    const Vect3d corner8(aabb.getMax().getX(), aabb.getMax().getY(), aabb.getMin().getZ());
 
     for(int i = 0; i < _numX; i++)
     {
@@ -289,8 +291,10 @@ std::vector<Voxel*> Voxelization::getVoxels(AABB aabb)
 
                 if(_voxels[i][x][y]->getStatus() != VoxelStatus::OCCUPIED)
                 {
-                    if(isInVoxel(_voxels[i][x][y], e1) || isInVoxel(_voxels[i][x][y], e2) || isInVoxel(_voxels[i][x][y], e3) || isInVoxel(_voxels[i][x][y], e4)
-                       || isInVoxel(_voxels[i][x][y], e5) || isInVoxel(_voxels[i][x][y], e6) || isInVoxel(_voxels[i][x][y], e7) || isInVoxel(_voxels[i][x][y], e8))
+                    if(isInVoxel(_voxels[i][x][y], corner1) || isInVoxel(_voxels[i][x][y], corner2)
+                       || isInVoxel(_voxels[i][x][y], corner3) || isInVoxel(_voxels[i][x][y], corner4)
+                       || isInVoxel(_voxels[i][x][y], corner5) || isInVoxel(_voxels[i][x][y], corner6)
+                       || isInVoxel(_voxels[i][x][y], corner7) || isInVoxel(_voxels[i][x][y], corner8))
                     {
                         result.emplace_back(_voxels[i][x][y]);
                     }
@@ -319,19 +323,18 @@ bool Voxelization::isInVoxel(Voxel* voxel, const Vect3d& vertice) const
 
 void Voxelization::flood()
 {
-    int centralX, centralY, centralZ;
-    centralX = _numX / 2;
-    centralY = _numY / 2;
-    centralZ = _numZ / 2;
+    int       centerX = _numX / 2;
+    const int centerY = _numY / 2;
+    const int centerZ = _numZ / 2;
 
-    if(this->_voxels[centralX][centralY][centralZ]->getStatus() == VoxelStatus::OCCUPIED)
+    if(this->_voxels[centerX][centerY][centerZ]->getStatus() == VoxelStatus::OCCUPIED)
     {
-        while(this->_voxels[centralX][centralY][centralZ]->getStatus() == VoxelStatus::OCCUPIED)
+        while(this->_voxels[centerX][centerY][centerZ]->getStatus() == VoxelStatus::OCCUPIED)
         {
-            centralX++;
+            centerX++;
         }
     }
-    recursive(this->_voxels[centralX][centralY][centralZ], centralX, centralY, centralZ);
+    recursiveFill(this->_voxels[centerX][centerY][centerZ], centerX, centerY, centerZ);
     for(int i = 0; i < _numX; i++)
     {
         for(int x = 0; x < _numY; x++)
@@ -347,7 +350,7 @@ void Voxelization::flood()
     }
 }
 
-void Voxelization::recursive(Voxel* v, int x, int y, int z)
+auto Voxelization::recursiveFill(Voxel* v, const int x, const int y, int z)
 {
     if(v->getStatus() == VoxelStatus::OCCUPIED || v->getStatus() == VoxelStatus::INNER)
     {
@@ -357,66 +360,69 @@ void Voxelization::recursive(Voxel* v, int x, int y, int z)
 
     if(x + 1 < _numX)
     {
-        recursive(this->_voxels[x + 1][y][z], x + 1, y, z);
+        recursiveFill(this->_voxels[x + 1][y][z], x + 1, y, z);
     }
     if(x - 1 > 0)
     {
-        recursive(this->_voxels[x - 1][y][z], x - 1, y, z);
+        recursiveFill(this->_voxels[x - 1][y][z], x - 1, y, z);
     }
     if(y + 1 < _numY)
     {
-        recursive(this->_voxels[x][y + 1][z], x, y + 1, z);
+        recursiveFill(this->_voxels[x][y + 1][z], x, y + 1, z);
     }
     if(y - 1 > 0)
     {
-        recursive(this->_voxels[x][y - 1][z], x, y - 1, z);
+        recursiveFill(this->_voxels[x][y - 1][z], x, y - 1, z);
     }
     if(z + 1 < _numZ)
     {
-        recursive(this->_voxels[x][y][z + 1], x, y, z + 1);
+        recursiveFill(this->_voxels[x][y][z + 1], x, y, z + 1);
     }
     if(z - 1 > 0)
     {
-        recursive(this->_voxels[x][y][z - 1], x, y, z - 1);
+        recursiveFill(this->_voxels[x][y][z - 1], x, y, z - 1);
     }
 }
 
-AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool occupied)
+AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(const bool useColors, const bool showOuterVoxeles)
 {
-    VoxelStatus status;
-    if(occupied)
-        status = VoxelStatus::OCCUPIED;
-    else
-        status = VoxelStatus::INNER;
+    AlgGeom::DrawVoxelization* voxelization = nullptr;
 
-    std::vector<glm::vec3> vector;
+    VoxelStatus status;
+    if(showOuterVoxeles)
+        status = VoxelStatus::INNER;
+    else
+        status = VoxelStatus::OCCUPIED;
+
+    std::vector<glm::vec3> positions;
     const Vect3d           displace(_size[0] / 2, _size[1] / 2, _size[2] / 2);
-    for(int i = 0; i < _numX; i++)
+    const unsigned         numVoxels = _numX * _numY * _numZ;
+    glm::vec3*             colors    = new glm::vec3[numVoxels];
+    constexpr glm::vec3    color[]   = {glm::vec3(1.0f), glm::vec3(.5f), glm::vec3(1.0f)};
+
+    for(int x = 0; x < _numX; x++)
     {
-        for(int x = 0; x < _numY; x++)
+        for(int y = 0; y < _numY; y++)
         {
-            for(int y = 0; y < _numZ; y++)
+            for(int z = 0; z < _numZ; z++)
             {
-                if(this->getVoxels()[i][x][y]->getStatus() == status)
+                if(this->getVoxels()[x][y][z]->getStatus() == status)
                 {
-                    Vect3d centro = this->getVoxels()[i][x][y]->getMin().add(displace);
-                    vector.push_back(glm::vec3(centro.getX(), centro.getY(), centro.getZ()));
+                    Vect3d center = this->getVoxels()[x][y][z]->getMin().add(displace);
+                    positions.emplace_back(center.getX(), center.getY(), center.getZ());
+                    if(useColors)
+                    {
+                        const unsigned linearIndex = z + y * _numZ + x * _numZ * _numY;
+                        colors[linearIndex]        = color[this->getVoxels()[x][y][z]->getStatus()];
+                    }
                 }
             }
         }
     }
-    glm::vec3* positions = new glm::vec3[vector.size()];
-    glm::vec3* color     = new glm::vec3[vector.size()];
-    for(int i = 0; i < vector.size(); i++)
-    {
-        positions[i] = vector[i];
-        color[i]     = glm::vec3(0, 0, 0);
-    }
 
-    AlgGeom::DrawVoxelization* voxelization = new AlgGeom::DrawVoxelization(positions, vector.size(), _size, color);
+    voxelization = new AlgGeom::DrawVoxelization(positions.data(), static_cast<int>(positions.size()), _size, useColors ? colors : nullptr);
 
-    // delete positions;
-    // delete color;
+    delete[] colors;
     return voxelization;
 }
 
@@ -428,11 +434,10 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
     if(!ray_intersects_grid)
         return 0;
 
-    tMin             = BasicGeometry::max2(tMin, 0);
-    tMax             = BasicGeometry::max2(tMax, 1);
-    Vect3d aux       = r.getOrigin();
-    Vect3d ray_start = r.getDirection().scalarMul(tMin).add(aux);
-    Vect3d ray_end   = r.getDirection().scalarMul(tMax).add(aux);
+    tMin                   = BasicGeometry::max2(tMin, 0);
+    tMax                   = BasicGeometry::max2(tMax, 1);
+    const Vect3d ray_start = r.getDirection().scalarMul(tMin).add(r.getOrigin());
+    const Vect3d ray_end   = r.getDirection().scalarMul(tMax).add(r.getOrigin());
 
     size_t       current_X_index = BasicGeometry::max2(1, std::ceil((ray_start.getX() - this->getXMin()) / this->_size.x));
     const size_t end_X_index     = BasicGeometry::max2(1, std::ceil((ray_end.getX() - this->getXMin()) / this->_size.x));
@@ -536,7 +541,7 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<Voxel*>& v)
     return true;
 }
 
-bool Voxelization::rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1)
+bool Voxelization::rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, double t0, double t1) const
 {
     double       tYMin, tYMax, tZMin, tZMax;
     const double x_inv_dir = 1 / r.getDirection().getX();
