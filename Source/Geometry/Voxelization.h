@@ -16,7 +16,7 @@ private:
     double                                        _maxX, _maxY, _maxZ;
     int                                           _numX, _numY, _numZ;
 
-    bool comprobarPertenencia(Voxel* voxel, const Voxelization* voxelization, int& x, int& y, int& z) const;
+    bool checkMembership(Voxel* voxel, const Voxelization* voxelization, int& x, int& y, int& z) const;
 
 public:
     Voxelization();

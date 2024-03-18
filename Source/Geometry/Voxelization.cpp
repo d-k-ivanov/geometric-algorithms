@@ -615,9 +615,9 @@ Voxelization* Voxelization::AND(Voxelization& voxelization)
         {
             for(int z = 0; z < num_voxeles.z; z++)
             {
-                if(comprobarPertenencia(res->getVoxels()[i][y][z], this, xV, yV, zV))
+                if(checkMembership(res->getVoxels()[i][y][z], this, xV, yV, zV))
                 {
-                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
+                    if(checkMembership(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
                     {
                         if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && voxelization.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
                             res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
@@ -662,9 +662,9 @@ Voxelization* Voxelization::OR(Voxelization& voxelization)
         {
             for(int z = 0; z < num_voxeles.z; z++)
             {
-                if(comprobarPertenencia(res->getVoxels()[i][y][z], this, xV, yV, zV))
+                if(checkMembership(res->getVoxels()[i][y][z], this, xV, yV, zV))
                 {
-                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
+                    if(checkMembership(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
                     {
                         if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER || voxelization.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
                             res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
@@ -681,7 +681,7 @@ Voxelization* Voxelization::OR(Voxelization& voxelization)
                 }
                 else
                 {
-                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
+                    if(checkMembership(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
                     {
                         if(voxelization.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
                             res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
@@ -722,9 +722,9 @@ Voxelization* Voxelization::XOR(Voxelization& voxelization)
         {
             for(int z = 0; z < num_voxeles.z; z++)
             {
-                if(comprobarPertenencia(res->getVoxels()[i][y][z], this, xV, yV, zV))
+                if(checkMembership(res->getVoxels()[i][y][z], this, xV, yV, zV))
                 {
-                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
+                    if(checkMembership(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
                     {
                         if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && voxelization.getVoxels()[x2][y2][z2]->getStatus() == VoxelStatus::OUTER)
                             res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
@@ -750,7 +750,7 @@ Voxelization* Voxelization::XOR(Voxelization& voxelization)
     return res;
 }
 
-bool Voxelization::comprobarPertenencia(Voxel* voxel, const Voxelization* voxelization, int& x, int& y, int& z) const
+bool Voxelization::checkMembership(Voxel* voxel, const Voxelization* voxelization, int& x, int& y, int& z) const
 {
     if((BasicGeometry::equal(voxel->getMin().getX(), voxelization->getXMin()) || voxel->getMin().getX() > voxelization->getXMin())
        && (BasicGeometry::equal(voxel->getMax().getX(), voxelization->getXMax()) || voxel->getMax().getX() < voxelization->getXMax()))
@@ -764,9 +764,9 @@ bool Voxelization::comprobarPertenencia(Voxel* voxel, const Voxelization* voxeli
                && (BasicGeometry::equal(voxel->getMax().getZ(), voxelization->getZMax()) || voxel->getMax().getZ() < voxelization->getZMax()))
             {
 
-                x = (voxel->getMin().getX() - voxelization->getXMin()) / voxelization->getTam().x;
-                y = (voxel->getMin().getY() - voxelization->getYMin()) / voxelization->getTam().y;
-                z = (voxel->getMin().getZ() - voxelization->getZMin()) / voxelization->getTam().z;
+                x = static_cast<int>((voxel->getMin().getX() - voxelization->getXMin()) / voxelization->getTam().x);
+                y = static_cast<int>((voxel->getMin().getY() - voxelization->getYMin()) / voxelization->getTam().y);
+                z = static_cast<int>((voxel->getMin().getZ() - voxelization->getZMin()) / voxelization->getTam().z);
 
                 return true;
             }
