@@ -16,16 +16,6 @@ private:
     double                                        _maxX, _maxY, _maxZ;
     int                                           _numX, _numY, _numZ;
 
-    bool checkMembership(Voxel* voxel, const Voxelization* voxelization, int& x, int& y, int& z) const;
-
-    struct TriangleComparison
-    {
-        bool operator()(const Triangle3d& t1, const Triangle3d& t2) const
-        {
-            return t1.getAABB().getMin()._y < t2.getAABB().getMin()._y;
-        }
-    };
-
 public:
     Voxelization();
     Voxelization(const Voxelization& voxel);
@@ -54,10 +44,6 @@ public:
     double    getYMin() const { return _minY; }
     double    getZMin() const { return _minZ; }
     glm::vec3 getTam() const { return _size; }
-
-    Voxelization* AND(Voxelization& voxelization);
-    Voxelization* OR(Voxelization& voxelization);
-    Voxelization* XOR(Voxelization& voxelization);
 
 protected:
     void flood();

@@ -809,22 +809,22 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     model->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(model);
 
-    const glm::vec3& voxelSize = glm::vec3(0.1f);
+    const glm::vec3& voxelSize = glm::vec3(0.5f);
 
-    // ChronoUtilities::initChrono();
-    // std::cout << "Voxelization (Brute Force) started\n";
-    // Voxelization* voxelizationBruteForce = new Voxelization(triangleModel, voxelSize, 0);
-    // std::cout << "Voxelization (Brute Force) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
+    ChronoUtilities::initChrono();
+    std::cout << "Voxelization (Brute Force) started\n";
+    Voxelization* voxelizationBruteForce = new Voxelization(triangleModel, voxelSize, 0);
+    std::cout << "Voxelization (Brute Force) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
 
     ChronoUtilities::initChrono();
     std::cout << "Voxelization (Line Sweep) started\n";
     Voxelization* voxelizationLineSweep = new Voxelization(triangleModel, voxelSize, 1);
     std::cout << "Voxelization (Line Sweep) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
 
-    // ChronoUtilities::initChrono();
-    // std::cout << "Voxelization (AABB) started\n";
-    // Voxelization* voxelizationAABB = new Voxelization(triangleModel, voxelSize, 2);
-    // std::cout << "Voxelization (AABB) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
+    ChronoUtilities::initChrono();
+    std::cout << "Voxelization (AABB) started\n";
+    Voxelization* voxelizationAABB = new Voxelization(triangleModel, voxelSize, 2);
+    std::cout << "Voxelization (AABB) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
 
     // const auto voxModelBruteForce(voxelizationBruteForce->getRenderingObject(false, false));
     // voxModelBruteForce->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
@@ -840,6 +840,4 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     // voxModelAABB->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     // voxModelAABB->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(voxModelAABB);
-
-    // delete voxModel;
 }
