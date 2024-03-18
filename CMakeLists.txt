@@ -68,9 +68,6 @@ set(SOURCE_FILES
     Source/Geometry/Circle.h
     Source/Geometry/Edge3d.cpp
     Source/Geometry/Edge3d.h
-    Source/Geometry/EisemannRay.cpp
-    Source/Geometry/EisemannRay.h
-    Source/Geometry/Intersections3d.h
     Source/Geometry/Line.cpp
     Source/Geometry/Line.h
     Source/Geometry/Line3d.cpp
