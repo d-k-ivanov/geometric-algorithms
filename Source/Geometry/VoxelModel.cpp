@@ -125,12 +125,12 @@ bool Voxel::planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 
     }
 
     if(normal.dot(vmin) > 0.0f)
-        return 0;
+        return false;
 
     if(normal.dot(vmax) >= 0.0f)
-        return 1;
+        return true;
 
-    return 0;
+    return false;
 }
 
 bool Voxel::axisTestX(double& a, double& b, float& fa, float& fb, float& p0, float& px, Vect3d& v0, Vect3d& vx, glm::vec3& boxHalfSize, float& min, float& max, float& rad)
