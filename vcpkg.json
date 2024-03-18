@@ -6,6 +6,9 @@
             "name": "assimp"
         },
         {
+            "name": "cgal"
+        },
+        {
             "name": "dirent"
         },
         {

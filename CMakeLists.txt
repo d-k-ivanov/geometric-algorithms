@@ -66,6 +66,8 @@ set(SOURCE_FILES
     Source/Geometry/Bezier.h
     Source/Geometry/Circle.cpp
     Source/Geometry/Circle.h
+    Source/Geometry/ConvexHull.cpp
+    Source/Geometry/ConvexHull.h
     Source/Geometry/Edge3d.cpp
     Source/Geometry/Edge3d.h
     Source/Geometry/Line.cpp
@@ -241,6 +243,7 @@ endif()
 
 # Find packages
 find_package(assimp CONFIG REQUIRED)
+find_package(CGAL CONFIG REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
@@ -282,6 +285,7 @@ endif()
 
 target_link_libraries(${PROJECT_NAME}
     assimp::assimp
+    CGAL::CGAL
     GLEW::GLEW
     glfw
     glm::glm-header-only
@@ -298,6 +302,8 @@ target_include_directories(${PROJECT_NAME}
     ${Stb_INCLUDE_DIR}
     ${DIRENT_INCLUDE_DIRS}
 )
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC -DCGAL_DEBUG)
 
 if(VERBOSE_OUTPUT)
     cmake_list_all_variables()

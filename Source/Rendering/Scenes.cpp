@@ -1,3 +1,5 @@
+// ReSharper disable CppTooWideScope
+
 #include "Scenes.h"
 
 #include "DrawAABB.h"
@@ -13,6 +15,7 @@
 #include "DrawTriangle.h"
 
 #include "Geometry/Bezier.h"
+#include "Geometry/ConvexHull.h"
 #include "Geometry/Plane.h"
 #include "Geometry/PointCloud.h"
 #include "Geometry/Polygon.h"
@@ -815,7 +818,6 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     model2->setModelMatrix(glm::rotate(model2->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(model2);
 
-
     const glm::vec3& voxelSize = glm::vec3(0.05f);
 
     // ChronoUtilities::initChrono();
@@ -847,4 +849,77 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     // voxModelAABB->moveGeometryToOrigin(model1->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     // voxModelAABB->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(voxModelAABB);
+}
+
+// Practice 4a: 2D Convex Hull
+void AlgGeom::Scenes::p4a(SceneContent& sc)
+{
+    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
+    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
+
+    constexpr int   pointsPerCloud = 100;
+    constexpr float scale          = 0.5f;
+    glm::vec3       center         = glm::vec3(0, 0, 0);
+
+    auto* pointCloud2D = new PointCloud;
+    for(int idx = 0; idx < pointsPerCloud; ++idx)
+    {
+        glm::vec3 rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
+        pointCloud2D->addPoint(Point(rand.x, rand.y));
+    }
+    sc.addNewModel((new DrawPointCloud(*pointCloud2D))->setPointColor(RandomUtilities::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(10.0f));
+
+    const ConvexHull convexHull2D(pointCloud2D);
+    auto             randColor1 = RandomUtilities::getUniformRandomColorEuclideanDistance();
+    for(size_t i = 0; i < convexHull2D.getPoints2D().size(); i++)
+    {
+        SegmentLine* segment = new SegmentLine(convexHull2D.getPoints2D()[i], convexHull2D.getPoints2D()[(i + 1) % convexHull2D.getPoints2D().size()]);
+        sc.addNewModel((new DrawSegment(*segment))->setLineColor(randColor1)->overrideModelName()->setLineWidth(5.0f));
+        sc.addNewModel((new DrawPoint(segment->getA()))->setPointColor(randColor1)->overrideModelName()->setPointSize(15.0f));
+        delete segment;
+    }
+}
+
+// Practice 4b: 3D Convex Hull
+void AlgGeom::Scenes::p4b(SceneContent& sc)
+{
+    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
+    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
+
+    constexpr int   pointsPerCloud = 100;
+    constexpr float scale          = 0.5f;
+    glm::vec3       center         = glm::vec3(0, 0, 0);
+
+    auto* pointCloud3D = new PointCloud3d;
+
+    for(int idx = 0; idx < pointsPerCloud; ++idx)
+    {
+        glm::vec3 rand = RandomUtilities::getUniformRandomInUnitSphereSurface() / scale + center;
+        // glm::vec3 rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
+        pointCloud3D->addPoint({rand.x, rand.y, rand.z});
+    }
+    // sc.addNewModel((new DrawPointCloud(*pointCloud3D))->setPointColor(RandomUtilities::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(10.0f));
+
+    const ConvexHull convexHull3D(pointCloud3D);
+    auto             randColor2 = RandomUtilities::getUniformRandomColorEuclideanDistance();
+    // for(size_t i = 0; i < convexHull3D.getPoints3D().size(); i++)
+    // {
+    //     auto orig = convexHull3D.getPoints3D()[i];
+    //     auto dest = convexHull3D.getPoints3D()[(i + 1) % convexHull3D.getPoints3D().size()];
+    //
+    //     Segment3d* segment3D = new Segment3d(orig, dest);
+    //     sc.addNewModel((new DrawSegment(*segment3D))->setLineColor(randColor2)->overrideModelName()->setLineWidth(5.0f));
+    //     sc.addNewModel((new DrawPoint(segment3D->getOrigin()))->setPointColor(randColor2)->overrideModelName()->setPointSize(15.0f));
+    //     delete segment3D;
+    // }
+
+    // for(auto s : convexHull3D.getSegments())
+    // {
+    //     sc.addNewModel((new DrawSegment(s))->setLineColor(randColor2)->overrideModelName()->setLineWidth(5.0f));
+    // }
+
+    for(auto triangle : convexHull3D.getTriangles())
+    {
+        sc.addNewModel((new DrawTriangle(triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+    }
 }

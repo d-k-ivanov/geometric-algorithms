@@ -51,7 +51,11 @@ void AlgGeom::SceneContent::buildScenario()
     // Scenes::p2c(*this);
 
     // Practice 3:
-    Scenes::p3(*this);
+    // Scenes::p3(*this);
+
+    // Practice 4:
+    // Scenes::p4a(*this); // 2D Hull
+    Scenes::p4b(*this);
 }
 
 void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)

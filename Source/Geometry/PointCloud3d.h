@@ -69,11 +69,6 @@ public:
     void clear() { _points.clear(); }
 
     /**
-     *  @brief Deletes the data saved from the convex hull step by step process.
-     */
-    // void forgetConvexHullData() { delete _convexHullData; _convexHullData = nullptr; }
-
-    /**
      *  @brief Returns the bounding box that delimites the point cloud space.
      */
     AABB getAABB() const;
@@ -82,16 +77,6 @@ public:
      *    @brief get the index of the most distanced points in the cloud.
      */
     void getMostDistanced(int& a, int& b) const;
-
-    /**
-     *  @brief Generates a complete convex hull.
-     */
-    // TriangleMesh* getConvexHull();
-
-    /**
-     *  @brief Generates the next triangle from the current convex hull.
-     */
-    // TriangleMesh* getConvexHullNextTriangle();
 
     /**
      *  @brief Returns a certain point.

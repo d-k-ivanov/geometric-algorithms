@@ -1,0 +1,356 @@
+%============================================================================%
+% DOCUMENT DEFINITION
+%============================================================================%
+\documentclass[12pt,a4paper,english]{article}
+
+%-----------------------------------------------------------------------------
+% Page layout
+%-----------------------------------------------------------------------------
+% page outer frames (debug-only)
+% \usepackage{showframe}
+
+% define page styles using geometry
+\usepackage[a4paper]{geometry}
+
+% Margins
+\geometry{top=2cm, bottom=2cm, left=1cm, right=1cm}
+
+%-----------------------------------------------------------------------------
+% Packages
+%-----------------------------------------------------------------------------
+% Math
+\usepackage{amsmath}
+
+% Extended implementation of the arrays and tabules
+\usepackage{array}
+
+% Languages
+\usepackage[main=english, spanish]{babel}
+\usepackage[spanish]{datetime2}
+\usepackage{indentfirst}
+
+% Enhances the quality of tables.
+\usepackage{booktabs}
+
+% To use the slash to cancel out stuff
+\usepackage{cancel}
+
+% Customise the captions in figures and table
+\usepackage{caption}
+
+% Enumeration
+\usepackage{enumitem}
+
+% fancy headers and footers
+\usepackage{fancyhdr}
+
+% Improves the interface for defining floating objects such as figures and tables.
+\usepackage{float}
+\restylefloat{table}
+\usepackage{diagbox}
+
+% The enhanced graphics package.
+\usepackage{graphicx}
+\graphicspath{{./}{./images}{./figures}} % Default graphics path
+\DeclareGraphicsExtensions{.pdf, .png, .jpg} % Extensions to read in order
+
+% Hyper links
+\usepackage[hidelinks]{hyperref}
+
+% Fonts
+% \usepackage[semibold]{raleway}
+% \usepackage{lmodern}
+% \usepackage[defaultsans]{droidsans}
+% \usepackage{cmbright}
+% \usepackage[light,math]{iwona}
+
+% Select font encodings.
+\PassOptionsToPackage{T1}{fontenc} % T2A for cyrillics
+\usepackage{fontenc}
+
+% Select  input encodings.
+\PassOptionsToPackage{utf8}{inputenc}
+\usepackage{inputenc}
+
+% Code listings
+\usepackage{accsupp}
+\newcommand{\noncopy}[1]{\BeginAccSupp{method=escape,ActualText={}}#1\EndAccSupp{}}
+
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\renewcommand{\theFancyVerbLine}{\sffamily{\scriptsize {\arabic{FancyVerbLine}}}}
+
+% Columns
+\usepackage{multicol}
+
+% Set the 5-point spacing between paragraphs and 20-point indent for the first line.
+\usepackage[skip=5pt plus1pt, indent=20pt]{parskip}
+
+% High-quality function plots
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{dateplot}
+
+% TikZ
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+
+% Easily annotate math equations using TikZ
+\usepackage{annotate-equations}
+
+% Named colors
+\usepackage[dvipsnames,table]{xcolor}
+
+% Conditional space
+\usepackage{xspace}
+
+\let\OldTexttrademark\texttrademark
+\renewcommand{\texttrademark}{\OldTexttrademark\xspace}%
+
+% Fancy quotations
+\usepackage[style=british]{csquotes}
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip1em
+    \hbox{}\nobreak\hfill #1%
+    \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+    {\savebox\mybox{#1}\begin{quote}\openautoquote\hspace*{-.7ex}}
+    {\unskip\closeautoquote\vspace*{1mm}\signed{\usebox\mybox}\end{quote}}
+
+%-----------------------------------------------------------------------------
+% Re-usable information
+%-----------------------------------------------------------------------------
+\newcommand{\myName}{Dmitry Ivanov\xspace}%
+\newcommand{\myEmail}{divanov@correo.ugr.es\xspace}%
+\newcommand{\myDate}{\datespanish\today\xspace}%
+\newcommand{\myTitle}{Practice 4. Convex Hull\xspace}%
+\newcommand{\mySubject}{EDGSG 23/24\xspace}%
+\newcommand{\myKeyWords}{Geometric Algorithms\xspace}%
+
+\title{\mySubject\\\myTitle}
+\author{\myName (\myEmail)}
+\date{\today}
+
+%-----------------------------------------------------------------------------
+% Header
+%-----------------------------------------------------------------------------
+\pagestyle{fancy}
+\setlength{\headheight}{28pt}
+\fancyhead[LO,L]{\mySubject\\\myTitle}
+\fancyhead[CO,C]{}
+\fancyhead[RO,R]{\myName(\myEmail)\\\today}
+\fancyfoot[LO,L]{}
+\fancyfoot[CO,C]{\thepage}
+\fancyfoot[RO,R]{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%-----------------------------------------------------------------------------
+% PDF information
+%-----------------------------------------------------------------------------
+\hypersetup{
+  pdfauthor = {\myName (\myEmail)},
+  pdftitle = {\myTitle},
+  pdfsubject = {\mySubject},
+  pdfkeywords = {\myKeyWords},
+  pdfcreator = {Visual Studio Code with TeX Live 2023},
+  pdfproducer = {pdflatex}
+}
+
+\newcommand{\BlueHref}[3][blue]{\href{#2}{\color{#1}{#3}}}%
+
+\usepackage{titlesec}
+\titleformat{\section}{\normalsize\bfseries}{\thesection.}{0.5em}{}
+\titlespacing{\section}{0em}{*4}{*1.5}
+
+\titleformat{\subsection}{\normalsize\itshape}{\alph{subsection}.}{0.5em}{}
+\titlespacing{\subsection}{2em}{*4}{*1.5}
+
+%============================================================================%
+% DOCUMENT CONTENT
+%============================================================================%
+\begin{document}
+
+\section{Introduction}
+I've made a couple of improvements to the project to provide a unified way to compile the project on Windows and Linux.
+I've included precompiled binaries for Windows and Linux.
+
+\subsection{Compilation on Windows}
+
+\begin{itemize}
+    \item Install Visual Studio from \url{https://visualstudio.microsoft.com/downloads/}
+    \item Install VCPKG from \url{https://vcpkg.io/en/getting-started.html}
+    \item Add VCPKG folder to PATH:
+    \item Option 1: Command Line tools
+
+          \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Batch}
+    REM Assuming that VCPKG cloned and bootstrapped in c:\src\vcpkg
+    REM setx for the global environment, set for the local
+    setx PATH c:\src\vcpkg;%PATH%
+    set  PATH c:\src\vcpkg;%PATH%
+    \end{minted}
+
+    \item Option 2: PowerShell
+          \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Powershell}
+    # Assuming that VCPKG cloned and bootstrapped in c:\src\vcpkg
+    [Environment]::SetEnvironmentVariable("PATH", "c:\src\vcpkg;${PATH}", "Machine")
+        Set-Item -Path Env:PATH -Value "c:\src\vcpkg;${PATH}"
+    \end{minted}
+
+    \item Option 3: Manually in \textbf{System Properties \text{-->} Environment Variables}
+    \item Navigate to the folder with the project
+    \item Run \textit{build.bat}
+    \item Open \textit{build\\EDGSG.sln} in Visual Studio to work with the source code
+\end{itemize}
+
+\subsection{Compilation on Linux}
+
+\begin{itemize}
+    \item Install VCPKG from \url{https://vcpkg.io/en/getting-started.html}
+    \item Add VCPKG folder to System PATH
+    \item Option 1: Temporary local environment
+          \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Bash}
+        # Assuming that VCPKG cloned and bootstrapped in ~/vcpkg
+        export PATH="~/vcpkg;${PATH}"
+    \end{minted}
+
+    \item Option 2: Local environment and Bash profile
+          \begin{minted}[fontsize=\small,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{Bash}
+        # Assuming that VCPKG cloned and bootstrapped in c:\src\vcpkg
+        export PATH="~/vcpkg;${PATH}"
+        echo 'export PATH="~/vcpkg;${PATH}"' >> ~/.bashrc
+    \end{minted}
+
+    \item Navigate to the folder with the project
+    \item Run build.sh
+\end{itemize}
+\textbf{Important Note:} the VCPKG requests installation of additional packages
+
+\section{Project organization}
+
+The two files with source code were added: \textbf{Scenes.h} and \textbf{Scenes.cpp} to allow granular management for scenes.
+In the Scene class defined static functions to create specific scene setups:
+
+\begin{minted}[fontsize=\footnotesize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{C++}
+class Scenes
+{
+public:
+    // Practice 0:
+    static void p0(SceneContent& sc);
+    static void p0a(SceneContent& sc);
+
+    // Practice 1:
+    ...
+    ...
+    ...
+    // Practice 2:
+    static void p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud, float scaleFactor);
+    static void p2b(SceneContent& sc);
+    static void p2c(SceneContent& sc);
+
+    // Practice 3:
+    static void p3(SceneContent& sc);
+
+    // Practice 4:
+    static void p4a(SceneContent& sc);
+    static void p4b(SceneContent& sc);
+};
+\end{minted}
+
+These methods are used in SceneContent:
+
+\begin{minted}[fontsize=\footnotesize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{C++}
+void AlgGeom::SceneContent::buildScenario()
+{
+    constexpr int      numPointClouds = 1;
+    constexpr int      pointsPerCloud = 50;
+    constexpr float    scaleFactor    = 1.0f;
+    std::vector<Point> randomPointsFromCloud;
+    std::vector<Point> extremumPointInCloud;
+
+    // Practice 1:
+    ...
+    ...
+    ...
+    // Practice 2:
+    // Scenes::p2a(*this, numPointClouds, pointsPerCloud, scaleFactor);
+    // Scenes::p2b(*this);
+    // Scenes::p2c(*this);
+
+    // Practice 3:
+    // Scenes::p3(*this);
+
+    // Practice 4:
+    // Scenes::p4a(*this); // 2D Hull
+    Scenes::p4b(*this);
+}
+\end{minted}
+
+\newpage
+
+\section{Convex Hull 2D}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{p4-1}
+    \caption[]{Point Cloud 2D to Convex Hull 2D}
+    \label{fig:p4-1}
+\end{figure}
+
+\newpage
+
+\section{Convex Hull 3D}
+
+I've prepared two versions of the convex hull reconstruction from a point cloud.
+
+The first is made from the random points uniformly distributed across a shepherd surface.  Here is a randomization code:
+
+\begin{minted}[fontsize=\footnotesize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{C++}
+inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphereSurface() {
+    glm::vec3 point;
+    while(true) {
+        const float theta = getUniformRandom(0.0f, 2.0f * glm::pi<float>());
+        const float phi   = getUniformRandom(0.0f, glm::pi<float>());
+        const auto  x = std::sqrt(1 - std::pow(std::cos(phi), 2)) * std::cos(theta);
+        const auto  y = std::sqrt(1 - std::pow(std::cos(phi), 2)) * std::sin(theta);
+        const float z = std::cos(phi);
+        return {x, y, z};
+    }
+}
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{p4-2-a}
+    \caption[]{Point Cloud 3D (randomized on a sphere surface) to Convex Hull 3D}
+    \label{fig:p4-2-a}
+\end{figure}
+
+\newpage
+
+The second is made from the random points uniformly distributed within a sphere.
+
+\begin{minted}[fontsize=\footnotesize,mathescape,linenos,frame=single,xleftmargin=20pt,xrightmargin=20pt,numbersep=0.2em]{C++}
+inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphere() {
+    glm::vec3 point;
+    while(true) {
+        point =
+            glm::vec3(getUniformRandom(-1.0f, 1.0f),getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f));
+        if(length2(point) >= 1)
+            continue;
+        return point;
+    }
+}
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{p4-2-b}
+    \caption[]{Point Cloud 3D (randomized in a sphere) to Convex Hull 3D}
+    \label{fig:p4-2-b}
+\end{figure}
+
+\end{document}

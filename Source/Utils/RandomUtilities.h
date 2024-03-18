@@ -72,6 +72,16 @@ glm::vec3 getUniformRandomInUnitDisk();
 glm::vec3 getUniformRandomInUnitSphere();
 
 /**
+ *  @return Random point on unit sphere surface.
+ */
+glm::vec3 getRandomInUnitSphereSurface();
+
+/**
+ *  @return Random uniform point on unit sphere surface.
+ */
+glm::vec3 getUniformRandomInUnitSphereSurface();
+
+/**
  *  @return Random point in unit dick circumference.
  */
 glm::vec3 getUniformRandomInUnitDiskCircumference();
@@ -178,6 +188,41 @@ inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphere()
         point = glm::vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f));
         if(length2(point) >= 1)
             continue;
+
+        return point;
+    }
+}
+
+inline glm::vec3 RandomUtilities::getRandomInUnitSphereSurface()
+{
+    glm::vec3 point;
+    while(true)
+    {
+        const float theta = getUniformRandom(0.0f, 2.0f * glm::pi<float>());
+        const float phi   = getUniformRandom(0.0f, glm::pi<float>());
+        const float x     = std::sin(phi) * std::cos(theta);
+        const float y     = std::sin(phi) * std::sin(theta);
+        const float z     = std::cos(phi);
+
+        point = glm::vec3(x, y, z);
+
+        return point;
+    }
+}
+
+inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphereSurface()
+{
+    glm::vec3 point;
+    while(true)
+    {
+        const float theta = getUniformRandom(0.0f, 2.0f * glm::pi<float>());
+        const float phi   = getUniformRandom(0.0f, glm::pi<float>());
+
+        const auto  x = std::sqrt(1 - std::pow(std::cos(phi), 2)) * std::cos(theta);
+        const auto  y = std::sqrt(1 - std::pow(std::cos(phi), 2)) * std::sin(theta);
+        const float z = std::cos(phi);
+
+        point = glm::vec3(x, y, z);
 
         return point;
     }
