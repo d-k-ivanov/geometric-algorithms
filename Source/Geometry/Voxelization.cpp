@@ -1,7 +1,5 @@
 #include "Voxelization.h"
 
-#include "Intersections3d.h"
-
 #include "Utils/ChronoUtilities.h"
 
 #include <algorithm>
