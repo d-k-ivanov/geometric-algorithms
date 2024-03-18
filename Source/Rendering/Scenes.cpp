@@ -809,7 +809,7 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     model->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(model);
 
-    const glm::vec3& voxelSize = glm::vec3(0.1f);
+    const glm::vec3& voxelSize = glm::vec3(0.5f);
 
     // ChronoUtilities::initChrono();
     // std::cout << "Voxelization (Brute Force) started\n";

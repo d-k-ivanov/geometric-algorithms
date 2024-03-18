@@ -11,11 +11,11 @@ AlgGeom::DrawVoxelization::DrawVoxelization(glm::vec3* positions, int numVoxels,
     {
         this->buildVao(component);
         component->_vao->defineMultiInstancingVBO(VAO::VBO_MULTI_POSITION, glm::vec3(.0f), .0f, GL_FLOAT);
-        component->_vao->setVBOData(VAO::VBO_MULTI_POSITION, positions, _numVoxels);
+        component->_vao->setVBOData(VAO::VBO_MULTI_POSITION, positions, numVoxels);
         if(voxelColor)
         {
             component->_vao->defineMultiInstancingVBO(VAO::VBO_MULTI_COLOR, glm::vec3(.0f), .0f, GL_FLOAT);
-            component->_vao->setVBOData(VAO::VBO_MULTI_COLOR, voxelColor, _numVoxels);
+            component->_vao->setVBOData(VAO::VBO_MULTI_COLOR, voxelColor, numVoxels);
         }
     }
 

@@ -45,7 +45,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
             std::vector<VoxelModel*> nivel2;
             for(int y = 0; y < _numZ; y++)
             {
-                Vect3d puntoMinVoxel(tMinX, tMinY, tMinZ);
+                Vect3d      puntoMinVoxel(tMinX, tMinY, tMinZ);
                 VoxelModel* insertado = new VoxelModel(puntoMinVoxel, _size);
                 nivel2.push_back(insertado);
                 tMinZ += _size[2];
@@ -133,7 +133,7 @@ Voxelization::Voxelization(double maxX, double maxY, double maxZ, double minX, d
             for(int y = 0; y < _numZ; y++)
             {
                 const Vect3d voxel(tMinX, tMinY, tMinZ);
-                VoxelModel*       voxelInserted = new VoxelModel(voxel, _size);
+                VoxelModel*  voxelInserted = new VoxelModel(voxel, _size);
                 level2.push_back(voxelInserted);
                 tMinZ += _size[2];
             }
@@ -163,10 +163,10 @@ Voxelization::Voxelization(const Voxelization& voxel)
 
 VoxelModel* Voxelization::getVoxel(double x, double y, double z)
 {
-    const int i   = static_cast<int>(glm::abs(x / _size[0])) % _numX;
-    const int j   = static_cast<int>(glm::abs(y / _size[1])) % _numY;
-    const int k   = static_cast<int>(glm::abs(z / _size[2])) % _numZ;
-    VoxelModel*    res = _voxels[i][j][k];
+    const int   i   = static_cast<int>(glm::abs(x / _size[0])) % _numX;
+    const int   j   = static_cast<int>(glm::abs(y / _size[1])) % _numY;
+    const int   k   = static_cast<int>(glm::abs(z / _size[2])) % _numZ;
+    VoxelModel* res = _voxels[i][j][k];
 
     return res;
 }
@@ -201,7 +201,7 @@ void Voxelization::sweep(const std::vector<Triangle3d>& triangles) const
     std::ranges::sort(vertices, &compare);
 
     std::map<int, int>           triangularPairs;
-    std::vector<VoxelModel*>          voxels;
+    std::vector<VoxelModel*>     voxels;
     std::map<int, int>::iterator it;
     for(int i = 0; i < _numY; i++)
     {
@@ -390,10 +390,8 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(const bool useColors
         status = VoxelStatus::OCCUPIED;
 
     std::vector<glm::vec3> positions;
-    const Vect3d           displace(_size[0] / 2, _size[1] / 2, _size[2] / 2);
-    const unsigned         numVoxels = _numX * _numY * _numZ;
-    glm::vec3*             colors    = new glm::vec3[numVoxels];
-    constexpr glm::vec3    color[]   = {glm::vec3(1.0f), glm::vec3(.5f), glm::vec3(1.0f)};
+    const Vect3d        displace(_size[0] / 2, _size[1] / 2, _size[2] / 2);
+    const unsigned      numVoxels = _numX * _numY * _numZ;
 
     for(int x = 0; x < _numX; x++)
     {
@@ -403,21 +401,16 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(const bool useColors
             {
                 if(this->getVoxels()[x][y][z]->getStatus() == status)
                 {
-                    Vect3d center = this->getVoxels()[x][y][z]->getMin().add(displace);
+                    const unsigned linearIndex = z + y * _numZ + x * _numZ * _numY;
+                    Vect3d         center      = this->getVoxels()[x][y][z]->getMin().add(displace);
                     positions.emplace_back(center.getX(), center.getY(), center.getZ());
-                    if(useColors)
-                    {
-                        const unsigned linearIndex = z + y * _numZ + x * _numZ * _numY;
-                        colors[linearIndex]        = color[this->getVoxels()[x][y][z]->getStatus()];
-                    }
                 }
             }
         }
     }
 
-    AlgGeom::DrawVoxelization* voxelization = new AlgGeom::DrawVoxelization(positions.data(), static_cast<int>(positions.size()), _size, useColors ? colors : nullptr);
+    AlgGeom::DrawVoxelization* voxelization = new AlgGeom::DrawVoxelization(positions.data(), static_cast<int>(positions.size()), _size, nullptr);
 
-    delete[] colors;
     return voxelization;
 }
 
