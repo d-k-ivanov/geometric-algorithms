@@ -307,7 +307,7 @@ bool Voxel::triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect
     normal = e0.xProduct(e1);
 
     if(!planeBoxOverlap(normal, v0, size))
-        return 0;    // -NJMP-
+        return 0;
 
     return 1; /* box and triangle overlaps */
 }

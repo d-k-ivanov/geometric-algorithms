@@ -74,7 +74,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
                         {
                             if(_voxels[i][x][y]->bruteForce(triangulos[j]))
                             {
-                                _voxels[i][x][y]->setFormato(VoxelStatus::OCCUPIED);
+                                _voxels[i][x][y]->setStatus(VoxelStatus::OCCUPIED);
                                 j = aux1;
                             }
                         }
@@ -95,7 +95,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
                 {
                     if(voxeles_seleccionados[i]->bruteForce(model->getFaces()[j]))
                     {
-                        voxeles_seleccionados[i]->setFormato(VoxelStatus::OCCUPIED);
+                        voxeles_seleccionados[i]->setStatus(VoxelStatus::OCCUPIED);
                     }
                 }
             }
@@ -242,7 +242,7 @@ void Voxelization::lineSweep(const std::vector<Triangle3d>& triangles) const
             {
                 if(voxeles_linea[j]->bruteForce(triangles[it->first]))
                 {
-                    voxeles_linea[j]->setFormato(VoxelStatus::OCCUPIED);
+                    voxeles_linea[j]->setStatus(VoxelStatus::OCCUPIED);
                     break;
                 }
             }
@@ -263,19 +263,19 @@ void Voxelization::lineSweep(const std::vector<Triangle3d>& triangles) const
     }
 }
 
-std::vector<Voxel*> Voxelization::getVoxels(AABB aabb_ti)
+std::vector<Voxel*> Voxelization::getVoxels(AABB aabb)
 {
 
     std::vector<std::pair<Voxel*, glm::vec3>> solucion;
 
-    Vect3d e1(aabb_ti.getMin());
-    Vect3d e2(aabb_ti.getMax());
-    Vect3d e3(aabb_ti.getMin().getX(), aabb_ti.getMin().getY(), aabb_ti.getMax().getZ());
-    Vect3d e4(aabb_ti.getMax().getX(), aabb_ti.getMin().getY(), aabb_ti.getMax().getZ());
-    Vect3d e5(aabb_ti.getMin().getX(), aabb_ti.getMax().getY(), aabb_ti.getMax().getZ());
-    Vect3d e6(aabb_ti.getMax().getX(), aabb_ti.getMin().getY(), aabb_ti.getMin().getZ());
-    Vect3d e7(aabb_ti.getMin().getX(), aabb_ti.getMax().getY(), aabb_ti.getMin().getZ());
-    Vect3d e8(aabb_ti.getMax().getX(), aabb_ti.getMax().getY(), aabb_ti.getMin().getZ());
+    Vect3d e1(aabb.getMin());
+    Vect3d e2(aabb.getMax());
+    Vect3d e3(aabb.getMin().getX(), aabb.getMin().getY(), aabb.getMax().getZ());
+    Vect3d e4(aabb.getMax().getX(), aabb.getMin().getY(), aabb.getMax().getZ());
+    Vect3d e5(aabb.getMin().getX(), aabb.getMax().getY(), aabb.getMax().getZ());
+    Vect3d e6(aabb.getMax().getX(), aabb.getMin().getY(), aabb.getMin().getZ());
+    Vect3d e7(aabb.getMin().getX(), aabb.getMax().getY(), aabb.getMin().getZ());
+    Vect3d e8(aabb.getMax().getX(), aabb.getMax().getY(), aabb.getMin().getZ());
 
     for(int i = 0; i < _numX; i++)
     {
@@ -334,7 +334,7 @@ void Voxelization::flood()
             centralX++;
         }
     }
-    recursivo(this->_voxels[centralX][centralY][centralZ], centralX, centralY, centralZ);
+    recursive(this->_voxels[centralX][centralY][centralZ], centralX, centralY, centralZ);
     for(int i = 0; i < _numX; i++)
     {
         for(int x = 0; x < _numY; x++)
@@ -343,51 +343,51 @@ void Voxelization::flood()
             {
                 if(this->_voxels[i][x][y]->getStatus() == VoxelStatus::NP)
                 {
-                    this->_voxels[i][x][y]->setFormato(VoxelStatus::OUTER);
+                    this->_voxels[i][x][y]->setStatus(VoxelStatus::OUTER);
                 }
             }
         }
     }
 }
 
-void Voxelization::recursivo(Voxel* v, int x, int y, int z)
+void Voxelization::recursive(Voxel* v, int x, int y, int z)
 {
     if(v->getStatus() == VoxelStatus::OCCUPIED || v->getStatus() == VoxelStatus::INNER)
     {
         return;
     }
-    v->setFormato(VoxelStatus::INNER);
+    v->setStatus(VoxelStatus::INNER);
 
     if(x + 1 < _numX)
     {
-        recursivo(this->_voxels[x + 1][y][z], x + 1, y, z);
+        recursive(this->_voxels[x + 1][y][z], x + 1, y, z);
     }
     if(x - 1 > 0)
     {
-        recursivo(this->_voxels[x - 1][y][z], x - 1, y, z);
+        recursive(this->_voxels[x - 1][y][z], x - 1, y, z);
     }
     if(y + 1 < _numY)
     {
-        recursivo(this->_voxels[x][y + 1][z], x, y + 1, z);
+        recursive(this->_voxels[x][y + 1][z], x, y + 1, z);
     }
     if(y - 1 > 0)
     {
-        recursivo(this->_voxels[x][y - 1][z], x, y - 1, z);
+        recursive(this->_voxels[x][y - 1][z], x, y - 1, z);
     }
     if(z + 1 < _numZ)
     {
-        recursivo(this->_voxels[x][y][z + 1], x, y, z + 1);
+        recursive(this->_voxels[x][y][z + 1], x, y, z + 1);
     }
     if(z - 1 > 0)
     {
-        recursivo(this->_voxels[x][y][z - 1], x, y, z - 1);
+        recursive(this->_voxels[x][y][z - 1], x, y, z - 1);
     }
 }
 
-AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool gris)
+AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(bool occupied)
 {
     VoxelStatus status;
-    if(gris)
+    if(occupied)
         status = VoxelStatus::OCCUPIED;
     else
         status = VoxelStatus::INNER;
@@ -594,17 +594,17 @@ bool Voxelization::rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, doub
     return tMin < t1 && tMax > t0;
 }
 
-Voxelization* Voxelization::AND(Voxelization& vox)
+Voxelization* Voxelization::AND(Voxelization& voxelization)
 {
 
     Voxelization* res;
     glm::vec3     num_voxeles;
 
-    glm::vec3 tamNuevo(BasicGeometry::max2(this->getXMax() - this->getXMin(), vox.getXMax() - vox.getXMin()), BasicGeometry::max2(this->getYMax() - this->getYMin(), vox.getYMax() - vox.getYMin()), BasicGeometry::max2(this->getZMax() - this->getZMin(), vox.getZMax() - vox.getZMin()));
+    glm::vec3 tamNuevo(BasicGeometry::max2(this->getXMax() - this->getXMin(), voxelization.getXMax() - voxelization.getXMin()), BasicGeometry::max2(this->getYMax() - this->getYMin(), voxelization.getYMax() - voxelization.getYMin()), BasicGeometry::max2(this->getZMax() - this->getZMin(), voxelization.getZMax() - voxelization.getZMin()));
 
-    res = new Voxelization(BasicGeometry::max2(this->getXMax(), vox.getXMax()), BasicGeometry::max2(this->getYMax(), vox.getYMax()),
-                           BasicGeometry::max2(this->getZMax(), vox.getZMax()), BasicGeometry::min2(this->getXMin(), vox.getXMin()),
-                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(_size.x));
+    res = new Voxelization(BasicGeometry::max2(this->getXMax(), voxelization.getXMax()), BasicGeometry::max2(this->getYMax(), voxelization.getYMax()),
+                           BasicGeometry::max2(this->getZMax(), voxelization.getZMax()), BasicGeometry::min2(this->getXMin(), voxelization.getXMin()),
+                           BasicGeometry::min2(this->getYMin(), voxelization.getYMin()), BasicGeometry::min2(this->getZMin(), voxelization.getZMin()), glm::vec3(_size.x));
 
     num_voxeles = glm::vec3(res->_numX, res->_numY, res->_numZ);
     int xV, yV, zV;
@@ -617,21 +617,21 @@ Voxelization* Voxelization::AND(Voxelization& vox)
             {
                 if(comprobarPertenencia(res->getVoxels()[i][y][z], this, xV, yV, zV))
                 {
-                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &vox, x2, y2, z2))
+                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
                     {
-                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && vox.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && voxelization.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
                         else
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                        res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                     }
                 }
                 else
                 {
-                    res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                    res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                 }
             }
         }
@@ -640,17 +640,17 @@ Voxelization* Voxelization::AND(Voxelization& vox)
     return res;
 }
 
-Voxelization* Voxelization::OR(Voxelization& vox)
+Voxelization* Voxelization::OR(Voxelization& voxelization)
 {
 
     Voxelization* res;
     glm::vec3     num_voxeles;
 
-    glm::vec3 tamNuevo(BasicGeometry::max2(this->getXMax() - this->getXMin(), vox.getXMax() - vox.getXMin()), BasicGeometry::max2(this->getYMax() - this->getYMin(), vox.getYMax() - vox.getYMin()), BasicGeometry::max2(this->getZMax() - this->getZMin(), vox.getZMax() - vox.getZMin()));
+    glm::vec3 tamNuevo(BasicGeometry::max2(this->getXMax() - this->getXMin(), voxelization.getXMax() - voxelization.getXMin()), BasicGeometry::max2(this->getYMax() - this->getYMin(), voxelization.getYMax() - voxelization.getYMin()), BasicGeometry::max2(this->getZMax() - this->getZMin(), voxelization.getZMax() - voxelization.getZMin()));
 
-    res = new Voxelization(BasicGeometry::max2(this->getXMax(), vox.getXMax()), BasicGeometry::max2(this->getYMax(), vox.getYMax()),
-                           BasicGeometry::max2(this->getZMax(), vox.getZMax()), BasicGeometry::min2(this->getXMin(), vox.getXMin()),
-                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(_size.x));
+    res = new Voxelization(BasicGeometry::max2(this->getXMax(), voxelization.getXMax()), BasicGeometry::max2(this->getYMax(), voxelization.getYMax()),
+                           BasicGeometry::max2(this->getZMax(), voxelization.getZMax()), BasicGeometry::min2(this->getXMin(), voxelization.getXMin()),
+                           BasicGeometry::min2(this->getYMin(), voxelization.getYMin()), BasicGeometry::min2(this->getZMin(), voxelization.getZMin()), glm::vec3(_size.x));
 
     num_voxeles = glm::vec3(res->_numX, res->_numY, res->_numZ);
 
@@ -664,33 +664,33 @@ Voxelization* Voxelization::OR(Voxelization& vox)
             {
                 if(comprobarPertenencia(res->getVoxels()[i][y][z], this, xV, yV, zV))
                 {
-                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &vox, x2, y2, z2))
+                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
                     {
-                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER || vox.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER || voxelization.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
                         else
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                     }
                     else
                     {
                         if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
                         else
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                     }
                 }
                 else
                 {
-                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &vox, x2, y2, z2))
+                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
                     {
-                        if(vox.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(voxelization.getVoxels()[x2][y2][z2]->getStatus() != VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
                         else
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                     }
                     else
                     {
-                        res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                        res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                     }
                 }
             }
@@ -700,17 +700,17 @@ Voxelization* Voxelization::OR(Voxelization& vox)
     return res;
 }
 
-Voxelization* Voxelization::XOR(Voxelization& vox)
+Voxelization* Voxelization::XOR(Voxelization& voxelization)
 {
 
     Voxelization* res;
     glm::vec3     num_voxeles;
 
-    glm::vec3 tamNuevo(BasicGeometry::max2(this->getXMax() - this->getXMin(), vox.getXMax() - vox.getXMin()), BasicGeometry::max2(this->getYMax() - this->getYMin(), vox.getYMax() - vox.getYMin()), BasicGeometry::max2(this->getZMax() - this->getZMin(), vox.getZMax() - vox.getZMin()));
+    glm::vec3 tamNuevo(BasicGeometry::max2(this->getXMax() - this->getXMin(), voxelization.getXMax() - voxelization.getXMin()), BasicGeometry::max2(this->getYMax() - this->getYMin(), voxelization.getYMax() - voxelization.getYMin()), BasicGeometry::max2(this->getZMax() - this->getZMin(), voxelization.getZMax() - voxelization.getZMin()));
 
-    res = new Voxelization(BasicGeometry::max2(this->getXMax(), vox.getXMax()), BasicGeometry::max2(this->getYMax(), vox.getYMax()),
-                           BasicGeometry::max2(this->getZMax(), vox.getZMax()), BasicGeometry::min2(this->getXMin(), vox.getXMin()),
-                           BasicGeometry::min2(this->getYMin(), vox.getYMin()), BasicGeometry::min2(this->getZMin(), vox.getZMin()), glm::vec3(_size.x));
+    res = new Voxelization(BasicGeometry::max2(this->getXMax(), voxelization.getXMax()), BasicGeometry::max2(this->getYMax(), voxelization.getYMax()),
+                           BasicGeometry::max2(this->getZMax(), voxelization.getZMax()), BasicGeometry::min2(this->getXMin(), voxelization.getXMin()),
+                           BasicGeometry::min2(this->getYMin(), voxelization.getYMin()), BasicGeometry::min2(this->getZMin(), voxelization.getZMin()), glm::vec3(_size.x));
 
     num_voxeles = glm::vec3(res->_numX, res->_numY, res->_numZ);
 
@@ -724,24 +724,24 @@ Voxelization* Voxelization::XOR(Voxelization& vox)
             {
                 if(comprobarPertenencia(res->getVoxels()[i][y][z], this, xV, yV, zV))
                 {
-                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &vox, x2, y2, z2))
+                    if(comprobarPertenencia(res->getVoxels()[i][y][z], &voxelization, x2, y2, z2))
                     {
-                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && vox.getVoxels()[x2][y2][z2]->getStatus() == VoxelStatus::OUTER)
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
+                        if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER && voxelization.getVoxels()[x2][y2][z2]->getStatus() == VoxelStatus::OUTER)
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
                         else
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                     }
                     else
                     {
                         if(this->getVoxels()[xV][yV][zV]->getStatus() != VoxelStatus::OUTER)
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::INNER);
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::INNER);
                         else
-                            res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                            res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                     }
                 }
                 else
                 {
-                    res->getVoxels()[i][y][z]->setFormato(VoxelStatus::OUTER);
+                    res->getVoxels()[i][y][z]->setStatus(VoxelStatus::OUTER);
                 }
             }
         }
@@ -750,23 +750,23 @@ Voxelization* Voxelization::XOR(Voxelization& vox)
     return res;
 }
 
-bool Voxelization::comprobarPertenencia(Voxel* v, Voxelization* voxelizacion, int& x, int& y, int& z)
+bool Voxelization::comprobarPertenencia(Voxel* voxel, const Voxelization* voxelization, int& x, int& y, int& z) const
 {
-    if((BasicGeometry::equal(v->getMin().getX(), voxelizacion->getXMin()) || v->getMin().getX() > voxelizacion->getXMin())
-       && (BasicGeometry::equal(v->getMax().getX(), voxelizacion->getXMax()) || v->getMax().getX() < voxelizacion->getXMax()))
+    if((BasicGeometry::equal(voxel->getMin().getX(), voxelization->getXMin()) || voxel->getMin().getX() > voxelization->getXMin())
+       && (BasicGeometry::equal(voxel->getMax().getX(), voxelization->getXMax()) || voxel->getMax().getX() < voxelization->getXMax()))
     {
 
-        if((BasicGeometry::equal(v->getMin().getY(), voxelizacion->getYMin()) || v->getMin().getY() > voxelizacion->getYMin())
-           && (BasicGeometry::equal(v->getMax().getY(), voxelizacion->getYMax()) || v->getMax().getY() < voxelizacion->getYMax()))
+        if((BasicGeometry::equal(voxel->getMin().getY(), voxelization->getYMin()) || voxel->getMin().getY() > voxelization->getYMin())
+           && (BasicGeometry::equal(voxel->getMax().getY(), voxelization->getYMax()) || voxel->getMax().getY() < voxelization->getYMax()))
         {
 
-            if((BasicGeometry::equal(v->getMin().getZ(), voxelizacion->getZMin()) || v->getMin().getZ() > voxelizacion->getZMin())
-               && (BasicGeometry::equal(v->getMax().getZ(), voxelizacion->getZMax()) || v->getMax().getZ() < voxelizacion->getZMax()))
+            if((BasicGeometry::equal(voxel->getMin().getZ(), voxelization->getZMin()) || voxel->getMin().getZ() > voxelization->getZMin())
+               && (BasicGeometry::equal(voxel->getMax().getZ(), voxelization->getZMax()) || voxel->getMax().getZ() < voxelization->getZMax()))
             {
 
-                x = (v->getMin().getX() - voxelizacion->getXMin()) / voxelizacion->getTam().x;
-                y = (v->getMin().getY() - voxelizacion->getYMin()) / voxelizacion->getTam().y;
-                z = (v->getMin().getZ() - voxelizacion->getZMin()) / voxelizacion->getTam().z;
+                x = (voxel->getMin().getX() - voxelization->getXMin()) / voxelization->getTam().x;
+                y = (voxel->getMin().getY() - voxelization->getYMin()) / voxelization->getTam().y;
+                z = (voxel->getMin().getZ() - voxelization->getZMin()) / voxelization->getTam().z;
 
                 return true;
             }

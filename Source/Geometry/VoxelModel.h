@@ -31,7 +31,7 @@ public:
     bool find(Vect3d point);
     bool remove(Vect3d point);
 
-    void setFormato(VoxelStatus formato) { _status = formato; }
+    void setStatus(VoxelStatus status) { _status = status; }
 
     Vect3d      getMin();
     Vect3d      getMax();
@@ -39,7 +39,7 @@ public:
 
     bool bruteForce(Triangle3d triangle);
     bool lineSweep(Triangle3d triangle);
-    bool AABBTri(Triangle3d triangulo);
+    bool AABBTri(Triangle3d triangle);
 
     bool planeBoxOverlap(const Vect3d& normal, const Vect3d& vert, glm::vec3 maxPoint) const;
     bool triBoxOverlap(const Vect3d& center, glm::vec3 size, std::vector<Vect3d> vertices);

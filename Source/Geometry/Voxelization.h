@@ -16,7 +16,7 @@ private:
     double                                        _maxX, _maxY, _maxZ;
     int                                           _numX, _numY, _numZ;
 
-    bool comprobarPertenencia(Voxel* v, Voxelization* voxelizacion, int& x, int& y, int& z);
+    bool comprobarPertenencia(Voxel* voxel, const Voxelization* voxelization, int& x, int& y, int& z) const;
 
 public:
     Voxelization();
@@ -29,7 +29,7 @@ public:
     void                                          add(const Vect3d& data);
     void                                          lineSweep(const std::vector<Triangle3d>& triangles) const;
     static bool                                   compare(const std::pair<Vect3d, int>& v1, const std::pair<Vect3d, int>& v2);
-    std::vector<Voxel*>                           getVoxels(AABB aabb_ti);
+    std::vector<Voxel*>                           getVoxels(AABB aabb);
     std::vector<std::vector<std::vector<Voxel*>>> getVoxels();
 
     bool rayTraversal(Ray3d& r, std::vector<Voxel*>& v);
@@ -37,7 +37,7 @@ public:
 
     bool isInVoxel(Voxel* voxel, const Vect3d& vertice) const;
 
-    AlgGeom::DrawVoxelization* getRenderingObject(bool gris);
+    AlgGeom::DrawVoxelization* getRenderingObject(bool occupied);
 
     double    getXMax() const { return _maxX; }
     double    getYMax() const { return _maxY; }
@@ -47,11 +47,11 @@ public:
     double    getZMin() const { return _minZ; }
     glm::vec3 getTam() const { return _size; }
 
-    Voxelization* AND(Voxelization& v);
-    Voxelization* OR(Voxelization& v);
-    Voxelization* XOR(Voxelization& v);
+    Voxelization* AND(Voxelization& voxelization);
+    Voxelization* OR(Voxelization& voxelization);
+    Voxelization* XOR(Voxelization& voxelization);
 
 protected:
     void flood();
-    void recursivo(Voxel* v, int x, int y, int z);
+    void recursive(Voxel* v, int x, int y, int z);
 };
