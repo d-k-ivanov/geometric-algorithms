@@ -255,8 +255,9 @@ public:
     static void p3(SceneContent& sc);
 
     // Practice 4:
-    static void p4a(SceneContent& sc);
-    static void p4b(SceneContent& sc);
+    static void p4a(SceneContent& sc, bool drawTriangles);
+    static void p4b(SceneContent& sc, bool randomOnSphereSurface);
+    static void p4c(SceneContent& sc);
 };
 \end{minted}
 
@@ -284,8 +285,9 @@ void AlgGeom::SceneContent::buildScenario()
     // Scenes::p3(*this);
 
     // Practice 4:
-    // Scenes::p4a(*this); // 2D Hull
-    Scenes::p4b(*this);
+    // Scenes::p4a(*this, /*draw triangles*/ true);           // 2D Hull
+    // Scenes::p4b(*this, /*random on sphere surface*/ true); // 3D Hull
+    Scenes::p4c(*this);  // 3D Hull from Trianles
 }
 \end{minted}
 
@@ -295,9 +297,16 @@ void AlgGeom::SceneContent::buildScenario()
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{p4-1}
-    \caption[]{Point Cloud 2D to Convex Hull 2D}
-    \label{fig:p4-1}
+    \includegraphics[width=0.65\textwidth]{p4-1-a}
+    \caption[]{Point Cloud 2D to Convex Hull 2D (only outline)}
+    \label{fig:p4-1-a}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{p4-1-b}
+    \caption[]{Point Cloud 2D to Convex Hull 2D (Delaunay Triangulation)}
+    \label{fig:p4-1-b}
 \end{figure}
 
 \newpage
@@ -351,6 +360,15 @@ inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphere() {
     \includegraphics[width=0.8\textwidth]{p4-2-b}
     \caption[]{Point Cloud 3D (randomized in a sphere) to Convex Hull 3D}
     \label{fig:p4-2-b}
+\end{figure}
+
+\section{Convex Hull from Triangular Mesh}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{p4-3-a}
+    \caption[]{Convex Hull 3D generated from the Ajax model}
+    \label{fig:p4-3-a}
 \end{figure}
 
 \end{document}

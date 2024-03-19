@@ -54,8 +54,9 @@ void AlgGeom::SceneContent::buildScenario()
     // Scenes::p3(*this);
 
     // Practice 4:
-    // Scenes::p4a(*this); // 2D Hull
-    Scenes::p4b(*this);
+    // Scenes::p4a(*this, /*draw triangles*/ true);    // 2D Hull
+    // Scenes::p4b(*this, /*random on sphere surface*/ true);    // 3D Hull
+    Scenes::p4c(*this);    // 3D Hull from Trianles
 }
 
 void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)

@@ -39,14 +39,14 @@ public:
     TriangleModel(const TriangleModel& orig) = delete;
     virtual ~TriangleModel();
 
-    PointCloud3d            getCloud();
+    PointCloud3d            getCloud() const;
     Triangle3d              getFace(unsigned index);
     std::vector<Triangle3d> getFaces();
     std::vector<Vect3d>*    getVertices() { return &_vertices; }
     std::vector<Vect3d>*    getNormals() { return &_normals; }
     std::vector<Vect2d>*    getTextureCoordinates() { return &_textCoordinates; }
     std::vector<unsigned>*  getIndices() { return &_indices; }
-    size_t                  numTriangles();
+    size_t                  numTriangles() const;
     AABB                    getAABB();
 
     /**
@@ -71,7 +71,7 @@ public:
     };
 
 public:
-    unsigned       _indices[3];         //!< Indexes of vertices
+    unsigned       _indices[3];       //!< Indexes of vertices
     Triangle3d     _triangle;         //!< Core
     TriangleModel* _triangleModel;    //!< Mesh where those vertices belong to
 

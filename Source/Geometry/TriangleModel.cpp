@@ -42,7 +42,7 @@ TriangleModel::~TriangleModel()
     _textCoordinates.clear();
 }
 
-PointCloud3d TriangleModel::getCloud()
+PointCloud3d TriangleModel::getCloud() const
 {
     return PointCloud3d(_vertices);
 }
@@ -50,21 +50,21 @@ PointCloud3d TriangleModel::getCloud()
 Triangle3d TriangleModel::getFace(unsigned index)
 {
     if(index > this->numTriangles())
-        return Triangle3d();
+        return {};
 
     Vect3d a = _vertices[_indices[index * 3]];
     Vect3d b = _vertices[_indices[index * 3 + 1]];
     Vect3d c = _vertices[_indices[index * 3 + 2]];
 
-    return Triangle3d(a, b, c);
+    return {a, b, c};
 }
 
 std::vector<Triangle3d> TriangleModel::getFaces()
 {
-
     std::vector<Triangle3d> result;
 
-    for(int index = 0; index < this->numTriangles(); index++)
+    result.reserve(this->numTriangles());
+    for(size_t index = 0; index < this->numTriangles(); index++)
     {
         result.push_back(getFace(index));
     }
@@ -72,7 +72,7 @@ std::vector<Triangle3d> TriangleModel::getFaces()
     return result;
 }
 
-size_t TriangleModel::numTriangles()
+size_t TriangleModel::numTriangles() const
 {
     return _indices.size() / 3;
 }
