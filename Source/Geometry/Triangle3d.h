@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AABB.h"
+#include "Ray3d.h"
 #include "Vect3d.h"
 
 /**
@@ -133,7 +134,13 @@ public:
     Vect3d samplePoint(double x, double y) const;
 
     /**
+     * \brief Ray-Triangle Moller intersection algorithm.
+     */
+    bool intersect(Ray3d& ray, Vect3d& intersectionPoint);
+
+    /**
      *  @brief Assignment operator.
+     *  https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
      */
     Triangle3d& operator=(const Triangle3d& triangle);
 

@@ -145,6 +145,44 @@ Vect3d Triangle3d::samplePoint(const double x, const double y) const
     return _a.scalarMul(a).add(_b.scalarMul(b)).add(_c.scalarMul(c));
 }
 
+bool Triangle3d::intersect(Ray3d& ray, Vect3d& intersectionPoint)
+{
+    const Vect3d edge1 = this->getB().sub(this->getA());
+    const Vect3d edge2 = this->getC().sub(this->getA());
+
+    const Vect3d pvec = ray.getDirection().xProduct(edge2);
+    const double det  = edge1.dot(pvec);
+
+    // Check if the ray is parallel to the triangle.
+    if(det < BasicGeometry::EPSILON && det > -BasicGeometry::EPSILON)
+    {
+        return false;
+    }
+
+    const double invertedDet = 1.0 / det;
+    const Vect3d tvec        = ray.getOrigin().sub(this->getA());
+    const double u           = invertedDet * tvec.dot(pvec);
+    if(u < 0.0 || u > 1)
+        return false;
+
+    const Vect3d qvec = tvec.xProduct(edge1);
+    const double v    = invertedDet * ray.getDirection().dot(qvec);
+    if(v < 0.0 || u + v > 1)
+        return false;
+
+    // At this stage we can compute t to find out where the intersection point is on the line.
+    const double t = invertedDet * edge2.dot(qvec);
+    if(t > BasicGeometry::EPSILON)
+    {
+        intersectionPoint = ray.getOrigin().add(ray.getDirection().scalarMul(t));
+        return true;
+    }
+    else
+    {
+        return false;    // There is a line intersection but not a ray intersection
+    }
+}
+
 Triangle3d& Triangle3d::operator=(const Triangle3d& triangle)
 {
     _a = triangle._a;
