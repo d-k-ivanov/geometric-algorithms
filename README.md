@@ -66,9 +66,10 @@ The application's origins belong to [Alfonso López Ruiz](https://github.com/Alf
 
 ### Voxelixation
 
+![](Docs/p3/images/p3-0-models.png)
+
 | Column | Column |
 |-------------------------------------------------|--------------------------------------------------------|
-| ![](Docs/p3/images/p3-0-models.png)                                                                     ||
 | ![](Docs/p3/images/p3-1-ajax-brute-force.png)   | ![](Docs/p3/images/p3-1-cheburashka-brute-force.png)   |
 | ![](Docs/p3/images/p3-2-ajax-line-sweep.png)    | ![](Docs/p3/images/p3-2-cheburashka-line-sweep.png)    |
 | ![](Docs/p3/images/p3-3-ajax-aabb-sampling.png) | ![](Docs/p3/images/p3-3-cheburashka-aabb-sampling.png) |
