@@ -18,12 +18,7 @@ int main()
         std::cout << exception.what() << '\n';
     }
 
-    // Once the event cycle is finished, release resources, etc.
     std::cout << "Finishing application...\n";
-
-    // This call is to prevent the console from closing immediately after the execution and being able to read the messages.
-    // You can also use getChar();
-    // system("pause");
 
     return 0;
 }

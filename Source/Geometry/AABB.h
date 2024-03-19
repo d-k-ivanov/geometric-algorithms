@@ -14,11 +14,6 @@ protected:
 
 public:
     /**
-     *	@brief Default constructor.
-     */
-    // AABB();
-
-    /**
      *	@brief Constructor.
      */
     AABB(const Vect3d& min = Vect3d(HUGE_VAL), const Vect3d& max = Vect3d(-HUGE_VAL));
@@ -67,6 +62,11 @@ public:
      *	@brief Modifies the maximum point.
      */
     void setMax(const Vect3d& max);
+
+    /**
+     *	@brief AABB dot product.
+     */
+    AABB dot(const glm::mat4& matrix) const;
 
     /**
      *	@brief Assignment operator.

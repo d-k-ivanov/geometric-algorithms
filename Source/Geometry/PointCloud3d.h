@@ -1,7 +1,6 @@
 #pragma once
 
 #include "AABB.h"
-// #include "TriangleMesh.h"
 #include "Vect3d.h"
 
 #include <string>
@@ -101,5 +100,5 @@ public:
     /**
      *  @brief Returns the number of points that this cloud contains.
      */
-    size_t size() { return _points.size(); }
+    size_t size() const { return _points.size(); }
 };

@@ -7,6 +7,8 @@
 #include <numeric>
 #include <sstream>
 
+#include <glm/ext/matrix_transform.hpp>
+
 std::string                     AlgGeom::Model3D::CHECKER_PATTERN_PATH = ThisExecutableLocation() + "/Resources/Textures/Checker.png";
 std::unordered_set<std::string> AlgGeom::Model3D::USED_NAMES;
 
@@ -92,14 +94,14 @@ void AlgGeom::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* ma
 
 AlgGeom::Model3D* AlgGeom::Model3D::moveGeometryToOrigin(const glm::mat4& origMatrix, float maxScale)
 {
-    // AABB aabb = this->getAABB();
+    // const AABB aabb = this->getAABB();
 
-    // glm::vec3 translate = -aabb.center();
-    // glm::vec3 extent = aabb.extent();
-    // float maxScaleAABB = std::max(extent.x, std::max(extent.y, extent.z));
-    // glm::vec3 scale = (maxScale < FLT_MAX) ? ((maxScale > maxScaleAABB) ? glm::vec3(1.0f) : glm::vec3(maxScale / maxScaleAABB)) : glm::vec3(1.0f);
+    // const glm::vec3 translate    = -aabb.getCenter().toGlmVec3();
+    // const glm::vec3 extent       = aabb.getExtent().toGlmVec3();
+    // const float     maxScaleAABB = std::max(extent.x, std::max(extent.y, extent.z));
+    // const glm::vec3 scale        = (maxScale < FLT_MAX) ? ((maxScale > maxScaleAABB) ? glm::vec3(1.0f) : glm::vec3(maxScale / maxScaleAABB)) : glm::vec3(1.0f);
 
-    //_modelMatrix = glm::scale(glm::mat4(1.0f), scale) * glm::translate(glm::mat4(1.0f), translate) * origMatrix;
+    // _modelMatrix = glm::scale(glm::mat4(1.0f), scale) * glm::translate(glm::mat4(1.0f), translate) * origMatrix;
 
     return this;
 }

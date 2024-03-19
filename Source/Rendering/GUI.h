@@ -52,7 +52,7 @@ protected:
     void editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode);
     void loadFonts();
     void loadImGUIStyle();
-    void processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent);
+    void processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent) const;
     void renderGuizmo(Model3D::Component* component, SceneContent* sceneContent);
     void showCameraMenu(SceneContent* sceneContent);
     void showFileDialog(SceneContent* sceneContent);

@@ -19,11 +19,6 @@ protected:
     double getDistanceT0(Vect2d& point);
 
     /**
-     *  @brief Obstaints the parameters t and s where both lines intersects, if they do.
-     */
-    // virtual bool intersects(Vect2d& p1, Vect2d& p2, double& t, double& s);
-
-    /**
      *  @brief Obstaints the values ​​of s and t in the calculation of the intersection of two lines that they contain AB (this) and CD.
      */
     virtual bool intersects(Point& c, Point& d, double& s, double& t);

@@ -48,11 +48,15 @@ void AlgGeom::Camera::reset()
     this->copyCameraAttributes(_backupCamera);
 }
 
-// void AlgGeom::Camera::track(AABB& aabb)
-//{
-//  this->setLookAt(aabb.center());
-//  this->setPosition(aabb.min() + glm::vec3(.0f, aabb.extent().y, 1.0f) - glm::vec3(aabb.extent().x, .0f, .0) * (1 + (1.0f / std::max(aabb.size().x, std::max(aabb.size().y, aabb.size().z))) * 4.0f));
-// }
+void AlgGeom::Camera::track(AABB& aabb)
+{
+    this->setLookAt(aabb.getCenter().toGlmVec3());
+    const auto maxAxis         = std::max(aabb.getSize().getX(), std::max(aabb.getSize().getY(), aabb.getSize().getZ()));
+    const auto maxAxisInverted = 1.0f / maxAxis;
+
+    const auto pos = aabb.getMin().add(Vect3d(0.0, aabb.getExtent().getY(), 1.0)).sub(Vect3d(aabb.getExtent().getX(), 0.0, 0.0).mul(1 + maxAxisInverted * 4.0f));
+    this->setPosition(pos.toGlmVec3());
+}
 
 void AlgGeom::Camera::saveCamera()
 {

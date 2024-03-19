@@ -13,6 +13,6 @@ public:
     DrawLine(Line& line);
     DrawLine(Line3d& line);
     DrawLine(const DrawLine& drawLine) = delete;
-    virtual ~DrawLine() { }
+    ~DrawLine() override               = default;
 };
 }    // namespace AlgGeom

@@ -109,14 +109,14 @@ void AlgGeom::GUI::loadImGUIStyle()
     this->loadFonts();
 }
 
-void AlgGeom::GUI::processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent)
+void AlgGeom::GUI::processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent) const
 {
     if(fileDialog == FileDialog::OPEN_MESH)
     {
         // TriangleModel* triangleModel = new TriangleModel(filename);
         Model3D* model = (new DrawMesh())->loadModelOBJ(filename);
         // Model3D* model = (new DrawMesh(*triangleModel))->overrideModelName();
-        model->moveGeometryToOrigin();
+        // model->moveGeometryToOrigin();
         sceneContent->addNewModel(model);
 
         // delete triangleModel;

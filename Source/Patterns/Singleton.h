@@ -17,8 +17,6 @@ public:
     static T* getInstance();
 };
 
-// Static members initialization
-
 template <typename T>
 std::unique_ptr<T> Singleton<T>::_instance;
 

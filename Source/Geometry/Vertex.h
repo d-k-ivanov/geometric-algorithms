@@ -10,9 +10,8 @@ class Polygon;    // Forward declaration due to circular reference betwen both c
 class Vertex : public Point
 {
 protected:
-    const static int INVALID_POSITION = -1;
+    static constexpr int INVALID_POSITION = -1;
 
-protected:
     Polygon* _polygon;     //!< Polygon where the vertex belongs to
     int      _position;    //!< Position of the vertex in the polygon
 

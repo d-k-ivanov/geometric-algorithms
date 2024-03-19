@@ -72,7 +72,6 @@ void AlgGeom::CameraProjection::CameraProperties::zoom(float speed)
 }
 
 // Projection
-
 glm::mat4 AlgGeom::PerspectiveProjection::buildProjectionMatrix(CameraProperties* camera)
 {
     return glm::perspective(camera->_fovY, camera->_aspect, camera->_zNear, camera->_zFar);

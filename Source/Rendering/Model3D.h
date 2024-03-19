@@ -6,6 +6,8 @@
 #include "TextureList.h"
 #include "VAO.h"
 
+#include "Geometry/AABB.h"
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 

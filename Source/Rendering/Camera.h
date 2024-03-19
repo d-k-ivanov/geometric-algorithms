@@ -3,6 +3,8 @@
 #include "CameraProjection.h"
 #include "Model3D.h"
 
+#include "Geometry/AABB.h"
+
 namespace AlgGeom
 {
 class Camera
@@ -21,7 +23,7 @@ public:
     Camera(const Camera& camera);
     virtual ~Camera();
     void reset();
-    // void track(AABB& aabb);
+    void track(AABB& aabb);
 
     Camera& operator=(const Camera& camera) = delete;
 

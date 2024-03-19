@@ -15,7 +15,8 @@ public:
         : _camera(nullptr)
     {
     }
-    virtual ~CameraGuiAdapter() = default;
+
+    ~CameraGuiAdapter() override = default;
 
     void renderGuiObject() override;
     void setCamera(Camera* camera) { _camera = camera; }

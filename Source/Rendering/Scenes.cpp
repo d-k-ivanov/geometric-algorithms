@@ -765,7 +765,7 @@ void AlgGeom::Scenes::p2c(SceneContent& sc)
 
     TriangleModel* triangleModel = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model(new DrawMesh(*triangleModel));
-    model->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    model->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model->setModelMatrix(glm::rotate(model->getModelMatrix(), -0.2f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     sc.addNewModel(model);
 
@@ -826,13 +826,13 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
 
     TriangleModel* triangleModel1 = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model1(new DrawMesh(*triangleModel1));
-    model1->moveGeometryToOrigin(model1->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    model1->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model1->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(model1);
 
     TriangleModel* triangleModel2 = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Cheburashka.obj");
     const auto     model2(new DrawMesh(*triangleModel2));
-    model2->moveGeometryToOrigin(model2->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model2->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    model2->setModelMatrix(glm::translate(model2->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model2->setModelMatrix(glm::rotate(model2->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(model2);
 
@@ -854,17 +854,17 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
     // std::cout << "Voxelization (AABB) ended. Duration: " << ChronoUtilities::getDuration() << '\n';
 
     // const auto voxModelBruteForce(voxelizationBruteForce->getRenderingObject(/*outline mode*/ false));
-    // voxModelBruteForce->moveGeometryToOrigin(model1->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    // voxModelBruteForce->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     // voxModelBruteForce->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(voxModelBruteForce);
 
     const auto voxModelLineSweep(voxelizationLineSweep->getRenderingObject(/*outline mode*/ false));
-    voxModelLineSweep->moveGeometryToOrigin(model1->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    voxModelLineSweep->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     voxModelLineSweep->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     sc.addNewModel(voxModelLineSweep);
 
     // const auto voxModelAABB(voxelizationAABB->getRenderingObject(/*outline mode*/ false));
-    // voxModelAABB->moveGeometryToOrigin(model1->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    // voxModelAABB->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     // voxModelAABB->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(voxModelAABB);
 }
@@ -964,7 +964,7 @@ void AlgGeom::Scenes::p4c(SceneContent& sc)
 
     TriangleModel* triangleModel = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model(new DrawMesh(*triangleModel));
-    model->moveGeometryToOrigin(model->getModelMatrix(), 10.0f)->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    model->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     sc.addNewModel(model);
 

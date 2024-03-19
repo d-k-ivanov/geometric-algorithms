@@ -1,9 +1,5 @@
 #include "AABB.h"
 
-// AABB::AABB()
-// {
-// }
-
 AABB::AABB(const Vect3d& min, const Vect3d& max)
     : _min(min)
     , _max(max)
@@ -53,6 +49,17 @@ void AABB::setMin(const Vect3d& min)
 void AABB::setMax(const Vect3d& max)
 {
     _max = max;
+}
+
+AABB AABB::dot(const glm::mat4& matrix) const
+{
+    const auto minMX = matrix * glm::vec4(_min.toGlmVec3(), 1.0f);
+    const auto maxMX = matrix * glm::vec4(_max.toGlmVec3(), 1.0f);
+
+    const Vect3d min = {minMX.x, minMX.y, minMX.z};
+    const Vect3d max = {maxMX.x, maxMX.y, maxMX.z};
+
+    return {min, max};
 }
 
 AABB& AABB::operator=(const AABB& orig)
