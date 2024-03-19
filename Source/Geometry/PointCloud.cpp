@@ -17,6 +17,11 @@ PointCloud::PointCloud(int size, double max_x, double max_y)
     }
 }
 
+PointCloud::PointCloud(const std::vector<Point>& points)
+{
+    this->_points = points;
+}
+
 PointCloud::PointCloud(const std::string& filename)
 {
     std::ifstream file;

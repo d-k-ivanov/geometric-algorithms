@@ -22,6 +22,11 @@ public:
     PointCloud(int size, double max_x, double max_y);
 
     /**
+     *  @brief Construct the point cloud from a vector of points
+     */
+    PointCloud(const std::vector<Point>& points);
+
+    /**
      *  @brief Constructor of a point cloud from the coordinates of points stored in file.
      */
     PointCloud(const std::string& filename);

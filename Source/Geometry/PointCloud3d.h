@@ -36,7 +36,7 @@ public:
     /**
      *  @brief Construct the point cloud from a vector of points
      */
-    PointCloud3d(const std::vector<Vect3d>& pointCloud);
+    PointCloud3d(const std::vector<Vect3d>& points);
 
     /**
      *  @brief Constructor.
