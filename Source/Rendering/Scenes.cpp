@@ -4,6 +4,7 @@
 
 #include "DrawAABB.h"
 #include "DrawBezier.h"
+#include "DrawCircle.h"
 #include "DrawLine.h"
 #include "DrawMesh.h"
 #include "DrawPlane.h"
@@ -15,6 +16,7 @@
 #include "DrawTriangle.h"
 
 #include "Geometry/Bezier.h"
+#include "Geometry/Circle.h"
 #include "Geometry/ConvexHull.h"
 #include "Geometry/Plane.h"
 #include "Geometry/PointCloud.h"
@@ -138,6 +140,21 @@ void AlgGeom::Scenes::p0a(SceneContent& sc)
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
+}
+
+void AlgGeom::Scenes::p0b(SceneContent& sc)
+{
+    constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
+    constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
+
+    const Point center = {0, 0};
+    Circle*     c      = new Circle(center, 2.0);
+    const auto circleToDraw   = new DrawCircle(*c, 100, /*draw triangular segments*/ true);
+    circleToDraw->setPointColor(RandomUtilities::getUniformRandomColor())->setPointSize(7.0f);
+    circleToDraw->setLineColor(RandomUtilities::getUniformRandomColor())->setLineWidth(5.0);
+    circleToDraw->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f));
+    circleToDraw->overrideModelName();
+    sc.addNewModel(circleToDraw);
 }
 
 void AlgGeom::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Point>& randomPointsFromCloud, std::vector<Point>& extremumPointInCloud)

@@ -12,6 +12,7 @@ public:
     // Practice 0:
     static void p0(SceneContent& sc);
     static void p0a(SceneContent& sc);
+    static void p0b(SceneContent& sc);
 
     // Practice 1:
     static void p1PointClouds(SceneContent& sc, int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Point>& randomPointsFromCloud, std::vector<Point>& extremumPointInCloud);

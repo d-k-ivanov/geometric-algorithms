@@ -13,7 +13,7 @@ protected:
     uint32_t _numSubdivisions;
 
 public:
-    DrawCircle(Circle& circle, uint32_t numSubdivisions = 256);
+    DrawCircle(Circle& circle, uint32_t numSubdivisions = 256, bool drawTriangularSegments = true);
     DrawCircle(const DrawCircle& circle) = delete;
     ~DrawCircle() override               = default;
 };
