@@ -1,6 +1,7 @@
 # Geometric Algorithms (2023-2024)
 
 Base project for the subject of Geometric Algorithms at the University of Granada (Course 2024).
+The application's origins belong to [Alfonso López Ruiz](https://github.com/AlfonsoLRz). I strongly recommend reading his Master's Thesis, [Simulation of 3D Scans](https://crea.ujaen.es/bitstream/10953.1/19941/1/AlfonsoLopez.TFM.pdf).
 
 ## Compilation: Linux
 
@@ -54,7 +55,41 @@ Base project for the subject of Geometric Algorithms at the University of Granad
 - Run `build.bat`
 - Open `build\YOUR_FANCY_PROJECT_NAME.sln` in Visual Studio to work with the source code
 
-## Camera
+## Screenshots
+
+### Convex Hull and Triangulation
+
+|================================|================================|================================|
+| ![](Docs/p4/images/p4-4.png)   | ![](Docs/p4/images/p4-2.gif)   | ![](Docs/p4/images/p4-3-a.png) |
+| ![](Docs/p4/images/p4-2-b.png) | ![](Docs/p4/images/p4-2-a.png) | ![](Docs/p4/images/p4-1-b.png) |
+
+### Voxelixation
+
+|=================================================|========================================================|
+| ![](Docs/p3/images/p3-0-models.png)                                                                     ||
+| ![](Docs/p3/images/p3-1-ajax-brute-force.png)   | ![](Docs/p3/images/p3-1-cheburashka-brute-force.png)   |
+| ![](Docs/p3/images/p3-2-ajax-line-sweep.png)    | ![](Docs/p3/images/p3-2-cheburashka-line-sweep.png)    |
+| ![](Docs/p3/images/p3-3-ajax-aabb-sampling.png) | ![](Docs/p3/images/p3-3-cheburashka-aabb-sampling.png) |
+
+### 3D Geometry
+
+|===============================|===============================|===============================|
+| ![](Docs/p2/images/p2a-1.png) | ![](Docs/p2/images/p2a-2.png) | ![](Docs/p2/images/p2a-3.png) |
+| ![](Docs/p2/images/p2a-4.png) | ![](Docs/p2/images/p2a-5.png) | ![](Docs/p2/images/p2a-6.png) |
+| ![](Docs/p2/images/p2b-1.png) | ![](Docs/p2/images/p2b-2.png) | ![](Docs/p2/images/p2b-3.png) |
+| ![](Docs/p2/images/p2c-1.png) | ![](Docs/p2/images/p2c-2.png) | ![](Docs/p2/images/p2c-3.png) |
+
+### 2D Geometry
+
+![](Docs/p1-a/images/all_in_one.png)
+
+|============================================|==========================================|========================================|
+| ![](Docs/p1-a/images/segment_ray_line.png) | ![](Docs/p1-a/images/convex_polygon.png) | ![](Docs/p1-a/images/bezier_curve.png) |
+| ![](Docs/p1-b/images/result_1.png)         | ![](Docs/p1-b/images/result_2.png)       | ![](Docs/p1-b/images/result_3.png)     |
+
+## Usage
+
+### Camera
 
 Interaction with keyboard and mouse.
 
@@ -70,7 +105,7 @@ Interaction with keyboard and mouse.
 | Camera turn       | Left Mouse Click                 |
 | Reset camera      | <kbd>B</kbd>                     |
 
-## Gizmos
+### Gizmos
 
 Interaction with models to carry out translation, rotation, and scaling operations.
 
@@ -87,7 +122,7 @@ To do this, it is necessary to open the `Settings` > `Models` menu and select a 
     <em>Model transformation using the interface. In this case a rotation is shown.</em>
 </p>
 
-## Visualization
+### Visualization
 
 Visualization of different topologies, these having been generated during the loading of the models and being found in the vector of models of the scene (`SceneContent`, although it must be managed from the `Renderer`). The topology can be controlled at a global level, so we can activate and deactivate its rendering in the `Settings > Rendering` menu, or at a local level (for each model) through the `Settings > Models` menu.
 
@@ -102,7 +137,7 @@ Visualization of different topologies, these having been generated during the lo
     <em>Point cloud, wire mesh and triangle mesh displayed on the same model.</em>
 </p>
 
-## Screenshot
+### Taking a screenshot
 
 Screenshot with antialiasing (for `:D` documentation). We can capture it using the keyboard or interface (`Settings > Screenshot` menu). With this last option it is also possible to modify the size of the image or the destination file.
 
@@ -161,8 +196,8 @@ Regarding the topology, we will have three vectors available (point cloud, wire 
 
     ```cpp
         componente->_indices[VAO::IBO_TRIANGLES].insert(
-            componente->_indices[VAO::IBO_TRIANGLES].end(), 
-            { 
+            componente->_indices[VAO::IBO_TRIANGLES].end(),
+            {
                 0, 1, 2, RESTART_PRIMITIVE_INDEX,
                 1, 2, 3, RESTART_PRIMITIVE_INDEX,
                 ...
@@ -173,8 +208,8 @@ Regarding the topology, we will have three vectors available (point cloud, wire 
 
     ```cpp
         componente->_indices[VAO::IBO_TRIANGLES].insert(
-            componente->_indices[VAO::IBO_TRIANGLES].end(), 
-            { 
+            componente->_indices[VAO::IBO_TRIANGLES].end(),
+            {
                 0, 1, RESTART_PRIMITIVE_INDEX,
                 1, 2, RESTART_PRIMITIVE_INDEX,
                 ...
@@ -185,8 +220,8 @@ Regarding the topology, we will have three vectors available (point cloud, wire 
 
     ```cpp
         componente->_indices[VAO::IBO_TRIANGLES].insert(
-            componente->_indices[VAO::IBO_TRIANGLES].end(), 
-            { 
+            componente->_indices[VAO::IBO_TRIANGLES].end(),
+            {
                 0, 1, 2, 3, 4
                 ...
             })
