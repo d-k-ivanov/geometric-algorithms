@@ -98,6 +98,8 @@ set(SOURCE_FILES
     Source/Geometry/Triangle3d.h
     Source/Geometry/TriangleModel.cpp
     Source/Geometry/TriangleModel.h
+    Source/Geometry/Triangulation.cpp
+    Source/Geometry/Triangulation.h
     Source/Geometry/Vect2d.cpp
     Source/Geometry/Vect2d.h
     Source/Geometry/Vect3d.cpp

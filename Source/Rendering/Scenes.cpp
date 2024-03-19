@@ -21,6 +21,7 @@
 #include "Geometry/Polygon.h"
 #include "Geometry/SegmentLine.h"
 #include "Geometry/TriangleModel.h"
+#include "Geometry/Triangulation.h"
 #include "Geometry/Voxelization.h"
 
 #include "Utils/ChronoUtilities.h"
@@ -973,5 +974,38 @@ void AlgGeom::Scenes::p4c(SceneContent& sc)
     for(auto triangle : convexHull3D.getTriangles3D())
     {
         sc.addNewModel((new DrawTriangle(triangle))->setLineColor(RandomUtilities::getUniformRandomColor())->setTriangleColor(glm::vec4(RandomUtilities::getUniformRandomColor(), 1.0f))->overrideModelName());
+    }
+}
+
+void AlgGeom::Scenes::p4d(SceneContent& sc)
+{
+    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
+    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
+
+    constexpr int   pointsPerCloud = 100;
+    constexpr float scale          = 0.5f;
+    const glm::vec3 center         = glm::vec3(0, 0, 0);
+
+    auto* pointCloud2D = new PointCloud;
+    for(int idx = 0; idx < pointsPerCloud; ++idx)
+    {
+        const glm::vec3 rand = RandomUtilities::getUniformRandomInUnitSphere() / scale + center;
+        pointCloud2D->addPoint(Point(rand.x, rand.y));
+    }
+    sc.addNewModel((new DrawPointCloud(*pointCloud2D))->setPointColor(RandomUtilities::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(5.0f));
+
+    const Triangulation triangulation2D(pointCloud2D);
+    for(const auto& [line, isSegment] : triangulation2D.getEdges())
+    {
+        const auto color = RandomUtilities::getUniformRandomColor();
+        if(isSegment)
+        {
+            sc.addNewModel((new DrawSegment(*line))->overrideModelName()->setLineColor(color)->setLineWidth(3.0f)->setPointColor(color)->setPointSize(5.0f));
+        }
+        else
+        {
+            RayLine ray(line->getA(), line->getB());
+            sc.addNewModel((new DrawRay(ray))->overrideModelName()->setLineColor(color)->setLineWidth(3.0f)->setPointColor(color)->setPointSize(5.0f));
+        }
     }
 }

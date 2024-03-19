@@ -55,8 +55,9 @@ void AlgGeom::SceneContent::buildScenario()
 
     // Practice 4:
     // Scenes::p4a(*this, /*draw triangles*/ true);    // 2D Hull
-    Scenes::p4b(*this, /*random on sphere surface*/ true);    // 3D Hull
+    // Scenes::p4b(*this, /*random on sphere surface*/ true);    // 3D Hull
     // Scenes::p4c(*this);    // 3D Hull from Trianles
+    Scenes::p4d(*this);    // Voronoi Diagram
 }
 
 void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)

@@ -33,6 +33,7 @@ public:
     static void p4a(SceneContent& sc, bool drawTriangles);
     static void p4b(SceneContent& sc, bool randomOnSphereSurface);
     static void p4c(SceneContent& sc);
+    static void p4d(SceneContent& sc);
 
 };
 }    // namespace AlgGeom
