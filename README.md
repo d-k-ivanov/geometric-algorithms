@@ -59,12 +59,14 @@ The application's origins belong to [Alfonso López Ruiz](https://github.com/Alf
 
 ### Convex Hull and Triangulation
 
+| Column | Column | Column |
 |================================|================================|================================|
 | ![](Docs/p4/images/p4-4.png)   | ![](Docs/p4/images/p4-2.gif)   | ![](Docs/p4/images/p4-3-a.png) |
 | ![](Docs/p4/images/p4-2-b.png) | ![](Docs/p4/images/p4-2-a.png) | ![](Docs/p4/images/p4-1-b.png) |
 
 ### Voxelixation
 
+| Column | Column |
 |=================================================|========================================================|
 | ![](Docs/p3/images/p3-0-models.png)                                                                     ||
 | ![](Docs/p3/images/p3-1-ajax-brute-force.png)   | ![](Docs/p3/images/p3-1-cheburashka-brute-force.png)   |
@@ -73,6 +75,7 @@ The application's origins belong to [Alfonso López Ruiz](https://github.com/Alf
 
 ### 3D Geometry
 
+| Column | Column | Column |
 |===============================|===============================|===============================|
 | ![](Docs/p2/images/p2a-1.png) | ![](Docs/p2/images/p2a-2.png) | ![](Docs/p2/images/p2a-3.png) |
 | ![](Docs/p2/images/p2a-4.png) | ![](Docs/p2/images/p2a-5.png) | ![](Docs/p2/images/p2a-6.png) |
@@ -83,6 +86,7 @@ The application's origins belong to [Alfonso López Ruiz](https://github.com/Alf
 
 ![](Docs/p1-a/images/all_in_one.png)
 
+| Column | Column | Column |
 |============================================|==========================================|========================================|
 | ![](Docs/p1-a/images/segment_ray_line.png) | ![](Docs/p1-a/images/convex_polygon.png) | ![](Docs/p1-a/images/bezier_curve.png) |
 | ![](Docs/p1-b/images/result_1.png)         | ![](Docs/p1-b/images/result_2.png)       | ![](Docs/p1-b/images/result_3.png)     |
