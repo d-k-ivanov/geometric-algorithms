@@ -8,7 +8,7 @@ namespace GDSA::Geometry
 class Line3d : public Edge3d
 {
 public:
-    enum classifyLines
+    enum class LineClasses
     {
         NON_INTERSECT,
         PARALLEL,

@@ -74,7 +74,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
                         {
                             if(_voxels[x][y][z]->bruteForce(triangles[j]))
                             {
-                                _voxels[x][y][z]->setStatus(OCCUPIED);
+                                _voxels[x][y][z]->setStatus(VoxelStatus::OCCUPIED);
                                 j = numTriangles;
                             }
                         }
@@ -93,7 +93,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
                 {
                     if(voxel->bruteForce(triangles[i]))
                     {
-                        voxel->setStatus(OCCUPIED);
+                        voxel->setStatus(VoxelStatus::OCCUPIED);
                     }
                 }
             }
@@ -240,7 +240,7 @@ void Voxelization::sweep(const std::vector<Triangle3d>& triangles) const
             {
                 if(voxel->bruteForce(triangles[it->first]))
                 {
-                    voxel->setStatus(OCCUPIED);
+                    voxel->setStatus(VoxelStatus::OCCUPIED);
                     break;
                 }
             }
@@ -283,7 +283,7 @@ std::vector<VoxelModel*> Voxelization::getVoxelsInAABB(AABB& aabb)
             for(int z = 0; z < _numZ; z++)
             {
 
-                if(_voxels[x][y][z]->getStatus() != OCCUPIED)
+                if(_voxels[x][y][z]->getStatus() != VoxelStatus::OCCUPIED)
                 {
                     if(isInVoxel(_voxels[x][y][z], corner1) || isInVoxel(_voxels[x][y][z], corner2)
                        || isInVoxel(_voxels[x][y][z], corner3) || isInVoxel(_voxels[x][y][z], corner4)
@@ -321,9 +321,9 @@ void Voxelization::flood()
     const int centerY = _numY / 2;
     const int centerZ = _numZ / 2;
 
-    if(this->_voxels[centerX][centerY][centerZ]->getStatus() == OCCUPIED)
+    if(this->_voxels[centerX][centerY][centerZ]->getStatus() == VoxelStatus::OCCUPIED)
     {
-        while(this->_voxels[centerX][centerY][centerZ]->getStatus() == OCCUPIED)
+        while(this->_voxels[centerX][centerY][centerZ]->getStatus() == VoxelStatus::OCCUPIED)
         {
             centerX++;
         }
@@ -335,9 +335,9 @@ void Voxelization::flood()
         {
             for(int y = 0; y < _numZ; y++)
             {
-                if(this->_voxels[i][x][y]->getStatus() == NP)
+                if(this->_voxels[i][x][y]->getStatus() == VoxelStatus::NP)
                 {
-                    this->_voxels[i][x][y]->setStatus(OUTER);
+                    this->_voxels[i][x][y]->setStatus(VoxelStatus::OUTER);
                 }
             }
         }
@@ -346,11 +346,11 @@ void Voxelization::flood()
 
 void Voxelization::recursiveFill(VoxelModel* v, const int x, const int y, int z)
 {
-    if(v->getStatus() == OCCUPIED || v->getStatus() == INNER)
+    if(v->getStatus() == VoxelStatus::OCCUPIED || v->getStatus() == VoxelStatus::INNER)
     {
         return;
     }
-    v->setStatus(INNER);
+    v->setStatus(VoxelStatus::INNER);
 
     if(x + 1 < _numX)
     {
@@ -382,9 +382,9 @@ Render::DrawVoxelization* Voxelization::getRenderingObject(const bool outlineMod
 {
     VoxelStatus status;
     if(outlineMode)
-        status = INNER;
+        status = VoxelStatus::INNER;
     else
-        status = OCCUPIED;
+        status = VoxelStatus::OCCUPIED;
 
     std::vector<glm::vec3> positions;
     const Vect3d           displace(_size[0] / 2, _size[1] / 2, _size[2] / 2);
@@ -423,9 +423,9 @@ void Voxelization::printData() const
         {
             for(unsigned z = 0; z < static_cast<unsigned>(_numZ); ++z)
             {
-                numOccupiedVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == OCCUPIED);
-                numInnerVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == INNER);
-                numOuterVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == OUTER);
+                numOccupiedVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == VoxelStatus::OCCUPIED);
+                numInnerVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == VoxelStatus::INNER);
+                numOuterVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == VoxelStatus::OUTER);
             }
         }
     }

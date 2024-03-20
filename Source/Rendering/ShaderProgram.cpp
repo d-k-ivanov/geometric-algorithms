@@ -234,16 +234,16 @@ ShaderProgram::ShaderTypes ShaderProgram::fromOpenGLToShaderTypes(const GLenum s
     switch(shaderType)
     {
         case GL_VERTEX_SHADER:
-            return VERTEX_SHADER;
+            return ShaderTypes::VERTEX_SHADER;
         case GL_FRAGMENT_SHADER:
-            return FRAGMENT_SHADER;
+            return ShaderTypes::FRAGMENT_SHADER;
         case GL_GEOMETRY_SHADER:
-            return GEOMETRY_SHADER;
+            return ShaderTypes::GEOMETRY_SHADER;
         case GL_COMPUTE_SHADER:
-            return COMPUTE_SHADER;
+            return ShaderTypes::COMPUTE_SHADER;
     }
 
-    return VERTEX_SHADER;
+    return ShaderTypes::VERTEX_SHADER;
 }
 
 bool ShaderProgram::includeLibraries(std::string& shaderContent)

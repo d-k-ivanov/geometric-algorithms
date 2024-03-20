@@ -70,7 +70,7 @@ public:
     void initialize(GLFWwindow* window, const int openGLMinorVersion) const;
     void render(SceneContent* sceneContent);
 
-    uint16_t getFrameRate() { return static_cast<uint16_t>(ImGui::GetIO().Framerate); }
-    bool     isMouseActive() { return ImGui::GetIO().WantCaptureMouse; }
+    uint16_t getFrameRate() const { return static_cast<uint16_t>(ImGui::GetIO().Framerate); }
+    bool     isMouseActive() const { return ImGui::GetIO().WantCaptureMouse; }
 };
 }    // namespace GDSA::Render

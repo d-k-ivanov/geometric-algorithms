@@ -9,7 +9,7 @@ namespace GDSA::Render
 Camera::Camera(uint16_t width, uint16_t height, bool is2D)
     : _backupCamera(nullptr)
 {
-    this->_properties._cameraType = CameraProjection::PERSPECTIVE;
+    this->_properties._cameraType = CameraProjection::Projection::PERSPECTIVE;
     this->_properties._2d         = is2D;
 
     this->_properties._eye    = glm::vec3(0.0f, 3.0f, 10.0f);

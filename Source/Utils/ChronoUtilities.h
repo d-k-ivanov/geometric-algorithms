@@ -8,7 +8,7 @@
 namespace GDSA::Utils::Time
 {
 //!< Units we can use to return the measured time
-enum TimeUnit : int
+enum class TimeUnit : int
 {
     SECONDS      = 1000000000,
     MILLISECONDS = 1000000,
@@ -21,7 +21,7 @@ inline std::chrono::high_resolution_clock::time_point _initTime;
 /**
  *  @return Measured time in the selected time unit since the clock was started. By default the time unit is milliseconds.
  */
-long long getDuration(const TimeUnit timeUnit = MILLISECONDS);
+long long getDuration(const TimeUnit timeUnit = TimeUnit::MILLISECONDS);
 
 /**
  *  @brief Starts the clock so we can execute whatever we want and measure the used time.
@@ -34,7 +34,7 @@ inline long long getDuration(const TimeUnit timeUnit)
 
     const long long measuredTime = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - _initTime).count();
 
-    return measuredTime / timeUnit;
+    return measuredTime / static_cast<int>(timeUnit);
 }
 
 inline void initChrono()

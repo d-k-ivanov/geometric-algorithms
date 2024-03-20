@@ -61,13 +61,13 @@ public:
         std::string _name;
 
         std::vector<VAO::Vertex> _vertices;
-        std::vector<GLuint>      _indices[VAO::NUM_IBOS];
+        std::vector<GLuint>      _indices[VAO::IBO_slots::NUM_IBOS];
         VAO*                     _vao;
 
         Material _material;
 
         float _lineWidth, _pointSize;
-        bool  _activeRendering[VAO::NUM_IBOS];
+        bool  _activeRendering[VAO::IBO_slots::NUM_IBOS];
 
         Component(VAO* vao = nullptr)
         {
@@ -75,8 +75,10 @@ public:
             _vao       = vao;
             _pointSize = 3.0f;
             _lineWidth = 1.0f;
-            for(int i = 0; i < VAO::NUM_IBOS; ++i)
+            for(int i = 0; i < VAO::IBO_slots::NUM_IBOS; ++i)
+            {
                 _activeRendering[i] = true;
+            }
         }
         ~Component()
         {
@@ -99,8 +101,8 @@ public:
             VIEW_PROJECTION
         };
 
-        glm::mat4              _matrix[VIEW_PROJECTION + 1];
-        std::vector<glm::mat4> _heapMatrices[VIEW_PROJECTION + 1];
+        glm::mat4              _matrix[MatrixType::VIEW_PROJECTION + 1];
+        std::vector<glm::mat4> _heapMatrices[MatrixType::VIEW_PROJECTION + 1];
 
         MatrixRenderInformation();
         glm::mat4 multiplyMatrix(MatrixType tMatrix, const glm::mat4& matrix)

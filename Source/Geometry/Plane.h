@@ -12,7 +12,7 @@ namespace GDSA::Geometry
 class Plane
 {
 public:
-    enum IntersectionType
+    enum class IntersectionType
     {
         POINT,
         SEGMENT,

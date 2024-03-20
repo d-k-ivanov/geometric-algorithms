@@ -8,7 +8,7 @@
 
 namespace GDSA::Geometry
 {
-enum VoxelStatus
+enum class VoxelStatus
 {
     OUTER    = 0,
     OCCUPIED = 1,

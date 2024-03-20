@@ -2,6 +2,7 @@
 
 #include "BasicGeometry.h"
 #include "Edge3d.h"
+#include "TriangleModel.h"
 
 #include <iostream>
 
@@ -75,7 +76,7 @@ Triangle3d::PointPosition Triangle3d::classify(const Vect3d& point)
 
     if(BasicGeometry::equal(0.0, len))
     {
-        return COPLANAR;
+        return PointPosition::COPLANAR;
     }
 
     v = new Vect3d(v->scalarMul(1 / len));
@@ -83,15 +84,15 @@ Triangle3d::PointPosition Triangle3d::classify(const Vect3d& point)
     const double d = v->dot(this->normal());
     if(BasicGeometry::equal(0.0, d))
     {
-        return COPLANAR;
+        return PointPosition::COPLANAR;
     }
 
     if(d < 0.0)
     {
-        return NEGATIVE;
+        return PointPosition::NEGATIVE;
     }
 
-    return POSITIVE;
+    return PointPosition::POSITIVE;
 }
 
 Triangle3d Triangle3d::copy() const

@@ -26,12 +26,12 @@ GUI::GUI()
     _cameraGuiAdapter      = new CameraGuiAdapter;
     _currentGizmoOperation = ImGuizmo::TRANSLATE;
     _currentGizmoMode      = ImGuizmo::WORLD;
-    _fileDialog            = NONE;
+    _fileDialog            = FileDialog::NONE;
     _lastDirectory         = DEFAULT_DIRECTORY;
     _modelCompSelected     = nullptr;
 
-    _showMenuButtons = new bool[NUM_GUI_MENU_BUTTONS];
-    for(int idx = 0; idx < NUM_GUI_MENU_BUTTONS; ++idx)
+    _showMenuButtons = new bool[MenuButtons::NUM_GUI_MENU_BUTTONS];
+    for(int idx = 0; idx < MenuButtons::NUM_GUI_MENU_BUTTONS; ++idx)
         _showMenuButtons[idx] = false;
 }
 
@@ -113,7 +113,7 @@ void GUI::loadImGUIStyle() const
 
 void GUI::processSelectedFile(const FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent) const
 {
-    if(fileDialog == OPEN_MESH)
+    if(fileDialog == FileDialog::OPEN_MESH)
     {
         // TriangleModel* triangleModel = new TriangleModel(filename);
         Model3D* model = (new DrawMesh())->loadModelOBJ(filename);
@@ -127,7 +127,7 @@ void GUI::processSelectedFile(const FileDialog fileDialog, const std::string& fi
 
 void GUI::renderGuizmo(Model3D::Component* component, const SceneContent* sceneContent)
 {
-    if(component && _showMenuButtons[MODELS])
+    if(component && _showMenuButtons[MenuButtons::MODELS])
     {
         if(ImGui::IsKeyPressed(ImGuiKey_T))
             _currentGizmoOperation = ImGuizmo::TRANSLATE;
@@ -181,7 +181,7 @@ void GUI::render(SceneContent* sceneContent)
     ImGui::NewFrame();
     ImGuizmo::BeginFrame();
 
-    for(int menuButtonIdx = 0; menuButtonIdx < NUM_GUI_MENU_BUTTONS; ++menuButtonIdx)
+    for(int menuButtonIdx = 0; menuButtonIdx < MenuButtons::NUM_GUI_MENU_BUTTONS; ++menuButtonIdx)
     {
         const MenuButtons button = static_cast<MenuButtons>(menuButtonIdx);
 
@@ -189,22 +189,22 @@ void GUI::render(SceneContent* sceneContent)
         {
             switch(button)
             {
-                case RENDERING:
+                case MenuButtons::RENDERING:
                     this->showRenderingMenu(sceneContent);
                     break;
-                case MODELS:
+                case MenuButtons::MODELS:
                     this->showModelMenu(sceneContent);
                     break;
-                case CAMERA:
+                case MenuButtons::CAMERA:
                     this->showCameraMenu(sceneContent);
                     break;
-                case LIGHT:
+                case MenuButtons::LIGHT:
                     this->showLightMenu(sceneContent);
                     break;
-                case SCREENSHOT:
+                case MenuButtons::SCREENSHOT:
                     this->showScreenshotMenu(sceneContent);
                     break;
-                case NUM_GUI_MENU_BUTTONS:
+                case MenuButtons::NUM_GUI_MENU_BUTTONS:
                     break;
             }
         }
@@ -216,11 +216,11 @@ void GUI::render(SceneContent* sceneContent)
     {
         if(ImGui::BeginMenu(ICON_FA_COG "Settings"))
         {
-            ImGui::MenuItem(ICON_FA_DRAW_POLYGON "Rendering", nullptr, &_showMenuButtons[RENDERING]);
-            ImGui::MenuItem(ICON_FA_CUBE "Models", nullptr, &_showMenuButtons[MODELS]);
-            ImGui::MenuItem(ICON_FA_CAMERA_RETRO "Camera", nullptr, &_showMenuButtons[CAMERA]);
-            ImGui::MenuItem(ICON_FA_LIGHTBULB "Light", nullptr, &_showMenuButtons[LIGHT]);
-            ImGui::MenuItem(ICON_FA_CAMERA "Screenshot", nullptr, &_showMenuButtons[SCREENSHOT]);
+            ImGui::MenuItem(ICON_FA_DRAW_POLYGON "Rendering", nullptr, &_showMenuButtons[MenuButtons::RENDERING]);
+            ImGui::MenuItem(ICON_FA_CUBE "Models", nullptr, &_showMenuButtons[MenuButtons::MODELS]);
+            ImGui::MenuItem(ICON_FA_CAMERA_RETRO "Camera", nullptr, &_showMenuButtons[MenuButtons::CAMERA]);
+            ImGui::MenuItem(ICON_FA_LIGHTBULB "Light", nullptr, &_showMenuButtons[MenuButtons::LIGHT]);
+            ImGui::MenuItem(ICON_FA_CAMERA "Screenshot", nullptr, &_showMenuButtons[MenuButtons::SCREENSHOT]);
             ImGui::EndMenu();
         }
 
@@ -240,7 +240,7 @@ void GUI::showCameraMenu(const SceneContent* sceneContent) const
 {
     static Camera* cameraSelected = nullptr;
 
-    if(ImGui::Begin("Lights", &this->_showMenuButtons[CAMERA], ImGuiWindowFlags_None))
+    if(ImGui::Begin("Lights", &this->_showMenuButtons[MenuButtons::CAMERA], ImGuiWindowFlags_None))
     {
         GuiUtilities::leaveSpace(2);
         ImGui::BeginChild("Camera List", ImVec2(200, 0), true);
@@ -276,7 +276,7 @@ void GUI::showCameraMenu(const SceneContent* sceneContent) const
 
 void GUI::showFileDialog(SceneContent* sceneContent)
 {
-    if(_fileDialog != NONE)
+    if(_fileDialog != FileDialog::NONE)
     {
         if(std::filesystem::exists(_lastDirectory))
             _lastDirectory = DEFAULT_DIRECTORY;
@@ -292,11 +292,11 @@ void GUI::showFileDialog(SceneContent* sceneContent)
                 _lastDirectory = _path.substr(0, _path.find_last_of("\\"));
 
                 this->processSelectedFile(_fileDialog, _path, sceneContent);
-                _fileDialog = NONE;
+                _fileDialog = FileDialog::NONE;
             }
 
             ImGuiFileDialog::Instance()->Close();
-            _fileDialog = NONE;
+            _fileDialog = FileDialog::NONE;
         }
     }
 }
@@ -305,7 +305,7 @@ void GUI::showLightMenu(SceneContent* sceneContent) const
 {
     ImGui::SetNextWindowSize(ImVec2(800, 440), ImGuiCond_FirstUseEver);
 
-    if(ImGui::Begin("Lights", &this->_showMenuButtons[LIGHT], ImGuiWindowFlags_None))
+    if(ImGui::Begin("Lights", &this->_showMenuButtons[MenuButtons::LIGHT], ImGuiWindowFlags_None))
     {
         GuiUtilities::leaveSpace(1);
         ImGui::Text("Light Properties");
@@ -325,11 +325,11 @@ void GUI::showModelMenu(const SceneContent* sceneContent)
 {
     ImGui::SetNextWindowSize(ImVec2(800, 440), ImGuiCond_FirstUseEver);
 
-    if(ImGui::Begin("Models", &this->_showMenuButtons[MODELS], ImGuiWindowFlags_None))
+    if(ImGui::Begin("Models", &this->_showMenuButtons[MenuButtons::MODELS], ImGuiWindowFlags_None))
     {
         if(ImGui::Button("Open Model"))
         {
-            _fileDialog = OPEN_MESH;
+            _fileDialog = FileDialog::OPEN_MESH;
         }
 
         GuiUtilities::leaveSpace(2);
@@ -405,7 +405,7 @@ void GUI::showModelMenu(const SceneContent* sceneContent)
 
 void GUI::showRenderingMenu(SceneContent* sceneContent) const
 {
-    if(ImGui::Begin("Rendering Settings", &_showMenuButtons[RENDERING]))
+    if(ImGui::Begin("Rendering Settings", &_showMenuButtons[MenuButtons::RENDERING]))
     {
         ImGui::ColorEdit3("Background color", &_appState->_backgroundColor[0]);
         ImGui::SliderFloat("Gamma", &_appState->_gamma, 1.0f, 5.0f);
@@ -449,7 +449,7 @@ void GUI::showScreenshotMenu(SceneContent* sceneContent) const
         return name;
     };
 
-    if(ImGui::Begin("Screenshot Settings", &_showMenuButtons[SCREENSHOT]))
+    if(ImGui::Begin("Screenshot Settings", &_showMenuButtons[MenuButtons::SCREENSHOT]))
     {
         ImGui::SliderFloat("Size multiplier", &_appState->_screenshotFactor, 1.0f, 10.0f);
         ImGui::SameLine(0, 20);

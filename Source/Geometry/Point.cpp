@@ -33,10 +33,10 @@ Point::Point(const Point& point)
 
 bool Point::backward(Point& a, Point& b) const
 {
-    return this->classify(a, b) == BACKWARD;
+    return this->classify(a, b) == PointClassification::BACKWARD;
 }
 
-Point::PointClassification Point::classify(Point& p0, Point& p1) const
+Point::PointClassification Point::classify(const Point& p0, Point& p1) const
 {
     Point        p2 = *this;
     Point        a  = p1 - p0;
@@ -45,61 +45,61 @@ Point::PointClassification Point::classify(Point& p0, Point& p1) const
 
     if(sa > 0.0)
     {
-        return LEFT;
+        return PointClassification::LEFT;
     }
 
     if(sa < 0.0)
     {
-        return RIGHT;
+        return PointClassification::RIGHT;
     }
 
     if((a._x * b._x < 0.0) || (a._y * b._y < 0.0))
     {
-        return BACKWARD;
+        return PointClassification::BACKWARD;
     }
 
     if(a.getModule() < b.getModule())
     {
-        return FORWARD;
+        return PointClassification::FORWARD;
     }
 
     if(p0.equal(p2))
     {
-        return ORIGIN;
+        return PointClassification::ORIGIN;
     }
 
     if(p1.equal(p2))
     {
-        return DEST;
+        return PointClassification::DEST;
     }
 
-    return BETWEEN;
+    return PointClassification::BETWEEN;
 }
 
 bool Point::colinear(Point& a, Point& b) const
 {
-    PointClassification result = classify(a, b);
-    return (result != LEFT) && (result != RIGHT);
+    const PointClassification result = classify(a, b);
+    return (result != PointClassification::LEFT) && (result != PointClassification::RIGHT);
 }
 
-double Point::distance(Point& p) const
+double Point::distance(const Point& p) const
 {
     return std::sqrt(std::pow(p._x - _x, 2) + std::pow(p._y - _y, 2));
 }
 
-bool Point::distinct(Point& p) const
+bool Point::distinct(const Point& p) const
 {
     return BasicGeometry::equal(_x, p._x) or BasicGeometry::equal(_y, p._y);
 }
 
-bool Point::equal(Point& p) const
+bool Point::equal(const Point& p) const
 {
     return BasicGeometry::equal(_x, p._x) and BasicGeometry::equal(_y, p._y);
 }
 
 bool Point::forward(Point& a, Point& b) const
 {
-    return classify(a, b) == FORWARD;
+    return classify(a, b) == PointClassification::FORWARD;
 }
 
 double Point::getX()
@@ -124,7 +124,7 @@ double Point::getModule() const
 
 bool Point::isBetween(Point& a, Point& b) const
 {
-    return classify(a, b) == BETWEEN;
+    return classify(a, b) == PointClassification::BETWEEN;
 }
 
 bool Point::isValid() const
@@ -134,13 +134,13 @@ bool Point::isValid() const
 
 bool Point::left(Point& a, Point& b) const
 {
-    return classify(a, b) == LEFT;
+    return classify(a, b) == PointClassification::LEFT;
 }
 
 bool Point::leftAbove(Point& a, Point& b) const
 {
     const PointClassification result = classify(a, b);
-    return (result == LEFT) || (result != RIGHT);
+    return (result == PointClassification::LEFT) || (result != PointClassification::RIGHT);
 }
 
 Point& Point::operator-(const Point& point)
@@ -181,34 +181,34 @@ std::istream& operator>>(std::istream& is, Point& point)
     return is;
 }
 
-bool Point::rightAbove(Point& a, Point& b)
+bool Point::rightAbove(Point& a, Point& b) const
 {
-    PointClassification result = classify(a, b);
-    return (result == RIGHT) || (result != LEFT);
+    const PointClassification result = classify(a, b);
+    return (result == PointClassification::RIGHT) || (result != PointClassification::LEFT);
 }
 
-bool Point::right(Point& a, Point& b)
+bool Point::right(Point& a, Point& b) const
 {
-    return classify(a, b) == RIGHT;
+    return classify(a, b) == PointClassification::RIGHT;
 }
 
-void Point::set(double x, double y)
+void Point::set(const double x, const double y)
 {
     this->_x = x;
     this->_y = y;
 }
 
-void Point::setX(double x)
+void Point::setX(const double x)
 {
     _x = x;
 }
 
-void Point::setY(double y)
+void Point::setY(const double y)
 {
     _y = y;
 }
 
-double Point::slope(Point& p)
+double Point::slope(const Point& p) const
 {
     if(std::abs(p._x - _x) < std::numeric_limits<double>::epsilon())
     {
@@ -218,7 +218,7 @@ double Point::slope(Point& p)
     return (p._y - _y) / (p._x - _x);
 }
 
-double Point::triangleArea2(Point& a, Point& b)
+double Point::triangleArea2(Point& a, Point& b) const
 {
     return _x * a._y - _y * a._x + a._x * b._y - a._y * b._x + b._x * _y - b._y * _x;
 }

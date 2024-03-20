@@ -5,7 +5,7 @@
 
 namespace GDSA::Geometry
 {
-enum CircleCircleRelations
+enum class CircleCircleRelations
 {
     CONCENTRIC,
     EXTERNAL,
@@ -16,7 +16,7 @@ enum CircleCircleRelations
     NO_RELATION
 };
 
-enum CircleLineRelations
+enum class CircleLineRelations
 {
     INTERSECT,
     TANGENT,
@@ -43,7 +43,7 @@ public:
      *   @param point
      *   @return true if p is inside the circle
      */
-    bool isInside(Point& point);
+    bool isInside(Point& point) const;
 
     /**
      *   @return A polygon with circular shape.

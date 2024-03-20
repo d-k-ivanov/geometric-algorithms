@@ -31,10 +31,10 @@ protected:
     static std::unordered_map<std::string, std::string> _moduleCode;    //!< Modules that are already loaded
 
 protected:
-    std::vector<GLuint> _activeSubroutineUniform[COMPUTE_SHADER + 1];    //!< Active uniform for each subroutine for each shader type
-    GLuint              _handler;                                        //!< Shader program id in GPU
-    bool                _linked;                                         //!< Flag which tell us if the shader has been linked correctly
-    std::string         _logString;                                      //!< Error message got from the last operation with the shader
+    std::vector<GLuint> _activeSubroutineUniform[ShaderTypes::COMPUTE_SHADER + 1];    //!< Active uniform for each subroutine for each shader type
+    GLuint              _handler;                                                     //!< Shader program id in GPU
+    bool                _linked;                                                      //!< Flag which tell us if the shader has been linked correctly
+    std::string         _logString;                                                   //!< Error message got from the last operation with the shader
 
 protected:
     virtual GLuint compileShader(const char* filename, const GLenum shaderType);

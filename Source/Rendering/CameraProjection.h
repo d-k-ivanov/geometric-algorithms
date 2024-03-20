@@ -11,6 +11,7 @@ namespace GDSA::Render
 class CameraProjection
 {
 protected:
+    ~CameraProjection() = default;
     static std::vector<std::shared_ptr<CameraProjection>> _cameraProjection;
 
 public:
@@ -52,17 +53,17 @@ public:
     virtual void      zoom(CameraProperties* camera, const float speed) = 0;
 };
 
-class PerspectiveProjection : public CameraProjection
+class PerspectiveProjection final : public CameraProjection
 {
 public:
-    virtual glm::mat4 buildProjectionMatrix(CameraProperties* camera);
-    virtual void      zoom(CameraProperties* camera, const float speed);
+    glm::mat4 buildProjectionMatrix(CameraProperties* camera) override;
+    void      zoom(CameraProperties* camera, const float speed) override;
 };
 
-class OrthographicProjection : public CameraProjection
+class OrthographicProjection final : public CameraProjection
 {
 public:
-    virtual glm::mat4 buildProjectionMatrix(CameraProperties* camera);
-    virtual void      zoom(CameraProperties* camera, const float speed);
+    glm::mat4 buildProjectionMatrix(CameraProperties* camera) override;
+    void      zoom(CameraProperties* camera, const float speed) override;
 };
 }

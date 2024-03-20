@@ -14,14 +14,14 @@ class Triangle3d
 public:
     friend class DrawTriangle3d;
 
-    enum PointPosition
+    enum class PointPosition
     {
         POSITIVE,
         NEGATIVE,
         COPLANAR
     };
 
-    enum PointTrianglePosition
+    enum class PointTrianglePosition
     {
         PARALELL,
         COLLINEAR,

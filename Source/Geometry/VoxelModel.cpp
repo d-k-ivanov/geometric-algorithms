@@ -9,14 +9,14 @@ namespace GDSA::Geometry
 {
 VoxelModel::VoxelModel()
 {
-    _status = NP;
+    _status = VoxelStatus::NP;
     _points = std::vector<Vect3d>();
     _size   = glm::vec3(0, 0, 0);
 }
 
 VoxelModel::VoxelModel(const Vect3d& minPoint, glm::vec3 size)
 {
-    _status     = NP;
+    _status     = VoxelStatus::NP;
     _center     = {minPoint.getX() + size[0] / 2, minPoint.getY() + size[1] / 2, minPoint.getZ() + size[2] / 2};
     this->_min  = minPoint;
     this->_max  = {_min.getX() + size[0], _min.getY() + size[1], _min.getZ() + size[2]};

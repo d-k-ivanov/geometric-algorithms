@@ -8,12 +8,12 @@ VAO::VAO(bool interleaved)
     glBindVertexArray(_vao);
 
     // VBOs
-    _vbos.resize(interleaved ? 1 : NUM_VBOS);
+    _vbos.resize(interleaved ? 1 : VBO_slots::NUM_VBOS);
     glGenBuffers(static_cast<GLsizei>(_vbos.size()), _vbos.data());
 
     if(!interleaved)
     {
-        for(int vbo = 0; vbo < NUM_VBOS; ++vbo)
+        for(int vbo = 0; vbo < VBO_slots::NUM_VBOS; ++vbo)
         {
             this->defineNonInterleaveVBO(_vbos[vbo], sizeof(glm::vec4), GL_FLOAT, static_cast<uint8_t>(vbo));
         }
@@ -24,7 +24,7 @@ VAO::VAO(bool interleaved)
     }
 
     // IBOs
-    _ibos.resize(NUM_IBOS);
+    _ibos.resize(IBO_slots::NUM_IBOS);
     glGenBuffers(static_cast<GLsizei>(_ibos.size()), _ibos.data());
 }
 
@@ -74,15 +74,15 @@ void VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint element
 void VAO::defineInterleavedVBO(GLuint vboId) const
 {
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
-    const GLsizei structSize = sizeof(Vertex);
+    constexpr GLsizei structSize = sizeof(Vertex);
 
-    glEnableVertexAttribArray(VBO_POSITION);
-    glVertexAttribPointer(VBO_POSITION, static_cast<GLsizei>(sizeof(glm::vec3) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _position));
+    glEnableVertexAttribArray(VBO_slots::VBO_POSITION);
+    glVertexAttribPointer(VBO_slots::VBO_POSITION, static_cast<GLsizei>(sizeof(glm::vec3) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _position));
 
-    glEnableVertexAttribArray(VBO_NORMAL);
-    glVertexAttribPointer(VBO_NORMAL, static_cast<GLsizei>(sizeof(glm::vec3) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _normal));
+    glEnableVertexAttribArray(VBO_slots::VBO_NORMAL);
+    glVertexAttribPointer(VBO_slots::VBO_NORMAL, static_cast<GLsizei>(sizeof(glm::vec3) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _normal));
 
-    glEnableVertexAttribArray(VBO_TEXT_COORD);
-    glVertexAttribPointer(VBO_TEXT_COORD, static_cast<GLsizei>(sizeof(glm::vec2) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _textCoord));
+    glEnableVertexAttribArray(VBO_slots::VBO_TEXT_COORD);
+    glVertexAttribPointer(VBO_slots::VBO_TEXT_COORD, static_cast<GLsizei>(sizeof(glm::vec2) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _textCoord));
 }
 }    // namespace GDSA::Render

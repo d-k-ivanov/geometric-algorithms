@@ -25,7 +25,7 @@ Circle& Circle::operator=(const Circle& circle)
     return *this;
 }
 
-bool Circle::isInside(Point& point)
+bool Circle::isInside(Point& point) const
 {
     if(this->_center.distance(point) <= this->_radius)
     {
@@ -69,31 +69,31 @@ CircleCircleRelations Circle::relation(const Circle& other) const
 
     if(BasicGeometry::equal(distanceBetweenCenters, 0.0))
     {
-        return CONCENTRIC;
+        return CircleCircleRelations::CONCENTRIC;
     }
     else if(r1 - r2 < distanceBetweenCenters && distanceBetweenCenters < r1 + r2)
     {
-        return SECANT;
+        return CircleCircleRelations::SECANT;
     }
     else if(distanceBetweenCenters > r1 + r2)
     {
-        return EXTERNAL;
+        return CircleCircleRelations::EXTERNAL;
     }
     else if(distanceBetweenCenters < r1 + r2)
     {
-        return INTERNAL;
+        return CircleCircleRelations::INTERNAL;
     }
     else if(BasicGeometry::equal(distanceBetweenCenters, r1 + r2))
     {
-        return EXTERNAL_TANG;
+        return CircleCircleRelations::EXTERNAL_TANG;
     }
     else if(BasicGeometry::equal(distanceBetweenCenters, (r1 - r2)))
     {
-        return INTERIOR_TANG;
+        return CircleCircleRelations::INTERIOR_TANG;
     }
 
     // Should never reach this point
-    return NO_RELATION;
+    return CircleCircleRelations::NO_RELATION;
 }
 
 CircleLineRelations Circle::relation(Line& line) const
@@ -104,13 +104,13 @@ CircleLineRelations Circle::relation(Line& line) const
 
     if(lineToCenterDistance < radius)
     {
-        return INTERSECT;
+        return CircleLineRelations::INTERSECT;
     }
     else if(BasicGeometry::equal(radius, lineToCenterDistance))
     {
-        return TANGENT;
+        return CircleLineRelations::TANGENT;
     }
-    return NO_INTERSECT;
+    return CircleLineRelations::NO_INTERSECT;
 }
 
 CircleLineRelations Circle::intersect(Line& line, Point& p1, Point& p2) const
@@ -132,16 +132,16 @@ CircleLineRelations Circle::intersect(Line& line, Point& p1, Point& p2) const
     if(BasicGeometry::equal(gamma, 0))
     {
         p1 = line.getPoint(tMax);
-        return TANGENT;
+        return CircleLineRelations::TANGENT;
     }
     else if(gamma > 0)
     {
         p1 = line.getPoint(tMax);
         p2 = line.getPoint(tMin);
-        return INTERSECT;
+        return CircleLineRelations::INTERSECT;
     }
 
-    return NO_INTERSECT;
+    return CircleLineRelations::NO_INTERSECT;
 }
 
 CircleLineRelations Circle::intersect(RayLine& rayLine, Point& p1, Point& p2) const
@@ -166,9 +166,9 @@ CircleLineRelations Circle::intersect(RayLine& rayLine, Point& p1, Point& p2) co
         if(0 < tMax || BasicGeometry::equal(0.0, tMax))
         {
             p1 = rayLine.getPoint(tMax);
-            return TANGENT;
+            return CircleLineRelations::TANGENT;
         }
-        return NO_INTERSECT;
+        return CircleLineRelations::NO_INTERSECT;
     }
     else if(gamma > 0)
     {
@@ -180,10 +180,10 @@ CircleLineRelations Circle::intersect(RayLine& rayLine, Point& p1, Point& p2) co
         {
             p2 = rayLine.getPoint(tMin);
         }
-        return INTERSECT;
+        return CircleLineRelations::INTERSECT;
     }
 
-    return NO_INTERSECT;
+    return CircleLineRelations::NO_INTERSECT;
 }
 
 CircleLineRelations Circle::intersect(SegmentLine& segment, Point& p1, Point& p2) const
@@ -207,9 +207,9 @@ CircleLineRelations Circle::intersect(SegmentLine& segment, Point& p1, Point& p2
         if((0 < tMax && tMax < 1) || BasicGeometry::equal(0.0, tMax) || BasicGeometry::equal(1.0, tMax))
         {
             p1 = segment.getPoint(tMax);
-            return TANGENT;
+            return CircleLineRelations::TANGENT;
         }
-        return NO_INTERSECT;
+        return CircleLineRelations::NO_INTERSECT;
     }
     else if(gamma > 0)
     {
@@ -221,9 +221,9 @@ CircleLineRelations Circle::intersect(SegmentLine& segment, Point& p1, Point& p2
         {
             p2 = segment.getPoint(tMin);
         }
-        return INTERSECT;
+        return CircleLineRelations::INTERSECT;
     }
-    return NO_INTERSECT;
+    return CircleLineRelations::NO_INTERSECT;
 }
 
 }    // namespace GDSA::Geometry

@@ -17,7 +17,7 @@ protected:
     static constexpr int DEFAULT_VALUE = INT_MAX;    // Value of X and Y coordinates for an incomplete Point.
 
 public:
-    enum PointClassification
+    enum class PointClassification
     {
         LEFT,
         RIGHT,
@@ -47,7 +47,7 @@ public:
     /**
      *  @brief Determines the relative position with respect to other two (which can form a segment).
      */
-    PointClassification classify(Point& p0, Point& p1) const;
+    PointClassification classify(const Point& p0, Point& p1) const;
 
     /**
      *  @brief Checks if this point lies on the same line described by a and b.
@@ -57,17 +57,17 @@ public:
     /**
      *  @brief Distance between this point and another one.
      */
-    double distance(Point& p) const;
+    double distance(const Point& p) const;
 
     /**
      *  @brief Checks if the coordinates of this point are different from the coordinates of a point p.
      */
-    bool distinct(Point& p) const;
+    bool distinct(const Point& p) const;
 
     /**
      *  @brief Checks if the coordinates of this point are equal from the coordinates of a point p.
      */
-    bool equal(Point& p) const;
+    bool equal(const Point& p) const;
 
     /**
      *  @brief Checks the position of the point respect to other two points (a, b).
@@ -142,12 +142,12 @@ public:
     /**
      *  @brief Checks the position of the point respect to other two points (a, b).
      */
-    bool rightAbove(Point& a, Point& b);
+    bool rightAbove(Point& a, Point& b) const;
 
     /**
      *  @brief Checks the position of the point respect to other two points (a, b).
      */
-    bool right(Point& a, Point& b);
+    bool right(Point& a, Point& b) const;
 
     /**
      *  @brief Modifies the coordinate values.
@@ -167,12 +167,12 @@ public:
     /**
      *  @brief Returns the slope between this point and p.
      */
-    double slope(Point& p);
+    double slope(const Point& p) const;
 
     /**
      *  @brief Calculates the double area of the triangle formed by (this, a, b).
      */
-    double triangleArea2(Point& a, Point& b);
+    double triangleArea2(Point& a, Point& b) const;
 
     /**
      *  @brief Calculates the scalar multiplication of this point.

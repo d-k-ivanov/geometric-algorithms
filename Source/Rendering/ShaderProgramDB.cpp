@@ -5,9 +5,9 @@
 namespace GDSA::Render
 {
 std::unordered_map<uint8_t, std::string> ShaderProgramDB::RENDERING_SHADER_PATH {
-    {LINE_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/line"},
-    {POINT_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/point"},
-    {TRIANGLE_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/triangle"},
+    {static_cast<int>(RenderingShaderId::LINE_RENDERING), Utils::ThisExecutableLocation() + "/Resources/Shaders/line"},
+    {static_cast<int>(RenderingShaderId::POINT_RENDERING), Utils::ThisExecutableLocation() + "/Resources/Shaders/point"},
+    {static_cast<int>(RenderingShaderId::TRIANGLE_RENDERING), Utils::ThisExecutableLocation() + "/Resources/Shaders/triangle"},
 };
 
 std::unordered_map<uint8_t, std::unique_ptr<RenderingShader>> ShaderProgramDB::_renderingShader;

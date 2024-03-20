@@ -24,33 +24,33 @@ void InputManager::buildMoveRelatedBuffers()
     _movementMultiplier = 0.1f;
     _moveSpeedUp        = 1.0f;
 
-    _moveSpeed           = std::vector<float>(static_cast<size_t>(NUM_EVENTS), .0f);
-    _moveSpeed[BOOM]     = 0.1f;
-    _moveSpeed[DOLLY]    = 0.08f;
-    _moveSpeed[ORBIT_XZ] = 0.05f;
-    _moveSpeed[ORBIT_Y]  = 0.03f;
-    _moveSpeed[PAN]      = 0.002f;
-    _moveSpeed[TILT]     = 0.002f;
-    _moveSpeed[TRUCK]    = 0.01f;
-    _moveSpeed[ZOOM]     = 0.008f;
+    _moveSpeed                   = std::vector<float>(static_cast<size_t>(Events::NUM_EVENTS), .0f);
+    _moveSpeed[Events::BOOM]     = 0.1f;
+    _moveSpeed[Events::DOLLY]    = 0.08f;
+    _moveSpeed[Events::ORBIT_XZ] = 0.05f;
+    _moveSpeed[Events::ORBIT_Y]  = 0.03f;
+    _moveSpeed[Events::PAN]      = 0.002f;
+    _moveSpeed[Events::TILT]     = 0.002f;
+    _moveSpeed[Events::TRUCK]    = 0.01f;
+    _moveSpeed[Events::ZOOM]     = 0.008f;
 
-    _eventKey                 = std::vector<glm::ivec2>(static_cast<size_t>(NUM_EVENTS), glm::ivec2(0));
-    _eventKey[ALTER_POINT]    = glm::ivec2(GLFW_KEY_0);
-    _eventKey[ALTER_LINE]     = glm::ivec2(GLFW_KEY_1);
-    _eventKey[ALTER_TRIANGLE] = glm::ivec2(GLFW_KEY_2);
+    _eventKey                         = std::vector<glm::ivec2>(static_cast<size_t>(Events::NUM_EVENTS), glm::ivec2(0));
+    _eventKey[Events::ALTER_POINT]    = glm::ivec2(GLFW_KEY_0);
+    _eventKey[Events::ALTER_LINE]     = glm::ivec2(GLFW_KEY_1);
+    _eventKey[Events::ALTER_TRIANGLE] = glm::ivec2(GLFW_KEY_2);
 
-    _eventKey[BOOM]           = glm::ivec2(GLFW_KEY_UP, GLFW_KEY_DOWN);
-    _eventKey[DOLLY]          = glm::ivec2(GLFW_KEY_W, GLFW_KEY_S);
-    _eventKey[DOLLY_SPEED_UP] = glm::ivec2(GLFW_MOD_SHIFT);
-    _eventKey[ORBIT_XZ]       = glm::ivec2(GLFW_KEY_Y);
-    _eventKey[ORBIT_Y]        = glm::ivec2(GLFW_KEY_X);
-    _eventKey[PAN]            = glm::ivec2(GLFW_KEY_P);
-    _eventKey[RESET]          = glm::ivec2(GLFW_KEY_B);
-    _eventKey[SCREENSHOT]     = glm::ivec2(GLFW_KEY_K, GLFW_KEY_L);
-    _eventKey[TILT]           = glm::ivec2(GLFW_KEY_T);
-    _eventKey[TRUCK]          = glm::ivec2(GLFW_KEY_D, GLFW_KEY_A);
+    _eventKey[Events::BOOM]           = glm::ivec2(GLFW_KEY_UP, GLFW_KEY_DOWN);
+    _eventKey[Events::DOLLY]          = glm::ivec2(GLFW_KEY_W, GLFW_KEY_S);
+    _eventKey[Events::DOLLY_SPEED_UP] = glm::ivec2(GLFW_MOD_SHIFT);
+    _eventKey[Events::ORBIT_XZ]       = glm::ivec2(GLFW_KEY_Y);
+    _eventKey[Events::ORBIT_Y]        = glm::ivec2(GLFW_KEY_X);
+    _eventKey[Events::PAN]            = glm::ivec2(GLFW_KEY_P);
+    _eventKey[Events::RESET]          = glm::ivec2(GLFW_KEY_B);
+    _eventKey[Events::SCREENSHOT]     = glm::ivec2(GLFW_KEY_K, GLFW_KEY_L);
+    _eventKey[Events::TILT]           = glm::ivec2(GLFW_KEY_T);
+    _eventKey[Events::TRUCK]          = glm::ivec2(GLFW_KEY_D, GLFW_KEY_A);
 
-    _moves = std::vector<GLuint>(static_cast<size_t>(NUM_EVENTS), 0);
+    _moves = std::vector<GLuint>(static_cast<size_t>(Events::NUM_EVENTS), 0);
 }
 
 bool InputManager::checkPanTilt(const float xPos, const float yPos)
@@ -66,12 +66,12 @@ bool InputManager::checkPanTilt(const float xPos, const float yPos)
         {
             if(!glm::epsilonEqual(xPos, _lastCursorPosition.x, glm::epsilon<float>()))
             {
-                camera->pan(-_moveSpeed[PAN] * (xPos - _lastCursorPosition.x));
+                camera->pan(-_moveSpeed[Events::PAN] * (xPos - _lastCursorPosition.x));
             }
 
             if(!glm::epsilonEqual(yPos, _lastCursorPosition.y, glm::epsilon<float>()))
             {
-                camera->tilt(-_moveSpeed[TILT] * (yPos - _lastCursorPosition.y));
+                camera->tilt(-_moveSpeed[Events::TILT] * (yPos - _lastCursorPosition.y));
             }
         }
 
@@ -87,85 +87,85 @@ void InputManager::processPressedKeyEvent(const int key, const int mods)
     Renderer* renderer = Renderer::getInstance();
     Camera*   camera   = renderer->getCamera();
 
-    if(key == _eventKey[ALTER_POINT][0])
+    if(key == _eventKey[Events::ALTER_POINT][0])
     {
         _applicationState._activeRendering[VAO::IBO_POINT] = !_applicationState._activeRendering[VAO::IBO_POINT];
     }
-    else if(key == _eventKey[ALTER_LINE][0])
+    else if(key == _eventKey[Events::ALTER_LINE][0])
     {
         _applicationState._activeRendering[VAO::IBO_LINE] = !_applicationState._activeRendering[VAO::IBO_LINE];
     }
-    else if(key == _eventKey[ALTER_TRIANGLE][0])
+    else if(key == _eventKey[Events::ALTER_TRIANGLE][0])
     {
         _applicationState._activeRendering[VAO::IBO_TRIANGLE] = !_applicationState._activeRendering[VAO::IBO_TRIANGLE];
     }
-    else if(key == _eventKey[RESET][0])
+    else if(key == _eventKey[Events::RESET][0])
     {
         camera->reset();
     }
-    else if(key == _eventKey[ORBIT_XZ][0])
+    else if(key == _eventKey[Events::ORBIT_XZ][0])
     {
         if(mods == GLFW_MOD_CONTROL)
         {
-            camera->orbitXZ(_moveSpeed[ORBIT_XZ]);
+            camera->orbitXZ(_moveSpeed[Events::ORBIT_XZ]);
         }
         else
         {
-            camera->orbitXZ(-_moveSpeed[ORBIT_XZ]);
+            camera->orbitXZ(-_moveSpeed[Events::ORBIT_XZ]);
         }
     }
-    else if(key == _eventKey[ORBIT_Y][0])
+    else if(key == _eventKey[Events::ORBIT_Y][0])
     {
         if(mods == GLFW_MOD_CONTROL)
         {
-            camera->orbitY(-_moveSpeed[ORBIT_Y]);
+            camera->orbitY(-_moveSpeed[Events::ORBIT_Y]);
         }
         else
         {
-            camera->orbitY(_moveSpeed[ORBIT_Y]);
+            camera->orbitY(_moveSpeed[Events::ORBIT_Y]);
         }
     }
-    else if(key == _eventKey[DOLLY][0])
+    else if(key == _eventKey[Events::DOLLY][0])
     {
         if(_rightClickPressed)
         {
-            camera->dolly(_moveSpeed[DOLLY] + _moves[DOLLY] * _moveSpeed[DOLLY] * _movementMultiplier);
-            ++_moves[DOLLY];
+            camera->dolly(_moveSpeed[Events::DOLLY] + _moves[Events::DOLLY] * _moveSpeed[Events::DOLLY] * _movementMultiplier);
+            ++_moves[Events::DOLLY];
         }
     }
-    else if(key == _eventKey[DOLLY][1])
+    else if(key == _eventKey[Events::DOLLY][1])
     {
         if(_rightClickPressed)
         {
-            camera->dolly(-(_moveSpeed[DOLLY] + _moves[DOLLY] * _moveSpeed[DOLLY] * _movementMultiplier));
-            ++_moves[DOLLY];
+            camera->dolly(-(_moveSpeed[Events::DOLLY] + _moves[Events::DOLLY] * _moveSpeed[Events::DOLLY] * _movementMultiplier));
+            ++_moves[Events::DOLLY];
         }
     }
-    else if(key == _eventKey[TRUCK][0])
+    else if(key == _eventKey[Events::TRUCK][0])
     {
         if(_rightClickPressed)
         {
-            camera->truck(_moveSpeed[TRUCK] + _moves[TRUCK] * _moveSpeed[TRUCK] * _movementMultiplier);
-            ++_moves[TRUCK];
+            camera->truck(_moveSpeed[Events::TRUCK] + _moves[Events::TRUCK] * _moveSpeed[Events::TRUCK] * _movementMultiplier);
+            ++_moves[Events::TRUCK];
         }
     }
-    else if(key == _eventKey[TRUCK][1])
+    else if(key == _eventKey[Events::TRUCK][1])
     {
         if(_rightClickPressed)
         {
-            camera->truck(-(_moveSpeed[TRUCK] + _moves[TRUCK] * _moveSpeed[TRUCK] * _movementMultiplier));
-            ++_moves[TRUCK];
+            camera->truck(-(_moveSpeed[Events::TRUCK] + _moves[Events::TRUCK] * _moveSpeed[Events::TRUCK] * _movementMultiplier));
+            ++_moves[Events::TRUCK];
         }
     }
-    else if(key == _eventKey[BOOM][0])
+    else if(key == _eventKey[Events::BOOM][0])
     {
-        camera->boom(_moveSpeed[BOOM]);
+        camera->boom(_moveSpeed[Events::BOOM]);
     }
-    else if(key == _eventKey[BOOM][1])
+    else if(key == _eventKey[Events::BOOM][1])
     {
-        camera->crane(_moveSpeed[BOOM]);
+        camera->crane(_moveSpeed[Events::BOOM]);
     }
-    else if(key == _eventKey[SCREENSHOT][0])
+    else if(key == _eventKey[Events::SCREENSHOT][0])
     {
         this->pushScreenshotEvent(ScreenshotListener::ScreenshotEvent {ScreenshotListener::RGBA});
     }
@@ -173,14 +173,14 @@ void InputManager::processPressedKeyEvent(const int key, const int mods)
 
 void InputManager::processReleasedKeyEvent(const int key, const int mods)
 {
-    if(key == _eventKey[DOLLY][0] || key == _eventKey[DOLLY][1])
+    if(key == _eventKey[Events::DOLLY][0] || key == _eventKey[Events::DOLLY][1])
     {
-        _moves[DOLLY] = 0;
+        _moves[Events::DOLLY] = 0;
     }
 
-    if(key == _eventKey[TRUCK][0] || key == _eventKey[TRUCK][0])
+    if(key == _eventKey[Events::TRUCK][0] || key == _eventKey[Events::TRUCK][0])
     {
-        _moves[TRUCK] = 0;
+        _moves[Events::TRUCK] = 0;
     }
 }
 
@@ -274,7 +274,7 @@ void InputManager::scrollCallback(GLFWwindow* window, double xoffset, double yof
     InputManager* inputManager = getInstance();
     Camera*       camera       = Renderer::getInstance()->getCamera();
 
-    camera->zoom(static_cast<float>(yoffset) * inputManager->_moveSpeed[ZOOM]);
+    camera->zoom(static_cast<float>(yoffset) * inputManager->_moveSpeed[Events::ZOOM]);
 }
 
 // This callback function will be called every time the OpenGL drawing area needs to be redrawn.

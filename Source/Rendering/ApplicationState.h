@@ -27,7 +27,7 @@ struct ApplicationState
     float     _gamma;
 
     // Topology
-    bool _activeRendering[VAO::NUM_IBOS];
+    bool _activeRendering[VAO::IBO_slots::NUM_IBOS];
 
     ApplicationState()
     {
@@ -40,7 +40,7 @@ struct ApplicationState
         std::strcpy(_screenshotFilenameBuffer, "ScreenshotRGBA.png");
         _screenshotFactor = 3.0f;
 
-        for(int i = 0; i < VAO::NUM_IBOS; ++i)
+        for(int i = 0; i < VAO::IBO_slots::NUM_IBOS; ++i)
         {
             _activeRendering[i] = /*i == VAO::IBO_TRIANGLE*/ true;
         }

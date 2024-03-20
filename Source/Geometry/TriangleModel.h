@@ -62,7 +62,7 @@ public:
 class TriangleModel::Face
 {
 public:
-    enum FacePlaneRelation
+    enum class FacePlaneRelation
     {
         NO_RELATION,
         POSITIVE,

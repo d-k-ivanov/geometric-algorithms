@@ -30,7 +30,7 @@ void CameraGuiAdapter::renderGuiObject()
     updateMatrices |= ImGui::InputFloat("Z far", &_camera->_properties._zFar);
     updateMatrices |= ImGui::InputFloat("FoV X", &_camera->_properties._fovX);
     updateMatrices |= ImGui::InputFloat("FoV Y", &_camera->_properties._fovY);
-    if(_camera->_properties._cameraType == CameraProjection::ORTHOGRAPHIC)
+    if(_camera->_properties._cameraType == CameraProjection::Projection::ORTHOGRAPHIC)
     {
         updateMatrices |= ImGui::InputFloat2("Bottom Left Coordinates", &_camera->_properties._bottomLeftCorner[0]);
     }

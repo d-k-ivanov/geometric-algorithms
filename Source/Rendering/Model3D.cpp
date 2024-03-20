@@ -39,7 +39,7 @@ void Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInfor
     {
         if(component->_enabled && component->_vao)
         {
-            VAO::IBO_slots rendering = VAO::IBO_TRIANGLE;
+            VAO::IBO_slots rendering = VAO::IBO_slots::IBO_TRIANGLE;
 
             switch(primitive)
             {
@@ -51,7 +51,7 @@ void Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInfor
                     }
                     else
                     {
-                        Texture* checkerPattern = TextureList::getInstance()->getTexture(CHECKER_PATTERN_PATH);
+                        const Texture* checkerPattern = TextureList::getInstance()->getTexture(CHECKER_PATTERN_PATH);
                         checkerPattern->applyTexture(shader, 0, "texKdSampler");
                         shader->setSubroutineUniform(GL_FRAGMENT_SHADER, "kadUniform", "getTextureColor");
                     }
@@ -59,17 +59,17 @@ void Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInfor
                     shader->setUniform("Ks", component->_material._ksColor);
                     shader->setUniform("metallic", component->_material._metallic);
                     shader->setUniform("roughnessK", component->_material._roughnessK);
-                    shader->setUniform("mModelView", matrixInformation->multiplyMatrix(MatrixRenderInformation::VIEW, this->_modelMatrix));
+                    shader->setUniform("mModelView", matrixInformation->multiplyMatrix(MatrixRenderInformation::MatrixType::VIEW, this->_modelMatrix));
 
                     break;
                 case GL_LINES:
-                    rendering = VAO::IBO_LINE;
+                    rendering = VAO::IBO_slots::IBO_LINE;
                     shader->setUniform("lineColor", component->_material._lineColor);
                     glLineWidth(component->_lineWidth);
 
                     break;
                 case GL_POINTS:
-                    rendering = VAO::IBO_POINT;
+                    rendering = VAO::IBO_slots::IBO_POINT;
                     shader->setUniform("pointColor", component->_material._pointColor);
                     shader->setUniform("pointSize", component->_pointSize);
 
@@ -79,13 +79,13 @@ void Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInfor
             if(!component->_activeRendering[rendering])
                 continue;
 
-            shader->setUniform("mModelViewProj", matrixInformation->multiplyMatrix(MatrixRenderInformation::VIEW_PROJECTION, this->_modelMatrix));
+            shader->setUniform("mModelViewProj", matrixInformation->multiplyMatrix(MatrixRenderInformation::MatrixType::VIEW_PROJECTION, this->_modelMatrix));
             shader->applyActiveSubroutines();
 
             component->_vao->drawObject(rendering, primitive, static_cast<GLuint>(component->_indices[rendering].size()));
 
-            matrixInformation->undoMatrix(MatrixRenderInformation::VIEW);
-            matrixInformation->undoMatrix(MatrixRenderInformation::VIEW_PROJECTION);
+            matrixInformation->undoMatrix(MatrixRenderInformation::MatrixType::VIEW);
+            matrixInformation->undoMatrix(MatrixRenderInformation::MatrixType::VIEW_PROJECTION);
         }
     }
 }
@@ -193,9 +193,9 @@ void Model3D::buildVao(Component* component) const
 {
     VAO* vao = new VAO(true);
     vao->setVBOData(component->_vertices);
-    vao->setIBOData(VAO::IBO_POINT, component->_indices[VAO::IBO_POINT]);
-    vao->setIBOData(VAO::IBO_LINE, component->_indices[VAO::IBO_LINE]);
-    vao->setIBOData(VAO::IBO_TRIANGLE, component->_indices[VAO::IBO_TRIANGLE]);
+    vao->setIBOData(VAO::IBO_slots::IBO_POINT, component->_indices[VAO::IBO_slots::IBO_POINT]);
+    vao->setIBOData(VAO::IBO_slots::IBO_LINE, component->_indices[VAO::IBO_slots::IBO_LINE]);
+    vao->setIBOData(VAO::IBO_slots::IBO_TRIANGLE, component->_indices[VAO::IBO_slots::IBO_TRIANGLE]);
     component->_vao = vao;
 }
 
@@ -221,7 +221,7 @@ void Model3D::loadModelBinaryFile(const std::string& path)
         component->_vertices.resize(numVertices);
         fin.read(reinterpret_cast<char*>(component->_vertices.data()), sizeof(VAO::Vertex) * numVertices);
 
-        for(int topology = 0; topology < VAO::NUM_IBOS; ++topology)
+        for(int topology = 0; topology < VAO::IBO_slots::NUM_IBOS; ++topology)
         {
             fin.read(reinterpret_cast<char*>(&numIndices), sizeof(size_t));
             if(numIndices)
@@ -253,7 +253,7 @@ void Model3D::writeBinaryFile(const std::string& path) const
         fout.write(reinterpret_cast<char*>(&numVertices), sizeof(size_t));
         fout.write(reinterpret_cast<char*>(component->_vertices.data()), numVertices * sizeof(VAO::Vertex));
 
-        for(int topology = 0; topology < VAO::NUM_IBOS; ++topology)
+        for(int topology = 0; topology < VAO::IBO_slots::NUM_IBOS; ++topology)
         {
             size_t numIndices = component->_indices[topology].size();
             fout.write(reinterpret_cast<char*>(&numIndices), sizeof(size_t));
@@ -293,7 +293,7 @@ Model3D::Component* Model3D::getVoxel()
 
     // Topology
     {
-        component->_indices[VAO::IBO_TRIANGLE] = std::vector<GLuint> {
+        component->_indices[VAO::IBO_slots::IBO_TRIANGLE] = std::vector<GLuint> {
             0, 1, 2, RESTART_PRIMITIVE_INDEX, 1, 3, 2, RESTART_PRIMITIVE_INDEX, 4, 5, 6, RESTART_PRIMITIVE_INDEX,
             5, 7, 6, RESTART_PRIMITIVE_INDEX, 0, 1, 4, RESTART_PRIMITIVE_INDEX, 1, 5, 4, RESTART_PRIMITIVE_INDEX,
             2, 0, 4, RESTART_PRIMITIVE_INDEX, 2, 4, 6, RESTART_PRIMITIVE_INDEX, 1, 3, 5, RESTART_PRIMITIVE_INDEX,
@@ -329,12 +329,12 @@ void Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
 
 void Model3D::Component::completeTopology()
 {
-    if(!this->_indices[VAO::IBO_TRIANGLE].empty() && this->_indices[VAO::IBO_LINE].empty())
+    if(!this->_indices[VAO::IBO_slots::IBO_TRIANGLE].empty() && this->_indices[VAO::IBO_slots::IBO_LINE].empty())
     {
         this->generateWireframe();
     }
 
-    if(!this->_indices[VAO::IBO_LINE].empty() && this->_indices[VAO::IBO_POINT].empty())
+    if(!this->_indices[VAO::IBO_slots::IBO_LINE].empty() && this->_indices[VAO::IBO_slots::IBO_POINT].empty())
     {
         this->generatePointCloud();
     }
@@ -366,17 +366,17 @@ void Model3D::Component::generateWireframe()
         return false;
     };
 
-    const size_t numIndices = this->_indices[VAO::IBO_TRIANGLE].size();
+    const size_t numIndices = this->_indices[VAO::IBO_slots::IBO_TRIANGLE].size();
 
     for(size_t i = 0; i < numIndices; i += 4)
     {
         for(size_t j = 0; j < 3; ++j)
         {
-            if(!isIncluded(this->_indices[VAO::IBO_TRIANGLE][i + j], this->_indices[VAO::IBO_TRIANGLE][(j + 1) % 3 + i]))
+            if(!isIncluded(this->_indices[VAO::IBO_slots::IBO_TRIANGLE][i + j], this->_indices[VAO::IBO_slots::IBO_TRIANGLE][(j + 1) % 3 + i]))
             {
-                this->_indices[VAO::IBO_LINE].push_back(this->_indices[VAO::IBO_TRIANGLE][i + j]);
-                this->_indices[VAO::IBO_LINE].push_back(this->_indices[VAO::IBO_TRIANGLE][(j + 1) % 3 + i]);
-                this->_indices[VAO::IBO_LINE].push_back(RESTART_PRIMITIVE_INDEX);
+                this->_indices[VAO::IBO_slots::IBO_LINE].push_back(this->_indices[VAO::IBO_slots::IBO_TRIANGLE][i + j]);
+                this->_indices[VAO::IBO_slots::IBO_LINE].push_back(this->_indices[VAO::IBO_slots::IBO_TRIANGLE][(j + 1) % 3 + i]);
+                this->_indices[VAO::IBO_slots::IBO_LINE].push_back(RESTART_PRIMITIVE_INDEX);
             }
         }
     }
@@ -384,7 +384,7 @@ void Model3D::Component::generateWireframe()
 
 void Model3D::Component::generatePointCloud()
 {
-    this->_indices[VAO::IBO_POINT].resize(this->_vertices.size());
-    std::iota(this->_indices[VAO::IBO_POINT].begin(), this->_indices[VAO::IBO_POINT].end(), 0);
+    this->_indices[VAO::IBO_slots::IBO_POINT].resize(this->_vertices.size());
+    std::iota(this->_indices[VAO::IBO_slots::IBO_POINT].begin(), this->_indices[VAO::IBO_slots::IBO_POINT].end(), 0);
 }
 }    // namespace GDSA::Render
