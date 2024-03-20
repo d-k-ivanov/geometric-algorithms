@@ -1,6 +1,6 @@
 #include "DrawAABB.h"
 
-GDSA::DrawAABB::DrawAABB(AABB& aabb)
+GDSA::Render::DrawAABB::DrawAABB(Geometry::AABB& aabb)
     : Model3D()
 {
     Component* component = this->getVoxel();
@@ -16,6 +16,6 @@ GDSA::DrawAABB::DrawAABB(AABB& aabb)
     this->_components.push_back(std::unique_ptr<Component>(component));
 }
 
-GDSA::DrawAABB::~DrawAABB()
+GDSA::Render::DrawAABB::~DrawAABB()
 {
 }

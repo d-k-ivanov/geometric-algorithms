@@ -9,20 +9,20 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
-std::string                     GDSA::Model3D::CHECKER_PATTERN_PATH = Utils::ThisExecutableLocation() + "/Resources/Textures/Checker.png";
-std::unordered_set<std::string> GDSA::Model3D::USED_NAMES;
+std::string                     GDSA::Render::Model3D::CHECKER_PATTERN_PATH = Utils::ThisExecutableLocation() + "/Resources/Textures/Checker.png";
+std::unordered_set<std::string> GDSA::Render::Model3D::USED_NAMES;
 
-GDSA::Model3D::Model3D()
+GDSA::Render::Model3D::Model3D()
     : _modelMatrix(1.0f)
 {
     this->overrideModelName();
 }
 
-GDSA::Model3D::~Model3D()
+GDSA::Render::Model3D::~Model3D()
 {
 }
 
-bool GDSA::Model3D::belongsModel(Component* component)
+bool GDSA::Render::Model3D::belongsModel(Component* component)
 {
     for(auto& comp : _components)
     {
@@ -33,7 +33,7 @@ bool GDSA::Model3D::belongsModel(Component* component)
     return false;
 }
 
-void GDSA::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive)
+void GDSA::Render::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive)
 {
     shader->setSubroutineUniform(GL_VERTEX_SHADER, "instanceUniform", "singleInstanceUniform");
 
@@ -92,7 +92,7 @@ void GDSA::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matri
     }
 }
 
-GDSA::Model3D* GDSA::Model3D::moveGeometryToOrigin(const glm::mat4& origMatrix, float maxScale)
+GDSA::Render::Model3D* GDSA::Render::Model3D::moveGeometryToOrigin(const glm::mat4& origMatrix, float maxScale)
 {
     // const AABB aabb = this->getAABB();
 
@@ -106,7 +106,7 @@ GDSA::Model3D* GDSA::Model3D::moveGeometryToOrigin(const glm::mat4& origMatrix, 
     return this;
 }
 
-GDSA::Model3D* GDSA::Model3D::overrideModelName()
+GDSA::Render::Model3D* GDSA::Render::Model3D::overrideModelName()
 {
     std::string className   = typeid(*this).name();
     std::string classTarget = "class ";
@@ -131,7 +131,7 @@ GDSA::Model3D* GDSA::Model3D::overrideModelName()
     return this;
 }
 
-GDSA::Model3D* GDSA::Model3D::setLineColor(const glm::vec3& color)
+GDSA::Render::Model3D* GDSA::Render::Model3D::setLineColor(const glm::vec3& color)
 {
     for(auto& component : _components)
     {
@@ -141,7 +141,7 @@ GDSA::Model3D* GDSA::Model3D::setLineColor(const glm::vec3& color)
     return this;
 }
 
-GDSA::Model3D* GDSA::Model3D::setPointColor(const glm::vec3& color)
+GDSA::Render::Model3D* GDSA::Render::Model3D::setPointColor(const glm::vec3& color)
 {
     for(auto& component : _components)
     {
@@ -151,7 +151,7 @@ GDSA::Model3D* GDSA::Model3D::setPointColor(const glm::vec3& color)
     return this;
 }
 
-GDSA::Model3D* GDSA::Model3D::setTriangleColor(const glm::vec4& color)
+GDSA::Render::Model3D* GDSA::Render::Model3D::setTriangleColor(const glm::vec4& color)
 {
     for(auto& component : _components)
     {
@@ -161,7 +161,7 @@ GDSA::Model3D* GDSA::Model3D::setTriangleColor(const glm::vec4& color)
     return this;
 }
 
-GDSA::Model3D* GDSA::Model3D::setLineWidth(float width)
+GDSA::Render::Model3D* GDSA::Render::Model3D::setLineWidth(float width)
 {
     for(auto& component : _components)
     {
@@ -171,7 +171,7 @@ GDSA::Model3D* GDSA::Model3D::setLineWidth(float width)
     return this;
 }
 
-GDSA::Model3D* GDSA::Model3D::setPointSize(float size)
+GDSA::Render::Model3D* GDSA::Render::Model3D::setPointSize(float size)
 {
     for(auto& component : _components)
     {
@@ -181,7 +181,7 @@ GDSA::Model3D* GDSA::Model3D::setPointSize(float size)
     return this;
 }
 
-GDSA::Model3D* GDSA::Model3D::setTopologyVisibility(VAO::IBO_slots topology, bool visible)
+GDSA::Render::Model3D* GDSA::Render::Model3D::setTopologyVisibility(VAO::IBO_slots topology, bool visible)
 {
     for(auto& component : _components)
     {
@@ -191,7 +191,7 @@ GDSA::Model3D* GDSA::Model3D::setTopologyVisibility(VAO::IBO_slots topology, boo
     return this;
 }
 
-void GDSA::Model3D::buildVao(Component* component)
+void GDSA::Render::Model3D::buildVao(Component* component)
 {
     VAO* vao = new VAO(true);
     vao->setVBOData(component->_vertices);
@@ -201,7 +201,7 @@ void GDSA::Model3D::buildVao(Component* component)
     component->_vao = vao;
 }
 
-void GDSA::Model3D::loadModelBinaryFile(const std::string& path)
+void GDSA::Render::Model3D::loadModelBinaryFile(const std::string& path)
 {
     std::ifstream fin(path, std::ios::in | std::ios::binary);
     if(!fin.is_open())
@@ -237,7 +237,7 @@ void GDSA::Model3D::loadModelBinaryFile(const std::string& path)
     }
 }
 
-void GDSA::Model3D::writeBinaryFile(const std::string& path)
+void GDSA::Render::Model3D::writeBinaryFile(const std::string& path)
 {
     std::ofstream fout(path, std::ios::out | std::ios::binary);
     if(!fout.is_open())
@@ -267,7 +267,7 @@ void GDSA::Model3D::writeBinaryFile(const std::string& path)
     fout.close();
 }
 
-GDSA::Model3D::Component* GDSA::Model3D::getVoxel()
+GDSA::Render::Model3D::Component* GDSA::Render::Model3D::getVoxel()
 {
     Component* component = new Component;
 
@@ -307,7 +307,7 @@ GDSA::Model3D::Component* GDSA::Model3D::getVoxel()
     return component;
 }
 
-GDSA::Model3D::MatrixRenderInformation::MatrixRenderInformation()
+GDSA::Render::Model3D::MatrixRenderInformation::MatrixRenderInformation()
 {
     for(glm::mat4& matrix : _matrix)
     {
@@ -315,7 +315,7 @@ GDSA::Model3D::MatrixRenderInformation::MatrixRenderInformation()
     }
 }
 
-void GDSA::Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
+void GDSA::Render::Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
 {
     if(_heapMatrices[type].empty())
     {
@@ -328,7 +328,7 @@ void GDSA::Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
     }
 }
 
-void GDSA::Model3D::Component::completeTopology()
+void GDSA::Render::Model3D::Component::completeTopology()
 {
     if(!this->_indices[VAO::IBO_TRIANGLE].empty() && this->_indices[VAO::IBO_LINE].empty())
     {
@@ -341,7 +341,7 @@ void GDSA::Model3D::Component::completeTopology()
     }
 }
 
-void GDSA::Model3D::Component::generateWireframe()
+void GDSA::Render::Model3D::Component::generateWireframe()
 {
     std::unordered_map<int, std::unordered_set<int>>* segmentIncluded = new std::unordered_map<int, std::unordered_set<int>>;
     auto                                              isIncluded      = [&](int index1, int index2) -> bool
@@ -383,7 +383,7 @@ void GDSA::Model3D::Component::generateWireframe()
     }
 }
 
-void GDSA::Model3D::Component::generatePointCloud()
+void GDSA::Render::Model3D::Component::generatePointCloud()
 {
     this->_indices[VAO::IBO_POINT].resize(this->_vertices.size());
     std::iota(this->_indices[VAO::IBO_POINT].begin(), this->_indices[VAO::IBO_POINT].end(), 0);

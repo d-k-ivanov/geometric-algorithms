@@ -5,6 +5,8 @@
 
 #include <ostream>
 
+namespace GDSA::Geometry
+{
 SegmentLine::SegmentLine()
 {
 }
@@ -272,3 +274,4 @@ std::ostream& operator<<(std::ostream& os, const SegmentLine& segment)
 
     return os;
 }
+} // namespace GDSA::Geometry

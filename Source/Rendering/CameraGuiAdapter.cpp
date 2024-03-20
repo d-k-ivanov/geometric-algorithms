@@ -4,7 +4,7 @@
 
 #include <imgui.h>
 
-void GDSA::CameraGuiAdapter::renderGuiObject()
+void GDSA::Render::CameraGuiAdapter::renderGuiObject()
 {
     bool updateMatrices = false;
 

@@ -5,6 +5,8 @@
 
 #include <glm/vec3.hpp>
 
+namespace GDSA::Geometry
+{
 /**
  *  @brief Base class for any structure which needs 3 coordinates (point, vector...).
  */
@@ -193,3 +195,4 @@ public:
      */
     void getPlane(const Vect3d& v, Vect3d& n, double& d) const;
 };
+} // namespace GDSA::Geometry

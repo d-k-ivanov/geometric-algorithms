@@ -1,5 +1,7 @@
 #include "Vect2d.h"
 
+namespace GDSA::Geometry
+{
 Vect2d::Vect2d()
     : Point()
 {
@@ -77,3 +79,4 @@ Vect2d Vect2d::scalarMult(double t)
 
     return *this;
 }
+} // namespace GDSA::Geometry

@@ -3,6 +3,8 @@
 #include "Point.h"
 #include "Polygon.h"
 
+namespace GDSA::Geometry
+{
 enum CircleCircleRelations
 {
     CONCENTRIC,
@@ -96,3 +98,4 @@ public:
      */
     Circle& operator=(const Circle& circle);
 };
+}   // namespace GDSA::Geometry

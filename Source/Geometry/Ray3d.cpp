@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+namespace GDSA::Geometry
+{
 Ray3d::Ray3d(Vect3d& orig, Vect3d& dest)
     : Edge3d(orig, dest)
 {
@@ -32,3 +34,4 @@ std::ostream& operator<<(std::ostream& os, const Ray3d& ray)
     os << "Ray --> Origin: " << ray._orig << "; destination: " << ray._dest;
     return os;
 }
+}    // namespace GDSA::Geometry

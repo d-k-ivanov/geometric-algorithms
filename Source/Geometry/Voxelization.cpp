@@ -6,6 +6,8 @@
 #include <map>
 #include <set>
 
+namespace GDSA::Geometry
+{
 Voxelization::Voxelization()
     : _size(0)
     , _minX(0)
@@ -376,7 +378,7 @@ void Voxelization::recursiveFill(VoxelModel* v, const int x, const int y, int z)
     }
 }
 
-GDSA::DrawVoxelization* Voxelization::getRenderingObject(const bool outlineMode)
+Render::DrawVoxelization* Voxelization::getRenderingObject(const bool outlineMode)
 {
     VoxelStatus status;
     if(outlineMode)
@@ -404,7 +406,7 @@ GDSA::DrawVoxelization* Voxelization::getRenderingObject(const bool outlineMode)
         }
     }
 
-    GDSA::DrawVoxelization* voxelization = new GDSA::DrawVoxelization(positions.data(), static_cast<int>(positions.size()), _size, nullptr);
+    Render::DrawVoxelization* voxelization = new Render::DrawVoxelization(positions.data(), static_cast<int>(positions.size()), _size, nullptr);
 
     return voxelization;
 }
@@ -604,3 +606,4 @@ bool Voxelization::rayBoxIntersection(Ray3d& r, double& tMin, double& tMax, cons
 
     return tMin < t1 && tMax > t0;
 }
+}    // namespace GDSA::Geometry

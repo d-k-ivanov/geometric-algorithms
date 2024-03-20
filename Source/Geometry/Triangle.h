@@ -2,6 +2,8 @@
 
 #include "Vect2d.h"
 
+namespace GDSA::Geometry
+{
 class Triangle
 {
 protected:
@@ -42,3 +44,4 @@ public:
      */
     Vect2d getC() { return _c; }
 };
+}    // namespace GDSA::Geometry

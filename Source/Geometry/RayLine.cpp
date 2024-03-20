@@ -4,6 +4,8 @@
 
 #include <ostream>
 
+namespace GDSA::Geometry
+{
 RayLine::RayLine(const Point& a, const Point& b)
     : SegmentLine(a, b)
 {
@@ -84,3 +86,4 @@ std::ostream& operator<<(std::ostream& os, const RayLine& ray)
 
     return os;
 }
+} // namespace GDSA::Geometry

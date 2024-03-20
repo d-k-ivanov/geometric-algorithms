@@ -1,5 +1,7 @@
 #include "Circle.h"
 
+namespace GDSA::Geometry
+{
 bool Circle::isInside(Point& point)
 {
     if(this->_center.distance(point) <= this->_radius)
@@ -211,3 +213,4 @@ Circle& Circle::operator=(const Circle& circle)
 
     return *this;
 }
+}   // namespace GDSA::Geometry

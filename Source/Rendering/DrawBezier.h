@@ -5,16 +5,16 @@
 #include "Geometry/Bezier.h"
 #include "Geometry/Line.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class DrawBezier : public Model3D
 {
 protected:
-    Bezier _bezier;
+    Geometry::Bezier _bezier;
 
 public:
-    DrawBezier(const Bezier& bezier, double lertStep);
+    DrawBezier(const Geometry::Bezier& bezier, double lertStep);
     DrawBezier(const DrawBezier& drawBezier) = delete;
     ~DrawBezier() override { }
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

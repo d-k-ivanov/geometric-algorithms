@@ -5,7 +5,7 @@
 
 #include "Geometry/AABB.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class Camera
 {
@@ -23,7 +23,7 @@ public:
     Camera(const Camera& camera);
     virtual ~Camera();
     void reset();
-    void track(AABB& aabb);
+    void track(Geometry::AABB& aabb);
 
     Camera& operator=(const Camera& camera) = delete;
 
@@ -56,4 +56,4 @@ public:
     void truck(float speed);
     void zoom(float speed);
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

@@ -32,7 +32,7 @@
 
 #include <iostream>
 
-void GDSA::Scenes::p0(SceneContent& sc)
+void GDSA::Render::Scenes::p0(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -40,9 +40,9 @@ void GDSA::Scenes::p0(SceneContent& sc)
     constexpr int numSegments = 8;
     for(int segmentIdx = 0; segmentIdx < numSegments; ++segmentIdx)
     {
-        Point        a(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        Point        b(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        SegmentLine* segment = new SegmentLine(a, b);
+        Geometry::Point        a(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        Geometry::Point        b(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        Geometry::SegmentLine* segment = new Geometry::SegmentLine(a, b);
 
         sc.addNewModel((new DrawSegment(*segment))->setLineColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setLineWidth(Utils::Random::getUniformRandom(1.0f, 3.0f)));
         delete segment;
@@ -52,18 +52,18 @@ void GDSA::Scenes::p0(SceneContent& sc)
     constexpr int numPoints = 200;
     for(int pointIdx = 0; pointIdx < numPoints; ++pointIdx)
     {
-        Point point(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x));
+        Geometry::Point point(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x));
         sc.addNewModel((new DrawPoint(point))->setPointColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setPointSize(Utils::Random::getUniformRandom(4.0f, 8.0f)));
     }
 
     // Polygon
     float           polygonAngle = .0f;
     constexpr float polygonAlpha = 2.0f * glm::pi<float>() / 5.0f;
-    Polygon*        polygon      = new Polygon;
+    Geometry::Polygon* polygon      = new Geometry::Polygon;
 
     while(polygonAngle < 2.0f * glm::pi<float>())
     {
-        polygon->add(Point(std::cos(polygonAngle), std::sin(polygonAngle)));
+        polygon->add(Geometry::Point(std::cos(polygonAngle), std::sin(polygonAngle)));
         polygonAngle += polygonAlpha;
     }
 
@@ -77,78 +77,78 @@ void GDSA::Scenes::p0(SceneContent& sc)
     {
         const float randB = Utils::Random::getUniformRandom(.5f, .9f);
         const float randC = Utils::Random::getUniformRandom(.6f, .8f);
-        Vect2d      a(.0f, .0f);
-        Vect2d      b(glm::cos(alpha * static_cast<float>(triangleIdx)) * randB, glm::sin(alpha * static_cast<float>(triangleIdx)) * randB);
-        Vect2d      c(glm::cos(alpha * static_cast<float>(triangleIdx + 1)) * randC, glm::sin(alpha * static_cast<float>(triangleIdx + 1)) * randC);
-        Triangle*   triangle = new Triangle(a, b, c);
+        Geometry::Vect2d      a(.0f, .0f);
+        Geometry::Vect2d      b(glm::cos(alpha * static_cast<float>(triangleIdx)) * randB, glm::sin(alpha * static_cast<float>(triangleIdx)) * randB);
+        Geometry::Vect2d      c(glm::cos(alpha * static_cast<float>(triangleIdx + 1)) * randC, glm::sin(alpha * static_cast<float>(triangleIdx + 1)) * randC);
+        Geometry::Triangle*   triangle = new Geometry::Triangle(a, b, c);
 
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
 }
 
-void GDSA::Scenes::p0a(SceneContent& sc)
+void GDSA::Render::Scenes::p0a(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
 
     {
-        Vect3d      a {0.5f, -0.5f, 0.0f};
-        Vect3d      b {0.5f, -0.5f, 0.0f};
-        Vect3d      c {0.0f, 0.5f, 0.0f};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {0.5f, -0.5f, 0.0f};
+        Geometry::Vect3d      b {0.5f, -0.5f, 0.0f};
+        Geometry::Vect3d      c {0.0f, 0.5f, 0.0f};
+        Geometry::Triangle3d* triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {-0.5f, -0.5f, 0.0f};
-        Vect3d      b {0.0f, -0.5f, 0.5f};
-        Vect3d      c {0.0f, 0.5f, 0.0f};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {-0.5f, -0.5f, 0.0f};
+        Geometry::Vect3d      b {0.0f, -0.5f, 0.5f};
+        Geometry::Vect3d      c {0.0f, 0.5f, 0.0f};
+        Geometry::Triangle3d* triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {-0.5f, -0.5f, 0.0f};
-        Vect3d      b {0.0f, -0.5f, -0.5f};
-        Vect3d      c {0.0f, 0.5f, 0.0f};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {-0.5f, -0.5f, 0.0f};
+        Geometry::Vect3d      b {0.0f, -0.5f, -0.5f};
+        Geometry::Vect3d      c {0.0f, 0.5f, 0.0f};
+        Geometry::Triangle3d* triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {0.5f, -0.5f, 0.0f};
-        Vect3d      b {0.0f, -0.5f, 0.5f};
-        Vect3d      c {0.0f, 0.5f, 0.0f};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {0.5f, -0.5f, 0.0f};
+        Geometry::Vect3d      b {0.0f, -0.5f, 0.5f};
+        Geometry::Vect3d      c {0.0f, 0.5f, 0.0f};
+        Geometry::Triangle3d* triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {0.5f, -0.5f, 0.0f};
-        Vect3d      b {0.0f, -0.5f, -0.5f};
-        Vect3d      c {0.0f, 0.5f, 0.0f};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {0.5f, -0.5f, 0.0f};
+        Geometry::Vect3d      b {0.0f, -0.5f, -0.5f};
+        Geometry::Vect3d      c {0.0f, 0.5f, 0.0f};
+        Geometry::Triangle3d* triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {-0.5f, -0.5f, 0.0f};
-        Vect3d      b {0.5f, -0.5f, 0.0f};
-        Vect3d      c {0.0f, -0.5f, -0.5f};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {-0.5f, -0.5f, 0.0f};
+        Geometry::Vect3d      b {0.5f, -0.5f, 0.0f};
+        Geometry::Vect3d      c {0.0f, -0.5f, -0.5f};
+        Geometry::Triangle3d* triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
 }
 
-void GDSA::Scenes::p0b(SceneContent& sc)
+void GDSA::Render::Scenes::p0b(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
 
-    const Point center = {0, 0};
-    Circle*     c      = new Circle(center, 2.0);
+    const Geometry::Point center         = {0, 0};
+    Geometry::Circle*     c            = new Geometry::Circle(center, 2.0);
     const auto circleToDraw   = new DrawCircle(*c, 100, /*draw triangular segments*/ true);
     circleToDraw->setPointColor(Utils::Random::getUniformRandomColor())->setPointSize(7.0f);
     circleToDraw->setLineColor(Utils::Random::getUniformRandomColor())->setLineWidth(5.0);
@@ -157,7 +157,7 @@ void GDSA::Scenes::p0b(SceneContent& sc)
     sc.addNewModel(circleToDraw);
 }
 
-void GDSA::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Point>& randomPointsFromCloud, std::vector<Point>& extremumPointInCloud)
+void GDSA::Render::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Geometry::Point>& randomPointsFromCloud, std::vector<Geometry::Point>& extremumPointInCloud)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -167,8 +167,8 @@ void GDSA::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int
     glm::vec3 center;
     for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
     {
-        auto* pointCloud = new PointCloud;
-        // auto* pointCloud = new PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
+        auto* pointCloud = new Geometry::PointCloud;
+        // auto* pointCloud = new Geometry::PointCloud("PointCloud" + std::to_string(pcIdx) + ".txt");
 
         float scale = scaleFactor;
         // if(numPointClouds > 1)
@@ -211,7 +211,7 @@ void GDSA::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int
                 // rand = Utils::Random::getUniformRandomInUnitSquare() / scale + center;
                 rand = Utils::Random::getUniformRandomInUnitSquarePerimeter() / scale + center;
             }
-            pointCloud->addPoint(Point(rand.x, rand.y));
+            pointCloud->addPoint(Geometry::Point(rand.x, rand.y));
         }
 
         // sc.addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setPointSize(5.0f));
@@ -277,19 +277,19 @@ void GDSA::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int
 }
 
 // blue segment, red line, and magenta ray
-void GDSA::Scenes::p1Lines(SceneContent& sc, const std::vector<Point>& randomPointsFromCloud)
+void GDSA::Render::Scenes::p1Lines(SceneContent& sc, const std::vector<Geometry::Point>& randomPointsFromCloud)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
 
     {
-        // const Point  a(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        // const Point  b(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        // const Point  a(-2, 1);
-        // const Point  b(2, 1);
+        // const Geometry::Point  a(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        // const Geometry::Point  b(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        // const Geometry::Point  a(-2, 1);
+        // const Geometry::Point  b(2, 1);
         if(randomPointsFromCloud.size() >= 2)
         {
-            auto* segment = new SegmentLine(randomPointsFromCloud.at(0), randomPointsFromCloud.at(1));
+            auto* segment = new Geometry::SegmentLine(randomPointsFromCloud.at(0), randomPointsFromCloud.at(1));
             sc.addNewModel((new DrawSegment(*segment))->setLineColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
             sc.addNewModel((new DrawPoint(randomPointsFromCloud.at(0)))->setPointColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             sc.addNewModel((new DrawPoint(randomPointsFromCloud.at(1)))->setPointColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
@@ -297,13 +297,13 @@ void GDSA::Scenes::p1Lines(SceneContent& sc, const std::vector<Point>& randomPoi
         }
     }
     {
-        // const Point a(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        // const Point b(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        // const Point a(-2, 0);
-        // const Point b(2, 0);
+        // const Geometry::Point a(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        // const Geometry::Point b(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        // const Geometry::Point a(-2, 0);
+        // const Geometry::Point b(2, 0);
         if(randomPointsFromCloud.size() >= 4)
         {
-            Line* line = new Line(randomPointsFromCloud.at(2), randomPointsFromCloud.at(3));
+            Geometry::Line* line = new Geometry::Line(randomPointsFromCloud.at(2), randomPointsFromCloud.at(3));
             sc.addNewModel((new DrawLine(*line))->setLineColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(1.0f));
             sc.addNewModel((new DrawPoint(randomPointsFromCloud.at(2)))->setPointColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             sc.addNewModel((new DrawPoint(randomPointsFromCloud.at(3)))->setPointColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
@@ -311,13 +311,13 @@ void GDSA::Scenes::p1Lines(SceneContent& sc, const std::vector<Point>& randomPoi
         }
     }
     {
-        // const Point a(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        // const Point b(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
-        // const Point a(-2, -1);
-        // const Point b(2, -1);
+        // const Geometry::Point a(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        // const Geometry::Point b(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
+        // const Geometry::Point a(-2, -1);
+        // const Geometry::Point b(2, -1);
         if(randomPointsFromCloud.size() >= 6)
         {
-            auto* ray = new RayLine(randomPointsFromCloud.at(4), randomPointsFromCloud.at(5));
+            auto* ray = new Geometry::RayLine(randomPointsFromCloud.at(4), randomPointsFromCloud.at(5));
             sc.addNewModel((new DrawRay(*ray))->setLineColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(5.0f)->setLineWidth(2.0f));
             sc.addNewModel((new DrawPoint(randomPointsFromCloud.at(4)))->setPointColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
             sc.addNewModel((new DrawPoint(randomPointsFromCloud.at(5)))->setPointColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
@@ -327,13 +327,13 @@ void GDSA::Scenes::p1Lines(SceneContent& sc, const std::vector<Point>& randomPoi
 }
 
 // Convex polygon from the point cloud extremum points
-void GDSA::Scenes::p1Polygon(SceneContent& sc, const std::vector<Point>& extremumPointInCloud)
+void GDSA::Render::Scenes::p1Polygon(SceneContent& sc, const std::vector<Geometry::Point>& extremumPointInCloud)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
     if(extremumPointInCloud.size() >= 4)
     {
-        auto* polygon = new Polygon;
+        auto* polygon = new Geometry::Polygon;
         for(auto& point : extremumPointInCloud)
         {
             polygon->add(point);
@@ -343,11 +343,11 @@ void GDSA::Scenes::p1Polygon(SceneContent& sc, const std::vector<Point>& extremu
     }
 }
 // Bezier curve
-void GDSA::Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const size_t pointNum)
+void GDSA::Render::Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const size_t pointNum)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
-    std::vector<Vect2d> controlPoints;
+    std::vector<Geometry::Vect2d> controlPoints;
 
     if(randomPoints)
     {
@@ -373,56 +373,56 @@ void GDSA::Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const size_t po
         sc.addNewModel((new DrawPoint(controlPoints.at(i)))->setPointColor(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(10.0f));
         if(i > 0 && i < controlPoints.size())
         {
-            auto* controlSegment = new SegmentLine(controlPoints.at(i - 1), controlPoints.at(i));
+            auto* controlSegment = new Geometry::SegmentLine(controlPoints.at(i - 1), controlPoints.at(i));
             sc.addNewModel((new DrawSegment(*controlSegment))->setLineColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(0.0f)->setLineWidth(1.0f));
             delete controlSegment;
         }
     }
 
-    const auto* bezier = new Bezier(controlPoints, static_cast<int>(controlPoints.size()));
+    const auto* bezier = new Geometry::Bezier(controlPoints, static_cast<int>(controlPoints.size()));
     sc.addNewModel((new DrawBezier(*bezier, 0.02f))->setPointColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(8.0f)->setLineWidth(8.0f));
     delete bezier;
 }
 
 // P1-B: Two segments, Two Lines, Two Rays, and a Polygon
-void GDSA::Scenes::p1Intersections(SceneContent& sc)
+void GDSA::Render::Scenes::p1Intersections(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
 
-    SegmentLine* s1 = new SegmentLine({0, 2}, {1.5, 0.5});
+    auto* s1 = new Geometry::SegmentLine({0, 2}, {1.5, 0.5});
     sc.addNewModel((new DrawSegment(*s1))->setLineColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
 
-    SegmentLine* s2 = new SegmentLine({-0.5, 1.7}, {0.5, 1.8});
+    auto* s2 = new Geometry::SegmentLine({-0.5, 1.7}, {0.5, 1.8});
     sc.addNewModel((new DrawSegment(*s2))->setLineColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
 
-    Vect2d s1_s2_intersection;
+    Geometry::Vect2d s1_s2_intersection;
     if(s1->intersects(*s2, s1_s2_intersection))
     {
         std::cout << "Intersection between S1 and S2 at " << s1_s2_intersection << '\n';
         sc.addNewModel((new DrawPoint(s1_s2_intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
     }
 
-    RayLine* r1 = new RayLine({0.8, 0.8}, {1.0, 2.5});
+    auto* r1 = new Geometry::RayLine({0.8, 0.8}, {1.0, 2.5});
     sc.addNewModel((new DrawRay(*r1))->setLineColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
 
-    Vect2d s1_r1_intersection;
+    Geometry::Vect2d s1_r1_intersection;
     if(s1->intersects(*r1, s1_r1_intersection))
     {
         std::cout << "Intersection between S1 and R1 at " << s1_r1_intersection << '\n';
         sc.addNewModel((new DrawPoint(s1_r1_intersection))->setPointColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))->overrideModelName()->setPointSize(15.0f));
     }
 
-    RayLine* r2 = new RayLine({-0.2, -0.2}, {-1.5, -1.0});
+    auto* r2 = new Geometry::RayLine({-0.2, -0.2}, {-1.5, -1.0});
     sc.addNewModel((new DrawRay(*r2))->setLineColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
 
-    Line* l1 = new Line({0.0, 0.0}, {-1.5, 1.5});
+    auto* l1 = new Geometry::Line({0.0, 0.0}, {-1.5, 1.5});
     sc.addNewModel((new DrawLine(*l1))->setLineColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
 
-    Line* l2 = new Line({0.0, -2.0}, {1.5, -0.5});
+    auto* l2 = new Geometry::Line({0.0, -2.0}, {1.5, -0.5});
     sc.addNewModel((new DrawLine(*l2))->setLineColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
 
-    Vect2d l1_l2_intersection;
+    Geometry::Vect2d l1_l2_intersection;
     if(l1->intersects(*l2, l1_l2_intersection))
     {
         std::cout << "Intersection between L1 and L2 at " << l1_l2_intersection << '\n';
@@ -432,15 +432,15 @@ void GDSA::Scenes::p1Intersections(SceneContent& sc)
     // Polygon
     float           pAngle = .0f;
     constexpr float pAlpha = 2.0f * glm::pi<float>() / 7.0f;
-    Polygon*        p      = new Polygon;
+    auto*        p      = new Geometry::Polygon;
     while(pAngle < 2.0f * glm::pi<float>())
     {
-        p->add(Point(std::cos(pAngle), std::sin(pAngle)));
+        p->add(Geometry::Point(std::cos(pAngle), std::sin(pAngle)));
         pAngle += pAlpha;
     }
     sc.addNewModel((new DrawPolygon(*p))->setLineColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
 
-    std::vector<Vect2d> p_r2_intersection;
+    std::vector<Geometry::Vect2d> p_r2_intersection;
     if(p->intersects(*r2, p_r2_intersection))
     {
         for(const auto& intersection : p_r2_intersection)
@@ -450,7 +450,7 @@ void GDSA::Scenes::p1Intersections(SceneContent& sc)
         }
     }
 
-    std::vector<Vect2d> p_l1_intersection;
+    std::vector<Geometry::Vect2d> p_l1_intersection;
     if(p->intersects(*l1, p_l1_intersection))
     {
         for(const auto& intersection : p_l1_intersection)
@@ -464,7 +464,7 @@ void GDSA::Scenes::p1Intersections(SceneContent& sc)
     std::cout << "==================================================\n";
     for(auto& vertex : p->getVertices())
     {
-        Vect2d intersection = vertex.getPoint();
+        Geometry::Vect2d intersection = vertex.getPoint();
         std::cout << "Distance from S1 to Polygon v#" << vertex.getPositionInPolygon() << " is " << s1->distPointSegment(intersection) << '\n';
         std::cout << "Distance from S2 to Polygon v#" << vertex.getPositionInPolygon() << " is " << s2->distPointSegment(intersection) << '\n';
         std::cout << "Distance from R1 to Polygon v#" << vertex.getPositionInPolygon() << " is " << r1->distPointSegment(intersection) << '\n';
@@ -483,13 +483,13 @@ void GDSA::Scenes::p1Intersections(SceneContent& sc)
     delete p;
 }
 
-void GDSA::Scenes::p1All(SceneContent& sc)
+void GDSA::Render::Scenes::p1All(SceneContent& sc)
 {
     constexpr int      numPointClouds = 3;
     constexpr int      pointsPerCloud = 100;
     constexpr float    scale          = 1.0f;
-    std::vector<Point> randomPointsFromCloud;
-    std::vector<Point> extremumPointInCloud;
+    std::vector<Geometry::Point> randomPointsFromCloud;
+    std::vector<Geometry::Point> extremumPointInCloud;
 
     p1PointClouds(sc, numPointClouds, pointsPerCloud, scale, randomPointsFromCloud, extremumPointInCloud);
     p1Lines(sc, randomPointsFromCloud);
@@ -498,7 +498,7 @@ void GDSA::Scenes::p1All(SceneContent& sc)
     p1Intersections(sc);
 }
 
-void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud, float scaleFactor)
+void GDSA::Render::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud, float scaleFactor)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -508,7 +508,7 @@ void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud,
     glm::vec3 center;
     for(int pcIdx = 0; pcIdx < numPointClouds; ++pcIdx)
     {
-        auto* pointCloud = new PointCloud3d;
+        auto* pointCloud = new Geometry::PointCloud3d;
 
         float scale = scaleFactor;
         if(pcIdx == 0)
@@ -572,7 +572,7 @@ void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud,
             // Test perpendicular:
             // Vect3d l1A(0, -2, -1);
             // Vect3d l1B(0, 2, -1);
-            auto* l1       = new Line3d(l1A, l1B);
+            auto* l1       = new Geometry::Line3d(l1A, l1B);
             auto  l1Colour = Utils::Random::getUniformRandomColor();
             sc.addNewModel((new DrawLine(*l1))->setLineColor(l1Colour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
             sc.addNewModel((new DrawPoint(l1A))->setPointColor(l1Colour)->overrideModelName()->setPointSize(10.0f));
@@ -585,7 +585,7 @@ void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud,
             // Replace to test if lines are parallel or perpendicular.
             // Vect3d l2A(-2, 1, -1);
             // Vect3d l2B(2, 1, -1);
-            auto* l2       = new Line3d(l2A, l2B);
+            auto* l2       = new Geometry::Line3d(l2A, l2B);
             auto  l2Colour = Utils::Random::getUniformRandomColor();
             sc.addNewModel((new DrawLine(*l2))->setLineColor(l2Colour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
             sc.addNewModel((new DrawPoint(l2A))->setPointColor(l2Colour)->overrideModelName()->setPointSize(10.0f));
@@ -596,7 +596,7 @@ void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud,
             auto rB = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
             // Vect3d rA(-2, 2, -1);
             // Vect3d rB(2, 2, -1);
-            auto* r       = new Ray3d(rA, rB);
+            auto* r       = new Geometry::Ray3d(rA, rB);
             auto  rColour = Utils::Random::getUniformRandomColor();
             sc.addNewModel((new DrawRay(*r))->setLineColor(rColour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
             sc.addNewModel((new DrawPoint(rA))->setPointColor(rColour)->overrideModelName()->setPointSize(10.0f));
@@ -607,7 +607,7 @@ void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud,
             auto sB = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
             // Vect3d sA(-2,-1, -1);
             // Vect3d sB(2, -1, -1);
-            auto* s       = new Segment3d(sA, sB);
+            auto* s       = new Geometry::Segment3d(sA, sB);
             auto  sColour = Utils::Random::getUniformRandomColor();
             sc.addNewModel((new DrawSegment(*s))->setLineColor(sColour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
             sc.addNewModel((new DrawPoint(s->getOrigin()))->setPointColor(sColour)->overrideModelName()->setPointSize(10.0f));
@@ -636,8 +636,8 @@ void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud,
             std::cout << "==================================================\n";
 
             double maxDistance = 0;
-            Vect3d theMostDistantPoint;
-            auto   sLine = new Line3d(s->getOrigin(), s->getDestination());
+            Geometry::Vect3d theMostDistantPoint;
+            auto   sLine = new Geometry::Line3d(s->getOrigin(), s->getDestination());
             for(auto& point : pointCloud->getPoints())
             {
                 double distance = sLine->distance(point);
@@ -650,7 +650,7 @@ void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud,
             sc.addNewModel((new DrawPoint(theMostDistantPoint))->setPointColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setPointSize(20.0f));
 
             // Line L3
-            auto* l3       = new Line3d(l1->normalLine(theMostDistantPoint));
+            auto* l3       = new Geometry::Line3d(l1->normalLine(theMostDistantPoint));
             auto  l3Colour = Utils::Random::getUniformRandomColor();
             sc.addNewModel((new DrawLine(*l3))->setLineColor(l3Colour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
             sc.addNewModel((new DrawPoint(l3->getOrigin()))->setPointColor(l3Colour)->overrideModelName()->setPointSize(10.0f));
@@ -668,13 +668,13 @@ void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud,
             std::cout << "Distance between L1 and L2 is " << l1->distance(*l2) << '\n';
             std::cout << "==================================================\n";
 
-            AABB* pointCloudAABB = new AABB(pointCloud->getAABB());
+            auto* pointCloudAABB = new Geometry::AABB(pointCloud->getAABB());
             sc.addNewModel((new DrawAABB(*pointCloudAABB))->overrideModelName());
 
-            Vect3d min1(pointCloudAABB->getMin());
-            Vect3d min2(pointCloudAABB->getMin().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMax().getZ());
-            Vect3d min3(pointCloudAABB->getMax().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMin().getZ());
-            Plane* lowerPlane = new Plane(min1, min2, min3, true);
+            Geometry::Vect3d min1(pointCloudAABB->getMin());
+            Geometry::Vect3d min2(pointCloudAABB->getMin().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMax().getZ());
+            Geometry::Vect3d min3(pointCloudAABB->getMax().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMin().getZ());
+            auto* lowerPlane = new Geometry::Plane(min1, min2, min3, true);
             sc.addNewModel((new DrawPlane(*lowerPlane))->overrideModelName()->setLineWidth(5.0)->setLineColor(glm::vec3(1, 1, 1)));
 
             delete l1;
@@ -691,49 +691,49 @@ void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud,
     }
 }
 
-void GDSA::Scenes::p2b(SceneContent& sc)
+void GDSA::Render::Scenes::p2b(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
 
-    const Vect3d pRand(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+    const Geometry::Vect3d pRand(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
                        Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y),
                        Utils::Random::getUniformRandom(minBoundaries.z, maxBoundaries.z));
 
-    const Vect3d uRand(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+    const Geometry::Vect3d uRand(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
                        Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y),
                        Utils::Random::getUniformRandom(minBoundaries.z, maxBoundaries.z));
 
-    const Vect3d vRand(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+    const Geometry::Vect3d vRand(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
                        Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y),
                        Utils::Random::getUniformRandom(minBoundaries.z, maxBoundaries.z));
 
-    // const Vect3d pRand(0, 0, 0);
-    // const Vect3d uRand(1, 1, 1);
-    // const Vect3d vRand(-1, 1, -1);
+    // const Geometry::Vect3d pRand(0, 0, 0);
+    // const Geometry::Vect3d uRand(1, 1, 1);
+    // const Geometry::Vect3d vRand(-1, 1, -1);
 
     const auto randomColour = Utils::Random::getUniformRandomColor();
     // sc.addNewModel((new DrawPoint(pRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
     // sc.addNewModel((new DrawPoint(uRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
     // sc.addNewModel((new DrawPoint(vRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
 
-    Plane* randomPlane = new Plane(pRand, uRand, vRand, true);
+    auto* randomPlane = new Geometry::Plane(pRand, uRand, vRand, true);
     sc.addNewModel((new DrawPlane(*randomPlane))->overrideModelName()->setLineWidth(3.0)->setLineColor(glm::vec3(1, 1, 1)));
 
-    const Vect3d vRand2(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+    const Geometry::Vect3d vRand2(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
                         Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y),
                         Utils::Random::getUniformRandom(minBoundaries.z, maxBoundaries.z));
 
-    Vect3d newPlaneNormal;
+    Geometry::Vect3d newPlaneNormal;
     double newPlaneD;
     pRand.getPlane(uRand, newPlaneNormal, newPlaneD);
-    Vect3d newPlaneP1(0, 0, -newPlaneD / newPlaneNormal.getZ());
-    Vect3d newPlaneP2(-newPlaneD / newPlaneNormal.getX(), 0, 0);
-    Vect3d newPlaneP3(0, -newPlaneD / newPlaneNormal.getY(), 0);
-    Plane* newPlane = new Plane(newPlaneP1, newPlaneP2, newPlaneP3, true);
+    Geometry::Vect3d newPlaneP1(0, 0, -newPlaneD / newPlaneNormal.getZ());
+    Geometry::Vect3d newPlaneP2(-newPlaneD / newPlaneNormal.getX(), 0, 0);
+    Geometry::Vect3d newPlaneP3(0, -newPlaneD / newPlaneNormal.getY(), 0);
+    auto*            newPlane = new Geometry::Plane(newPlaneP1, newPlaneP2, newPlaneP3, true);
     // sc.addNewModel((new DrawPlane(*newPlane))->overrideModelName()->setLineWidth(3.0)->setLineColor(glm::vec3(0, 1, 1)));
 
-    Line3d intersectionLine;
+    Geometry::Line3d intersectionLine;
     if(randomPlane->intersect(*newPlane, intersectionLine))
     {
         sc.addNewModel((new DrawLine(intersectionLine))->overrideModelName()->setLineWidth(5.0)->setLineColor(glm::vec3(1, 1, 0)));
@@ -743,14 +743,14 @@ void GDSA::Scenes::p2b(SceneContent& sc)
         std::cout << "Planes don't intersect\n";
     }
 
-    Vect3d v1(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
+    Geometry::Vect3d v1(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x),
               Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y),
               Utils::Random::getUniformRandom(minBoundaries.z, maxBoundaries.z));
 
     sc.addNewModel((new DrawPoint(v1))->setPointColor(glm::vec3(0, 0, 1))->overrideModelName()->setPointSize(20.0));
     std::cout << "The distance from V1 to randomPlane: " << randomPlane->distance(v1) << '\n';
 
-    Vect3d v2(randomPlane->reflectedPoint(v1));
+    Geometry::Vect3d v2(randomPlane->reflectedPoint(v1));
     sc.addNewModel((new DrawPoint(v2))->setPointColor(glm::vec3(0, 1, 1))->overrideModelName()->setPointSize(20.0));
     std::cout << "The distance from V2(reflected) to randomPlane: " << randomPlane->distance(v2) << '\n';
 
@@ -758,79 +758,79 @@ void GDSA::Scenes::p2b(SceneContent& sc)
     delete newPlane;
 }
 
-void GDSA::Scenes::p2c(SceneContent& sc)
+void GDSA::Render::Scenes::p2c(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
 
-    TriangleModel* triangleModel = new TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
+    auto* triangleModel = new Geometry::TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model(new DrawMesh(*triangleModel));
     model->setModelMatrix(translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model->setModelMatrix(rotate(model->getModelMatrix(), -0.2f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     sc.addNewModel(model);
 
     {
-        Vect3d      a {0.0, 0.0, 0.0};
-        Vect3d      b {2.0, 0.0, 0.0};
-        Vect3d      c {1.0, 1.0, 0.0};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {0.0, 0.0, 0.0};
+        Geometry::Vect3d      b {2.0, 0.0, 0.0};
+        Geometry::Vect3d      c {1.0, 1.0, 0.0};
+        auto*                 triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {0.0, 0.0, 0.0};
-        Vect3d      b {0.0, 2.0, 0.0};
-        Vect3d      c {-1.0, 1.0, 0.0};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {0.0, 0.0, 0.0};
+        Geometry::Vect3d      b {0.0, 2.0, 0.0};
+        Geometry::Vect3d      c {-1.0, 1.0, 0.0};
+        auto*                 triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {0.0, 0.0, 0.0};
-        Vect3d      b {-2.0, 0.0, 0.0};
-        Vect3d      c {-1.0, -1.0, 0.0};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {0.0, 0.0, 0.0};
+        Geometry::Vect3d      b {-2.0, 0.0, 0.0};
+        Geometry::Vect3d      c {-1.0, -1.0, 0.0};
+        auto*                 triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {0.0, 0.0, 0.0};
-        Vect3d      b {0.0, -2.0, 0.0};
-        Vect3d      c {1.0, -1.0, 0.0};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {0.0, 0.0, 0.0};
+        Geometry::Vect3d      b {0.0, -2.0, 0.0};
+        Geometry::Vect3d      c {1.0, -1.0, 0.0};
+        auto*                 triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {0.0, 0.0, 0.0};
-        Vect3d      b {0.0, 0.0, 2.0};
-        Vect3d      c {1.0, 0.0, 1.0};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {0.0, 0.0, 0.0};
+        Geometry::Vect3d      b {0.0, 0.0, 2.0};
+        Geometry::Vect3d      c {1.0, 0.0, 1.0};
+        auto*                 triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
     {
-        Vect3d      a {0.0, 0.0, 0.0};
-        Vect3d      b {0.0, 0.0, -2.0};
-        Vect3d      c {1.0, 0.0, -1.0};
-        Triangle3d* triangle = new Triangle3d(a, b, c);
+        Geometry::Vect3d      a {0.0, 0.0, 0.0};
+        Geometry::Vect3d      b {0.0, 0.0, -2.0};
+        Geometry::Vect3d      c {1.0, 0.0, -1.0};
+        auto*                 triangle = new Geometry::Triangle3d(a, b, c);
         sc.addNewModel((new DrawTriangle(*triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
         delete triangle;
     }
 }
 
-void GDSA::Scenes::p3(SceneContent& sc)
+void GDSA::Render::Scenes::p3(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
 
-    TriangleModel* triangleModel1 = new TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
+    auto*      triangleModel1 = new Geometry::TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model1(new DrawMesh(*triangleModel1));
     model1->setModelMatrix(translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model1->setModelMatrix(rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(model1);
 
-    // TriangleModel* triangleModel2 = new TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Cheburashka.obj");
+    // auto* triangleModel2 = new Geometry::TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Cheburashka.obj");
     // const auto     model2(new DrawMesh(*triangleModel2));
     // model2->setModelMatrix(glm::translate(model2->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     // model2->setModelMatrix(glm::rotate(model2->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
@@ -845,12 +845,12 @@ void GDSA::Scenes::p3(SceneContent& sc)
 
     Utils::Time::initChrono();
     std::cout << "Voxelization (Line Sweep) started\n";
-    Voxelization* voxelizationLineSweep = new Voxelization(triangleModel1, voxelSize, 1);
+    auto* voxelizationLineSweep = new Geometry::Voxelization(triangleModel1, voxelSize, 1);
     std::cout << "Voxelization (Line Sweep) ended. Duration: " << Utils::Time::getDuration() << '\n';
 
     // Utils::Time::initChrono();
     // std::cout << "Voxelization (AABB) started\n";
-    // Voxelization* voxelizationAABB = new Voxelization(triangleModel1, voxelSize, 2);
+    // auto* voxelizationAABB = new Geometry::Voxelization(triangleModel1, voxelSize, 2);
     // std::cout << "Voxelization (AABB) ended. Duration: " << Utils::Time::getDuration() << '\n';
 
     // const auto voxModelBruteForce(voxelizationBruteForce->getRenderingObject(/*outline mode*/ false));
@@ -870,7 +870,7 @@ void GDSA::Scenes::p3(SceneContent& sc)
 }
 
 // Practice 4a: 2D Convex Hull
-void GDSA::Scenes::p4a(SceneContent& sc, bool drawTriangles)
+void GDSA::Render::Scenes::p4a(SceneContent& sc, bool drawTriangles)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -879,19 +879,19 @@ void GDSA::Scenes::p4a(SceneContent& sc, bool drawTriangles)
     constexpr float scale          = 0.5f;
     glm::vec3       center         = glm::vec3(0, 0, 0);
 
-    auto* pointCloud2D = new PointCloud;
+    auto* pointCloud2D = new Geometry::PointCloud;
     for(int idx = 0; idx < pointsPerCloud; ++idx)
     {
         glm::vec3 rand = Utils::Random::getUniformRandomInUnitSphere() / scale + center;
-        pointCloud2D->addPoint(Point(rand.x, rand.y));
+        pointCloud2D->addPoint(Geometry::Point(rand.x, rand.y));
     }
     sc.addNewModel((new DrawPointCloud(*pointCloud2D))->setPointColor(Utils::Random::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(10.0f));
 
-    const ConvexHull convexHull2D(pointCloud2D);
+    const Geometry::ConvexHull convexHull2D(pointCloud2D);
     auto             randColor1 = Utils::Random::getUniformRandomColorEuclideanDistance();
     for(size_t i = 0; i < convexHull2D.getPoints2D().size(); i++)
     {
-        SegmentLine* segment = new SegmentLine(convexHull2D.getPoints2D()[i], convexHull2D.getPoints2D()[(i + 1) % convexHull2D.getPoints2D().size()]);
+        auto* segment = new Geometry::SegmentLine(convexHull2D.getPoints2D()[i], convexHull2D.getPoints2D()[(i + 1) % convexHull2D.getPoints2D().size()]);
         sc.addNewModel((new DrawSegment(*segment))->setLineColor(randColor1)->overrideModelName()->setLineWidth(5.0f));
         sc.addNewModel((new DrawPoint(segment->getA()))->setPointColor(randColor1)->overrideModelName()->setPointSize(15.0f));
         delete segment;
@@ -907,7 +907,7 @@ void GDSA::Scenes::p4a(SceneContent& sc, bool drawTriangles)
 }
 
 // Practice 4b: 3D Convex Hull
-void GDSA::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
+void GDSA::Render::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -916,7 +916,7 @@ void GDSA::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
     constexpr float scale          = 0.5f;
     glm::vec3       center         = glm::vec3(0, 0, 0);
 
-    auto* pointCloud3D = new PointCloud3d;
+    auto* pointCloud3D = new Geometry::PointCloud3d;
 
     for(int idx = 0; idx < pointsPerCloud; ++idx)
     {
@@ -933,14 +933,14 @@ void GDSA::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
     }
     // sc.addNewModel((new DrawPointCloud(*pointCloud3D))->setPointColor(Utils::Random::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(10.0f));
 
-    const ConvexHull convexHull3D(pointCloud3D);
+    const Geometry::ConvexHull convexHull3D(pointCloud3D);
     auto             color = Utils::Random::getUniformRandomColorEuclideanDistance();
     // for(size_t i = 0; i < convexHull3D.getPoints3D().size(); i++)
     // {
     //     auto orig = convexHull3D.getPoints3D()[i];
     //     auto dest = convexHull3D.getPoints3D()[(i + 1) % convexHull3D.getPoints3D().size()];
     //
-    //     Segment3d* segment3D = new Segment3d(orig, dest);
+    //     auto* segment3D = new Geometry::Segment3d(orig, dest);
     //     sc.addNewModel((new DrawSegment(*segment3D))->setLineColor(color)->overrideModelName()->setLineWidth(5.0f));
     //     sc.addNewModel((new DrawPoint(segment3D->getOrigin()))->setPointColor(color)->overrideModelName()->setPointSize(15.0f));
     //     delete segment3D;
@@ -957,12 +957,12 @@ void GDSA::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
     }
 }
 
-void GDSA::Scenes::p4c(SceneContent& sc)
+void GDSA::Render::Scenes::p4c(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
 
-    TriangleModel* triangleModel = new TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
+    auto* triangleModel = new Geometry::TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model(new DrawMesh(*triangleModel));
     model->setModelMatrix(translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model->setModelMatrix(rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
@@ -970,14 +970,14 @@ void GDSA::Scenes::p4c(SceneContent& sc)
 
     // auto cloud = triangleModel->getCloud();
     // ConvexHull convexHull3D(&cloud);
-    ConvexHull convexHull3D(triangleModel);
+    Geometry::ConvexHull convexHull3D(triangleModel);
     auto       color = Utils::Random::getUniformRandomColorEuclideanDistance();
     // for(size_t i = 0; i < convexHull3D.getPoints3D().size(); i++)
     // {
     //     auto orig = convexHull3D.getPoints3D()[i];
     //     auto dest = convexHull3D.getPoints3D()[(i + 1) % convexHull3D.getPoints3D().size()];
     //
-    //     Segment3d* segment3D = new Segment3d(orig, dest);
+    //     auto* segment3D = new Geometry::Segment3d(orig, dest);
     //     sc.addNewModel((new DrawSegment(*segment3D))->setLineColor(color)->overrideModelName()->setLineWidth(5.0f));
     //     sc.addNewModel((new DrawPoint(segment3D->getOrigin()))->setPointColor(color)->overrideModelName()->setPointSize(15.0f));
     //     delete segment3D;
@@ -994,7 +994,7 @@ void GDSA::Scenes::p4c(SceneContent& sc)
     }
 }
 
-void GDSA::Scenes::p4d(SceneContent& sc)
+void GDSA::Render::Scenes::p4d(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -1003,15 +1003,15 @@ void GDSA::Scenes::p4d(SceneContent& sc)
     constexpr float scale          = 0.5f;
     const glm::vec3 center         = glm::vec3(0, 0, 0);
 
-    auto* pointCloud2D = new PointCloud;
+    auto* pointCloud2D = new Geometry::PointCloud;
     for(int idx = 0; idx < pointsPerCloud; ++idx)
     {
         const glm::vec3 rand = Utils::Random::getUniformRandomInUnitSphere() / scale + center;
-        pointCloud2D->addPoint(Point(rand.x, rand.y));
+        pointCloud2D->addPoint(Geometry::Point(rand.x, rand.y));
     }
     sc.addNewModel((new DrawPointCloud(*pointCloud2D))->setPointColor(Utils::Random::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(5.0f));
 
-    const Triangulation triangulation2D(pointCloud2D);
+    const Geometry::Triangulation triangulation2D(pointCloud2D);
     for(const auto& [line, isSegment] : triangulation2D.getEdges())
     {
         const auto color = Utils::Random::getUniformRandomColor();
@@ -1021,7 +1021,7 @@ void GDSA::Scenes::p4d(SceneContent& sc)
         }
         else
         {
-            RayLine ray(line->getA(), line->getB());
+            Geometry::RayLine ray(line->getA(), line->getB());
             sc.addNewModel((new DrawRay(ray))->overrideModelName()->setLineColor(color)->setLineWidth(3.0f)->setPointColor(color)->setPointSize(5.0f));
         }
     }

@@ -9,9 +9,9 @@
 #include "RenderingShader.h"
 #include "SceneContent.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
-class Renderer : public Singleton<Renderer>, public GDSA::ResizeListener, public GDSA::ScreenshotListener
+class Renderer : public Singleton<Renderer>, public GDSA::Render::ResizeListener, public GDSA::Render::ScreenshotListener
 {
     friend class Singleton<Renderer>;
 
@@ -42,4 +42,4 @@ public:
     virtual void resizeEvent(uint16_t width, uint16_t height);
     virtual void screenshotEvent(const ScreenshotEvent& event);
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

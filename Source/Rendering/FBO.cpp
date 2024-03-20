@@ -4,23 +4,23 @@
 #include <string>
 #include <vector>
 
-GDSA::FBO::FBO(const uint16_t width, const uint16_t height)
+GDSA::Render::FBO::FBO(const uint16_t width, const uint16_t height)
     : _id(0)
     , _size(width, height)
 {
 }
 
-GDSA::FBO::~FBO()
+GDSA::Render::FBO::~FBO()
 {
     glDeleteFramebuffers(1, &_id);
 }
 
-void GDSA::FBO::modifySize(const uint16_t width, const uint16_t height)
+void GDSA::Render::FBO::modifySize(const uint16_t width, const uint16_t height)
 {
     _size = glm::vec2(width, height);
 }
 
-void GDSA::FBO::checkFBOstate()
+void GDSA::Render::FBO::checkFBOstate()
 {
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
@@ -30,7 +30,7 @@ void GDSA::FBO::checkFBOstate()
     }
 }
 
-void GDSA::FBO::threadedWriteImage(std::vector<GLubyte>* pixels, const std::string& filename, const uint16_t width, const uint16_t height)
+void GDSA::Render::FBO::threadedWriteImage(std::vector<GLubyte>* pixels, const std::string& filename, const uint16_t width, const uint16_t height)
 {
     Image* image = new Image(pixels->data(), width, height, 4);
     image->saveImage(filename);

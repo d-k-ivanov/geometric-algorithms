@@ -6,6 +6,8 @@
 #include "iostream"
 #include "vector"
 
+namespace GDSA::Geometry
+{
 enum VoxelStatus
 {
     OUTER    = 0,
@@ -48,3 +50,4 @@ public:
     bool yAxisTest(const double& a, const double& b, const double& fa, const double& fb, double& p0, double& px, const Vect3d& v0, const Vect3d& vx, const glm::vec3& boxRadius, double& min, double& max, double& rad) const;
     bool zAxisTest(const double& a, const double& b, const double& fa, const double& fb, double& p0, double& px, const Vect3d& v0, const Vect3d& vx, const glm::vec3& boxRadius, double& min, double& max, double& rad) const;
 };
+}    // namespace GDSA::Geometry

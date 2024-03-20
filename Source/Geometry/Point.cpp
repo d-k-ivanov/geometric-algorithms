@@ -1,5 +1,7 @@
 #include "Point.h"
 
+namespace GDSA::Geometry
+{
 Point::Point()
 {
     _x = DEFAULT_VALUE;
@@ -237,3 +239,4 @@ Point Point::scalarMult(double t)
 {
     return {this->getX() * t, this->getY() * t};
 }
+} // namespace GDSA::Geometry

@@ -1,18 +1,18 @@
 #include "DrawCircle.h"
 
-GDSA::DrawCircle::DrawCircle(Circle& circle, const uint32_t numSubdivisions, bool drawTriangularSegments)
+GDSA::Render::DrawCircle::DrawCircle(const Geometry::Circle& circle, const uint32_t numSubdivisions, bool drawTriangularSegments)
     : Model3D()
     , _circle(circle)
     , _numSubdivisions(numSubdivisions)
 {
     Component* component = new Component;
 
-    Polygon      polygon     = circle.getPointsCircle(numSubdivisions);
+    Geometry::Polygon      polygon     = circle.getPointsCircle(numSubdivisions);
     const size_t numVertices = polygon.getNumVertices();
 
     for(unsigned vertexIdx = 0; vertexIdx < polygon.getNumVertices(); vertexIdx++)
     {
-        Point point = polygon.getVertexAt(vertexIdx).getPoint();
+        Geometry::Point point = polygon.getVertexAt(vertexIdx).getPoint();
         component->_vertices.push_back(VAO::Vertex {glm::vec3(point.getX(), point.getY(), .0f), glm::vec3(.0f, .0f, 1.0f)});
     }
     component->_vertices.push_back(VAO::Vertex {glm::vec3(.0f, .0f, .0f)});

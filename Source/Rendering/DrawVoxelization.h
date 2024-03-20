@@ -2,7 +2,7 @@
 
 #include "Model3D.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class DrawVoxelization : public Model3D
 {

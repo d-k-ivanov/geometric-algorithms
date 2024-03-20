@@ -5,14 +5,14 @@
 #include "Geometry/Line.h"
 #include "Geometry/Line3d.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class DrawLine : public Model3D
 {
 public:
-    DrawLine(Line& line);
-    DrawLine(Line3d& line);
+    DrawLine(Geometry::Line& line);
+    DrawLine(Geometry::Line3d& line);
     DrawLine(const DrawLine& drawLine) = delete;
     ~DrawLine() override               = default;
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

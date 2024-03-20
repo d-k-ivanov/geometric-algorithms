@@ -1,5 +1,7 @@
 #include "AABB.h"
 
+namespace GDSA::Geometry
+{
 AABB::AABB(const Vect3d& min, const Vect3d& max)
     : _min(min)
     , _max(max)
@@ -110,3 +112,4 @@ std::ostream& operator<<(std::ostream& os, const AABB& aabb)
     os << "Maximum: " << aabb._max << ", minimum: " << aabb._min;
     return os;
 }
+}    // namespace GDSA::Geometry

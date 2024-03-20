@@ -5,17 +5,17 @@
 #include "Geometry/Point.h"
 #include "Geometry/Vect3d.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class DrawPoint : public Model3D
 {
 protected:
-    Point _point;
+    Geometry::Point _point;
 
 public:
-    DrawPoint(const Point& p);
-    DrawPoint(const Vect3d& p);
+    DrawPoint(const Geometry::Point& p);
+    DrawPoint(const Geometry::Vect3d& p);
     DrawPoint(const DrawPoint& drawPoint) = delete;
     ~DrawPoint() override                 = default;
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

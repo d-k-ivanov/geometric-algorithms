@@ -8,7 +8,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace GDSA
+namespace GDSA::Render
 {
 class ResizeListener
 {
@@ -101,4 +101,4 @@ public:
     void suscribeResize(ResizeListener* listener);
     void suscribeScreenshot(ScreenshotListener* listener);
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

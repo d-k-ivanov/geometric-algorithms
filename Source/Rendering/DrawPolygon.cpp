@@ -1,6 +1,6 @@
 #include "DrawPolygon.h"
 
-GDSA::DrawPolygon::DrawPolygon(Polygon& polygon)
+GDSA::Render::DrawPolygon::DrawPolygon(Geometry::Polygon& polygon)
     : Model3D()
     , _polygon(polygon)
 {
@@ -9,7 +9,7 @@ GDSA::DrawPolygon::DrawPolygon(Polygon& polygon)
 
     for(unsigned vertexIdx = 0; vertexIdx < _polygon.getNumVertices(); vertexIdx++)
     {
-        Point point = _polygon.getVertexAt(vertexIdx).getPoint();
+        Geometry::Point point = _polygon.getVertexAt(vertexIdx).getPoint();
         component->_vertices.push_back(VAO::Vertex {glm::vec3(point.getX(), point.getY(), .0f)});
         component->_indices[VAO::IBO_LINE].insert(component->_indices[VAO::IBO_LINE].end(), {vertexIdx, static_cast<unsigned int>((vertexIdx + 1) % numVertices), RESTART_PRIMITIVE_INDEX});
     }

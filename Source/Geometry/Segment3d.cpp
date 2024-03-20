@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace GDSA::Geometry
+{
 Segment3d::Segment3d(Vect3d& orig, Vect3d& dest)
     : Edge3d(orig, dest)
 {
@@ -32,3 +34,4 @@ std::ostream& operator<<(std::ostream& os, const Segment3d& segment)
               << ", Destination: " << segment._dest;
     return os;
 }
+}    // namespace GDSA::Geometry

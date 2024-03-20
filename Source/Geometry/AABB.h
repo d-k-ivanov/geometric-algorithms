@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+namespace GDSA::Geometry
+{
 class AABB
 {
 protected:
@@ -88,3 +90,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const AABB& aabb);
 };
+}    // namespace GDSA

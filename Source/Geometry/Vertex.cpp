@@ -4,6 +4,8 @@
 
 #include <string>
 
+namespace GDSA::Geometry
+{
 Vertex::Vertex()
     : Point()
 {
@@ -107,3 +109,4 @@ SegmentLine Vertex::previousEdge()
 
     return {};
 }
+} // namespace GDSA::Geometry

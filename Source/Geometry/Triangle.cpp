@@ -1,5 +1,7 @@
 #include "Triangle.h"
 
+namespace GDSA::Geometry
+{
 Triangle::Triangle(const Vect2d& aa, const Vect2d& bb, const Vect2d& cc)
     : _a(aa)
     , _b(bb)
@@ -13,3 +15,4 @@ Triangle::Triangle(const Triangle& tt)
     , _c(tt._c)
 {
 }
+}    // namespace GDSA::Geometry

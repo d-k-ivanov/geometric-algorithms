@@ -1,6 +1,6 @@
 #include "DrawVoxelization.h"
 
-GDSA::DrawVoxelization::DrawVoxelization(glm::vec3* positions, int numVoxels, const glm::vec3& voxelScale, glm::vec3* voxelColor)
+GDSA::Render::DrawVoxelization::DrawVoxelization(glm::vec3* positions, int numVoxels, const glm::vec3& voxelScale, glm::vec3* voxelColor)
     : Model3D()
 {
     Component* component = this->getVoxel();
@@ -22,7 +22,7 @@ GDSA::DrawVoxelization::DrawVoxelization(glm::vec3* positions, int numVoxels, co
     this->_components.push_back(std::unique_ptr<Component>(component));
 }
 
-void GDSA::DrawVoxelization::draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive)
+void GDSA::Render::DrawVoxelization::draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive)
 {
     const Component* component = _components[0].get();
 

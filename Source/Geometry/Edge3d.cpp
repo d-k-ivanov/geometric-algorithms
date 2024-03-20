@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 
+namespace GDSA::Geometry
+{
 Edge3d::Edge3d()
     : _orig(0.0f)
     , _dest(0.0f)
@@ -93,3 +95,4 @@ std::ostream& operator<<(std::ostream& os, const Edge3d& edge)
     os << "Edge --> Origin: " << edge._orig << "; destination: " << edge._dest;
     return os;
 }
+} // namespace GDSA::Geometry

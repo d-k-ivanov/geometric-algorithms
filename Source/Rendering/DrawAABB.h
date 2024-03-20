@@ -4,12 +4,12 @@
 
 #include "Geometry/AABB.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class DrawAABB : public Model3D
 {
 public:
-    DrawAABB(AABB& aabb);
+    DrawAABB(Geometry::AABB& aabb);
     DrawAABB(const DrawAABB& aabb) = delete;
     ~DrawAABB() override;
 };

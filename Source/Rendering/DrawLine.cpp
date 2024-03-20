@@ -3,13 +3,13 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-GDSA::DrawLine::DrawLine(Line& line)
+GDSA::Render::DrawLine::DrawLine(Geometry::Line& line)
     : Model3D()
 {
     Component* component = new Component;
 
-    Point orig = line.getPoint(-100000);
-    Point dest = line.getPoint(100000);
+    Geometry::Point orig = line.getPoint(-100000);
+    Geometry::Point dest = line.getPoint(100000);
 
     component->_vertices.insert(
         component->_vertices.end(),
@@ -23,13 +23,13 @@ GDSA::DrawLine::DrawLine(Line& line)
     this->buildVao(component);
 }
 
-GDSA::DrawLine::DrawLine(Line3d& line)
+GDSA::Render::DrawLine::DrawLine(Geometry::Line3d& line)
     : Model3D()
 {
     Component* component = new Component;
 
-    const Vect3d orig = line.getPoint(-100000);
-    const Vect3d dest = line.getPoint(100000);
+    const Geometry::Vect3d orig = line.getPoint(-100000);
+    const Geometry::Vect3d dest = line.getPoint(100000);
 
     component->_vertices.insert(
         component->_vertices.end(),

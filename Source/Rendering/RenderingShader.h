@@ -2,7 +2,7 @@
 
 #include "ShaderProgram.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class RenderingShader : public ShaderProgram
 {
@@ -12,4 +12,4 @@ public:
     void   applyActiveSubroutines() override;
     GLuint createShaderProgram(const char* filename) override;
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

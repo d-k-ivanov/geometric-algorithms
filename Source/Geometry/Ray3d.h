@@ -2,6 +2,8 @@
 
 #include "Edge3d.h"
 
+namespace GDSA::Geometry
+{
 /**
  *  @brief This class represents a ray that goes from an origin to the infinite.
  */
@@ -47,3 +49,4 @@ public:
         return this->getDestination() - this->getOrigin();
     }
 };
+} // namespace GDSA::Geometry

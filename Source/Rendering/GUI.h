@@ -12,7 +12,7 @@
 
 #include <ImGuizmo.h>
 
-namespace GDSA
+namespace GDSA::Render
 {
 class GUI : public Singleton<GUI>
 {
@@ -73,4 +73,4 @@ public:
     uint16_t getFrameRate() { return static_cast<uint16_t>(ImGui::GetIO().Framerate); }
     bool     isMouseActive() { return ImGui::GetIO().WantCaptureMouse; }
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

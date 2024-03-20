@@ -2,6 +2,8 @@
 
 #include "Point.h"
 
+namespace GDSA::Geometry
+{
 class Vect2d : public Point
 {
 public:
@@ -59,3 +61,4 @@ public:
      */
     Vect2d scalarMult(double t);
 };
+}

@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+namespace GDSA::Geometry
+{
 Triangle3d::Triangle3d()
 {
 }
@@ -197,3 +199,4 @@ std::ostream& operator<<(std::ostream& os, const Triangle3d& triangle)
     std::cout << "Triangle 3D -> " << triangle._a << ", " << triangle._b << ", " << triangle._c;
     return os;
 }
+}    // namespace GDSA::Geometry

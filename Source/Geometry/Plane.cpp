@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+namespace GDSA::Geometry
+{
 Plane::Plane(const Vect3d& p, const Vect3d& u, const Vect3d& v, const bool arePoints)
 {
     // Vectors: pi = p + u * lambda + v * mu
@@ -229,3 +231,4 @@ std::ostream& operator<<(std::ostream& os, const Plane& plane)
     os << "Plane -> a: " << plane._a << ", b: " << plane._b << ", c: " << plane._c;
     return os;
 }
+}   // namespace GDSA::Geometry

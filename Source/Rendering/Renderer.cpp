@@ -7,7 +7,7 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
-GDSA::Renderer::Renderer()
+GDSA::Render::Renderer::Renderer()
     : _appState(nullptr)
     , _content(nullptr)
     , _screenshoter(nullptr)
@@ -18,7 +18,7 @@ GDSA::Renderer::Renderer()
     _gui = GUI::getInstance();
 }
 
-void GDSA::Renderer::renderLine(Model3D::MatrixRenderInformation* matrixInformation)
+void GDSA::Render::Renderer::renderLine(Model3D::MatrixRenderInformation* matrixInformation)
 {
     _lineShader->use();
 
@@ -28,7 +28,7 @@ void GDSA::Renderer::renderLine(Model3D::MatrixRenderInformation* matrixInformat
     }
 }
 
-void GDSA::Renderer::renderPoint(Model3D::MatrixRenderInformation* matrixInformation)
+void GDSA::Render::Renderer::renderPoint(Model3D::MatrixRenderInformation* matrixInformation)
 {
     _pointShader->use();
 
@@ -38,7 +38,7 @@ void GDSA::Renderer::renderPoint(Model3D::MatrixRenderInformation* matrixInforma
     }
 }
 
-void GDSA::Renderer::renderTriangle(Model3D::MatrixRenderInformation* matrixInformation)
+void GDSA::Render::Renderer::renderTriangle(Model3D::MatrixRenderInformation* matrixInformation)
 {
     _triangleShader->use();
     this->transferLightUniforms(_triangleShader);
@@ -50,7 +50,7 @@ void GDSA::Renderer::renderTriangle(Model3D::MatrixRenderInformation* matrixInfo
     }
 }
 
-void GDSA::Renderer::transferLightUniforms(RenderingShader* shader)
+void GDSA::Render::Renderer::transferLightUniforms(RenderingShader* shader)
 {
     shader->setUniform("lightPosition", _appState->_lightPosition);
     shader->setUniform("Ia", _appState->_Ia);
@@ -58,29 +58,29 @@ void GDSA::Renderer::transferLightUniforms(RenderingShader* shader)
     shader->setUniform("Is", _appState->_Is);
 }
 
-GDSA::Renderer::~Renderer()
+GDSA::Render::Renderer::~Renderer()
 {
     delete _screenshoter;
 }
 
-void GDSA::Renderer::createCamera(uint16_t width, uint16_t height)
+void GDSA::Render::Renderer::createCamera(uint16_t width, uint16_t height)
 {
     _content->buildCamera(width, height);
 }
 
-void GDSA::Renderer::createModels()
+void GDSA::Render::Renderer::createModels()
 {
     _content->buildScenario();
 }
 
-void GDSA::Renderer::createShaderProgram()
+void GDSA::Render::Renderer::createShaderProgram()
 {
     _pointShader    = ShaderProgramDB::getInstance()->getShader(ShaderProgramDB::POINT_RENDERING);
     _lineShader     = ShaderProgramDB::getInstance()->getShader(ShaderProgramDB::LINE_RENDERING);
     _triangleShader = ShaderProgramDB::getInstance()->getShader(ShaderProgramDB::TRIANGLE_RENDERING);
 }
 
-void GDSA::Renderer::prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState)
+void GDSA::Render::Renderer::prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState)
 {
     _appState                = appState;
     _appState->_viewportSize = glm::ivec2(width, height);
@@ -120,13 +120,13 @@ void GDSA::Renderer::prepareOpenGL(uint16_t width, uint16_t height, ApplicationS
     this->resizeEvent(_appState->_viewportSize.x, _appState->_viewportSize.y);
 }
 
-void GDSA::Renderer::removeModel()
+void GDSA::Render::Renderer::removeModel()
 {
     if(!_content->_model.empty())
         _content->_model.erase(_content->_model.end() - 1);
 }
 
-void GDSA::Renderer::resizeEvent(uint16_t width, uint16_t height)
+void GDSA::Render::Renderer::resizeEvent(uint16_t width, uint16_t height)
 {
     glViewport(0, 0, width, height);
 
@@ -134,7 +134,7 @@ void GDSA::Renderer::resizeEvent(uint16_t width, uint16_t height)
     _content->_camera[_appState->_selectedCamera]->setRaspect(width, height);
 }
 
-void GDSA::Renderer::screenshotEvent(const ScreenshotEvent& event)
+void GDSA::Render::Renderer::screenshotEvent(const ScreenshotEvent& event)
 {
     if(event._type == ScreenshotListener::RGBA)
     {
@@ -150,7 +150,7 @@ void GDSA::Renderer::screenshotEvent(const ScreenshotEvent& event)
     }
 }
 
-void GDSA::Renderer::render(float alpha, bool renderGui, bool bindScreenshoter)
+void GDSA::Render::Renderer::render(float alpha, bool renderGui, bool bindScreenshoter)
 {
     Model3D::MatrixRenderInformation matrixInformation;
     glm::mat4                        bias = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));

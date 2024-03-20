@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-GDSA::Image::Image(const std::string& filename)
+GDSA::Render::Image::Image(const std::string& filename)
     : _depth(4)    // PNG depth
 {
     const unsigned error = lodepng::decode(_image, _width, _height, filename.c_str());
@@ -19,7 +19,7 @@ GDSA::Image::Image(const std::string& filename)
     this->flipImageVertically(_image, _width, _height, _depth);    // By default it's flipped
 }
 
-GDSA::Image::Image(unsigned char* image, const uint16_t width, const uint16_t height, const uint8_t depth)
+GDSA::Render::Image::Image(unsigned char* image, const uint16_t width, const uint16_t height, const uint8_t depth)
     : _width(width)
     , _height(height)
     , _depth(depth)
@@ -37,11 +37,11 @@ GDSA::Image::Image(unsigned char* image, const uint16_t width, const uint16_t he
     }
 }
 
-GDSA::Image::~Image()
+GDSA::Render::Image::~Image()
 {
 }
 
-void GDSA::Image::flipImageVertically(std::vector<unsigned char>& image, const uint16_t width, const uint16_t height, const uint8_t depth)
+void GDSA::Render::Image::flipImageVertically(std::vector<unsigned char>& image, const uint16_t width, const uint16_t height, const uint8_t depth)
 {
     int            rowSize    = width * depth;
     unsigned char* bits       = image.data();
@@ -60,7 +60,7 @@ void GDSA::Image::flipImageVertically(std::vector<unsigned char>& image, const u
     delete[] tempBuffer;
 }
 
-bool GDSA::Image::saveImage(const std::string& filename)
+bool GDSA::Render::Image::saveImage(const std::string& filename)
 {
     std::vector<unsigned char> result;
     const unsigned             error = lodepng::encode(result, this->_image, this->_width, this->_height);
@@ -74,7 +74,7 @@ bool GDSA::Image::saveImage(const std::string& filename)
     return false;
 }
 
-void GDSA::Image::flipImageVertically()
+void GDSA::Render::Image::flipImageVertically()
 {
     Image::flipImageVertically(_image, _width, _height, _depth);
 }

@@ -6,6 +6,8 @@
 #include <fstream>
 #include <iostream>
 
+namespace GDSA::Geometry
+{
 TriangleModel::TriangleModel(const std::string& pathfile)
 {
     std::string binaryFile = pathfile.substr(0, pathfile.find_last_of('.')) + BINARY_EXTENSION;
@@ -156,7 +158,7 @@ void TriangleModel::computeTangents()
     delete[] tan1;
 }
 
-GDSA::DrawVoxelization* TriangleModel::voxelize() const
+Render::DrawVoxelization* TriangleModel::voxelize() const
 {
     glm::vec3* positions = new glm::vec3[_vertices.size()];
     for(int vertexIdx = 0; vertexIdx < _vertices.size(); ++vertexIdx)
@@ -164,7 +166,7 @@ GDSA::DrawVoxelization* TriangleModel::voxelize() const
         positions[vertexIdx] = glm::vec3(_vertices[vertexIdx].getX(), _vertices[vertexIdx].getY(), _vertices[vertexIdx].getZ());
     }
 
-    GDSA::DrawVoxelization* voxelization = new GDSA::DrawVoxelization(positions, _vertices.size(), glm::vec3(.01f));
+    Render::DrawVoxelization* voxelization = new Render::DrawVoxelization(positions, _vertices.size(), glm::vec3(.01f));
     delete[] positions;
 
     return voxelization;
@@ -326,3 +328,4 @@ Triangle3d* TriangleModel::Face::updateTriangle()
 
     return &_triangle;
 }
+}    // namespace GDSA::Geometry

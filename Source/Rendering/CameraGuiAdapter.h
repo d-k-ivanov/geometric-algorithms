@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include "InterfaceAdapter.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class CameraGuiAdapter : public InterfaceAdapter
 {
@@ -21,4 +21,4 @@ public:
     void renderGuiObject() override;
     void setCamera(Camera* camera) { _camera = camera; }
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

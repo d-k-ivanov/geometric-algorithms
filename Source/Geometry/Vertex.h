@@ -5,6 +5,8 @@
 
 #include <ostream>
 
+namespace GDSA::Geometry
+{
 class Polygon;    // Forward declaration due to circular reference betwen both classes
 
 class Vertex : public Point
@@ -110,3 +112,4 @@ public:
      */
     void setPosition(int pos) { _position = pos; }
 };
+}    // namespace GDSA::Geometry

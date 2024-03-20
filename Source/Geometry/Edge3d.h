@@ -2,6 +2,8 @@
 
 #include "Vect3d.h"
 
+namespace GDSA::Geometry
+{
 /**
  *  @brief Represents any line of the geometry module.
  */
@@ -88,3 +90,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Edge3d& edge);
 };
+} // namespace GDSA::Geometry

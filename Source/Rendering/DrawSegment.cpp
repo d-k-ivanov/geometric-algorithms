@@ -1,6 +1,6 @@
 #include "DrawSegment.h"
 
-GDSA::DrawSegment::DrawSegment(SegmentLine& segment)
+GDSA::Render::DrawSegment::DrawSegment(Geometry::SegmentLine& segment)
     : Model3D()
 {
     Component* component = new Component;
@@ -16,7 +16,7 @@ GDSA::DrawSegment::DrawSegment(SegmentLine& segment)
     this->buildVao(component);
 }
 
-GDSA::DrawSegment::DrawSegment(Segment3d& segment)
+GDSA::Render::DrawSegment::DrawSegment(Geometry::Segment3d& segment)
     : Model3D()
 {
     Component* component = new Component;

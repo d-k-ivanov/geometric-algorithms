@@ -4,6 +4,8 @@
 #include "Ray3d.h"
 #include "Vect3d.h"
 
+namespace GDSA::Geometry
+{
 /**
  *  @brief This class represents a triangle defined by 3 points.
  */
@@ -149,3 +151,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Triangle3d& triangle);
 };
+} // namespace GDSA::Geometry

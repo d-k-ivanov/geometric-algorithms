@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-namespace GDSA
+namespace GDSA::Render
 {
 class CameraProjection
 {

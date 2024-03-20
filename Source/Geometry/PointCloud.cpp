@@ -5,6 +5,8 @@
 #include <fstream>
 #include <sstream>
 
+namespace GDSA::Geometry
+{
 PointCloud::PointCloud()
 {
 }
@@ -168,3 +170,4 @@ void PointCloud::save(const std::string& filename)
     // file.write(reinterpret_cast<char*>(_points.data()), static_cast<int>(numPoints * sizeof(Point)));
     file.close();
 }
+}    // namespace GDSA::Geometry

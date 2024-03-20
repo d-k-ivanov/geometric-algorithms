@@ -6,6 +6,8 @@
 
 #include "Rendering/DrawVoxelization.h"
 
+namespace GDSA::Geometry
+{
 class Voxelization
 {
 
@@ -35,7 +37,7 @@ public:
 
     bool isInVoxel(VoxelModel* voxel, const Vect3d& vertice) const;
 
-    GDSA::DrawVoxelization* getRenderingObject(bool outlineMode);
+    Render::DrawVoxelization* getRenderingObject(bool outlineMode);
 
     void printData() const;
 
@@ -51,3 +53,4 @@ protected:
     void flood();
     void recursiveFill(VoxelModel* v, int x, int y, int z);
 };
+}    // namespace GDSA::Geometry

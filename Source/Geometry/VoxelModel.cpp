@@ -5,6 +5,8 @@
 
 #include "Utils/ChronoUtilities.h"
 
+namespace GDSA::Geometry
+{
 VoxelModel::VoxelModel()
 {
     _status = VoxelStatus::NP;
@@ -265,3 +267,4 @@ bool VoxelModel::zAxisTest(const double& a, const double& b, const double& fa, c
 
     return true;
 }
+}    // namespace GDSA::Geometry

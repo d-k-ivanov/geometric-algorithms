@@ -4,6 +4,8 @@
 #include "Segment3d.h"
 #include "Vect3d.h"
 
+namespace GDSA::Geometry
+{
 /*
  *  @brief This class a represents a 3D plane represented by three points.
  */
@@ -142,3 +144,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Plane& plane);
 };
+} // namespace GDSA::Geometry

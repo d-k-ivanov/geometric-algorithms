@@ -18,7 +18,7 @@
 #include <string>
 #include <filesystem>
 
-GDSA::GUI::GUI()
+GDSA::Render::GUI::GUI()
 {
     _appState              = InputManager::getApplicationState();
     _cameraGuiAdapter      = new CameraGuiAdapter;
@@ -33,7 +33,7 @@ GDSA::GUI::GUI()
         _showMenuButtons[idx] = false;
 }
 
-GDSA::GUI::~GUI()
+GDSA::Render::GUI::~GUI()
 {
     delete[] _showMenuButtons;
 
@@ -42,7 +42,7 @@ GDSA::GUI::~GUI()
     ImGui::DestroyContext();
 }
 
-void GDSA::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode)
+void GDSA::Render::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode)
 {
     if(ImGui::RadioButton("Translate", operation == ImGuizmo::TRANSLATE))
     {
@@ -76,7 +76,7 @@ void GDSA::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mo
     }
 }
 
-void GDSA::GUI::loadFonts()
+void GDSA::Render::GUI::loadFonts()
 {
     ImFontConfig cfg;
     ImGuiIO&     io = ImGui::GetIO();
@@ -103,13 +103,13 @@ void GDSA::GUI::loadFonts()
     io.Fonts->AddFontFromFileTTF((Utils::ThisExecutableLocation() + "/Resources/Fonts/fa-solid-900.ttf").c_str(), 12.0f, &cfg, icons_ranges);
 }
 
-void GDSA::GUI::loadImGUIStyle()
+void GDSA::Render::GUI::loadImGUIStyle()
 {
     ImGui::StyleColorsLight();
     this->loadFonts();
 }
 
-void GDSA::GUI::processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent) const
+void GDSA::Render::GUI::processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent) const
 {
     if(fileDialog == FileDialog::OPEN_MESH)
     {
@@ -123,7 +123,7 @@ void GDSA::GUI::processSelectedFile(FileDialog fileDialog, const std::string& fi
     }
 }
 
-void GDSA::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sceneContent)
+void GDSA::Render::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sceneContent)
 {
     if(component && _showMenuButtons[MenuButtons::MODELS])
     {
@@ -153,7 +153,7 @@ void GDSA::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sceneC
     }
 }
 
-void GDSA::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
+void GDSA::Render::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
 {
     const std::string openGLVersion = "#version 4" + std::to_string(openGLMinorVersion) + "0 core";
 
@@ -172,7 +172,7 @@ void GDSA::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
     ImGui_ImplOpenGL3_Init(openGLVersion.c_str());
 }
 
-void GDSA::GUI::render(SceneContent* sceneContent)
+void GDSA::Render::GUI::render(SceneContent* sceneContent)
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -234,7 +234,7 @@ void GDSA::GUI::render(SceneContent* sceneContent)
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void GDSA::GUI::showCameraMenu(SceneContent* sceneContent)
+void GDSA::Render::GUI::showCameraMenu(SceneContent* sceneContent)
 {
     static Camera* cameraSelected = nullptr;
 
@@ -272,7 +272,7 @@ void GDSA::GUI::showCameraMenu(SceneContent* sceneContent)
     }
 }
 
-void GDSA::GUI::showFileDialog(SceneContent* sceneContent)
+void GDSA::Render::GUI::showFileDialog(SceneContent* sceneContent)
 {
     if(_fileDialog != NONE)
     {
@@ -299,7 +299,7 @@ void GDSA::GUI::showFileDialog(SceneContent* sceneContent)
     }
 }
 
-void GDSA::GUI::showLightMenu(SceneContent* sceneContent)
+void GDSA::Render::GUI::showLightMenu(SceneContent* sceneContent)
 {
     ImGui::SetNextWindowSize(ImVec2(800, 440), ImGuiCond_FirstUseEver);
 
@@ -319,7 +319,7 @@ void GDSA::GUI::showLightMenu(SceneContent* sceneContent)
     }
 }
 
-void GDSA::GUI::showModelMenu(SceneContent* sceneContent)
+void GDSA::Render::GUI::showModelMenu(SceneContent* sceneContent)
 {
     ImGui::SetNextWindowSize(ImVec2(800, 440), ImGuiCond_FirstUseEver);
 
@@ -401,7 +401,7 @@ void GDSA::GUI::showModelMenu(SceneContent* sceneContent)
     ImGui::End();
 }
 
-void GDSA::GUI::showRenderingMenu(SceneContent* sceneContent)
+void GDSA::Render::GUI::showRenderingMenu(SceneContent* sceneContent)
 {
     if(ImGui::Begin("Rendering Settings", &_showMenuButtons[RENDERING]))
     {
@@ -435,7 +435,7 @@ void GDSA::GUI::showRenderingMenu(SceneContent* sceneContent)
     ImGui::End();
 }
 
-void GDSA::GUI::showScreenshotMenu(SceneContent* sceneContent)
+void GDSA::Render::GUI::showScreenshotMenu(SceneContent* sceneContent)
 {
     auto fixName = [=](const std::string& name, const std::string& defaultName, const std::string& extension) -> std::string
     {

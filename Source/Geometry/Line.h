@@ -2,6 +2,8 @@
 
 #include "SegmentLine.h"
 
+namespace GDSA::Geometry
+{
 class Line : public SegmentLine
 {
     friend RayLine;
@@ -73,3 +75,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Line& line);
 };
+} // namespace GDSA::Geometry

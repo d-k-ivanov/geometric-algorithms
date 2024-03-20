@@ -5,6 +5,8 @@
 
 #include <string>
 
+namespace GDSA::Geometry
+{
 /**
  *  @brief This class represents a set of points distributed in the space.
  */
@@ -102,3 +104,4 @@ public:
      */
     size_t size() const { return _points.size(); }
 };
+} // namespace GDSA::Geometry

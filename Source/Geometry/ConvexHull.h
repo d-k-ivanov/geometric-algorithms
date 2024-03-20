@@ -4,6 +4,8 @@
 #include "Triangle.h"
 #include "TriangleModel.h"
 
+namespace GDSA::Geometry
+{
 class ConvexHull
 {
 private:
@@ -25,3 +27,4 @@ public:
     const std::vector<Triangle3d>& getTriangles3D() const { return _triangles3D; }
     const std::vector<Segment3d>&  getSegments() const { return _segments3D; }
 };
+}   // namespace GDSA::Geometry

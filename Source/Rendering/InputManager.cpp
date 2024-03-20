@@ -6,10 +6,10 @@
 
 #include <vector>
 
-GDSA::ApplicationState GDSA::InputManager::_applicationState;
-const glm::vec2           GDSA::InputManager::_defaultCursorPosition = glm::vec2(-1.0f, -1.0f);
+GDSA::Render::ApplicationState GDSA::Render::InputManager::_applicationState;
+const glm::vec2           GDSA::Render::InputManager::_defaultCursorPosition = glm::vec2(-1.0f, -1.0f);
 
-GDSA::InputManager::InputManager()
+GDSA::Render::InputManager::InputManager()
     : _lastCursorPosition(_defaultCursorPosition)
     , _leftClickPressed(false)
     , _rightClickPressed(false)
@@ -17,7 +17,7 @@ GDSA::InputManager::InputManager()
     this->buildMoveRelatedBuffers();
 }
 
-void GDSA::InputManager::buildMoveRelatedBuffers()
+void GDSA::Render::InputManager::buildMoveRelatedBuffers()
 {
     _movementMultiplier = 0.1f;
     _moveSpeedUp        = 1.0f;
@@ -51,7 +51,7 @@ void GDSA::InputManager::buildMoveRelatedBuffers()
     _moves = std::vector<GLuint>(static_cast<size_t>(Events::NUM_EVENTS), 0);
 }
 
-bool GDSA::InputManager::checkPanTilt(const float xPos, const float yPos)
+bool GDSA::Render::InputManager::checkPanTilt(const float xPos, const float yPos)
 {
     Camera* camera = Renderer::getInstance()->getCamera();
 
@@ -80,7 +80,7 @@ bool GDSA::InputManager::checkPanTilt(const float xPos, const float yPos)
     return false;
 }
 
-void GDSA::InputManager::processPressedKeyEvent(const int key, const int mods)
+void GDSA::Render::InputManager::processPressedKeyEvent(const int key, const int mods)
 {
     Renderer* renderer = Renderer::getInstance();
     Camera*   camera   = renderer->getCamera();
@@ -169,7 +169,7 @@ void GDSA::InputManager::processPressedKeyEvent(const int key, const int mods)
     }
 }
 
-void GDSA::InputManager::processReleasedKeyEvent(const int key, const int mods)
+void GDSA::Render::InputManager::processReleasedKeyEvent(const int key, const int mods)
 {
     if(key == _eventKey[Events::DOLLY][0] || key == _eventKey[Events::DOLLY][1])
     {
@@ -182,11 +182,11 @@ void GDSA::InputManager::processReleasedKeyEvent(const int key, const int mods)
     }
 }
 
-GDSA::InputManager::~InputManager()
+GDSA::Render::InputManager::~InputManager()
 {
 }
 
-void GDSA::InputManager::init(GLFWwindow* window)
+void GDSA::Render::InputManager::init(GLFWwindow* window)
 {
     _window = window;
 
@@ -199,23 +199,23 @@ void GDSA::InputManager::init(GLFWwindow* window)
     glfwSetScrollCallback(window, scrollCallback);
 }
 
-void GDSA::InputManager::pushScreenshotEvent(const ScreenshotListener::ScreenshotEvent& event)
+void GDSA::Render::InputManager::pushScreenshotEvent(const ScreenshotListener::ScreenshotEvent& event)
 {
     _screenshotEvents.push_back(event);
 }
 
-void GDSA::InputManager::suscribeResize(ResizeListener* listener)
+void GDSA::Render::InputManager::suscribeResize(ResizeListener* listener)
 {
     _resizeListeners.push_back(listener);
 }
 
-void GDSA::InputManager::suscribeScreenshot(ScreenshotListener* listener)
+void GDSA::Render::InputManager::suscribeScreenshot(ScreenshotListener* listener)
 {
     _screenshotListeners.push_back(listener);
 }
 
 // This callback function will be called every time the OpenGL drawing area is resized.
-void GDSA::InputManager::framebufferSizeCallback(GLFWwindow* window, int width, int height)
+void GDSA::Render::InputManager::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     InputManager* inputManager = InputManager::getInstance();
     for(ResizeListener* listener : inputManager->_resizeListeners)
@@ -225,7 +225,7 @@ void GDSA::InputManager::framebufferSizeCallback(GLFWwindow* window, int width, 
 }
 
 // This callback function will be called every time a key directed to the OpenGL drawing area is pressed.
-void GDSA::InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void GDSA::Render::InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     InputManager* inputManager = InputManager::getInstance();
 
@@ -240,7 +240,7 @@ void GDSA::InputManager::keyCallback(GLFWwindow* window, int key, int scancode, 
 }
 
 // This callback function will be called every time a mouse button is pressed on the OpenGL drawing area.
-void GDSA::InputManager::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+void GDSA::Render::InputManager::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
     if(GUI::getInstance()->isMouseActive())
         return;
@@ -260,14 +260,14 @@ void GDSA::InputManager::mouseButtonCallback(GLFWwindow* window, int button, int
     }
 }
 
-void GDSA::InputManager::mouseCursorCallback(GLFWwindow* window, double xpos, double ypos)
+void GDSA::Render::InputManager::mouseCursorCallback(GLFWwindow* window, double xpos, double ypos)
 {
     InputManager* inputManager = InputManager::getInstance();
     inputManager->checkPanTilt(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 
 // This callback function will be called every time the mouse wheel is moved over the OpenGL drawing area.
-void GDSA::InputManager::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+void GDSA::Render::InputManager::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
     InputManager* inputManager = InputManager::getInstance();
     Camera*       camera       = Renderer::getInstance()->getCamera();
@@ -276,7 +276,7 @@ void GDSA::InputManager::scrollCallback(GLFWwindow* window, double xoffset, doub
 }
 
 // This callback function will be called every time the OpenGL drawing area needs to be redrawn.
-void GDSA::InputManager::windowRefreshCallback(GLFWwindow* window)
+void GDSA::Render::InputManager::windowRefreshCallback(GLFWwindow* window)
 {
     InputManager* inputManager = InputManager::getInstance();
     while(!inputManager->_screenshotEvents.empty())

@@ -3,6 +3,8 @@
 #include "RayLine.h"
 #include "SegmentLine.h"
 
+namespace GDSA::Geometry
+{
 Line::Line(const Point& a, const Point& b)
     : SegmentLine(a, b)
 {
@@ -88,3 +90,4 @@ std::ostream& operator<<(std::ostream& os, const Line& line)
 
     return os;
 }
+} // namespace GDSA::Geometry

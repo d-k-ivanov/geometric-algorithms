@@ -3,16 +3,16 @@
 #include <cstring>
 #include <iostream>
 
-GDSA::RenderingShader::RenderingShader()
+GDSA::Render::RenderingShader::RenderingShader()
     : ShaderProgram()
 {
 }
 
-GDSA::RenderingShader::~RenderingShader()
+GDSA::Render::RenderingShader::~RenderingShader()
 {
 }
 
-void GDSA::RenderingShader::applyActiveSubroutines()
+void GDSA::Render::RenderingShader::applyActiveSubroutines()
 {
     if(!_activeSubroutineUniform[VERTEX_SHADER].empty())
     {
@@ -30,7 +30,7 @@ void GDSA::RenderingShader::applyActiveSubroutines()
     }
 }
 
-GLuint GDSA::RenderingShader::createShaderProgram(const char* filename)
+GLuint GDSA::Render::RenderingShader::createShaderProgram(const char* filename)
 {
     if(_handler <= 0)
     {

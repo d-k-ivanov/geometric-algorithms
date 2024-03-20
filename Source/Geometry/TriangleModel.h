@@ -13,6 +13,8 @@
 
 #define BINARY_EXTENSION ".bin"
 
+namespace GDSA::Geometry
+{
 class TriangleModel
 {
 public:
@@ -54,7 +56,7 @@ public:
      */
     void computeTangents();
 
-    GDSA::DrawVoxelization* voxelize() const;
+    Render::DrawVoxelization* voxelize() const;
 };
 
 class TriangleModel::Face
@@ -136,3 +138,4 @@ public:
      */
     Triangle3d* updateTriangle();
 };
+} // namespace GDSA::Geometry

@@ -2,6 +2,8 @@
 
 #include "Edge3d.h"
 
+namespace GDSA::Geometry
+{
 /**
  *  @brief This class represent a segment formed by two points.
  */
@@ -44,3 +46,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Segment3d& segment);
 };
+} // namespace GDSA::Geometry

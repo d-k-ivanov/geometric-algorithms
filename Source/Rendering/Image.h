@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace GDSA
+namespace GDSA::Render
 {
 class Image
 {
@@ -27,4 +27,4 @@ public:
     int            getHeight() const { return _height; }
     int            getWidth() const { return _width; }
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

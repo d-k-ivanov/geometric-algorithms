@@ -5,14 +5,14 @@
 #include "Geometry/Triangle.h"
 #include "Geometry/Triangle3d.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class DrawTriangle : public Model3D
 {
 public:
-    DrawTriangle(Triangle& triangle);
-    DrawTriangle(Triangle3d& triangle);
+    DrawTriangle(Geometry::Triangle& triangle);
+    DrawTriangle(Geometry::Triangle3d& triangle);
     DrawTriangle(const DrawTriangle& drawTriangle) = delete;
     ~DrawTriangle() override                       = default;
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

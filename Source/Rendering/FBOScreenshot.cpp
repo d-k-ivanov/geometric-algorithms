@@ -2,7 +2,7 @@
 
 #include <thread>
 
-GDSA::FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t height)
+GDSA::Render::FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t height)
     : FBO(width, height)
 {
     glGenFramebuffers(1, &_id);    // Support for multisampled framebuffer
@@ -47,19 +47,19 @@ GDSA::FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t height)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);    // Default framebuffer
 }
 
-GDSA::FBOScreenshot::~FBOScreenshot()
+GDSA::Render::FBOScreenshot::~FBOScreenshot()
 {
     glDeleteTextures(1, &_colorBufferID);
     glDeleteRenderbuffers(1, &_mColorBufferID);
     glDeleteRenderbuffers(1, &_mDepthBufferID);
 }
 
-void GDSA::FBOScreenshot::bindFBO()
+void GDSA::Render::FBOScreenshot::bindFBO()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _multisampledFBO);    // Multisampled! Normal FBO is only used as support for this one
 }
 
-GDSA::Image* GDSA::FBOScreenshot::getImage() const
+GDSA::Render::Image* GDSA::Render::FBOScreenshot::getImage() const
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _multisampledFBO);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _id);
@@ -77,7 +77,7 @@ GDSA::Image* GDSA::FBOScreenshot::getImage() const
     return image;
 }
 
-void GDSA::FBOScreenshot::modifySize(const uint16_t width, const uint16_t height)
+void GDSA::Render::FBOScreenshot::modifySize(const uint16_t width, const uint16_t height)
 {
     FBO::modifySize(width, height);
 
@@ -99,7 +99,7 @@ void GDSA::FBOScreenshot::modifySize(const uint16_t width, const uint16_t height
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void GDSA::FBOScreenshot::saveImage(const std::string& filename)
+void GDSA::Render::FBOScreenshot::saveImage(const std::string& filename)
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _multisampledFBO);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _id);

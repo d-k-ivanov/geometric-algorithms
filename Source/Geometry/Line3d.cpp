@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+namespace GDSA::Geometry
+{
 Line3d::Line3d()
 {
 }
@@ -132,4 +134,5 @@ std::ostream& operator<<(std::ostream& os, const Line3d& line)
 {
     std::cout << "Line -> Origin: " << line._orig << ", Destination: " << line._dest;
     return os;
+}
 }

@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+namespace GDSA::Geometry
+{
 class PointCloud
 {
 protected:
@@ -81,3 +83,4 @@ public:
      */
     size_t size() const { return _points.size(); }
 };
+} // namespace GDSA::Geometry

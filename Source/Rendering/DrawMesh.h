@@ -4,7 +4,7 @@
 
 #include <Geometry/TriangleModel.h>
 
-namespace GDSA
+namespace GDSA::Render
 {
 class DrawMesh : public Model3D
 {
@@ -17,11 +17,11 @@ protected:
 
 public:
     DrawMesh();
-    DrawMesh(TriangleModel& triangleModel);
+    DrawMesh(Geometry::TriangleModel& triangleModel);
     DrawMesh(const DrawMesh& drawMesh) = delete;
 
     ~DrawMesh() override = default;
 
     DrawMesh* loadModelOBJ(const std::string& path);
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

@@ -3,6 +3,8 @@
 #include "Point.h"
 #include "Vect2d.h"
 
+namespace GDSA::Geometry
+{
 class Line;
 class RayLine;
 
@@ -159,3 +161,4 @@ public:
      */
     double triangleArea2(Point& p);
 };
+} // namespace GDSA::Geometry

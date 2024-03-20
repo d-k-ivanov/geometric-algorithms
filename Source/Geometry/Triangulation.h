@@ -5,6 +5,8 @@
 
 #include <vector>
 
+namespace GDSA::Geometry
+{
 class Triangulation
 {
 private:
@@ -18,3 +20,4 @@ public:
 
     std::vector<std::pair<SegmentLine*, /*is segment*/ bool>> getEdges() const { return _edges; }
 };
+}    // namespace GDSA::Geometry

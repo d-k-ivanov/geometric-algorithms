@@ -7,7 +7,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-namespace GDSA
+namespace GDSA::Render
 {
 class FBO
 {
@@ -30,4 +30,4 @@ public:
 
     void threadedWriteImage(std::vector<GLubyte>* pixels, const std::string& filename, const uint16_t width, const uint16_t height);
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

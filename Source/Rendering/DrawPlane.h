@@ -4,16 +4,16 @@
 
 #include "Geometry/Plane.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class DrawPlane : public Model3D
 {
 protected:
-    Plane _plane;
+    Geometry::Plane _plane;
 
 public:
-    DrawPlane(Plane& plane);
+    DrawPlane(Geometry::Plane& plane);
     DrawPlane(const DrawPlane& plane) = delete;
-    ~DrawPlane() override;
+    ~DrawPlane() override = default;
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

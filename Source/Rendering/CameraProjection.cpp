@@ -8,16 +8,16 @@
 
 #include <memory>
 
-std::vector<std::shared_ptr<GDSA::CameraProjection>> GDSA::CameraProjection::_cameraProjection {
-    std::make_shared<GDSA::PerspectiveProjection>(),
-    std::make_shared<GDSA::OrthographicProjection>()};
+std::vector<std::shared_ptr<GDSA::Render::CameraProjection>> GDSA::Render::CameraProjection::_cameraProjection {
+    std::make_shared<GDSA::Render::PerspectiveProjection>(),
+    std::make_shared<GDSA::Render::OrthographicProjection>()};
 
-float GDSA::CameraProjection::CameraProperties::computeAspect()
+float GDSA::Render::CameraProjection::CameraProperties::computeAspect()
 {
     return static_cast<float>(_width) / static_cast<float>(_height);
 }
 
-void GDSA::CameraProjection::CameraProperties::computeAxes(glm::vec3& n, glm::vec3& u, glm::vec3& v)
+void GDSA::Render::CameraProjection::CameraProperties::computeAxes(glm::vec3& n, glm::vec3& u, glm::vec3& v)
 {
     n = glm::normalize(_eye - _lookAt);    // z axis
 
@@ -36,7 +36,7 @@ void GDSA::CameraProjection::CameraProperties::computeAxes(glm::vec3& n, glm::ve
     v = glm::normalize(glm::cross(n, u));    // y axis
 }
 
-glm::vec2 GDSA::CameraProjection::CameraProperties::computeBottomLeftCorner()
+glm::vec2 GDSA::Render::CameraProjection::CameraProperties::computeBottomLeftCorner()
 {
     const float halfWidth  = _width / 2.0f;
     const float halfHeight = _height / 2.0f;
@@ -44,40 +44,40 @@ glm::vec2 GDSA::CameraProjection::CameraProperties::computeBottomLeftCorner()
     return glm::vec2(-halfWidth, -halfHeight);
 }
 
-float GDSA::CameraProjection::CameraProperties::computeFovY()
+float GDSA::Render::CameraProjection::CameraProperties::computeFovY()
 {
     return 2.0f * glm::atan(glm::tan(_fovX / 2.0f) / _aspect);
 }
 
-void GDSA::CameraProjection::CameraProperties::computeProjectionMatrices(CameraProperties* camera)
+void GDSA::Render::CameraProjection::CameraProperties::computeProjectionMatrices(CameraProperties* camera)
 {
     _projectionMatrix     = _cameraProjection[_cameraType]->buildProjectionMatrix(camera);
     _viewProjectionMatrix = _projectionMatrix * _viewMatrix;
 }
 
-void GDSA::CameraProjection::CameraProperties::computeViewMatrices()
+void GDSA::Render::CameraProjection::CameraProperties::computeViewMatrices()
 {
     this->computeViewMatrix();
     _viewProjectionMatrix = _projectionMatrix * _viewMatrix;
 }
 
-void GDSA::CameraProjection::CameraProperties::computeViewMatrix()
+void GDSA::Render::CameraProjection::CameraProperties::computeViewMatrix()
 {
     _viewMatrix = glm::lookAt(_eye, _lookAt, _up);
 }
 
-void GDSA::CameraProjection::CameraProperties::zoom(float speed)
+void GDSA::Render::CameraProjection::CameraProperties::zoom(float speed)
 {
     CameraProjection::_cameraProjection[this->_cameraType]->zoom(this, speed);
 }
 
 // Projection
-glm::mat4 GDSA::PerspectiveProjection::buildProjectionMatrix(CameraProperties* camera)
+glm::mat4 GDSA::Render::PerspectiveProjection::buildProjectionMatrix(CameraProperties* camera)
 {
     return glm::perspective(camera->_fovY, camera->_aspect, camera->_zNear, camera->_zFar);
 }
 
-void GDSA::PerspectiveProjection::zoom(CameraProperties* camera, const float speed)
+void GDSA::Render::PerspectiveProjection::zoom(CameraProperties* camera, const float speed)
 {
     float angle = camera->_fovY - speed;
     if(angle < glm::pi<float>() && angle > 0.0f)
@@ -87,13 +87,13 @@ void GDSA::PerspectiveProjection::zoom(CameraProperties* camera, const float spe
     }
 }
 
-glm::mat4 GDSA::OrthographicProjection::buildProjectionMatrix(CameraProperties* camera)
+glm::mat4 GDSA::Render::OrthographicProjection::buildProjectionMatrix(CameraProperties* camera)
 {
     const glm::vec2 bottomLeftCorner = camera->_bottomLeftCorner;
     return glm::ortho(bottomLeftCorner.x, -bottomLeftCorner.x, bottomLeftCorner.y, -bottomLeftCorner.y, camera->_zNear, camera->_zFar);
 }
 
-void GDSA::OrthographicProjection::zoom(CameraProperties* camera, const float speed)
+void GDSA::Render::OrthographicProjection::zoom(CameraProperties* camera, const float speed)
 {
     const float units            = -speed;
     const float raspect          = camera->_aspect;

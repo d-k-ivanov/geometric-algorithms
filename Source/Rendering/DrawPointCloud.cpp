@@ -1,6 +1,6 @@
 #include "DrawPointCloud.h"
 
-GDSA::DrawPointCloud::DrawPointCloud(PointCloud& pointCloud)
+GDSA::Render::DrawPointCloud::DrawPointCloud(Geometry::PointCloud& pointCloud)
     : Model3D()
 {
     size_t     numPoints = pointCloud.size();
@@ -8,7 +8,7 @@ GDSA::DrawPointCloud::DrawPointCloud(PointCloud& pointCloud)
 
     for(unsigned vertexIdx = 0; vertexIdx < numPoints; vertexIdx++)
     {
-        Point point = pointCloud.getPoint(vertexIdx);
+        Geometry::Point point = pointCloud.getPoint(vertexIdx);
         component->_vertices.push_back(VAO::Vertex {glm::vec3(point.getX(), point.getY(), .0f)});
         component->_indices[VAO::IBO_POINT].push_back(vertexIdx);
     }
@@ -17,7 +17,7 @@ GDSA::DrawPointCloud::DrawPointCloud(PointCloud& pointCloud)
     this->buildVao(component);
 }
 
-GDSA::DrawPointCloud::DrawPointCloud(PointCloud3d& pointCloud)
+GDSA::Render::DrawPointCloud::DrawPointCloud(Geometry::PointCloud3d& pointCloud)
     : Model3D()
 {
     size_t     numPoints = pointCloud.size();
@@ -25,7 +25,7 @@ GDSA::DrawPointCloud::DrawPointCloud(PointCloud3d& pointCloud)
 
     for(unsigned vertexIdx = 0; vertexIdx < numPoints; vertexIdx++)
     {
-        Vect3d point = pointCloud.getPoint(vertexIdx);
+        Geometry::Vect3d point = pointCloud.getPoint(vertexIdx);
         component->_vertices.push_back(VAO::Vertex {glm::vec3(point.getX(), point.getY(), point.getZ())});
         component->_indices[VAO::IBO_POINT].push_back(vertexIdx);
     }
@@ -34,6 +34,6 @@ GDSA::DrawPointCloud::DrawPointCloud(PointCloud3d& pointCloud)
     this->buildVao(component);
 }
 
-GDSA::DrawPointCloud::~DrawPointCloud()
+GDSA::Render::DrawPointCloud::~DrawPointCloud()
 {
 }

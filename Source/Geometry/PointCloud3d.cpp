@@ -6,6 +6,8 @@
 #include <sstream>
 #include <vector>
 
+namespace GDSA::Geometry
+{
 PointCloud3d::PointCloud3d()
     : _maxPoint(-INFINITY, -INFINITY, -INFINITY)
     , _minPoint(INFINITY, INFINITY, INFINITY)
@@ -221,3 +223,4 @@ void PointCloud3d::getMostDistanced(int& a, int& b) const
         }
     }
 }
+} // namespace GDSA::Geometry

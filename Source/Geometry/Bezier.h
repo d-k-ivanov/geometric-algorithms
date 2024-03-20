@@ -4,6 +4,8 @@
 
 #include <vector>
 
+namespace GDSA::Geometry
+{
 class Bezier
 {
 protected:
@@ -35,3 +37,4 @@ public:
 private:
     double getBinomialCoefficient(int n, int k) const;
 };
+}    // namespace GDSA::Geometry

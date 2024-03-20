@@ -3,6 +3,8 @@
 #include "Edge3d.h"
 #include "Line3d.h"
 
+namespace GDSA::Geometry
+{
 class Line3d : public Edge3d
 {
 public:
@@ -76,3 +78,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Line3d& line);
 };
+} // namespace GDSA::Geometry

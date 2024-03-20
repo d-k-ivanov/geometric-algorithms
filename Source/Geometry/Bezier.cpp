@@ -2,6 +2,8 @@
 
 #include <utility>
 
+namespace GDSA::Geometry
+{
 Bezier::Bezier(std::vector<Vect2d> controlPoints, const int controlPointsNum)
     : _controlPoints(std::move(controlPoints))
     , _controlPointsNum(controlPointsNum)
@@ -111,3 +113,4 @@ double Bezier::getBinomialCoefficient(const int n, const int k) const
 
     return this->getBinomialCoefficient(n, k - 1) * (n + 1 - k) / k;
 }
+}    // namespace GDSA::Geometry

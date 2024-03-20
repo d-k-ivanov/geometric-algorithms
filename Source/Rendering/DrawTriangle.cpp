@@ -1,6 +1,6 @@
 #include "DrawTriangle.h"
 
-GDSA::DrawTriangle::DrawTriangle(Triangle& triangle)
+GDSA::Render::DrawTriangle::DrawTriangle(Geometry::Triangle& triangle)
     : Model3D()
 {
     Component* component = new Component;
@@ -17,12 +17,12 @@ GDSA::DrawTriangle::DrawTriangle(Triangle& triangle)
     this->buildVao(component);
 }
 
-GDSA::DrawTriangle::DrawTriangle(Triangle3d& triangle)
+GDSA::Render::DrawTriangle::DrawTriangle(Geometry::Triangle3d& triangle)
     : Model3D()
 {
     Component* component = new Component;
 
-    const Vect3d    normal    = triangle.normal();
+    const Geometry::Vect3d normal    = triangle.normal();
     const glm::vec3 normalGlm = glm::vec3(normal.getX(), normal.getY(), normal.getZ());
     component->_vertices.insert(
         component->_vertices.end(),

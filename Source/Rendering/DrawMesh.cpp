@@ -3,17 +3,17 @@
 #include <filesystem>
 #include <iostream>
 
-GDSA::DrawMesh::DrawMesh()
+GDSA::Render::DrawMesh::DrawMesh()
     : Model3D()
 {
 }
 
-GDSA::DrawMesh::DrawMesh(TriangleModel& triangleModel)
+GDSA::Render::DrawMesh::DrawMesh(Geometry::TriangleModel& triangleModel)
     : Model3D()
 {
-    const std::vector<Vect3d>* vertices        = triangleModel.getVertices();
-    const std::vector<Vect3d>* normals         = triangleModel.getNormals();
-    std::vector<Vect2d>*       textCoordinates = triangleModel.getTextureCoordinates();
+    const std::vector<Geometry::Vect3d>* vertices        = triangleModel.getVertices();
+    const std::vector<Geometry::Vect3d>* normals         = triangleModel.getNormals();
+    std::vector<Geometry::Vect2d>*       textCoordinates = triangleModel.getTextureCoordinates();
     std::vector<unsigned>*     indices         = triangleModel.getIndices();
     const size_t               numFaces        = triangleModel.numTriangles();
 
@@ -42,7 +42,7 @@ GDSA::DrawMesh::DrawMesh(TriangleModel& triangleModel)
     this->_components.push_back(std::unique_ptr<Component>(component));
 }
 
-GDSA::DrawMesh* GDSA::DrawMesh::loadModelOBJ(const std::string& path)
+GDSA::Render::DrawMesh* GDSA::Render::DrawMesh::loadModelOBJ(const std::string& path)
 {
     const std::string binaryFile = path.substr(0, path.find_last_of('.')) + BINARY_EXTENSION;
 
@@ -75,7 +75,7 @@ GDSA::DrawMesh* GDSA::DrawMesh::loadModelOBJ(const std::string& path)
     return this;
 }
 
-GDSA::Model3D::Component* GDSA::DrawMesh::processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder) const
+GDSA::Render::Model3D::Component* GDSA::Render::DrawMesh::processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder) const
 {
     std::vector<VAO::Vertex> vertices(mesh->mNumVertices);
     std::vector<GLuint>      indices(mesh->mNumFaces * 4);
@@ -112,7 +112,7 @@ GDSA::Model3D::Component* GDSA::DrawMesh::processMesh(const aiMesh* mesh, const 
     return component;
 }
 
-void GDSA::DrawMesh::processNode(const aiNode* node, const aiScene* scene, const std::string& folder)
+void GDSA::Render::DrawMesh::processNode(const aiNode* node, const aiScene* scene, const std::string& folder)
 {
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {

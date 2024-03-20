@@ -24,7 +24,7 @@
 #define GLTF_EXTENSION ".gltf"
 #define OBJ_EXTENSION ".obj"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class Model3D
 {
@@ -154,4 +154,4 @@ public:
     Model3D* setPointSize(float size);
     Model3D* setTopologyVisibility(VAO::IBO_slots topology, bool visible);
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

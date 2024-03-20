@@ -5,11 +5,11 @@
 
 #include <string>
 
-namespace GDSA
+namespace GDSA::Render
 {
 namespace GuiUtilities
 {
     void leaveSpace(unsigned numSlots);
     void renderText(const glm::vec3& xyz, const std::string& title = "", char delimiter = ',');
 }
-}    // namespace GDSA
+}    // namespace GDSA::Render

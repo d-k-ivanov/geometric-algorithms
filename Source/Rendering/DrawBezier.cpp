@@ -5,15 +5,15 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-namespace GDSA
+namespace GDSA::Render
 {
-DrawBezier::DrawBezier(const Bezier& bezier, const double lertStep = 0.02f)
+DrawBezier::DrawBezier(const Geometry::Bezier& bezier, const double lertStep = 0.02f)
     : _bezier(bezier)
 {
     for(double t = 0; t < 1; t += lertStep)
     {
         Component* component = new Component;
-        Vect2d     point     = _bezier.getPoint(t);
+        Geometry::Vect2d     point     = _bezier.getPoint(t);
 
         // component->_vertices.push_back(VAO::Vertex {vec3(point.getX(), point.getY(), .0f)});
         // component->_indices[VAO::IBO_POINT].push_back(component->_indices[VAO::IBO_POINT].size());
@@ -27,4 +27,4 @@ DrawBezier::DrawBezier(const Bezier& bezier, const double lertStep = 0.02f)
 
     // this->_components.push_back(std::unique_ptr<Component>(component));
 }
-}    // namespace GDSA
+}    // namespace GDSA::Render

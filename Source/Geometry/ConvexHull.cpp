@@ -8,6 +8,8 @@
 #include <CGAL/convex_hull_3.h>
 #include <CGAL/convex_hull_3_to_face_graph.h>
 
+namespace GDSA::Geometry
+{
 ConvexHull::ConvexHull(PointCloud* pointCloud)
 {
     typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
@@ -160,3 +162,4 @@ ConvexHull::ConvexHull(TriangleModel* model)
         _triangles3D.emplace_back(p1, p2, p3);
     }
 }
+}   // namespace GDSA::Geometry

@@ -4,16 +4,16 @@
 
 #include "Geometry/Polygon.h"
 
-namespace GDSA
+namespace GDSA::Render
 {
 class DrawPolygon : public Model3D
 {
 protected:
-    Polygon _polygon;
+    Geometry::Polygon _polygon;
 
 public:
-    DrawPolygon(Polygon& polygon);
+    DrawPolygon(Geometry::Polygon& polygon);
     DrawPolygon(const DrawPolygon& ddt) = delete;
     ~DrawPolygon() override {};
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

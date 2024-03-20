@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace GDSA
+namespace GDSA::Render
 {
 class ShaderProgram
 {
@@ -64,4 +64,4 @@ public:
 
     bool use();
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 
+namespace GDSA::Geometry
+{
 Polygon::Polygon()
 {
 }
@@ -218,3 +220,4 @@ void Polygon::set(Vertex& vertex, int pos)
         vertex.setPosition(pos);
     }
 }
+} // namespace GDSA::Geometry

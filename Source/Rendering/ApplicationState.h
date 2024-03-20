@@ -6,7 +6,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-namespace GDSA
+namespace GDSA::Render
 {
 struct ApplicationState
 {
@@ -52,4 +52,4 @@ struct ApplicationState
         _gamma         = 1.3f;
     }
 };
-}    // namespace GDSA
+}    // namespace GDSA::Render

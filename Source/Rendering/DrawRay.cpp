@@ -1,10 +1,10 @@
 #include "DrawRay.h"
 
-GDSA::DrawRay::DrawRay(RayLine& ray)
+GDSA::Render::DrawRay::DrawRay(Geometry::RayLine& ray)
     : Model3D()
 {
     Component* component = new Component;
-    Point      dest      = ray.getPoint(100000);
+    Geometry::Point dest      = ray.getPoint(100000);
 
     component->_vertices.insert(
         component->_vertices.end(),
@@ -18,11 +18,11 @@ GDSA::DrawRay::DrawRay(RayLine& ray)
     this->buildVao(component);
 }
 
-GDSA::DrawRay::DrawRay(Ray3d& ray)
+GDSA::Render::DrawRay::DrawRay(Geometry::Ray3d& ray)
     : Model3D()
 {
     Component*   component = new Component;
-    const Vect3d dest      = ray.getPoint(100000);
+    const Geometry::Vect3d dest      = ray.getPoint(100000);
 
     component->_vertices.insert(
         component->_vertices.end(),

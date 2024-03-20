@@ -7,6 +7,8 @@
 #include "Vertex.h"
 #include <vector>
 
+namespace GDSA::Geometry
+{
 class Polygon
 {
 protected:
@@ -135,3 +137,4 @@ public:
      */
     void set(Vertex& vertex, int pos);
 };
+} // namespace GDSA::Geometry
