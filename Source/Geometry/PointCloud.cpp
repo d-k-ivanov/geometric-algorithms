@@ -13,7 +13,7 @@ PointCloud::PointCloud(int size, double max_x, double max_y)
 {
     for(int i = 0; i < size; i++)
     {
-        _points.push_back(Point(RandomUtilities::getUniformRandom(-max_x, max_x), RandomUtilities::getUniformRandom(-max_y, max_y)));
+        _points.push_back(Point(GDSA::Utils::Random::getUniformRandom(-max_x, max_x), GDSA::Utils::Random::getUniformRandom(-max_y, max_y)));
     }
 }
 

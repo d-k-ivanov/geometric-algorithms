@@ -13,7 +13,7 @@ typedef std::uniform_real_distribution<float> DoubleUniformDistribution;
 /**
  *  @brief Set of utilities to retrieve random values.
  */
-namespace RandomUtilities
+namespace GDSA::Utils::Random
 {
 /**
  *  @return New random value retrieved from a random uniform distribution.
@@ -95,9 +95,8 @@ glm::vec3 getUniformRandomInUnitSquare();
  *  @return Random point in unit square perimeter.
  */
 glm::vec3 getUniformRandomInUnitSquarePerimeter();
-}    // namespace RandomUtilities
 
-inline float RandomUtilities::getUniformRandom()
+inline float getUniformRandom()
 {
     static DoubleUniformDistribution distribution(0.0f, 1.0f);
     // static RandomNumberGenerator     generator(static_cast<unsigned>(time(nullptr)));
@@ -106,12 +105,12 @@ inline float RandomUtilities::getUniformRandom()
     return distribution(generator);
 }
 
-inline float RandomUtilities::getUniformRandom(const float min, const float max)
+inline float getUniformRandom(const float min, const float max)
 {
     return min + (max - min) * getUniformRandom();
 }
 
-inline glm::vec3 RandomUtilities::getRandomToSphere(const float radius, const float distanceSquared)
+inline glm::vec3 getRandomToSphere(const float radius, const float distanceSquared)
 {
     const float r1  = getUniformRandom();
     const float r2  = getUniformRandom();
@@ -123,12 +122,12 @@ inline glm::vec3 RandomUtilities::getRandomToSphere(const float radius, const fl
     return {x, y, z};
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomColor()
+inline glm::vec3 getUniformRandomColor()
 {
     return {getUniformRandom(), getUniformRandom(), getUniformRandom()};
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomColorEuclideanDistance()
+inline glm::vec3 getUniformRandomColorEuclideanDistance()
 {
     glm::vec3           color;
     constexpr glm::vec3 background = glm::vec3(.6f);
@@ -141,12 +140,12 @@ inline glm::vec3 RandomUtilities::getUniformRandomColorEuclideanDistance()
     }
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomColor(const float min, const float max)
+inline glm::vec3 getUniformRandomColor(const float min, const float max)
 {
     return {getUniformRandom(min, max), getUniformRandom(min, max), getUniformRandom(min, max)};
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomCosineDirection()
+inline glm::vec3 getUniformRandomCosineDirection()
 {
     const float r1 = getUniformRandom(), r2 = getUniformRandom();
     const float z   = sqrt(1 - r2);
@@ -157,18 +156,18 @@ inline glm::vec3 RandomUtilities::getUniformRandomCosineDirection()
     return {x, y, z};
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomInHemisphere(const glm::vec3& normal)
+inline glm::vec3 getUniformRandomInHemisphere(const glm::vec3& normal)
 {
     const glm::vec3 unitSphere = getUniformRandomInUnitSphere();
     return unitSphere * -1.0f * ((dot(unitSphere, normal) > .0f) * 2.0f - 1.0f);
 }
 
-inline int RandomUtilities::getUniformRandomInt(const int min, const int max)
+inline int getUniformRandomInt(const int min, const int max)
 {
     return static_cast<int>(getUniformRandom(static_cast<float>(min), static_cast<float>(max)));
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomInUnitDisk()
+inline glm::vec3 getUniformRandomInUnitDisk()
 {
     while(true)
     {
@@ -180,7 +179,7 @@ inline glm::vec3 RandomUtilities::getUniformRandomInUnitDisk()
     }
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphere()
+inline glm::vec3 getUniformRandomInUnitSphere()
 {
     glm::vec3 point;
     while(true)
@@ -193,7 +192,7 @@ inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphere()
     }
 }
 
-inline glm::vec3 RandomUtilities::getRandomInUnitSphereSurface()
+inline glm::vec3 getRandomInUnitSphereSurface()
 {
     glm::vec3 point;
     while(true)
@@ -210,7 +209,7 @@ inline glm::vec3 RandomUtilities::getRandomInUnitSphereSurface()
     }
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphereSurface()
+inline glm::vec3 getUniformRandomInUnitSphereSurface()
 {
     glm::vec3 point;
     while(true)
@@ -228,7 +227,7 @@ inline glm::vec3 RandomUtilities::getUniformRandomInUnitSphereSurface()
     }
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomInUnitDiskCircumference()
+inline glm::vec3 getUniformRandomInUnitDiskCircumference()
 {
     glm::vec3 point;
     while(true)
@@ -243,7 +242,7 @@ inline glm::vec3 RandomUtilities::getUniformRandomInUnitDiskCircumference()
     }
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomInUnitSquare()
+inline glm::vec3 getUniformRandomInUnitSquare()
 {
     glm::vec3 point;
     while(true)
@@ -255,7 +254,7 @@ inline glm::vec3 RandomUtilities::getUniformRandomInUnitSquare()
     }
 }
 
-inline glm::vec3 RandomUtilities::getUniformRandomInUnitSquarePerimeter()
+inline glm::vec3 getUniformRandomInUnitSquarePerimeter()
 {
     glm::vec3 point;
     while(true)
@@ -266,3 +265,4 @@ inline glm::vec3 RandomUtilities::getUniformRandomInUnitSquarePerimeter()
             return point;
     }
 }
+}    // namespace GDSA::Utils::Random

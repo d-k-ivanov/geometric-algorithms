@@ -5,7 +5,7 @@
 /**
  *  @brief Utilities which help us to measure execution time.
  */
-namespace ChronoUtilities
+namespace GDSA::Utils::Time
 {
 //!< Units we can use to return the measured time
 enum TimeUnit : int
@@ -27,9 +27,8 @@ long long getDuration(const TimeUnit timeUnit = MILLISECONDS);
  *  @brief Starts the clock so we can execute whatever we want and measure the used time.
  */
 void initChrono();
-}    // namespace ChronoUtilities
 
-inline long long ChronoUtilities::getDuration(const TimeUnit timeUnit)
+inline long long getDuration(const GDSA::Utils::Time::TimeUnit timeUnit)
 {
     const std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 
@@ -38,7 +37,8 @@ inline long long ChronoUtilities::getDuration(const TimeUnit timeUnit)
     return measuredTime / timeUnit;
 }
 
-inline void ChronoUtilities::initChrono()
+inline void initChrono()
 {
     _initTime = std::chrono::high_resolution_clock::now();
 }
+}    // namespace GDSA::Utils::Time

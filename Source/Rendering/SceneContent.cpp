@@ -27,9 +27,9 @@ void GDSA::SceneContent::buildScenario()
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
 
     // Define the scene
-    // Scenes::p0(*this);
-    // Scenes::p0a(*this);
-    // Scenes::p0b(*this);
+    Scenes::p0(*this);
+    Scenes::p0a(*this);
+    Scenes::p0b(*this);
 
     constexpr int      numPointClouds = 1;
     constexpr int      pointsPerCloud = 50;
@@ -44,10 +44,10 @@ void GDSA::SceneContent::buildScenario()
     // Scenes::p1Bezier(*this);
     // Scenes::p1Bezier(*this, true, 5);
     // Scenes::p1Intersections(*this);
-    // Scenes::p1All(*this);
+    Scenes::p1All(*this);
 
     // Practice 2:
-    // Scenes::p2a(*this, numPointClouds, pointsPerCloud, scaleFactor);
+    Scenes::p2a(*this, numPointClouds, pointsPerCloud, scaleFactor);
     // Scenes::p2b(*this);
     // Scenes::p2c(*this);
 
@@ -57,7 +57,7 @@ void GDSA::SceneContent::buildScenario()
     // Practice 4:
     Scenes::p4a(*this, /*draw triangles*/ true);    // 2D Hull
     Scenes::p4b(*this, /*random on sphere surface*/ true);    // 3D Hull
-    Scenes::p4c(*this);    // 3D Hull from Trianles
+    // Scenes::p4c(*this);    // 3D Hull from Trianles
     Scenes::p4d(*this);    // Voronoi Diagram
 }
 
