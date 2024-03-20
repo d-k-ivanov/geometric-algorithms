@@ -70,4 +70,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const RayLine& ray);
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

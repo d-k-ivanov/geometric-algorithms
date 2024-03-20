@@ -137,4 +137,4 @@ public:
      */
     void set(Vertex& vertex, int pos);
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

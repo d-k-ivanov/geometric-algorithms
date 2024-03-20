@@ -6,10 +6,10 @@ GDSA::Render::DrawPlane::DrawPlane(Geometry::Plane& plane)
     : Model3D()
     , _plane(plane)
 {
-    Component*          component = new Component;
+    Component*                    component = new Component;
     std::vector<Geometry::Vect3d> vertices;
-    constexpr double    planeSize  = 10.0;
-    constexpr double    planeScale = 3.5;
+    constexpr double              planeSize  = 10.0;
+    constexpr double              planeScale = 3.5;
 
     // Version 1: Naive
     // Geometry::Line3d*    line1     = new Line3d(plane.get_A(), plane.get_B());
@@ -72,7 +72,7 @@ GDSA::Render::DrawPlane::DrawPlane(Geometry::Plane& plane)
     for(unsigned vertexIdx = 0; vertexIdx < vertices.size(); vertexIdx++)
     {
         Geometry::Vect3d point  = vertices[vertexIdx];
-        glm::vec3 normal = glm::vec3(plane.getNormal().getX(), plane.getNormal().getY(), plane.getNormal().getZ());
+        glm::vec3        normal = glm::vec3(plane.getNormal().getX(), plane.getNormal().getY(), plane.getNormal().getZ());
 
         component->_vertices.push_back(VAO::Vertex {{point.getX(), point.getY(), point.getZ()}, normal, {1, 1}});
         component->_indices[VAO::IBO_LINE].insert(component->_indices[VAO::IBO_LINE].end(), {vertexIdx, static_cast<unsigned int>((vertexIdx + 1) % vertices.size()), RESTART_PRIMITIVE_INDEX});

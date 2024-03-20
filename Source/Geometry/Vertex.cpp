@@ -109,4 +109,4 @@ SegmentLine Vertex::previousEdge()
 
     return {};
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

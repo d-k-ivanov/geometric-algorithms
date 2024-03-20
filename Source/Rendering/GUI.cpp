@@ -15,8 +15,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-#include <string>
 #include <filesystem>
+#include <string>
 
 GDSA::Render::GUI::GUI()
 {

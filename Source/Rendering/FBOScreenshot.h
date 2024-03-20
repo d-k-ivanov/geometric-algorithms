@@ -15,7 +15,7 @@ public:
     FBOScreenshot(const uint16_t width, const uint16_t height);
     ~FBOScreenshot() override;
 
-    GLuint          getId() const override { return _multisampledFBO; }
+    GLuint               getId() const override { return _multisampledFBO; }
     GDSA::Render::Image* getImage() const;
 
     void bindFBO() override;

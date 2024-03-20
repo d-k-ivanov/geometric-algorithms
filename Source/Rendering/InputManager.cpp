@@ -7,7 +7,7 @@
 #include <vector>
 
 GDSA::Render::ApplicationState GDSA::Render::InputManager::_applicationState;
-const glm::vec2           GDSA::Render::InputManager::_defaultCursorPosition = glm::vec2(-1.0f, -1.0f);
+const glm::vec2                GDSA::Render::InputManager::_defaultCursorPosition = glm::vec2(-1.0f, -1.0f);
 
 GDSA::Render::InputManager::InputManager()
     : _lastCursorPosition(_defaultCursorPosition)

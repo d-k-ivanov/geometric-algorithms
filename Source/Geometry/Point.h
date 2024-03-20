@@ -196,4 +196,4 @@ public:
      */
     Point scalarMult(double t);
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

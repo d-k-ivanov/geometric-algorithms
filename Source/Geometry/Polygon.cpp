@@ -220,4 +220,4 @@ void Polygon::set(Vertex& vertex, int pos)
         vertex.setPosition(pos);
     }
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

@@ -49,4 +49,4 @@ public:
         return this->getDestination() - this->getOrigin();
     }
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

@@ -14,6 +14,6 @@ protected:
 public:
     DrawPlane(Geometry::Plane& plane);
     DrawPlane(const DrawPlane& plane) = delete;
-    ~DrawPlane() override = default;
+    ~DrawPlane() override             = default;
 };
 }    // namespace GDSA::Render

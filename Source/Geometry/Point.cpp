@@ -239,4 +239,4 @@ Point Point::scalarMult(double t)
 {
     return {this->getX() * t, this->getY() * t};
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

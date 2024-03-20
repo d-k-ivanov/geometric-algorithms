@@ -95,4 +95,4 @@ std::ostream& operator<<(std::ostream& os, const Edge3d& edge)
     os << "Edge --> Origin: " << edge._orig << "; destination: " << edge._dest;
     return os;
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

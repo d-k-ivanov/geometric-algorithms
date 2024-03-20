@@ -8,21 +8,8 @@
 
 namespace GDSA::Geometry
 {
-Line3d::Line3d()
-{
-}
-
 Line3d::Line3d(Vect3d& orig, Vect3d& dest)
     : Edge3d(orig, dest)
-{
-}
-
-Line3d::Line3d(const Line3d& line)
-    : Edge3d(line)
-{
-}
-
-Line3d::~Line3d()
 {
 }
 

@@ -90,4 +90,4 @@ std::ostream& operator<<(std::ostream& os, const Line& line)
 
     return os;
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

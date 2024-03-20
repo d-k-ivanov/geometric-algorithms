@@ -98,4 +98,4 @@ public:
      */
     Circle& operator=(const Circle& circle);
 };
-}   // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

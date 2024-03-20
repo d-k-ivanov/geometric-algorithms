@@ -86,4 +86,4 @@ std::ostream& operator<<(std::ostream& os, const RayLine& ray)
 
     return os;
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

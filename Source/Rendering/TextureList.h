@@ -46,7 +46,7 @@ public:
 
     GDSA::Render::Texture* getTexture(const glm::vec4& color);
     GDSA::Render::Texture* getTexture(const std::string& path);
-    void              saveTexture(const glm::vec4& color, GDSA::Render::Texture* texture);
-    void              saveTexture(const std::string& path, GDSA::Render::Texture* texture);
+    void                   saveTexture(const glm::vec4& color, GDSA::Render::Texture* texture);
+    void                   saveTexture(const std::string& path, GDSA::Render::Texture* texture);
 };
 }    // namespace GDSA::Render

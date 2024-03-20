@@ -151,4 +151,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Triangle3d& triangle);
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

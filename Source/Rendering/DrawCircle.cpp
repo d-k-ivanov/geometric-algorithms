@@ -7,8 +7,8 @@ GDSA::Render::DrawCircle::DrawCircle(const Geometry::Circle& circle, const uint3
 {
     Component* component = new Component;
 
-    Geometry::Polygon      polygon     = circle.getPointsCircle(numSubdivisions);
-    const size_t numVertices = polygon.getNumVertices();
+    Geometry::Polygon polygon     = circle.getPointsCircle(numSubdivisions);
+    const size_t      numVertices = polygon.getNumVertices();
 
     for(unsigned vertexIdx = 0; vertexIdx < polygon.getNumVertices(); vertexIdx++)
     {

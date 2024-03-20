@@ -3,7 +3,7 @@
 [![Osx](https://github.com/aiekick/ImGuiFileDialog/actions/workflows/Osx.yml/badge.svg?branch=DemoApp)](https://github.com/aiekick/ImGuiFileDialog/actions/workflows/Osx.yml)
 [![Wrapped Dear ImGui Version](https://img.shields.io/badge/Dear%20ImGui%20Version-1.90.1-blue.svg)](https://github.com/ocornut/imgui)
 
-# ImGuiFileDialog
+#ImGuiFileDialog
 
 ## Purpose
 
@@ -133,23 +133,27 @@ instance_b.method_of_your_choice();
 <details open><summary><h2>Simple Dialog :</h2></summary><blockquote>
 
 ```cpp
-void drawGui() { 
-  // open Dialog Simple
-  if (ImGui::Button("Open File Dialog")) {
-    IGFD::FileDialogConfig config;config.path = ".";
-    ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", config);
-  }
-  // display
-  if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
-    if (ImGuiFileDialog::Instance()->IsOk()) { // action if OK
-      std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-      std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-      // action
+void drawGui() {
+    // open Dialog Simple
+    if(ImGui::Button("Open File Dialog"))
+    {
+        IGFD::FileDialogConfig config;
+        config.path = ".";
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", config);
     }
-    
-    // close
-    ImGuiFileDialog::Instance()->Close();
-  }
+    // display
+    if(ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
+    {
+        if(ImGuiFileDialog::Instance()->IsOk())
+        {    // action if OK
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string filePath     = ImGuiFileDialog::Instance()->GetCurrentPath();
+            // action
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
 }
 ```
 
@@ -218,46 +222,47 @@ inline void InfosPane(cosnt char *vFilter, IGFDUserDatas vUserDatas, bool *vCant
 {
     ImGui::TextColored(ImVec4(0, 1, 1, 1), "Infos Pane");
     ImGui::Text("Selected Filter : %s", vFilter.c_str());
-    if (vUserDatas)
+    if(vUserDatas)
         ImGui::Text("UserDatas : %s", vUserDatas);
     ImGui::Checkbox("if not checked you cant validate the dialog", &canValidateDialog);
-    if (vCantContinue)
+    if(vCantContinue)
         *vCantContinue = canValidateDialog;
 }
 
 void drawGui()
 {
-  // open Dialog with Pane
-  if (ImGui::Button("Open File Dialog with a custom pane")) {
-	IGFD::FileDialogConfig config;
-	config.path = ".";
-	config.countSelectionMax = 1;
-	config.sidePane = std::bind(&InfosPane, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-	config.sidePaneWidth = 350.0f;
-	config.useDatas = UserDatas("InfosPane");
-	config.flags = ImGuiFileDialogFlags_Modal;
-    ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", config); 
-  }
-
-  // display and action if ok
-  if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) 
-  {
-    if (ImGuiFileDialog::Instance()->IsOk())
+    // open Dialog with Pane
+    if(ImGui::Button("Open File Dialog with a custom pane"))
     {
-        std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-        std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-        std::string filter = ImGuiFileDialog::Instance()->GetCurrentFilter();
-        // here convert from string because a string was passed as a userDatas, but it can be what you want
-        std::string userDatas;
-        if (ImGuiFileDialog::Instance()->GetUserDatas())
-            userDatas = std::string((const char*)ImGuiFileDialog::Instance()->GetUserDatas()); 
-        auto selection = ImGuiFileDialog::Instance()->GetSelection(); // multiselection
-
-        // action
+        IGFD::FileDialogConfig config;
+        config.path              = ".";
+        config.countSelectionMax = 1;
+        config.sidePane          = std::bind(&InfosPane, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+        config.sidePaneWidth     = 350.0f;
+        config.useDatas          = UserDatas("InfosPane");
+        config.flags             = ImGuiFileDialogFlags_Modal;
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", config);
     }
-    // close
-    ImGuiFileDialog::Instance()->Close();
-  }
+
+    // display and action if ok
+    if(ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
+    {
+        if(ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string filePath     = ImGuiFileDialog::Instance()->GetCurrentPath();
+            std::string filter       = ImGuiFileDialog::Instance()->GetCurrentFilter();
+            // here convert from string because a string was passed as a userDatas, but it can be what you want
+            std::string userDatas;
+            if(ImGuiFileDialog::Instance()->GetUserDatas())
+                userDatas = std::string((const char*)ImGuiFileDialog::Instance()->GetUserDatas());
+            auto selection = ImGuiFileDialog::Instance()->GetSelection();    // multiselection
+
+            // action
+        }
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
 }
 ```
 
@@ -304,11 +309,12 @@ return true if a FileStyle was defined
 
 ```cpp
 ImGuiFileDialog::Instance()->SetFileStyle([](const IGFD::FileInfos& vFile, IGFD::FileStyle &vOutStyle) -> bool {
-	if (!vFile.fileNameExt.empty() && vFile.fileNameExt[0] == '.') { 
-		vOutStyle = IGFD::FileStyle(ImVec4(0.0f, 0.9f, 0.9f, 1.0f), ICON_IGFD_REMOVE); 
-		return true;
-	}
-	return false;
+    if(!vFile.fileNameExt.empty() && vFile.fileNameExt[0] == '.')
+    {
+        vOutStyle = IGFD::FileStyle(ImVec4(0.0f, 0.9f, 0.9f, 1.0f), ICON_IGFD_REMOVE);
+        return true;
+    }
+    return false;
 });
 ```
 
@@ -365,11 +371,12 @@ ImGuiFileDialog::Instance()->SetFileStyle(IGFD_FileStyleByFullName, "((Custom.+[
 // set file style with a lambda function
 // return true is a file style was defined
 ImGuiFileDialog::Instance()->SetFileStyle([](const IGFD::FileInfos& vFile, IGFD::FileStyle &vOutStyle) -> bool {
-	if (!vFile.fileNameExt.empty() && vFile.fileNameExt[0] == '.') { 
-		vOutStyle = IGFD::FileStyle(ImVec4(0.0f, 0.9f, 0.9f, 1.0f), ICON_IGFD_REMOVE); 
-		return true;
-	}
-	return false;
+    if(!vFile.fileNameExt.empty() && vFile.fileNameExt[0] == '.')
+    {
+        vOutStyle = IGFD::FileStyle(ImVec4(0.0f, 0.9f, 0.9f, 1.0f), ICON_IGFD_REMOVE);
+        return true;
+    }
+    return false;
 });
 ```
 
@@ -402,7 +409,8 @@ You can also use a regex for the filtering. the regex must be betwwen the ( and 
 
 ```custom_name1{filter1,filter2,filter3,(regex0),(regex1)},custom_name2{filter1,filter2,(regex0)},filter1```
 
-When you select custom_name1, filters 1 to 3 will be applied. The characters `{` and `}` are reserved. Don't use them
+When you select custom_name1, filters 1 to 3 will be applied. The characters `{
+    ` and `}` are reserved. Don't use them
 for filter names.
 
 
@@ -502,10 +510,10 @@ Activate this feature by uncommenting: `#define USE_BOOKMARK` in your custom con
 More customization options:
 
 ```cpp
-#define bookmarkPaneWith 150.0f => width of the bookmark pane
+#define bookmarkPaneWith 150.0f = > width of the bookmark pane
 #define IMGUI_TOGGLE_BUTTON ToggleButton => customize the Toggled button (button stamp must be : (const char* label, bool *toggle)
-#define bookmarksButtonString "Bookmark" => the text in the toggle button
-#define bookmarksButtonHelpString "Bookmark" => the helper text when mouse over the button
+#define bookmarksButtonString "Bookmark" = > the text in the toggle button
+#define bookmarksButtonHelpString "Bookmark" = > the helper text when mouse over the button
 #define addBookmarkButtonString "+" => the button for add a bookmark
 #define removeBookmarkButtonString "-" => the button for remove the selected bookmark
 ```
@@ -665,31 +673,29 @@ ex, for opengl :
 // Create thumbnails texture
 ImGuiFileDialog::Instance()->SetCreateThumbnailCallback([](IGFD_Thumbnail_Info *vThumbnail_Info) -> void
 {
-	if (vThumbnail_Info && 
-		vThumbnail_Info->isReadyToUpload && 
-		vThumbnail_Info->textureFileDatas)
-	{
-		GLuint textureId = 0;
-		glGenTextures(1, &textureId);
-		vThumbnail_Info->textureID = (void*)textureId;
+    if(vThumbnail_Info && vThumbnail_Info->isReadyToUpload && vThumbnail_Info->textureFileDatas)
+    {
+        GLuint textureId = 0;
+        glGenTextures(1, &textureId);
+        vThumbnail_Info->textureID = (void*)textureId;
 
-		glBindTexture(GL_TEXTURE_2D, textureId);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-			(GLsizei)vThumbnail_Info->textureWidth, (GLsizei)vThumbnail_Info->textureHeight, 
-			0, GL_RGBA, GL_UNSIGNED_BYTE, vThumbnail_Info->textureFileDatas);
-		glFinish();
-		glBindTexture(GL_TEXTURE_2D, 0);
+        glBindTexture(GL_TEXTURE_2D, textureId);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+                     (GLsizei)vThumbnail_Info->textureWidth, (GLsizei)vThumbnail_Info->textureHeight,
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, vThumbnail_Info->textureFileDatas);
+        glFinish();
+        glBindTexture(GL_TEXTURE_2D, 0);
 
-		delete[] vThumbnail_Info->textureFileDatas;
-		vThumbnail_Info->textureFileDatas = nullptr;
+        delete[] vThumbnail_Info->textureFileDatas;
+        vThumbnail_Info->textureFileDatas = nullptr;
 
-		vThumbnail_Info->isReadyToUpload = false;
-		vThumbnail_Info->isReadyToDisplay = true;
-	}
+        vThumbnail_Info->isReadyToUpload  = false;
+        vThumbnail_Info->isReadyToDisplay = true;
+    }
 });
 ```
 
@@ -697,12 +703,12 @@ ImGuiFileDialog::Instance()->SetCreateThumbnailCallback([](IGFD_Thumbnail_Info *
 // Destroy thumbnails texture
 ImGuiFileDialog::Instance()->SetDestroyThumbnailCallback([](IGFD_Thumbnail_Info* vThumbnail_Info)
 {
-	if (vThumbnail_Info)
-	{
-		GLuint texID = (GLuint)vThumbnail_Info->textureID;
-		glDeleteTextures(1, &texID);
-		glFinish();
-	}
+    if(vThumbnail_Info)
+    {
+        GLuint texID = (GLuint)vThumbnail_Info->textureID;
+        glDeleteTextures(1, &texID);
+        glFinish();
+    }
 });
 ```
 
@@ -966,7 +972,9 @@ to note :
   - when you have multilayer filter in collection.
     we consider a filter to be replaced according to the max dot of filters for a whole collection
     a collection {.a, .b.z} is a two dots filter, so a file toto.g.z will be replaced by toto.a
-    a collection {.z; .b} is a one dot filter, so a file toto.g.z will be replaced by toto.g.a
+    a collection {
+    .z;
+    .b} is a one dot filter, so a file toto.g.z will be replaced by toto.g.a
 
 </blockquote></details>
 
@@ -1012,16 +1020,21 @@ with this function, you can compose the path of the bin file, get his size, sum 
 syntax :
 ```cpp
 config.userFileAttributes = [](IGFD::FileInfos* vFileInfosPtr, IGFD::UserDatas vUserDatas) -> bool {
-    if (vFileInfosPtr != nullptr) {
+    if(vFileInfosPtr != nullptr)
+    {
         // this demo not take into account .gltf who have data insise. besauce keepd easy just for demo
-        if (vFileInfosPtr->SearchForExt(".gltf", true)) {
-            auto bin_file_path_name = vFileInfosPtr->filePath + IGFD::Utils::GetPathSeparator() + vFileInfosPtr->fileNameLevels[0] + ".bin";
-            struct stat statInfos   = {};
-            char timebuf[100];
-            int result = stat(bin_file_path_name.c_str(), &statInfos);
-            if (!result) {
-                vFileInfosPtr->fileSize += (size_t)statInfos.st_size; // add the size of bin file to the size of the gltf file
-            } else {
+        if(vFileInfosPtr->SearchForExt(".gltf", true))
+        {
+            auto        bin_file_path_name = vFileInfosPtr->filePath + IGFD::Utils::GetPathSeparator() + vFileInfosPtr->fileNameLevels[0] + ".bin";
+            struct stat statInfos          = {};
+            char        timebuf[100];
+            int         result = stat(bin_file_path_name.c_str(), &statInfos);
+            if(!result)
+            {
+                vFileInfosPtr->fileSize += (size_t)statInfos.st_size;    // add the size of bin file to the size of the gltf file
+            }
+            else
+            {
                 // no bin, so escaped.
                 // normally we must parse the file and check the uri for get the buffer file
                 // but here we keep the example as easy for demo.
@@ -1076,14 +1089,14 @@ ImGuiFileDialog *cfileDialog = IGFD_Create();
 
 // open dialog
 if (igButton("Open File", buttonSize)) {
-	IGFD_FileDialog_Config config = IGFD_FileDialog_Config_Get();
-	config.path = ".";
-	config.flags = ImGuiFileDialogFlags_ConfirmOverwrite; // ImGuiFileDialogFlags
-	IGFD_OpenDialog(cfiledialog,
-		"filedlg",                              // dialog key (make it possible to have different treatment reagrding the dialog key
-		"Open a File",                          // dialog title
-		"c files(*.c *.h){.c,.h}",              // dialog filter syntax : simple => .h,.c,.pp, etc and collections : text1{filter0,filter1,filter2}, text2{filter0,filter1,filter2}, etc..
-		config); 								// the file dialog config
+    IGFD_FileDialog_Config config = IGFD_FileDialog_Config_Get();
+    config.path                   = ".";
+    config.flags                  = ImGuiFileDialogFlags_ConfirmOverwrite;    // ImGuiFileDialogFlags
+    IGFD_OpenDialog(cfiledialog,
+                    "filedlg",                    // dialog key (make it possible to have different treatment reagrding the dialog key
+                    "Open a File",                // dialog title
+                    "c files(*.c *.h){.c,.h}",    // dialog filter syntax : simple => .h,.c,.pp, etc and collections : text1{filter0,filter1,filter2}, text2{filter0,filter1,filter2}, etc..
+                    config);                      // the file dialog config
 }
 
 ImGuiIO* ioptr = igGetIO();
@@ -1097,34 +1110,37 @@ minSize.y = maxSize.y * 0.25f;
 // display dialog
 if (IGFD_DisplayDialog(cfiledialog, "filedlg", ImGuiWindowFlags_NoCollapse, minSize, maxSize))
 {
-	if (IGFD_IsOk(cfiledialog)) // result ok
-	{
-		char* cfilePathName = IGFD_GetFilePathName(cfiledialog);
-		printf("GetFilePathName : %s\n", cfilePathName);
-		char* cfilePath = IGFD_GetCurrentPath(cfiledialog);
-		printf("GetCurrentPath : %s\n", cfilePath);
-		char* cfilter = IGFD_GetCurrentFilter(cfiledialog);
-		printf("GetCurrentFilter : %s\n", cfilter);
-		// here convert from string because a string was passed as a userDatas, but it can be what you want
-		void* cdatas = IGFD_GetUserDatas(cfiledialog);
-		if (cdatas)
-			printf("GetUserDatas : %s\n", (const char*)cdatas);
-		struct IGFD_Selection csel = IGFD_GetSelection(cfiledialog); // multi selection
-		printf("Selection :\n");
-		for (int i = 0; i < (int)csel.count; i++)
-		{
-			printf("(%i) FileName %s => path %s\n", i, csel.table[i].fileName, csel.table[i].filePathName);
-		}
-		// action
+    if(IGFD_IsOk(cfiledialog))    // result ok
+    {
+        char* cfilePathName = IGFD_GetFilePathName(cfiledialog);
+        printf("GetFilePathName : %s\n", cfilePathName);
+        char* cfilePath = IGFD_GetCurrentPath(cfiledialog);
+        printf("GetCurrentPath : %s\n", cfilePath);
+        char* cfilter = IGFD_GetCurrentFilter(cfiledialog);
+        printf("GetCurrentFilter : %s\n", cfilter);
+        // here convert from string because a string was passed as a userDatas, but it can be what you want
+        void* cdatas = IGFD_GetUserDatas(cfiledialog);
+        if(cdatas)
+            printf("GetUserDatas : %s\n", (const char*)cdatas);
+        struct IGFD_Selection csel = IGFD_GetSelection(cfiledialog);    // multi selection
+        printf("Selection :\n");
+        for(int i = 0; i < (int)csel.count; i++)
+        {
+            printf("(%i) FileName %s => path %s\n", i, csel.table[i].fileName, csel.table[i].filePathName);
+        }
+        // action
 
-		// destroy
-		if (cfilePathName) free(cfilePathName);
-		if (cfilePath) free(cfilePath);
-		if (cfilter) free(cfilter);
+        // destroy
+        if(cfilePathName)
+            free(cfilePathName);
+        if(cfilePath)
+            free(cfilePath);
+        if(cfilter)
+            free(cfilter);
 
-		IGFD_Selection_DestroyContent(&csel);
-	}
-	IGFD_CloseDialog(cfiledialog);
+        IGFD_Selection_DestroyContent(&csel);
+    }
+    IGFD_CloseDialog(cfiledialog);
 }
 
 // destroy ImGuiFileDialog

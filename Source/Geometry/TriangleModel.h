@@ -138,4 +138,4 @@ public:
      */
     Triangle3d* updateTriangle();
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

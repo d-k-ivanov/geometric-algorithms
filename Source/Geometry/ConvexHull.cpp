@@ -162,4 +162,4 @@ ConvexHull::ConvexHull(TriangleModel* model)
         _triangles3D.emplace_back(p1, p2, p3);
     }
 }
-}   // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

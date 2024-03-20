@@ -317,4 +317,4 @@ void Vect3d::getPlane(const Vect3d& v, Vect3d& n, double& d) const
     n = v.sub(*this);
     d = (std::pow(v.getX(), 2) - std::pow(this->getX(), 2) + std::pow(v.getY(), 2) - std::pow(this->getY(), 2) + std::pow(v.getZ(), 2) - std::pow(this->getZ(), 2)) / 2.0;
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

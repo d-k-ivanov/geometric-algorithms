@@ -231,4 +231,4 @@ std::ostream& operator<<(std::ostream& os, const Plane& plane)
     os << "Plane -> a: " << plane._a << ", b: " << plane._b << ", c: " << plane._c;
     return os;
 }
-}   // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

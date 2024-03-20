@@ -3,7 +3,7 @@
 GDSA::Render::DrawRay::DrawRay(Geometry::RayLine& ray)
     : Model3D()
 {
-    Component* component = new Component;
+    Component*      component = new Component;
     Geometry::Point dest      = ray.getPoint(100000);
 
     component->_vertices.insert(
@@ -21,7 +21,7 @@ GDSA::Render::DrawRay::DrawRay(Geometry::RayLine& ray)
 GDSA::Render::DrawRay::DrawRay(Geometry::Ray3d& ray)
     : Model3D()
 {
-    Component*   component = new Component;
+    Component*             component = new Component;
     const Geometry::Vect3d dest      = ray.getPoint(100000);
 
     component->_vertices.insert(

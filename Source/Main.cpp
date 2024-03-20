@@ -5,7 +5,7 @@
 
 int main()
 {
-    auto*   window   = GDSA::Render::Window::getInstance();
+    auto* window   = GDSA::Render::Window::getInstance();
     auto* renderer = GDSA::Render::Renderer::getInstance();
 
     try

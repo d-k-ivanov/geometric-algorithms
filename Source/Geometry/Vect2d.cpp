@@ -79,4 +79,4 @@ Vect2d Vect2d::scalarMult(double t)
 
     return *this;
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

@@ -11,7 +11,7 @@ class ShaderProgramDB : public Singleton<ShaderProgramDB>
     friend class Singleton<ShaderProgramDB>;
 
 private:
-    static std::unordered_map<uint8_t, std::string>                               RENDERING_SHADER_PATH;
+    static std::unordered_map<uint8_t, std::string>                                    RENDERING_SHADER_PATH;
     static std::unordered_map<uint8_t, std::unique_ptr<GDSA::Render::RenderingShader>> _renderingShader;
 
 public:

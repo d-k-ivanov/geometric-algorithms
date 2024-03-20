@@ -12,8 +12,8 @@ DrawBezier::DrawBezier(const Geometry::Bezier& bezier, const double lertStep = 0
 {
     for(double t = 0; t < 1; t += lertStep)
     {
-        Component* component = new Component;
-        Geometry::Vect2d     point     = _bezier.getPoint(t);
+        Component*       component = new Component;
+        Geometry::Vect2d point     = _bezier.getPoint(t);
 
         // component->_vertices.push_back(VAO::Vertex {vec3(point.getX(), point.getY(), .0f)});
         // component->_indices[VAO::IBO_POINT].push_back(component->_indices[VAO::IBO_POINT].size());

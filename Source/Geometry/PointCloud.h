@@ -83,4 +83,4 @@ public:
      */
     size_t size() const { return _points.size(); }
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

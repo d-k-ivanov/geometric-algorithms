@@ -23,25 +23,10 @@ protected:
     bool isTvalid(double t) override;
 
 public:
-    /**
-     *  @brief Default constructor.
-     */
-    Line3d();
-
-    /**
-     *  @brief Constructor.
-     */
+    Line3d() = default;
     Line3d(Vect3d& orig, Vect3d& dest);
-
-    /**
-     *  @brief Copy constructor.
-     */
-    Line3d(const Line3d& line);
-
-    /**
-     *  @brief Destructor.
-     */
-    ~Line3d() override;
+    Line3d(const Line3d& line) = default;
+    ~Line3d() override         = default;
 
     /**
      *  @brief Distance between two lines.
@@ -78,4 +63,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Line3d& line);
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

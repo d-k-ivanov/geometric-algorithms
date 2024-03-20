@@ -14,8 +14,8 @@ GDSA::Render::DrawMesh::DrawMesh(Geometry::TriangleModel& triangleModel)
     const std::vector<Geometry::Vect3d>* vertices        = triangleModel.getVertices();
     const std::vector<Geometry::Vect3d>* normals         = triangleModel.getNormals();
     std::vector<Geometry::Vect2d>*       textCoordinates = triangleModel.getTextureCoordinates();
-    std::vector<unsigned>*     indices         = triangleModel.getIndices();
-    const size_t               numFaces        = triangleModel.numTriangles();
+    std::vector<unsigned>*               indices         = triangleModel.getIndices();
+    const size_t                         numFaces        = triangleModel.numTriangles();
 
     Component* component = new Component;
 

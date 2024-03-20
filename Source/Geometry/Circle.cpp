@@ -213,4 +213,4 @@ Circle& Circle::operator=(const Circle& circle)
 
     return *this;
 }
-}   // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

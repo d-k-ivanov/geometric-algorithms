@@ -274,4 +274,4 @@ std::ostream& operator<<(std::ostream& os, const SegmentLine& segment)
 
     return os;
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

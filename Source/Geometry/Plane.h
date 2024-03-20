@@ -29,7 +29,6 @@ public:
 protected:
     Vect3d _a, _b, _c, _d;
 
-
 public:
     /**
      *  @param p in pi = p + u * lambda + v * mu -> r from the points (R, S, T).
@@ -144,4 +143,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Plane& plane);
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

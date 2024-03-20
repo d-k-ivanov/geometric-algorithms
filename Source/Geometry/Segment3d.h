@@ -46,4 +46,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Segment3d& segment);
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

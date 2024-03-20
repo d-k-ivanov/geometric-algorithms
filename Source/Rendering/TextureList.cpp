@@ -22,7 +22,7 @@ GDSA::Render::TextureList::~TextureList()
 GDSA::Render::Texture* GDSA::Render::TextureList::getTexture(const glm::vec4& color)
 {
     GDSA::Render::Texture* texture = nullptr;
-    auto              it      = _colorTexture.find(color);
+    auto                   it      = _colorTexture.find(color);
 
     if(it == _colorTexture.end())
     {
@@ -38,7 +38,7 @@ GDSA::Render::Texture* GDSA::Render::TextureList::getTexture(const glm::vec4& co
 GDSA::Render::Texture* GDSA::Render::TextureList::getTexture(const std::string& path)
 {
     GDSA::Render::Texture* texture = nullptr;
-    auto              it      = _imageTexture.find(path);
+    auto                   it      = _imageTexture.find(path);
 
     if(it == _imageTexture.end())
     {

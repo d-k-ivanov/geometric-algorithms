@@ -1357,22 +1357,22 @@ struct IGFD_Thumbnail_Info {
 #include <imgui.h>
 #endif  // IMGUI_INCLUDE
 
-#include <set>
-#include <map>
-#include <list>
-#include <regex>
 #include <array>
-#include <mutex>
-#include <condition_variable>
-#include <thread>
 #include <cfloat>
-#include <memory>
-#include <string>
-#include <vector>
-#include <utility>
+#include <condition_variable>
 #include <fstream>
 #include <functional>
+#include <list>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <regex>
+#include <set>
+#include <string>
+#include <thread>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 #pragma endregion
 

@@ -35,6 +35,5 @@ public:
     static void p4b(SceneContent& sc, bool randomOnSphereSurface);
     static void p4c(SceneContent& sc);
     static void p4d(SceneContent& sc);
-
 };
 }    // namespace GDSA::Render

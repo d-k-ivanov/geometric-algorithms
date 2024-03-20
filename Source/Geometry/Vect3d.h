@@ -195,4 +195,4 @@ public:
      */
     void getPlane(const Vect3d& v, Vect3d& n, double& d) const;
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

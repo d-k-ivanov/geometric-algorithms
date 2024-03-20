@@ -223,4 +223,4 @@ void PointCloud3d::getMostDistanced(int& a, int& b) const
         }
     }
 }
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

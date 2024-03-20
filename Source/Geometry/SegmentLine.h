@@ -161,4 +161,4 @@ public:
      */
     double triangleArea2(Point& p);
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry

@@ -75,4 +75,4 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Line& line);
 };
-} // namespace GDSA::Geometry
+}    // namespace GDSA::Geometry
