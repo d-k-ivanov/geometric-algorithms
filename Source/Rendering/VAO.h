@@ -9,7 +9,7 @@
 
 #include <vector>
 
-namespace AlgGeom
+namespace GDSA
 {
 class VAO
 {
@@ -86,4 +86,4 @@ inline void VAO::setVBOData(VBO_slots vbo, T* geometryData, GLuint size, GLuint 
     glBindBuffer(GL_ARRAY_BUFFER, _vbos[vbo]);
     glBufferData(GL_ARRAY_BUFFER, size * sizeof(T), geometryData, changeFrequency);
 }
-}    // namespace AlgGeom
+}    // namespace GDSA

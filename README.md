@@ -60,11 +60,13 @@ The application's origins belong to [Alfonso López Ruiz](https://github.com/Alf
 ### Convex Hull and Triangulation
 
 | Column | Column | Column |
-|--------------------------------|--------------------------------|--------------------------------|
-| ![](Docs/p4/images/p4-4.png)   | ![](Docs/p4/images/p4-2.gif)   | ![](Docs/p4/images/p4-3-a.png) |
-| ![](Docs/p4/images/p4-2-b.png) | ![](Docs/p4/images/p4-2-a.png) | ![](Docs/p4/images/p4-1-b.png) |
+|--------------------------------|--------------------------------|
+| ![](Docs/p4/images/p4-2.gif)   | ![](Docs/p4/images/p4-5.gif)   |
+| ![](Docs/p4/images/p4-4.png)   | ![](Docs/p4/images/p4-3-a.png) |
+| ![](Docs/p4/images/p4-2-b.png) | ![](Docs/p4/images/p4-2-a.png) |
+| ![](Docs/p4/images/p4-1-b.png) |                                |
 
-### Voxelixation
+### Voxelization
 
 ![](Docs/p3/images/p3-0-models.png)
 

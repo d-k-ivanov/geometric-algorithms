@@ -32,7 +32,7 @@
 
 #include <iostream>
 
-void AlgGeom::Scenes::p0(SceneContent& sc)
+void GDSA::Scenes::p0(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -87,7 +87,7 @@ void AlgGeom::Scenes::p0(SceneContent& sc)
     }
 }
 
-void AlgGeom::Scenes::p0a(SceneContent& sc)
+void GDSA::Scenes::p0a(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -142,7 +142,7 @@ void AlgGeom::Scenes::p0a(SceneContent& sc)
     }
 }
 
-void AlgGeom::Scenes::p0b(SceneContent& sc)
+void GDSA::Scenes::p0b(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -157,7 +157,7 @@ void AlgGeom::Scenes::p0b(SceneContent& sc)
     sc.addNewModel(circleToDraw);
 }
 
-void AlgGeom::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Point>& randomPointsFromCloud, std::vector<Point>& extremumPointInCloud)
+void GDSA::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Point>& randomPointsFromCloud, std::vector<Point>& extremumPointInCloud)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -277,7 +277,7 @@ void AlgGeom::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, 
 }
 
 // blue segment, red line, and magenta ray
-void AlgGeom::Scenes::p1Lines(SceneContent& sc, const std::vector<Point>& randomPointsFromCloud)
+void GDSA::Scenes::p1Lines(SceneContent& sc, const std::vector<Point>& randomPointsFromCloud)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -327,7 +327,7 @@ void AlgGeom::Scenes::p1Lines(SceneContent& sc, const std::vector<Point>& random
 }
 
 // Convex polygon from the point cloud extremum points
-void AlgGeom::Scenes::p1Polygon(SceneContent& sc, const std::vector<Point>& extremumPointInCloud)
+void GDSA::Scenes::p1Polygon(SceneContent& sc, const std::vector<Point>& extremumPointInCloud)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -343,7 +343,7 @@ void AlgGeom::Scenes::p1Polygon(SceneContent& sc, const std::vector<Point>& extr
     }
 }
 // Bezier curve
-void AlgGeom::Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const size_t pointNum)
+void GDSA::Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const size_t pointNum)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -385,7 +385,7 @@ void AlgGeom::Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const size_t
 }
 
 // P1-B: Two segments, Two Lines, Two Rays, and a Polygon
-void AlgGeom::Scenes::p1Intersections(SceneContent& sc)
+void GDSA::Scenes::p1Intersections(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -483,7 +483,7 @@ void AlgGeom::Scenes::p1Intersections(SceneContent& sc)
     delete p;
 }
 
-void AlgGeom::Scenes::p1All(SceneContent& sc)
+void GDSA::Scenes::p1All(SceneContent& sc)
 {
     constexpr int      numPointClouds = 3;
     constexpr int      pointsPerCloud = 100;
@@ -498,7 +498,7 @@ void AlgGeom::Scenes::p1All(SceneContent& sc)
     p1Intersections(sc);
 }
 
-void AlgGeom::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud, float scaleFactor)
+void GDSA::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud, float scaleFactor)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -691,7 +691,7 @@ void AlgGeom::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerClo
     }
 }
 
-void AlgGeom::Scenes::p2b(SceneContent& sc)
+void GDSA::Scenes::p2b(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -758,12 +758,12 @@ void AlgGeom::Scenes::p2b(SceneContent& sc)
     delete newPlane;
 }
 
-void AlgGeom::Scenes::p2c(SceneContent& sc)
+void GDSA::Scenes::p2c(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
 
-    TriangleModel* triangleModel = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
+    TriangleModel* triangleModel = new TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model(new DrawMesh(*triangleModel));
     model->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model->setModelMatrix(glm::rotate(model->getModelMatrix(), -0.2f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
@@ -819,22 +819,22 @@ void AlgGeom::Scenes::p2c(SceneContent& sc)
     }
 }
 
-void AlgGeom::Scenes::p3(SceneContent& sc)
+void GDSA::Scenes::p3(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
 
-    TriangleModel* triangleModel1 = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
+    TriangleModel* triangleModel1 = new TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model1(new DrawMesh(*triangleModel1));
     model1->setModelMatrix(glm::translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model1->setModelMatrix(glm::rotate(model1->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
     // sc.addNewModel(model1);
 
-    TriangleModel* triangleModel2 = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Cheburashka.obj");
-    const auto     model2(new DrawMesh(*triangleModel2));
-    model2->setModelMatrix(glm::translate(model2->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
-    model2->setModelMatrix(glm::rotate(model2->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
-    // sc.addNewModel(model2);
+    // TriangleModel* triangleModel2 = new TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Cheburashka.obj");
+    // const auto     model2(new DrawMesh(*triangleModel2));
+    // model2->setModelMatrix(glm::translate(model2->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
+    // model2->setModelMatrix(glm::rotate(model2->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
+    // // sc.addNewModel(model2);
 
     const glm::vec3& voxelSize = glm::vec3(0.05f);
 
@@ -870,7 +870,7 @@ void AlgGeom::Scenes::p3(SceneContent& sc)
 }
 
 // Practice 4a: 2D Convex Hull
-void AlgGeom::Scenes::p4a(SceneContent& sc, bool drawTriangles)
+void GDSA::Scenes::p4a(SceneContent& sc, bool drawTriangles)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -907,7 +907,7 @@ void AlgGeom::Scenes::p4a(SceneContent& sc, bool drawTriangles)
 }
 
 // Practice 4b: 3D Convex Hull
-void AlgGeom::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
+void GDSA::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -957,12 +957,12 @@ void AlgGeom::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
     }
 }
 
-void AlgGeom::Scenes::p4c(SceneContent& sc)
+void GDSA::Scenes::p4c(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
 
-    TriangleModel* triangleModel = new TriangleModel(ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
+    TriangleModel* triangleModel = new TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto     model(new DrawMesh(*triangleModel));
     model->setModelMatrix(glm::translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     model->setModelMatrix(glm::rotate(model->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
@@ -994,7 +994,7 @@ void AlgGeom::Scenes::p4c(SceneContent& sc)
     }
 }
 
-void AlgGeom::Scenes::p4d(SceneContent& sc)
+void GDSA::Scenes::p4d(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);

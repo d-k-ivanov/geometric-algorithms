@@ -156,7 +156,7 @@ void TriangleModel::computeTangents()
     delete[] tan1;
 }
 
-AlgGeom::DrawVoxelization* TriangleModel::voxelize() const
+GDSA::DrawVoxelization* TriangleModel::voxelize() const
 {
     glm::vec3* positions = new glm::vec3[_vertices.size()];
     for(int vertexIdx = 0; vertexIdx < _vertices.size(); ++vertexIdx)
@@ -164,7 +164,7 @@ AlgGeom::DrawVoxelization* TriangleModel::voxelize() const
         positions[vertexIdx] = glm::vec3(_vertices[vertexIdx].getX(), _vertices[vertexIdx].getY(), _vertices[vertexIdx].getZ());
     }
 
-    AlgGeom::DrawVoxelization* voxelization = new AlgGeom::DrawVoxelization(positions, _vertices.size(), glm::vec3(.01f));
+    GDSA::DrawVoxelization* voxelization = new GDSA::DrawVoxelization(positions, _vertices.size(), glm::vec3(.01f));
     delete[] positions;
 
     return voxelization;

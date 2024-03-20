@@ -3,16 +3,16 @@
 #include <cstring>
 #include <iostream>
 
-AlgGeom::RenderingShader::RenderingShader()
+GDSA::RenderingShader::RenderingShader()
     : ShaderProgram()
 {
 }
 
-AlgGeom::RenderingShader::~RenderingShader()
+GDSA::RenderingShader::~RenderingShader()
 {
 }
 
-void AlgGeom::RenderingShader::applyActiveSubroutines()
+void GDSA::RenderingShader::applyActiveSubroutines()
 {
     if(!_activeSubroutineUniform[VERTEX_SHADER].empty())
     {
@@ -30,7 +30,7 @@ void AlgGeom::RenderingShader::applyActiveSubroutines()
     }
 }
 
-GLuint AlgGeom::RenderingShader::createShaderProgram(const char* filename)
+GLuint GDSA::RenderingShader::createShaderProgram(const char* filename)
 {
     if(_handler <= 0)
     {

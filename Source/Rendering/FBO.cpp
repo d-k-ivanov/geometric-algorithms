@@ -4,23 +4,23 @@
 #include <string>
 #include <vector>
 
-AlgGeom::FBO::FBO(const uint16_t width, const uint16_t height)
+GDSA::FBO::FBO(const uint16_t width, const uint16_t height)
     : _id(0)
     , _size(width, height)
 {
 }
 
-AlgGeom::FBO::~FBO()
+GDSA::FBO::~FBO()
 {
     glDeleteFramebuffers(1, &_id);
 }
 
-void AlgGeom::FBO::modifySize(const uint16_t width, const uint16_t height)
+void GDSA::FBO::modifySize(const uint16_t width, const uint16_t height)
 {
     _size = glm::vec2(width, height);
 }
 
-void AlgGeom::FBO::checkFBOstate()
+void GDSA::FBO::checkFBOstate()
 {
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
@@ -30,7 +30,7 @@ void AlgGeom::FBO::checkFBOstate()
     }
 }
 
-void AlgGeom::FBO::threadedWriteImage(std::vector<GLubyte>* pixels, const std::string& filename, const uint16_t width, const uint16_t height)
+void GDSA::FBO::threadedWriteImage(std::vector<GLubyte>* pixels, const std::string& filename, const uint16_t width, const uint16_t height)
 {
     Image* image = new Image(pixels->data(), width, height, 4);
     image->saveImage(filename);

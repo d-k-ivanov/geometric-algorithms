@@ -5,7 +5,7 @@
 #include "Geometry/Point.h"
 #include "Geometry/Vect3d.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawPoint : public Model3D
 {
@@ -18,4 +18,4 @@ public:
     DrawPoint(const DrawPoint& drawPoint) = delete;
     ~DrawPoint() override                 = default;
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

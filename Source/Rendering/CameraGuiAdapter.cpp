@@ -4,7 +4,7 @@
 
 #include <imgui.h>
 
-void AlgGeom::CameraGuiAdapter::renderGuiObject()
+void GDSA::CameraGuiAdapter::renderGuiObject()
 {
     bool updateMatrices = false;
 

@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace AlgGeom
+namespace GDSA
 {
 class ShaderProgram
 {
@@ -64,4 +64,4 @@ public:
 
     bool use();
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

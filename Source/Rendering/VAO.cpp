@@ -1,6 +1,6 @@
 #include "VAO.h"
 
-AlgGeom::VAO::VAO(bool interleaved)
+GDSA::VAO::VAO(bool interleaved)
 {
     glGenVertexArrays(1, &_vao);
     glBindVertexArray(_vao);
@@ -26,42 +26,42 @@ AlgGeom::VAO::VAO(bool interleaved)
     glGenBuffers(static_cast<GLsizei>(_ibos.size()), _ibos.data());
 }
 
-AlgGeom::VAO::~VAO()
+GDSA::VAO::~VAO()
 {
     glDeleteBuffers(static_cast<GLsizei>(_vbos.size()), _vbos.data());
     glDeleteBuffers(static_cast<GLsizei>(_ibos.size()), _ibos.data());
     glDeleteVertexArrays(1, &_vao);
 }
 
-void AlgGeom::VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices)
+void GDSA::VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices)
 {
     glBindVertexArray(_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibos[ibo]);
     glDrawElements(openGLPrimitive, numIndices, GL_UNSIGNED_INT, nullptr);
 }
 
-void AlgGeom::VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices, GLuint numInstances)
+void GDSA::VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices, GLuint numInstances)
 {
     glBindVertexArray(_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibos[ibo]);
     glDrawElementsInstanced(openGLPrimitive, numIndices, GL_UNSIGNED_INT, nullptr, numInstances);
 }
 
-void AlgGeom::VAO::setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency)
+void GDSA::VAO::setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency)
 {
     glBindVertexArray(_vao);
     glBindBuffer(GL_ARRAY_BUFFER, _vbos[0]);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VAO::Vertex), vertices.data(), changeFrequency);
 }
 
-void AlgGeom::VAO::setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices, GLuint changeFrequency)
+void GDSA::VAO::setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices, GLuint changeFrequency)
 {
     glBindVertexArray(_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibos[ibo]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), changeFrequency);
 }
 
-void AlgGeom::VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint elementType, uint8_t slot)
+void GDSA::VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint elementType, uint8_t slot)
 {
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
     glBufferData(GL_ARRAY_BUFFER, structSize, nullptr, GL_STATIC_DRAW);
@@ -69,7 +69,7 @@ void AlgGeom::VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuin
     glEnableVertexAttribArray(slot);
 }
 
-void AlgGeom::VAO::defineInterleavedVBO(GLuint vboId)
+void GDSA::VAO::defineInterleavedVBO(GLuint vboId)
 {
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
     GLsizei structSize = sizeof(Vertex);

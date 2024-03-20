@@ -4,7 +4,7 @@
 
 class Point;
 
-namespace AlgGeom
+namespace GDSA
 {
 class Scenes
 {
@@ -37,4 +37,4 @@ public:
     static void p4d(SceneContent& sc);
 
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

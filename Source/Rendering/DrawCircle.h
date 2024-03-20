@@ -4,7 +4,7 @@
 
 #include "Geometry/Circle.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawCircle : public Model3D
 {

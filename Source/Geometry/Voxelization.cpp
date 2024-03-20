@@ -376,7 +376,7 @@ void Voxelization::recursiveFill(VoxelModel* v, const int x, const int y, int z)
     }
 }
 
-AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(const bool outlineMode)
+GDSA::DrawVoxelization* Voxelization::getRenderingObject(const bool outlineMode)
 {
     VoxelStatus status;
     if(outlineMode)
@@ -404,7 +404,7 @@ AlgGeom::DrawVoxelization* Voxelization::getRenderingObject(const bool outlineMo
         }
     }
 
-    AlgGeom::DrawVoxelization* voxelization = new AlgGeom::DrawVoxelization(positions.data(), static_cast<int>(positions.size()), _size, nullptr);
+    GDSA::DrawVoxelization* voxelization = new GDSA::DrawVoxelization(positions.data(), static_cast<int>(positions.size()), _size, nullptr);
 
     return voxelization;
 }

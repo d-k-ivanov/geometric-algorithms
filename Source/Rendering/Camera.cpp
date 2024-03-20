@@ -4,7 +4,7 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
-AlgGeom::Camera::Camera(uint16_t width, uint16_t height, bool is2D)
+GDSA::Camera::Camera(uint16_t width, uint16_t height, bool is2D)
     : _backupCamera(nullptr)
 {
     this->_properties._cameraType = CameraProjection::PERSPECTIVE;
@@ -32,23 +32,23 @@ AlgGeom::Camera::Camera(uint16_t width, uint16_t height, bool is2D)
     this->saveCamera();
 }
 
-AlgGeom::Camera::Camera(const AlgGeom::Camera& camera)
+GDSA::Camera::Camera(const GDSA::Camera& camera)
     : _backupCamera(nullptr)
 {
     this->copyCameraAttributes(&camera);
 }
 
-AlgGeom::Camera::~Camera()
+GDSA::Camera::~Camera()
 {
     delete _backupCamera;
 }
 
-void AlgGeom::Camera::reset()
+void GDSA::Camera::reset()
 {
     this->copyCameraAttributes(_backupCamera);
 }
 
-void AlgGeom::Camera::track(AABB& aabb)
+void GDSA::Camera::track(AABB& aabb)
 {
     this->setLookAt(aabb.getCenter().toGlmVec3());
     const auto maxAxis         = std::max(aabb.getSize().getX(), std::max(aabb.getSize().getY(), aabb.getSize().getZ()));
@@ -58,55 +58,55 @@ void AlgGeom::Camera::track(AABB& aabb)
     this->setPosition(pos.toGlmVec3());
 }
 
-void AlgGeom::Camera::saveCamera()
+void GDSA::Camera::saveCamera()
 {
     delete _backupCamera;
     _backupCamera = nullptr;
 
-    _backupCamera = new AlgGeom::Camera(*this);
+    _backupCamera = new GDSA::Camera(*this);
 }
 
-void AlgGeom::Camera::setBottomLeftCorner(const glm::vec2& bottomLeft)
+void GDSA::Camera::setBottomLeftCorner(const glm::vec2& bottomLeft)
 {
     this->_properties._bottomLeftCorner = bottomLeft;
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setCameraType(const AlgGeom::CameraProjection::Projection projection)
+void GDSA::Camera::setCameraType(const GDSA::CameraProjection::Projection projection)
 {
     this->_properties._cameraType = projection;
     this->_properties.computeViewMatrices();
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setFovX(const float fovX)
+void GDSA::Camera::setFovX(const float fovX)
 {
     this->_properties._fovX = fovX;
     this->_properties._fovY = this->_properties.computeFovY();
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setFovY(const float fovY)
+void GDSA::Camera::setFovY(const float fovY)
 {
     this->_properties._fovY = fovY;
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setLookAt(const glm::vec3& position)
+void GDSA::Camera::setLookAt(const glm::vec3& position)
 {
     this->_properties._lookAt = position;
     this->_properties.computeAxes(this->_properties._n, this->_properties._u, this->_properties._v);
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::setPosition(const glm::vec3& position)
+void GDSA::Camera::setPosition(const glm::vec3& position)
 {
     this->_properties._eye = position;
     this->_properties.computeAxes(this->_properties._n, this->_properties._u, this->_properties._v);
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::setRaspect(const uint16_t width, const uint16_t height)
+void GDSA::Camera::setRaspect(const uint16_t width, const uint16_t height)
 {
     this->_properties._width            = width;
     this->_properties._height           = height;
@@ -115,25 +115,25 @@ void AlgGeom::Camera::setRaspect(const uint16_t width, const uint16_t height)
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setUp(const glm::vec3& up)
+void GDSA::Camera::setUp(const glm::vec3& up)
 {
     this->_properties._up = up;
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::setZFar(const float zfar)
+void GDSA::Camera::setZFar(const float zfar)
 {
     this->_properties._zFar = zfar;
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setZNear(const float znear)
+void GDSA::Camera::setZNear(const float znear)
 {
     this->_properties._zNear = znear;
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::updateMatrices()
+void GDSA::Camera::updateMatrices()
 {
     this->_properties.computeViewMatrix();
     this->_properties.computeProjectionMatrices(&_properties);
@@ -141,7 +141,7 @@ void AlgGeom::Camera::updateMatrices()
 
 // [Movements]
 
-void AlgGeom::Camera::boom(float speed)
+void GDSA::Camera::boom(float speed)
 {
     const glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), this->_properties._v * speed);    // Translation in y axis
 
@@ -151,12 +151,12 @@ void AlgGeom::Camera::boom(float speed)
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::crane(float speed)
+void GDSA::Camera::crane(float speed)
 {
     boom(-speed);    // Implemented as another method to take advantage of nomenclature
 }
 
-void AlgGeom::Camera::dolly(float speed)
+void GDSA::Camera::dolly(float speed)
 {
     if(this->_properties._2d)
         return;
@@ -168,7 +168,7 @@ void AlgGeom::Camera::dolly(float speed)
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::orbitXZ(float speed)
+void GDSA::Camera::orbitXZ(float speed)
 {
     if(this->_properties._2d)
         return;
@@ -184,7 +184,7 @@ void AlgGeom::Camera::orbitXZ(float speed)
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::orbitY(float speed)
+void GDSA::Camera::orbitY(float speed)
 {
     if(this->_properties._2d)
         return;
@@ -200,7 +200,7 @@ void AlgGeom::Camera::orbitY(float speed)
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::pan(float speed)
+void GDSA::Camera::pan(float speed)
 {
     if(this->_properties._2d)
         return;
@@ -217,7 +217,7 @@ void AlgGeom::Camera::pan(float speed)
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::tilt(float speed)
+void GDSA::Camera::tilt(float speed)
 {
     if(this->_properties._2d)
         return;
@@ -240,7 +240,7 @@ void AlgGeom::Camera::tilt(float speed)
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::truck(float speed)
+void GDSA::Camera::truck(float speed)
 {
     const glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), this->_properties._u * speed);    // Translation in x axis
 
@@ -250,12 +250,12 @@ void AlgGeom::Camera::truck(float speed)
     this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::zoom(float speed)
+void GDSA::Camera::zoom(float speed)
 {
     this->_properties.zoom(speed);
 }
 
-void AlgGeom::Camera::copyCameraAttributes(const AlgGeom::Camera* camera)
+void GDSA::Camera::copyCameraAttributes(const GDSA::Camera* camera)
 {
     this->_properties = camera->_properties;
 

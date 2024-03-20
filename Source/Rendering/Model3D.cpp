@@ -9,20 +9,20 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
-std::string                     AlgGeom::Model3D::CHECKER_PATTERN_PATH = ThisExecutableLocation() + "/Resources/Textures/Checker.png";
-std::unordered_set<std::string> AlgGeom::Model3D::USED_NAMES;
+std::string                     GDSA::Model3D::CHECKER_PATTERN_PATH = Utils::ThisExecutableLocation() + "/Resources/Textures/Checker.png";
+std::unordered_set<std::string> GDSA::Model3D::USED_NAMES;
 
-AlgGeom::Model3D::Model3D()
+GDSA::Model3D::Model3D()
     : _modelMatrix(1.0f)
 {
     this->overrideModelName();
 }
 
-AlgGeom::Model3D::~Model3D()
+GDSA::Model3D::~Model3D()
 {
 }
 
-bool AlgGeom::Model3D::belongsModel(Component* component)
+bool GDSA::Model3D::belongsModel(Component* component)
 {
     for(auto& comp : _components)
     {
@@ -33,7 +33,7 @@ bool AlgGeom::Model3D::belongsModel(Component* component)
     return false;
 }
 
-void AlgGeom::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive)
+void GDSA::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive)
 {
     shader->setSubroutineUniform(GL_VERTEX_SHADER, "instanceUniform", "singleInstanceUniform");
 
@@ -92,7 +92,7 @@ void AlgGeom::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* ma
     }
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::moveGeometryToOrigin(const glm::mat4& origMatrix, float maxScale)
+GDSA::Model3D* GDSA::Model3D::moveGeometryToOrigin(const glm::mat4& origMatrix, float maxScale)
 {
     // const AABB aabb = this->getAABB();
 
@@ -106,7 +106,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::moveGeometryToOrigin(const glm::mat4& origMa
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::overrideModelName()
+GDSA::Model3D* GDSA::Model3D::overrideModelName()
 {
     std::string className   = typeid(*this).name();
     std::string classTarget = "class ";
@@ -131,7 +131,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::overrideModelName()
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setLineColor(const glm::vec3& color)
+GDSA::Model3D* GDSA::Model3D::setLineColor(const glm::vec3& color)
 {
     for(auto& component : _components)
     {
@@ -141,7 +141,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setLineColor(const glm::vec3& color)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setPointColor(const glm::vec3& color)
+GDSA::Model3D* GDSA::Model3D::setPointColor(const glm::vec3& color)
 {
     for(auto& component : _components)
     {
@@ -151,7 +151,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setPointColor(const glm::vec3& color)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setTriangleColor(const glm::vec4& color)
+GDSA::Model3D* GDSA::Model3D::setTriangleColor(const glm::vec4& color)
 {
     for(auto& component : _components)
     {
@@ -161,7 +161,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setTriangleColor(const glm::vec4& color)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setLineWidth(float width)
+GDSA::Model3D* GDSA::Model3D::setLineWidth(float width)
 {
     for(auto& component : _components)
     {
@@ -171,7 +171,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setLineWidth(float width)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setPointSize(float size)
+GDSA::Model3D* GDSA::Model3D::setPointSize(float size)
 {
     for(auto& component : _components)
     {
@@ -181,7 +181,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setPointSize(float size)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setTopologyVisibility(VAO::IBO_slots topology, bool visible)
+GDSA::Model3D* GDSA::Model3D::setTopologyVisibility(VAO::IBO_slots topology, bool visible)
 {
     for(auto& component : _components)
     {
@@ -191,7 +191,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setTopologyVisibility(VAO::IBO_slots topolog
     return this;
 }
 
-void AlgGeom::Model3D::buildVao(Component* component)
+void GDSA::Model3D::buildVao(Component* component)
 {
     VAO* vao = new VAO(true);
     vao->setVBOData(component->_vertices);
@@ -201,7 +201,7 @@ void AlgGeom::Model3D::buildVao(Component* component)
     component->_vao = vao;
 }
 
-void AlgGeom::Model3D::loadModelBinaryFile(const std::string& path)
+void GDSA::Model3D::loadModelBinaryFile(const std::string& path)
 {
     std::ifstream fin(path, std::ios::in | std::ios::binary);
     if(!fin.is_open())
@@ -237,7 +237,7 @@ void AlgGeom::Model3D::loadModelBinaryFile(const std::string& path)
     }
 }
 
-void AlgGeom::Model3D::writeBinaryFile(const std::string& path)
+void GDSA::Model3D::writeBinaryFile(const std::string& path)
 {
     std::ofstream fout(path, std::ios::out | std::ios::binary);
     if(!fout.is_open())
@@ -267,7 +267,7 @@ void AlgGeom::Model3D::writeBinaryFile(const std::string& path)
     fout.close();
 }
 
-AlgGeom::Model3D::Component* AlgGeom::Model3D::getVoxel()
+GDSA::Model3D::Component* GDSA::Model3D::getVoxel()
 {
     Component* component = new Component;
 
@@ -307,7 +307,7 @@ AlgGeom::Model3D::Component* AlgGeom::Model3D::getVoxel()
     return component;
 }
 
-AlgGeom::Model3D::MatrixRenderInformation::MatrixRenderInformation()
+GDSA::Model3D::MatrixRenderInformation::MatrixRenderInformation()
 {
     for(glm::mat4& matrix : _matrix)
     {
@@ -315,7 +315,7 @@ AlgGeom::Model3D::MatrixRenderInformation::MatrixRenderInformation()
     }
 }
 
-void AlgGeom::Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
+void GDSA::Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
 {
     if(_heapMatrices[type].empty())
     {
@@ -328,7 +328,7 @@ void AlgGeom::Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
     }
 }
 
-void AlgGeom::Model3D::Component::completeTopology()
+void GDSA::Model3D::Component::completeTopology()
 {
     if(!this->_indices[VAO::IBO_TRIANGLE].empty() && this->_indices[VAO::IBO_LINE].empty())
     {
@@ -341,7 +341,7 @@ void AlgGeom::Model3D::Component::completeTopology()
     }
 }
 
-void AlgGeom::Model3D::Component::generateWireframe()
+void GDSA::Model3D::Component::generateWireframe()
 {
     std::unordered_map<int, std::unordered_set<int>>* segmentIncluded = new std::unordered_map<int, std::unordered_set<int>>;
     auto                                              isIncluded      = [&](int index1, int index2) -> bool
@@ -383,7 +383,7 @@ void AlgGeom::Model3D::Component::generateWireframe()
     }
 }
 
-void AlgGeom::Model3D::Component::generatePointCloud()
+void GDSA::Model3D::Component::generatePointCloud()
 {
     this->_indices[VAO::IBO_POINT].resize(this->_vertices.size());
     std::iota(this->_indices[VAO::IBO_POINT].begin(), this->_indices[VAO::IBO_POINT].end(), 0);

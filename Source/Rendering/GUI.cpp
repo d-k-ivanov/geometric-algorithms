@@ -18,7 +18,7 @@
 #include <string>
 #include <filesystem>
 
-AlgGeom::GUI::GUI()
+GDSA::GUI::GUI()
 {
     _appState              = InputManager::getApplicationState();
     _cameraGuiAdapter      = new CameraGuiAdapter;
@@ -33,7 +33,7 @@ AlgGeom::GUI::GUI()
         _showMenuButtons[idx] = false;
 }
 
-AlgGeom::GUI::~GUI()
+GDSA::GUI::~GUI()
 {
     delete[] _showMenuButtons;
 
@@ -42,7 +42,7 @@ AlgGeom::GUI::~GUI()
     ImGui::DestroyContext();
 }
 
-void AlgGeom::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode)
+void GDSA::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode)
 {
     if(ImGui::RadioButton("Translate", operation == ImGuizmo::TRANSLATE))
     {
@@ -76,7 +76,7 @@ void AlgGeom::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE&
     }
 }
 
-void AlgGeom::GUI::loadFonts()
+void GDSA::GUI::loadFonts()
 {
     ImFontConfig cfg;
     ImGuiIO&     io = ImGui::GetIO();
@@ -99,17 +99,17 @@ void AlgGeom::GUI::loadFonts()
     cfg.GlyphMaxAdvanceX                = 20.0f;
     std::copy_n("FontAwesome", 12, cfg.Name);
 
-    io.Fonts->AddFontFromFileTTF((ThisExecutableLocation() + "/Resources/Fonts/fa-regular-400.ttf").c_str(), 12.0f, &cfg, icons_ranges);
-    io.Fonts->AddFontFromFileTTF((ThisExecutableLocation() + "/Resources/Fonts/fa-solid-900.ttf").c_str(), 12.0f, &cfg, icons_ranges);
+    io.Fonts->AddFontFromFileTTF((Utils::ThisExecutableLocation() + "/Resources/Fonts/fa-regular-400.ttf").c_str(), 12.0f, &cfg, icons_ranges);
+    io.Fonts->AddFontFromFileTTF((Utils::ThisExecutableLocation() + "/Resources/Fonts/fa-solid-900.ttf").c_str(), 12.0f, &cfg, icons_ranges);
 }
 
-void AlgGeom::GUI::loadImGUIStyle()
+void GDSA::GUI::loadImGUIStyle()
 {
     ImGui::StyleColorsLight();
     this->loadFonts();
 }
 
-void AlgGeom::GUI::processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent) const
+void GDSA::GUI::processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent) const
 {
     if(fileDialog == FileDialog::OPEN_MESH)
     {
@@ -123,7 +123,7 @@ void AlgGeom::GUI::processSelectedFile(FileDialog fileDialog, const std::string&
     }
 }
 
-void AlgGeom::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sceneContent)
+void GDSA::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sceneContent)
 {
     if(component && _showMenuButtons[MenuButtons::MODELS])
     {
@@ -153,7 +153,7 @@ void AlgGeom::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sce
     }
 }
 
-void AlgGeom::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
+void GDSA::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
 {
     const std::string openGLVersion = "#version 4" + std::to_string(openGLMinorVersion) + "0 core";
 
@@ -164,7 +164,7 @@ void AlgGeom::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
 
     // Add Windows icon to GLFW window
     GLFWimage images[1];
-    images[0].pixels = stbi_load((ThisExecutableLocation() + "/Resources/App.png").c_str(), &images[0].width, &images[0].height, nullptr, 4);
+    images[0].pixels = stbi_load((Utils::ThisExecutableLocation() + "/Resources/App.png").c_str(), &images[0].width, &images[0].height, nullptr, 4);
     glfwSetWindowIcon(window, 1, images);
     stbi_image_free(images[0].pixels);
 
@@ -172,7 +172,7 @@ void AlgGeom::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
     ImGui_ImplOpenGL3_Init(openGLVersion.c_str());
 }
 
-void AlgGeom::GUI::render(SceneContent* sceneContent)
+void GDSA::GUI::render(SceneContent* sceneContent)
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -234,7 +234,7 @@ void AlgGeom::GUI::render(SceneContent* sceneContent)
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void AlgGeom::GUI::showCameraMenu(SceneContent* sceneContent)
+void GDSA::GUI::showCameraMenu(SceneContent* sceneContent)
 {
     static Camera* cameraSelected = nullptr;
 
@@ -272,7 +272,7 @@ void AlgGeom::GUI::showCameraMenu(SceneContent* sceneContent)
     }
 }
 
-void AlgGeom::GUI::showFileDialog(SceneContent* sceneContent)
+void GDSA::GUI::showFileDialog(SceneContent* sceneContent)
 {
     if(_fileDialog != NONE)
     {
@@ -299,7 +299,7 @@ void AlgGeom::GUI::showFileDialog(SceneContent* sceneContent)
     }
 }
 
-void AlgGeom::GUI::showLightMenu(SceneContent* sceneContent)
+void GDSA::GUI::showLightMenu(SceneContent* sceneContent)
 {
     ImGui::SetNextWindowSize(ImVec2(800, 440), ImGuiCond_FirstUseEver);
 
@@ -319,7 +319,7 @@ void AlgGeom::GUI::showLightMenu(SceneContent* sceneContent)
     }
 }
 
-void AlgGeom::GUI::showModelMenu(SceneContent* sceneContent)
+void GDSA::GUI::showModelMenu(SceneContent* sceneContent)
 {
     ImGui::SetNextWindowSize(ImVec2(800, 440), ImGuiCond_FirstUseEver);
 
@@ -401,7 +401,7 @@ void AlgGeom::GUI::showModelMenu(SceneContent* sceneContent)
     ImGui::End();
 }
 
-void AlgGeom::GUI::showRenderingMenu(SceneContent* sceneContent)
+void GDSA::GUI::showRenderingMenu(SceneContent* sceneContent)
 {
     if(ImGui::Begin("Rendering Settings", &_showMenuButtons[RENDERING]))
     {
@@ -435,7 +435,7 @@ void AlgGeom::GUI::showRenderingMenu(SceneContent* sceneContent)
     ImGui::End();
 }
 
-void AlgGeom::GUI::showScreenshotMenu(SceneContent* sceneContent)
+void GDSA::GUI::showScreenshotMenu(SceneContent* sceneContent)
 {
     auto fixName = [=](const std::string& name, const std::string& defaultName, const std::string& extension) -> std::string
     {

@@ -5,7 +5,7 @@
 #include "Geometry/Bezier.h"
 #include "Geometry/Line.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawBezier : public Model3D
 {
@@ -17,4 +17,4 @@ public:
     DrawBezier(const DrawBezier& drawBezier) = delete;
     ~DrawBezier() override { }
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

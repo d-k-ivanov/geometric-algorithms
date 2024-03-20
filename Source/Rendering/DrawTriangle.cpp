@@ -1,6 +1,6 @@
 #include "DrawTriangle.h"
 
-AlgGeom::DrawTriangle::DrawTriangle(Triangle& triangle)
+GDSA::DrawTriangle::DrawTriangle(Triangle& triangle)
     : Model3D()
 {
     Component* component = new Component;
@@ -17,7 +17,7 @@ AlgGeom::DrawTriangle::DrawTriangle(Triangle& triangle)
     this->buildVao(component);
 }
 
-AlgGeom::DrawTriangle::DrawTriangle(Triangle3d& triangle)
+GDSA::DrawTriangle::DrawTriangle(Triangle3d& triangle)
     : Model3D()
 {
     Component* component = new Component;

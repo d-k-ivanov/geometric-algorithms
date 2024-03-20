@@ -2,7 +2,7 @@
 
 #include "Geometry/Triangle3d.h"
 
-AlgGeom::DrawPlane::DrawPlane(Plane& plane)
+GDSA::DrawPlane::DrawPlane(Plane& plane)
     : Model3D()
     , _plane(plane)
 {
@@ -82,6 +82,6 @@ AlgGeom::DrawPlane::DrawPlane(Plane& plane)
     this->buildVao(component);
 }
 
-AlgGeom::DrawPlane::~DrawPlane()
+GDSA::DrawPlane::~DrawPlane()
 {
 }

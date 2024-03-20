@@ -1,6 +1,6 @@
 #include "DrawAABB.h"
 
-AlgGeom::DrawAABB::DrawAABB(AABB& aabb)
+GDSA::DrawAABB::DrawAABB(AABB& aabb)
     : Model3D()
 {
     Component* component = this->getVoxel();
@@ -16,6 +16,6 @@ AlgGeom::DrawAABB::DrawAABB(AABB& aabb)
     this->_components.push_back(std::unique_ptr<Component>(component));
 }
 
-AlgGeom::DrawAABB::~DrawAABB()
+GDSA::DrawAABB::~DrawAABB()
 {
 }

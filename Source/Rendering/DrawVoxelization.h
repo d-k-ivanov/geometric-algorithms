@@ -2,7 +2,7 @@
 
 #include "Model3D.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawVoxelization : public Model3D
 {

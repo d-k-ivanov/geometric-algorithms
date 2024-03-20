@@ -7,7 +7,7 @@
 
 #include <GL/glew.h>
 
-namespace AlgGeom
+namespace GDSA
 {
 class Texture
 {
@@ -28,9 +28,9 @@ public:
     Texture(const glm::vec4& color);
     virtual ~Texture();
 
-    void applyTexture(AlgGeom::ShaderProgram* shader, const GLint id, const std::string& shaderVariable);
+    void applyTexture(GDSA::ShaderProgram* shader, const GLint id, const std::string& shaderVariable);
 
     glm::vec4   getColor() { return _color; }
     std::string getFilename() { return _filename; }
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

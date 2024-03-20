@@ -5,7 +5,7 @@
 #include "Geometry/Segment3d.h"
 #include "Geometry/SegmentLine.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawSegment : public Model3D
 {
@@ -15,4 +15,4 @@ public:
     DrawSegment(const DrawSegment& drawSegment) = delete;
     ~DrawSegment() override { }
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

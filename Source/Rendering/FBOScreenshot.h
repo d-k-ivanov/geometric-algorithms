@@ -3,7 +3,7 @@
 #include "FBO.h"
 #include "Image.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class FBOScreenshot : public FBO
 {
@@ -16,10 +16,10 @@ public:
     ~FBOScreenshot() override;
 
     GLuint          getId() const override { return _multisampledFBO; }
-    AlgGeom::Image* getImage() const;
+    GDSA::Image* getImage() const;
 
     void bindFBO() override;
     void modifySize(const uint16_t width, const uint16_t height) override;
     void saveImage(const std::string& filename);
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

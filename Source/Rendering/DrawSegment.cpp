@@ -1,6 +1,6 @@
 #include "DrawSegment.h"
 
-AlgGeom::DrawSegment::DrawSegment(SegmentLine& segment)
+GDSA::DrawSegment::DrawSegment(SegmentLine& segment)
     : Model3D()
 {
     Component* component = new Component;
@@ -16,7 +16,7 @@ AlgGeom::DrawSegment::DrawSegment(SegmentLine& segment)
     this->buildVao(component);
 }
 
-AlgGeom::DrawSegment::DrawSegment(Segment3d& segment)
+GDSA::DrawSegment::DrawSegment(Segment3d& segment)
     : Model3D()
 {
     Component* component = new Component;

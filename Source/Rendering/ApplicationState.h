@@ -6,7 +6,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-namespace AlgGeom
+namespace GDSA
 {
 struct ApplicationState
 {
@@ -52,4 +52,4 @@ struct ApplicationState
         _gamma         = 1.3f;
     }
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

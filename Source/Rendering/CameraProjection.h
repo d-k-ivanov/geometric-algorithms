@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-namespace AlgGeom
+namespace GDSA
 {
 class CameraProjection
 {

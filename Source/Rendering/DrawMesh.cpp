@@ -3,12 +3,12 @@
 #include <filesystem>
 #include <iostream>
 
-AlgGeom::DrawMesh::DrawMesh()
+GDSA::DrawMesh::DrawMesh()
     : Model3D()
 {
 }
 
-AlgGeom::DrawMesh::DrawMesh(TriangleModel& triangleModel)
+GDSA::DrawMesh::DrawMesh(TriangleModel& triangleModel)
     : Model3D()
 {
     const std::vector<Vect3d>* vertices        = triangleModel.getVertices();
@@ -42,7 +42,7 @@ AlgGeom::DrawMesh::DrawMesh(TriangleModel& triangleModel)
     this->_components.push_back(std::unique_ptr<Component>(component));
 }
 
-AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
+GDSA::DrawMesh* GDSA::DrawMesh::loadModelOBJ(const std::string& path)
 {
     const std::string binaryFile = path.substr(0, path.find_last_of('.')) + BINARY_EXTENSION;
 
@@ -75,7 +75,7 @@ AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
     return this;
 }
 
-AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder) const
+GDSA::Model3D::Component* GDSA::DrawMesh::processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder) const
 {
     std::vector<VAO::Vertex> vertices(mesh->mNumVertices);
     std::vector<GLuint>      indices(mesh->mNumFaces * 4);
@@ -112,7 +112,7 @@ AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(const aiMesh* mesh, 
     return component;
 }
 
-void AlgGeom::DrawMesh::processNode(const aiNode* node, const aiScene* scene, const std::string& folder)
+void GDSA::DrawMesh::processNode(const aiNode* node, const aiScene* scene, const std::string& folder)
 {
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {

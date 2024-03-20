@@ -5,7 +5,7 @@
 #include "Geometry/Triangle.h"
 #include "Geometry/Triangle3d.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawTriangle : public Model3D
 {
@@ -15,4 +15,4 @@ public:
     DrawTriangle(const DrawTriangle& drawTriangle) = delete;
     ~DrawTriangle() override                       = default;
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

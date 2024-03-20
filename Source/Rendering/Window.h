@@ -4,7 +4,7 @@
 
 #include "Patterns/Singleton.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class Window : public Singleton<Window>
 {
@@ -23,4 +23,4 @@ public:
     void init(const std::string& title, const uint16_t width = 1856, const uint16_t height = 1392);
     void loop();
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

@@ -5,20 +5,20 @@
 #include <iostream>
 #include <stdexcept>
 
-AlgGeom::Window::Window()
+GDSA::Window::Window()
     : _window(nullptr)
 {
     _renderer = Renderer::getInstance();
 }
 
-void AlgGeom::Window::releaseResources()
+void GDSA::Window::releaseResources()
 {
     glfwDestroyWindow(_window);    // We close and destroy the application window.
     _window = nullptr;
     glfwTerminate();    // We freed up the resources that GLFW was occupying.
 }
 
-void AlgGeom::Window::init(const std::string& title, const uint16_t width, const uint16_t height)
+void GDSA::Window::init(const std::string& title, const uint16_t width, const uint16_t height)
 {
     // Initialize GLFW. It is a process that only needs to be done once in the application
     if(glfwInit() != GLFW_TRUE)
@@ -66,7 +66,7 @@ void AlgGeom::Window::init(const std::string& title, const uint16_t width, const
     GUI::getInstance()->initialize(_window, 2);
 }
 
-void AlgGeom::Window::loop()
+void GDSA::Window::loop()
 {
     while(!glfwWindowShouldClose(_window))
     {

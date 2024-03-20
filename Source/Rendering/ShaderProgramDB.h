@@ -4,7 +4,7 @@
 
 #include "Patterns/Singleton.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class ShaderProgramDB : public Singleton<ShaderProgramDB>
 {
@@ -12,7 +12,7 @@ class ShaderProgramDB : public Singleton<ShaderProgramDB>
 
 private:
     static std::unordered_map<uint8_t, std::string>                               RENDERING_SHADER_PATH;
-    static std::unordered_map<uint8_t, std::unique_ptr<AlgGeom::RenderingShader>> _renderingShader;
+    static std::unordered_map<uint8_t, std::unique_ptr<GDSA::RenderingShader>> _renderingShader;
 
 public:
     enum RenderingShaderId
@@ -29,4 +29,4 @@ public:
     virtual ~ShaderProgramDB();
     RenderingShader* getShader(RenderingShaderId shaderId);
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

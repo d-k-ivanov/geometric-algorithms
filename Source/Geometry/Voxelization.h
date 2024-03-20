@@ -35,7 +35,7 @@ public:
 
     bool isInVoxel(VoxelModel* voxel, const Vect3d& vertice) const;
 
-    AlgGeom::DrawVoxelization* getRenderingObject(bool outlineMode);
+    GDSA::DrawVoxelization* getRenderingObject(bool outlineMode);
 
     void printData() const;
 

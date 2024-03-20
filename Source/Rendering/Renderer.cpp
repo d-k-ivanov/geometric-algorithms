@@ -7,7 +7,7 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
-AlgGeom::Renderer::Renderer()
+GDSA::Renderer::Renderer()
     : _appState(nullptr)
     , _content(nullptr)
     , _screenshoter(nullptr)
@@ -18,7 +18,7 @@ AlgGeom::Renderer::Renderer()
     _gui = GUI::getInstance();
 }
 
-void AlgGeom::Renderer::renderLine(Model3D::MatrixRenderInformation* matrixInformation)
+void GDSA::Renderer::renderLine(Model3D::MatrixRenderInformation* matrixInformation)
 {
     _lineShader->use();
 
@@ -28,7 +28,7 @@ void AlgGeom::Renderer::renderLine(Model3D::MatrixRenderInformation* matrixInfor
     }
 }
 
-void AlgGeom::Renderer::renderPoint(Model3D::MatrixRenderInformation* matrixInformation)
+void GDSA::Renderer::renderPoint(Model3D::MatrixRenderInformation* matrixInformation)
 {
     _pointShader->use();
 
@@ -38,7 +38,7 @@ void AlgGeom::Renderer::renderPoint(Model3D::MatrixRenderInformation* matrixInfo
     }
 }
 
-void AlgGeom::Renderer::renderTriangle(Model3D::MatrixRenderInformation* matrixInformation)
+void GDSA::Renderer::renderTriangle(Model3D::MatrixRenderInformation* matrixInformation)
 {
     _triangleShader->use();
     this->transferLightUniforms(_triangleShader);
@@ -50,7 +50,7 @@ void AlgGeom::Renderer::renderTriangle(Model3D::MatrixRenderInformation* matrixI
     }
 }
 
-void AlgGeom::Renderer::transferLightUniforms(RenderingShader* shader)
+void GDSA::Renderer::transferLightUniforms(RenderingShader* shader)
 {
     shader->setUniform("lightPosition", _appState->_lightPosition);
     shader->setUniform("Ia", _appState->_Ia);
@@ -58,29 +58,29 @@ void AlgGeom::Renderer::transferLightUniforms(RenderingShader* shader)
     shader->setUniform("Is", _appState->_Is);
 }
 
-AlgGeom::Renderer::~Renderer()
+GDSA::Renderer::~Renderer()
 {
     delete _screenshoter;
 }
 
-void AlgGeom::Renderer::createCamera(uint16_t width, uint16_t height)
+void GDSA::Renderer::createCamera(uint16_t width, uint16_t height)
 {
     _content->buildCamera(width, height);
 }
 
-void AlgGeom::Renderer::createModels()
+void GDSA::Renderer::createModels()
 {
     _content->buildScenario();
 }
 
-void AlgGeom::Renderer::createShaderProgram()
+void GDSA::Renderer::createShaderProgram()
 {
     _pointShader    = ShaderProgramDB::getInstance()->getShader(ShaderProgramDB::POINT_RENDERING);
     _lineShader     = ShaderProgramDB::getInstance()->getShader(ShaderProgramDB::LINE_RENDERING);
     _triangleShader = ShaderProgramDB::getInstance()->getShader(ShaderProgramDB::TRIANGLE_RENDERING);
 }
 
-void AlgGeom::Renderer::prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState)
+void GDSA::Renderer::prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState)
 {
     _appState                = appState;
     _appState->_viewportSize = glm::ivec2(width, height);
@@ -120,13 +120,13 @@ void AlgGeom::Renderer::prepareOpenGL(uint16_t width, uint16_t height, Applicati
     this->resizeEvent(_appState->_viewportSize.x, _appState->_viewportSize.y);
 }
 
-void AlgGeom::Renderer::removeModel()
+void GDSA::Renderer::removeModel()
 {
     if(!_content->_model.empty())
         _content->_model.erase(_content->_model.end() - 1);
 }
 
-void AlgGeom::Renderer::resizeEvent(uint16_t width, uint16_t height)
+void GDSA::Renderer::resizeEvent(uint16_t width, uint16_t height)
 {
     glViewport(0, 0, width, height);
 
@@ -134,7 +134,7 @@ void AlgGeom::Renderer::resizeEvent(uint16_t width, uint16_t height)
     _content->_camera[_appState->_selectedCamera]->setRaspect(width, height);
 }
 
-void AlgGeom::Renderer::screenshotEvent(const ScreenshotEvent& event)
+void GDSA::Renderer::screenshotEvent(const ScreenshotEvent& event)
 {
     if(event._type == ScreenshotListener::RGBA)
     {
@@ -150,7 +150,7 @@ void AlgGeom::Renderer::screenshotEvent(const ScreenshotEvent& event)
     }
 }
 
-void AlgGeom::Renderer::render(float alpha, bool renderGui, bool bindScreenshoter)
+void GDSA::Renderer::render(float alpha, bool renderGui, bool bindScreenshoter)
 {
     Model3D::MatrixRenderInformation matrixInformation;
     glm::mat4                        bias = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));

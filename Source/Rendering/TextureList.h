@@ -10,7 +10,7 @@
 
 #include <unordered_map>
 
-namespace AlgGeom
+namespace GDSA
 {
 class TextureList : public Singleton<TextureList>
 {
@@ -35,8 +35,8 @@ private:
     };
 
 private:
-    std::unordered_map<glm::vec4, AlgGeom::Texture*, ColorHash, ColorEqual> _colorTexture;
-    std::unordered_map<std::string, AlgGeom::Texture*>                      _imageTexture;
+    std::unordered_map<glm::vec4, GDSA::Texture*, ColorHash, ColorEqual> _colorTexture;
+    std::unordered_map<std::string, GDSA::Texture*>                      _imageTexture;
 
 private:
     TextureList();
@@ -44,9 +44,9 @@ private:
 public:
     virtual ~TextureList();
 
-    AlgGeom::Texture* getTexture(const glm::vec4& color);
-    AlgGeom::Texture* getTexture(const std::string& path);
-    void              saveTexture(const glm::vec4& color, AlgGeom::Texture* texture);
-    void              saveTexture(const std::string& path, AlgGeom::Texture* texture);
+    GDSA::Texture* getTexture(const glm::vec4& color);
+    GDSA::Texture* getTexture(const std::string& path);
+    void              saveTexture(const glm::vec4& color, GDSA::Texture* texture);
+    void              saveTexture(const std::string& path, GDSA::Texture* texture);
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

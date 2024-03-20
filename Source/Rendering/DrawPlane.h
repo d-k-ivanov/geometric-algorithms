@@ -4,7 +4,7 @@
 
 #include "Geometry/Plane.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawPlane : public Model3D
 {
@@ -16,4 +16,4 @@ public:
     DrawPlane(const DrawPlane& plane) = delete;
     ~DrawPlane() override;
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

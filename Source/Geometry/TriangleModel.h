@@ -54,7 +54,7 @@ public:
      */
     void computeTangents();
 
-    AlgGeom::DrawVoxelization* voxelize() const;
+    GDSA::DrawVoxelization* voxelize() const;
 };
 
 class TriangleModel::Face

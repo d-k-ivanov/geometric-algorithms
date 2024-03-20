@@ -5,8 +5,8 @@
 
 int main()
 {
-    AlgGeom::Window*   window   = AlgGeom::Window::getInstance();
-    AlgGeom::Renderer* renderer = AlgGeom::Renderer::getInstance();
+    GDSA::Window*   window   = GDSA::Window::getInstance();
+    GDSA::Renderer* renderer = GDSA::Renderer::getInstance();
 
     try
     {

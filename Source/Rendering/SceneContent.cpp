@@ -21,7 +21,7 @@
 
 // ----------------------------- BUILD YOUR SCENARIO HERE -----------------------------------
 
-void AlgGeom::SceneContent::buildScenario()
+void GDSA::SceneContent::buildScenario()
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -55,13 +55,13 @@ void AlgGeom::SceneContent::buildScenario()
     // Scenes::p3(*this);
 
     // Practice 4:
-    // Scenes::p4a(*this, /*draw triangles*/ true);    // 2D Hull
+    Scenes::p4a(*this, /*draw triangles*/ true);    // 2D Hull
     Scenes::p4b(*this, /*random on sphere surface*/ true);    // 3D Hull
-    // Scenes::p4c(*this);    // 3D Hull from Trianles
-    // Scenes::p4d(*this);    // Voronoi Diagram
+    Scenes::p4c(*this);    // 3D Hull from Trianles
+    Scenes::p4d(*this);    // Voronoi Diagram
 }
 
-void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)
+void GDSA::SceneContent::buildCamera(uint16_t width, uint16_t height)
 {
     Camera* camera = new Camera(width, height, /*2D*/ false);
     camera->setPosition(glm::vec3(0.0f, 0.0f, 4.0f));
@@ -73,23 +73,23 @@ void AlgGeom::SceneContent::buildCamera(uint16_t width, uint16_t height)
 
 // ------------------------------------------------------------------------------------------
 
-AlgGeom::SceneContent::~SceneContent()
+GDSA::SceneContent::~SceneContent()
 {
     _camera.clear();
     _model.clear();
 }
 
-void AlgGeom::SceneContent::addNewCamera(ApplicationState* appState)
+void GDSA::SceneContent::addNewCamera(ApplicationState* appState)
 {
     _camera.push_back(std::make_unique<Camera>(appState->_viewportSize.x, appState->_viewportSize.y, /*2D*/ false));
 }
 
-void AlgGeom::SceneContent::addNewModel(Model3D* model)
+void GDSA::SceneContent::addNewModel(Model3D* model)
 {
     _model.push_back(std::unique_ptr<Model3D>(model));
 }
 
-AlgGeom::Model3D* AlgGeom::SceneContent::getModel(Model3D::Component* component) const
+GDSA::Model3D* GDSA::SceneContent::getModel(Model3D::Component* component) const
 {
     for(auto& model : _model)
     {

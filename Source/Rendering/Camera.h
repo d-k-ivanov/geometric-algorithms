@@ -5,7 +5,7 @@
 
 #include "Geometry/AABB.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class Camera
 {
@@ -56,4 +56,4 @@ public:
     void truck(float speed);
     void zoom(float speed);
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-AlgGeom::Image::Image(const std::string& filename)
+GDSA::Image::Image(const std::string& filename)
     : _depth(4)    // PNG depth
 {
     const unsigned error = lodepng::decode(_image, _width, _height, filename.c_str());
@@ -19,7 +19,7 @@ AlgGeom::Image::Image(const std::string& filename)
     this->flipImageVertically(_image, _width, _height, _depth);    // By default it's flipped
 }
 
-AlgGeom::Image::Image(unsigned char* image, const uint16_t width, const uint16_t height, const uint8_t depth)
+GDSA::Image::Image(unsigned char* image, const uint16_t width, const uint16_t height, const uint8_t depth)
     : _width(width)
     , _height(height)
     , _depth(depth)
@@ -37,11 +37,11 @@ AlgGeom::Image::Image(unsigned char* image, const uint16_t width, const uint16_t
     }
 }
 
-AlgGeom::Image::~Image()
+GDSA::Image::~Image()
 {
 }
 
-void AlgGeom::Image::flipImageVertically(std::vector<unsigned char>& image, const uint16_t width, const uint16_t height, const uint8_t depth)
+void GDSA::Image::flipImageVertically(std::vector<unsigned char>& image, const uint16_t width, const uint16_t height, const uint8_t depth)
 {
     int            rowSize    = width * depth;
     unsigned char* bits       = image.data();
@@ -60,7 +60,7 @@ void AlgGeom::Image::flipImageVertically(std::vector<unsigned char>& image, cons
     delete[] tempBuffer;
 }
 
-bool AlgGeom::Image::saveImage(const std::string& filename)
+bool GDSA::Image::saveImage(const std::string& filename)
 {
     std::vector<unsigned char> result;
     const unsigned             error = lodepng::encode(result, this->_image, this->_width, this->_height);
@@ -74,7 +74,7 @@ bool AlgGeom::Image::saveImage(const std::string& filename)
     return false;
 }
 
-void AlgGeom::Image::flipImageVertically()
+void GDSA::Image::flipImageVertically()
 {
     Image::flipImageVertically(_image, _width, _height, _depth);
 }

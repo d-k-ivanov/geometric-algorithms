@@ -4,7 +4,7 @@
 
 #include "Geometry/Polygon.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawPolygon : public Model3D
 {
@@ -16,4 +16,4 @@ public:
     DrawPolygon(const DrawPolygon& ddt) = delete;
     ~DrawPolygon() override {};
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

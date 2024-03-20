@@ -1,6 +1,6 @@
 #include "DrawRay.h"
 
-AlgGeom::DrawRay::DrawRay(RayLine& ray)
+GDSA::DrawRay::DrawRay(RayLine& ray)
     : Model3D()
 {
     Component* component = new Component;
@@ -18,7 +18,7 @@ AlgGeom::DrawRay::DrawRay(RayLine& ray)
     this->buildVao(component);
 }
 
-AlgGeom::DrawRay::DrawRay(Ray3d& ray)
+GDSA::DrawRay::DrawRay(Ray3d& ray)
     : Model3D()
 {
     Component*   component = new Component;

@@ -1,6 +1,6 @@
 #include "DrawPolygon.h"
 
-AlgGeom::DrawPolygon::DrawPolygon(Polygon& polygon)
+GDSA::DrawPolygon::DrawPolygon(Polygon& polygon)
     : Model3D()
     , _polygon(polygon)
 {

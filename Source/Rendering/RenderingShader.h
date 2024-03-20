@@ -2,7 +2,7 @@
 
 #include "ShaderProgram.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class RenderingShader : public ShaderProgram
 {
@@ -12,4 +12,4 @@ public:
     void   applyActiveSubroutines() override;
     GLuint createShaderProgram(const char* filename) override;
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

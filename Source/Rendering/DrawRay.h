@@ -5,7 +5,7 @@
 #include "Geometry/RayLine.h"
 #include "Geometry/Ray3d.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawRay : public Model3D
 {
@@ -15,4 +15,4 @@ public:
     DrawRay(const DrawRay& drawRay) = delete;
     ~DrawRay() override {};
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

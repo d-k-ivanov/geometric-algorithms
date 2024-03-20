@@ -4,7 +4,7 @@
 
 #include "Geometry/AABB.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawAABB : public Model3D
 {

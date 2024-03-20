@@ -2,11 +2,11 @@
 
 #include <stdexcept>
 
-AlgGeom::TextureList::TextureList()
+GDSA::TextureList::TextureList()
 {
 }
 
-AlgGeom::TextureList::~TextureList()
+GDSA::TextureList::~TextureList()
 {
     for(auto& pair : _colorTexture)
     {
@@ -19,14 +19,14 @@ AlgGeom::TextureList::~TextureList()
     }
 }
 
-AlgGeom::Texture* AlgGeom::TextureList::getTexture(const glm::vec4& color)
+GDSA::Texture* GDSA::TextureList::getTexture(const glm::vec4& color)
 {
-    AlgGeom::Texture* texture = nullptr;
+    GDSA::Texture* texture = nullptr;
     auto              it      = _colorTexture.find(color);
 
     if(it == _colorTexture.end())
     {
-        texture              = new AlgGeom::Texture(color);
+        texture              = new GDSA::Texture(color);
         _colorTexture[color] = texture;
     }
     else
@@ -35,16 +35,16 @@ AlgGeom::Texture* AlgGeom::TextureList::getTexture(const glm::vec4& color)
     return texture;
 }
 
-AlgGeom::Texture* AlgGeom::TextureList::getTexture(const std::string& path)
+GDSA::Texture* GDSA::TextureList::getTexture(const std::string& path)
 {
-    AlgGeom::Texture* texture = nullptr;
+    GDSA::Texture* texture = nullptr;
     auto              it      = _imageTexture.find(path);
 
     if(it == _imageTexture.end())
     {
         try
         {
-            texture             = new AlgGeom::Texture(new Image(path));
+            texture             = new GDSA::Texture(new Image(path));
             _imageTexture[path] = texture;
         }
         catch(std::runtime_error& error)
@@ -60,12 +60,12 @@ AlgGeom::Texture* AlgGeom::TextureList::getTexture(const std::string& path)
     return texture;
 }
 
-void AlgGeom::TextureList::saveTexture(const glm::vec4& color, AlgGeom::Texture* texture)
+void GDSA::TextureList::saveTexture(const glm::vec4& color, GDSA::Texture* texture)
 {
     _colorTexture[color] = texture;
 }
 
-void AlgGeom::TextureList::saveTexture(const std::string& path, AlgGeom::Texture* texture)
+void GDSA::TextureList::saveTexture(const std::string& path, GDSA::Texture* texture)
 {
     _imageTexture[path] = texture;
 }

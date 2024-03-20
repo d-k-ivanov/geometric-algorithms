@@ -5,7 +5,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-namespace AlgGeom
+namespace GDSA
 {
 DrawBezier::DrawBezier(const Bezier& bezier, const double lertStep = 0.02f)
     : _bezier(bezier)
@@ -27,4 +27,4 @@ DrawBezier::DrawBezier(const Bezier& bezier, const double lertStep = 0.02f)
 
     // this->_components.push_back(std::unique_ptr<Component>(component));
 }
-}    // namespace AlgGeom
+}    // namespace GDSA

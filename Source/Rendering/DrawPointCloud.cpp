@@ -1,6 +1,6 @@
 #include "DrawPointCloud.h"
 
-AlgGeom::DrawPointCloud::DrawPointCloud(PointCloud& pointCloud)
+GDSA::DrawPointCloud::DrawPointCloud(PointCloud& pointCloud)
     : Model3D()
 {
     size_t     numPoints = pointCloud.size();
@@ -17,7 +17,7 @@ AlgGeom::DrawPointCloud::DrawPointCloud(PointCloud& pointCloud)
     this->buildVao(component);
 }
 
-AlgGeom::DrawPointCloud::DrawPointCloud(PointCloud3d& pointCloud)
+GDSA::DrawPointCloud::DrawPointCloud(PointCloud3d& pointCloud)
     : Model3D()
 {
     size_t     numPoints = pointCloud.size();
@@ -34,6 +34,6 @@ AlgGeom::DrawPointCloud::DrawPointCloud(PointCloud3d& pointCloud)
     this->buildVao(component);
 }
 
-AlgGeom::DrawPointCloud::~DrawPointCloud()
+GDSA::DrawPointCloud::~DrawPointCloud()
 {
 }

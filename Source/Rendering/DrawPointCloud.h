@@ -5,7 +5,7 @@
 #include "Geometry/PointCloud.h"
 #include "Geometry/PointCloud3d.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawPointCloud : public Model3D
 {
@@ -15,4 +15,4 @@ public:
     DrawPointCloud(const DrawPointCloud& drawPointCloud) = delete;
     ~DrawPointCloud() override;
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

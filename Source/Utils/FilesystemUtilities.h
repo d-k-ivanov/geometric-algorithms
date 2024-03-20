@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace AlgGeom
+namespace GDSA::Utils
 {
 std::string ThisExecutableLocation();
-}    // AlgGeom
+}    // GDSA::Utils

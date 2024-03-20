@@ -4,7 +4,7 @@
 
 #include <Geometry/TriangleModel.h>
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawMesh : public Model3D
 {
@@ -24,4 +24,4 @@ public:
 
     DrawMesh* loadModelOBJ(const std::string& path);
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

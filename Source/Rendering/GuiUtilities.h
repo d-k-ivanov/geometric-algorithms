@@ -5,11 +5,11 @@
 
 #include <string>
 
-namespace AlgGeom
+namespace GDSA
 {
 namespace GuiUtilities
 {
     void leaveSpace(unsigned numSlots);
     void renderText(const glm::vec3& xyz, const std::string& title = "", char delimiter = ',');
 }
-}    // namespace AlgGeom
+}    // namespace GDSA

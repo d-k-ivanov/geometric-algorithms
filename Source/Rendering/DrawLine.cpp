@@ -3,7 +3,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
-AlgGeom::DrawLine::DrawLine(Line& line)
+GDSA::DrawLine::DrawLine(Line& line)
     : Model3D()
 {
     Component* component = new Component;
@@ -23,7 +23,7 @@ AlgGeom::DrawLine::DrawLine(Line& line)
     this->buildVao(component);
 }
 
-AlgGeom::DrawLine::DrawLine(Line3d& line)
+GDSA::DrawLine::DrawLine(Line3d& line)
     : Model3D()
 {
     Component* component = new Component;

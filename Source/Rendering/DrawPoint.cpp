@@ -1,6 +1,6 @@
 #include "DrawPoint.h"
 
-AlgGeom::DrawPoint::DrawPoint(const Point& point)
+GDSA::DrawPoint::DrawPoint(const Point& point)
     : Model3D()
     , _point(point)
 {
@@ -12,7 +12,7 @@ AlgGeom::DrawPoint::DrawPoint(const Point& point)
     this->buildVao(component);
 }
 
-AlgGeom::DrawPoint::DrawPoint(const Vect3d& point)
+GDSA::DrawPoint::DrawPoint(const Vect3d& point)
     : Model3D()
 {
     Component* component = new Component;

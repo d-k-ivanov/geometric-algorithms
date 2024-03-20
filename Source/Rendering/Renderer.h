@@ -9,9 +9,9 @@
 #include "RenderingShader.h"
 #include "SceneContent.h"
 
-namespace AlgGeom
+namespace GDSA
 {
-class Renderer : public Singleton<Renderer>, public AlgGeom::ResizeListener, public AlgGeom::ScreenshotListener
+class Renderer : public Singleton<Renderer>, public GDSA::ResizeListener, public GDSA::ScreenshotListener
 {
     friend class Singleton<Renderer>;
 
@@ -42,4 +42,4 @@ public:
     virtual void resizeEvent(uint16_t width, uint16_t height);
     virtual void screenshotEvent(const ScreenshotEvent& event);
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

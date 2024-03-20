@@ -4,7 +4,7 @@
 #include "Camera.h"
 #include "Model3D.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class SceneContent
 {
@@ -21,4 +21,4 @@ public:
     void     buildScenario();
     Model3D* getModel(Model3D::Component* component) const;
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

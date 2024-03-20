@@ -8,19 +8,19 @@
 
 // Static variables initialization
 
-const std::string                            AlgGeom::ShaderProgram::MODULE_HEADER      = "#include";
-const std::string                            AlgGeom::ShaderProgram::MODULE_FILE_CHAR_1 = "<";
-const std::string                            AlgGeom::ShaderProgram::MODULE_FILE_CHAR_2 = ">";
-std::unordered_map<std::string, std::string> AlgGeom::ShaderProgram::_moduleCode;
+const std::string                            GDSA::ShaderProgram::MODULE_HEADER      = "#include";
+const std::string                            GDSA::ShaderProgram::MODULE_FILE_CHAR_1 = "<";
+const std::string                            GDSA::ShaderProgram::MODULE_FILE_CHAR_2 = ">";
+std::unordered_map<std::string, std::string> GDSA::ShaderProgram::_moduleCode;
 
-AlgGeom::ShaderProgram::ShaderProgram()
+GDSA::ShaderProgram::ShaderProgram()
     : _handler(0)
     , _linked(false)
     , _logString("")
 {
 }
 
-bool AlgGeom::ShaderProgram::setSubroutineUniform(const GLenum shaderType, const std::string& subroutine, const std::string& functionName)
+bool GDSA::ShaderProgram::setSubroutineUniform(const GLenum shaderType, const std::string& subroutine, const std::string& functionName)
 {
     GLint subroutineID = glGetSubroutineUniformLocation(_handler, shaderType, subroutine.c_str());
     GLint uniformID    = glGetSubroutineIndex(_handler, shaderType, functionName.c_str());
@@ -36,7 +36,7 @@ bool AlgGeom::ShaderProgram::setSubroutineUniform(const GLenum shaderType, const
     return false;
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLfloat value)
+bool GDSA::ShaderProgram::setUniform(const std::string& name, GLfloat value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -49,7 +49,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLfloat value)
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLint value)
+bool GDSA::ShaderProgram::setUniform(const std::string& name, GLint value)
 {
     const GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -62,7 +62,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLint value)
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const GLuint value)
+bool GDSA::ShaderProgram::setUniform(const std::string& name, const GLuint value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -75,7 +75,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const GLuint va
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::mat4& value)
+bool GDSA::ShaderProgram::setUniform(const std::string& name, const glm::mat4& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -88,7 +88,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::mat4
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const std::vector<glm::mat4>& values)
+bool GDSA::ShaderProgram::setUniform(const std::string& name, const std::vector<glm::mat4>& values)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -101,7 +101,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const std::vect
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::vec2& value)
+bool GDSA::ShaderProgram::setUniform(const std::string& name, const glm::vec2& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -114,7 +114,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::vec2
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::uvec2& value)
+bool GDSA::ShaderProgram::setUniform(const std::string& name, const glm::uvec2& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -127,7 +127,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::uvec
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::vec3& value)
+bool GDSA::ShaderProgram::setUniform(const std::string& name, const glm::vec3& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -140,7 +140,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::vec3
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::vec4& value)
+bool GDSA::ShaderProgram::setUniform(const std::string& name, const glm::vec4& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -153,7 +153,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const glm::vec4
     return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::use()
+bool GDSA::ShaderProgram::use()
 {
     if((_handler > 0) && (_linked))    // Is the program created and linked?
     {
@@ -166,7 +166,7 @@ bool AlgGeom::ShaderProgram::use()
 
 /// [Protected methods]
 
-GLuint AlgGeom::ShaderProgram::compileShader(const char* filename, const GLenum shaderType)
+GLuint GDSA::ShaderProgram::compileShader(const char* filename, const GLenum shaderType)
 {
     if(!fileExists(filename))
     {
@@ -226,13 +226,13 @@ GLuint AlgGeom::ShaderProgram::compileShader(const char* filename, const GLenum 
     return shaderHandler;
 }
 
-bool AlgGeom::ShaderProgram::fileExists(const std::string& fileName)
+bool GDSA::ShaderProgram::fileExists(const std::string& fileName)
 {
     std::ifstream f(fileName.c_str());
     return f.good();
 }
 
-AlgGeom::ShaderProgram::ShaderTypes AlgGeom::ShaderProgram::fromOpenGLToShaderTypes(const GLenum shaderType)
+GDSA::ShaderProgram::ShaderTypes GDSA::ShaderProgram::fromOpenGLToShaderTypes(const GLenum shaderType)
 {
     switch(shaderType)
     {
@@ -249,7 +249,7 @@ AlgGeom::ShaderProgram::ShaderTypes AlgGeom::ShaderProgram::fromOpenGLToShaderTy
     return VERTEX_SHADER;
 }
 
-bool AlgGeom::ShaderProgram::includeLibraries(std::string& shaderContent)
+bool GDSA::ShaderProgram::includeLibraries(std::string& shaderContent)
 {
     size_t pos = shaderContent.find(MODULE_HEADER);
 
@@ -293,7 +293,7 @@ bool AlgGeom::ShaderProgram::includeLibraries(std::string& shaderContent)
     return true;
 }
 
-bool AlgGeom::ShaderProgram::loadFileContent(const std::string& filename, std::string& content)
+bool GDSA::ShaderProgram::loadFileContent(const std::string& filename, std::string& content)
 {
     std::ifstream shaderSourceFile;
     shaderSourceFile.open(filename);
@@ -311,7 +311,7 @@ bool AlgGeom::ShaderProgram::loadFileContent(const std::string& filename, std::s
     return true;
 }
 
-bool AlgGeom::ShaderProgram::showErrorMessage(const std::string& variableName)
+bool GDSA::ShaderProgram::showErrorMessage(const std::string& variableName)
 {
     std::cerr << "Could not find shader slot for " << variableName << "!\n";
     return false;

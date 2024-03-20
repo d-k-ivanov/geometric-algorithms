@@ -5,7 +5,7 @@
 #include "Geometry/Line.h"
 #include "Geometry/Line3d.h"
 
-namespace AlgGeom
+namespace GDSA
 {
 class DrawLine : public Model3D
 {
@@ -15,4 +15,4 @@ public:
     DrawLine(const DrawLine& drawLine) = delete;
     ~DrawLine() override               = default;
 };
-}    // namespace AlgGeom
+}    // namespace GDSA

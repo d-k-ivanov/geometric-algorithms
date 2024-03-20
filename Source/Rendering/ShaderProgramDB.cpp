@@ -2,23 +2,23 @@
 
 #include "Utils/FilesystemUtilities.h"
 
-std::unordered_map<uint8_t, std::string> AlgGeom::ShaderProgramDB::RENDERING_SHADER_PATH {
-    {RenderingShaderId::LINE_RENDERING, ThisExecutableLocation() + "/Resources/Shaders/line"},
-    {RenderingShaderId::POINT_RENDERING, ThisExecutableLocation() + "/Resources/Shaders/point"},
-    {RenderingShaderId::TRIANGLE_RENDERING, ThisExecutableLocation() + "/Resources/Shaders/triangle"},
+std::unordered_map<uint8_t, std::string> GDSA::ShaderProgramDB::RENDERING_SHADER_PATH {
+    {RenderingShaderId::LINE_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/line"},
+    {RenderingShaderId::POINT_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/point"},
+    {RenderingShaderId::TRIANGLE_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/triangle"},
 };
 
-std::unordered_map<uint8_t, std::unique_ptr<AlgGeom::RenderingShader>> AlgGeom::ShaderProgramDB::_renderingShader;
+std::unordered_map<uint8_t, std::unique_ptr<GDSA::RenderingShader>> GDSA::ShaderProgramDB::_renderingShader;
 
-AlgGeom::ShaderProgramDB::ShaderProgramDB()
+GDSA::ShaderProgramDB::ShaderProgramDB()
 {
 }
 
-AlgGeom::ShaderProgramDB::~ShaderProgramDB()
+GDSA::ShaderProgramDB::~ShaderProgramDB()
 {
 }
 
-AlgGeom::RenderingShader* AlgGeom::ShaderProgramDB::getShader(const RenderingShaderId shaderId)
+GDSA::RenderingShader* GDSA::ShaderProgramDB::getShader(const RenderingShaderId shaderId)
 {
     uint8_t shaderId8 = static_cast<uint8_t>(shaderId);
 
