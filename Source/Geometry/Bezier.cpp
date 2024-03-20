@@ -2,16 +2,6 @@
 
 #include <utility>
 
-Bezier::Bezier()
-{
-}
-
-Bezier::Bezier(const Bezier& bezier)
-    : _controlPoints(bezier._controlPoints)
-    , _controlPointsNum(bezier._controlPointsNum)
-{
-}
-
 Bezier::Bezier(std::vector<Vect2d> controlPoints, const int controlPointsNum)
     : _controlPoints(std::move(controlPoints))
     , _controlPointsNum(controlPointsNum)

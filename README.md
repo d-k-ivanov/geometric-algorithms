@@ -1,4 +1,4 @@
-# Geometric Algorithms (2023-2024)
+# Geometric Data Structures and Algorithms (GDSA)
 
 Base project for the subject of Geometric Algorithms at the University of Granada (Course 2024).
 The application's origins belong to [Alfonso López Ruiz](https://github.com/AlfonsoLRz). I strongly recommend reading his Master's Thesis, [Simulation of 3D Scans](https://crea.ujaen.es/bitstream/10953.1/19941/1/AlfonsoLopez.TFM.pdf).
