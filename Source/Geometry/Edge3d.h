@@ -10,7 +10,8 @@ namespace GDSA::Geometry
 class Edge3d
 {
 protected:
-    Vect3d _orig, _dest;
+    Vect3d _orig;
+    Vect3d _dest;
     Vect3d _direction;
 
 protected:
@@ -20,25 +21,13 @@ protected:
     virtual bool isTvalid(double t) = 0;
 
 public:
-    /**
-     *  @brief Default constructor.
-     */
     Edge3d();
-
-    /**
-     *  @brief Constructor.
-     */
-    Edge3d(Vect3d& orig, Vect3d& dest);
-
-    /**
-     *  @brief Copy constructor.
-     */
+    Edge3d(const Vect3d& orig, const Vect3d& dest);
     Edge3d(const Edge3d& edge);
 
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~Edge3d();
+    virtual ~Edge3d() = default;
+
+    Edge3d& operator=(const Edge3d& edge) = default;
 
     /**
      *  @brief Returns the destination point.
@@ -79,11 +68,6 @@ public:
      *	@brief Modifies the edge starting point.
      */
     void setOrigin(const Vect3d& orig);
-
-    /**
-     *  @brief Assignment operator.
-     */
-    Edge3d& operator=(const Edge3d& edge);
 
     /**
      *  @brief Overriding cout call.

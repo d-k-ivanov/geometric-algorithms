@@ -35,10 +35,10 @@ public:
         glm::vec3 _n, _u, _v;
         glm::mat4 _viewMatrix, _projectionMatrix, _viewProjectionMatrix;
 
-        float     computeAspect();
-        void      computeAxes(glm::vec3& n, glm::vec3& u, glm::vec3& v);
-        glm::vec2 computeBottomLeftCorner();
-        float     computeFovY();
+        float     computeAspect() const;
+        void      computeAxes(glm::vec3& n, glm::vec3& u, glm::vec3& v) const;
+        glm::vec2 computeBottomLeftCorner() const;
+        float     computeFovY() const;
 
         void computeProjectionMatrices(CameraProperties* camera);
         void computeViewMatrices();

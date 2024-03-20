@@ -7,7 +7,9 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
-GDSA::Render::Renderer::Renderer()
+namespace GDSA::Render
+{
+Renderer::Renderer()
     : _appState(nullptr)
     , _content(nullptr)
     , _screenshoter(nullptr)
@@ -18,7 +20,7 @@ GDSA::Render::Renderer::Renderer()
     _gui = GUI::getInstance();
 }
 
-void GDSA::Render::Renderer::renderLine(Model3D::MatrixRenderInformation* matrixInformation)
+void Renderer::renderLine(Model3D::MatrixRenderInformation* matrixInformation)
 {
     _lineShader->use();
 
@@ -28,7 +30,7 @@ void GDSA::Render::Renderer::renderLine(Model3D::MatrixRenderInformation* matrix
     }
 }
 
-void GDSA::Render::Renderer::renderPoint(Model3D::MatrixRenderInformation* matrixInformation)
+void Renderer::renderPoint(Model3D::MatrixRenderInformation* matrixInformation)
 {
     _pointShader->use();
 
@@ -38,7 +40,7 @@ void GDSA::Render::Renderer::renderPoint(Model3D::MatrixRenderInformation* matri
     }
 }
 
-void GDSA::Render::Renderer::renderTriangle(Model3D::MatrixRenderInformation* matrixInformation)
+void Renderer::renderTriangle(Model3D::MatrixRenderInformation* matrixInformation)
 {
     _triangleShader->use();
     this->transferLightUniforms(_triangleShader);
@@ -50,7 +52,7 @@ void GDSA::Render::Renderer::renderTriangle(Model3D::MatrixRenderInformation* ma
     }
 }
 
-void GDSA::Render::Renderer::transferLightUniforms(RenderingShader* shader)
+void Renderer::transferLightUniforms(RenderingShader* shader)
 {
     shader->setUniform("lightPosition", _appState->_lightPosition);
     shader->setUniform("Ia", _appState->_Ia);
@@ -58,29 +60,29 @@ void GDSA::Render::Renderer::transferLightUniforms(RenderingShader* shader)
     shader->setUniform("Is", _appState->_Is);
 }
 
-GDSA::Render::Renderer::~Renderer()
+Renderer::~Renderer()
 {
     delete _screenshoter;
 }
 
-void GDSA::Render::Renderer::createCamera(uint16_t width, uint16_t height)
+void Renderer::createCamera(uint16_t width, uint16_t height)
 {
     _content->buildCamera(width, height);
 }
 
-void GDSA::Render::Renderer::createModels()
+void Renderer::createModels()
 {
     _content->buildScenario();
 }
 
-void GDSA::Render::Renderer::createShaderProgram()
+void Renderer::createShaderProgram()
 {
     _pointShader    = ShaderProgramDB::getInstance()->getShader(ShaderProgramDB::POINT_RENDERING);
     _lineShader     = ShaderProgramDB::getInstance()->getShader(ShaderProgramDB::LINE_RENDERING);
     _triangleShader = ShaderProgramDB::getInstance()->getShader(ShaderProgramDB::TRIANGLE_RENDERING);
 }
 
-void GDSA::Render::Renderer::prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState)
+void Renderer::prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState)
 {
     _appState                = appState;
     _appState->_viewportSize = glm::ivec2(width, height);
@@ -120,13 +122,13 @@ void GDSA::Render::Renderer::prepareOpenGL(uint16_t width, uint16_t height, Appl
     this->resizeEvent(_appState->_viewportSize.x, _appState->_viewportSize.y);
 }
 
-void GDSA::Render::Renderer::removeModel()
+void Renderer::removeModel()
 {
     if(!_content->_model.empty())
         _content->_model.erase(_content->_model.end() - 1);
 }
 
-void GDSA::Render::Renderer::resizeEvent(uint16_t width, uint16_t height)
+void Renderer::resizeEvent(uint16_t width, uint16_t height)
 {
     glViewport(0, 0, width, height);
 
@@ -134,9 +136,9 @@ void GDSA::Render::Renderer::resizeEvent(uint16_t width, uint16_t height)
     _content->_camera[_appState->_selectedCamera]->setRaspect(width, height);
 }
 
-void GDSA::Render::Renderer::screenshotEvent(const ScreenshotEvent& event)
+void Renderer::screenshotEvent(const ScreenshotEvent& event)
 {
-    if(event._type == ScreenshotListener::RGBA)
+    if(event._type == RGBA)
     {
         const glm::ivec2 size    = _appState->_viewportSize;
         const glm::ivec2 newSize = glm::ivec2(_appState->_viewportSize.x * _appState->_screenshotFactor, _appState->_viewportSize.y * _appState->_screenshotFactor);
@@ -150,10 +152,10 @@ void GDSA::Render::Renderer::screenshotEvent(const ScreenshotEvent& event)
     }
 }
 
-void GDSA::Render::Renderer::render(float alpha, bool renderGui, bool bindScreenshoter)
+void Renderer::render(float alpha, bool renderGui, bool bindScreenshoter)
 {
     Model3D::MatrixRenderInformation matrixInformation;
-    glm::mat4                        bias = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+    glm::mat4                        bias = translate(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 
     matrixInformation.setMatrix(Model3D::MatrixRenderInformation::VIEW, _content->_camera[0]->getViewMatrix());
     matrixInformation.setMatrix(Model3D::MatrixRenderInformation::VIEW_PROJECTION, _content->_camera[0]->getViewProjectionMatrix());
@@ -191,3 +193,4 @@ void GDSA::Render::Renderer::render(float alpha, bool renderGui, bool bindScreen
 
     _appState->_numFps = _gui->getFrameRate();
 }
+}    // namespace GDSA::Render

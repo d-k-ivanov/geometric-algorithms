@@ -11,6 +11,6 @@ class DrawAABB : public Model3D
 public:
     DrawAABB(Geometry::AABB& aabb);
     DrawAABB(const DrawAABB& aabb) = delete;
-    ~DrawAABB() override;
+    ~DrawAABB() override           = default;
 };
 }

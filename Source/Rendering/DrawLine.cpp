@@ -1,9 +1,8 @@
 #include "DrawLine.h"
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/glm.hpp>
-
-GDSA::Render::DrawLine::DrawLine(Geometry::Line& line)
+namespace GDSA::Render
+{
+DrawLine::DrawLine(Geometry::Line& line)
     : Model3D()
 {
     Component* component = new Component;
@@ -23,7 +22,7 @@ GDSA::Render::DrawLine::DrawLine(Geometry::Line& line)
     this->buildVao(component);
 }
 
-GDSA::Render::DrawLine::DrawLine(Geometry::Line3d& line)
+DrawLine::DrawLine(Geometry::Line3d& line)
     : Model3D()
 {
     Component* component = new Component;
@@ -42,3 +41,4 @@ GDSA::Render::DrawLine::DrawLine(Geometry::Line3d& line)
     component->completeTopology();
     this->buildVao(component);
 }
+}    // namespace GDSA::Render

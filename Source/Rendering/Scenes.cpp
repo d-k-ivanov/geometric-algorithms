@@ -32,7 +32,9 @@
 
 #include <iostream>
 
-void GDSA::Render::Scenes::p0(SceneContent& sc)
+namespace GDSA::Render
+{
+void Scenes::p0(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -87,7 +89,7 @@ void GDSA::Render::Scenes::p0(SceneContent& sc)
     }
 }
 
-void GDSA::Render::Scenes::p0a(SceneContent& sc)
+void Scenes::p0a(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -142,7 +144,7 @@ void GDSA::Render::Scenes::p0a(SceneContent& sc)
     }
 }
 
-void GDSA::Render::Scenes::p0b(SceneContent& sc)
+void Scenes::p0b(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -157,7 +159,7 @@ void GDSA::Render::Scenes::p0b(SceneContent& sc)
     sc.addNewModel(circleToDraw);
 }
 
-void GDSA::Render::Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Geometry::Point>& randomPointsFromCloud, std::vector<Geometry::Point>& extremumPointInCloud)
+void Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Geometry::Point>& randomPointsFromCloud, std::vector<Geometry::Point>& extremumPointInCloud)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -277,7 +279,7 @@ void GDSA::Render::Scenes::p1PointClouds(SceneContent& sc, const int numPointClo
 }
 
 // blue segment, red line, and magenta ray
-void GDSA::Render::Scenes::p1Lines(SceneContent& sc, const std::vector<Geometry::Point>& randomPointsFromCloud)
+void Scenes::p1Lines(SceneContent& sc, const std::vector<Geometry::Point>& randomPointsFromCloud)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -327,7 +329,7 @@ void GDSA::Render::Scenes::p1Lines(SceneContent& sc, const std::vector<Geometry:
 }
 
 // Convex polygon from the point cloud extremum points
-void GDSA::Render::Scenes::p1Polygon(SceneContent& sc, const std::vector<Geometry::Point>& extremumPointInCloud)
+void Scenes::p1Polygon(SceneContent& sc, const std::vector<Geometry::Point>& extremumPointInCloud)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -343,7 +345,7 @@ void GDSA::Render::Scenes::p1Polygon(SceneContent& sc, const std::vector<Geometr
     }
 }
 // Bezier curve
-void GDSA::Render::Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const size_t pointNum)
+void Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const size_t pointNum)
 {
     constexpr glm::vec2           minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2           maxBoundaries = glm::vec2(-minBoundaries);
@@ -385,7 +387,7 @@ void GDSA::Render::Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const s
 }
 
 // P1-B: Two segments, Two Lines, Two Rays, and a Polygon
-void GDSA::Render::Scenes::p1Intersections(SceneContent& sc)
+void Scenes::p1Intersections(SceneContent& sc)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -483,7 +485,7 @@ void GDSA::Render::Scenes::p1Intersections(SceneContent& sc)
     delete p;
 }
 
-void GDSA::Render::Scenes::p1All(SceneContent& sc)
+void Scenes::p1All(SceneContent& sc)
 {
     constexpr int                numPointClouds = 3;
     constexpr int                pointsPerCloud = 100;
@@ -498,7 +500,7 @@ void GDSA::Render::Scenes::p1All(SceneContent& sc)
     p1Intersections(sc);
 }
 
-void GDSA::Render::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud, float scaleFactor)
+void Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsPerCloud, float scaleFactor)
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -556,18 +558,18 @@ void GDSA::Render::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsP
             pointCloud->addPoint({rand.x, rand.y, rand.z});
         }
 
-        sc.addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setPointSize(5.0f));
-        // sc.addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(Utils::Random::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(7.0f));
+        // sc.addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setPointSize(5.0f));
+        sc.addNewModel((new DrawPointCloud(*pointCloud))->setPointColor(Utils::Random::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(7.0f));
 
         if(pcIdx == 0 and pointCloud->size() >= 2)
         {
             // Line L1
-            // auto l1A = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
-            // auto l1B = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            auto l1A = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            auto l1B = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
 
             // Test parallel:
-            Geometry::Vect3d l1A(-2, 0, -1);
-            Geometry::Vect3d l1B(2, 0, -1);
+            // Geometry::Vect3d l1A(-2, 0, -1);
+            // Geometry::Vect3d l1B(2, 0, -1);
 
             // Test perpendicular:
             // Geometry::Vect3d l1A(0, -2, -1);
@@ -575,18 +577,18 @@ void GDSA::Render::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsP
             auto* l1       = new Geometry::Line3d(l1A, l1B);
             auto  l1Colour = Utils::Random::getUniformRandomColor();
             sc.addNewModel((new DrawLine(*l1))->setLineColor(l1Colour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
-            sc.addNewModel((new DrawPoint(l1A))->setPointColor(l1Colour)->overrideModelName()->setPointSize(10.0f));
-            sc.addNewModel((new DrawPoint(l1B))->setPointColor(l1Colour)->overrideModelName()->setPointSize(10.0f));
+            sc.addNewModel((new DrawPoint(l1A))->setPointColor(l1Colour)->overrideModelName()->setPointSize(30.0f));
+            sc.addNewModel((new DrawPoint(l1B))->setPointColor(l1Colour)->overrideModelName()->setPointSize(30.0f));
 
             // Line L2
-            // auto l2A = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
-            // auto l2B = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            auto l2A = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
+            auto l2B = pointCloud->getPoint(Utils::Random::getUniformRandomInt(0, static_cast<int>(pointCloud->size())));
 
             // Replace to test if lines are parallel or perpendicular.
-            Geometry::Vect3d l2A(-2, 1, -1);
-            Geometry::Vect3d l2B(2, 1, -1);
-            auto*            l2       = new Geometry::Line3d(l2A, l2B);
-            auto             l2Colour = Utils::Random::getUniformRandomColor();
+            // Geometry::Vect3d l2A(-2, 1, -1);
+            // Geometry::Vect3d l2B(2, 1, -1);
+            auto* l2       = new Geometry::Line3d(l2A, l2B);
+            auto  l2Colour = Utils::Random::getUniformRandomColor();
             sc.addNewModel((new DrawLine(*l2))->setLineColor(l2Colour)->overrideModelName()->setPointSize(5.0f)->setLineWidth(3.0f));
             sc.addNewModel((new DrawPoint(l2A))->setPointColor(l2Colour)->overrideModelName()->setPointSize(10.0f));
             sc.addNewModel((new DrawPoint(l2B))->setPointColor(l2Colour)->overrideModelName()->setPointSize(10.0f));
@@ -667,15 +669,15 @@ void GDSA::Render::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsP
             std::cout << "==================================================\n";
             std::cout << "Distance between L1 and L2 is " << l1->distance(*l2) << '\n';
             std::cout << "==================================================\n";
-            //
-            // auto* pointCloudAABB = new Geometry::AABB(pointCloud->getAABB());
-            // sc.addNewModel((new DrawAABB(*pointCloudAABB))->overrideModelName());
 
-            // Geometry::Vect3d min1(pointCloudAABB->getMin());
-            // Geometry::Vect3d min2(pointCloudAABB->getMin().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMax().getZ());
-            // Geometry::Vect3d min3(pointCloudAABB->getMax().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMin().getZ());
-            // auto* lowerPlane = new Geometry::Plane(min1, min2, min3, true);
-            // sc.addNewModel((new DrawPlane(*lowerPlane))->overrideModelName()->setLineWidth(5.0)->setLineColor(glm::vec3(1, 1, 1)));
+            auto* pointCloudAABB = new Geometry::AABB(pointCloud->getAABB());
+            sc.addNewModel((new DrawAABB(*pointCloudAABB))->overrideModelName());
+
+            Geometry::Vect3d min1(pointCloudAABB->getMin());
+            Geometry::Vect3d min2(pointCloudAABB->getMin().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMax().getZ());
+            Geometry::Vect3d min3(pointCloudAABB->getMax().getX(), pointCloudAABB->getMin().getY(), pointCloudAABB->getMin().getZ());
+            auto*            lowerPlane = new Geometry::Plane(min1, min2, min3, true);
+            sc.addNewModel((new DrawPlane(*lowerPlane))->overrideModelName()->setLineWidth(5.0)->setLineColor(glm::vec3(1, 1, 1)));
 
             delete l1;
             delete l2;
@@ -683,15 +685,15 @@ void GDSA::Render::Scenes::p2a(SceneContent& sc, int numPointClouds, int pointsP
             delete s;
             delete r;
             delete sLine;
-            // delete pointCloudAABB;
-            // delete lowerPlane;
+            delete pointCloudAABB;
+            delete lowerPlane;
         }
 
         delete pointCloud;
     }
 }
 
-void GDSA::Render::Scenes::p2b(SceneContent& sc)
+void Scenes::p2b(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -758,7 +760,7 @@ void GDSA::Render::Scenes::p2b(SceneContent& sc)
     delete newPlane;
 }
 
-void GDSA::Render::Scenes::p2c(SceneContent& sc)
+void Scenes::p2c(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -819,7 +821,7 @@ void GDSA::Render::Scenes::p2c(SceneContent& sc)
     }
 }
 
-void GDSA::Render::Scenes::p3(SceneContent& sc)
+void Scenes::p3(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -834,7 +836,7 @@ void GDSA::Render::Scenes::p3(SceneContent& sc)
     // const auto     model2(new DrawMesh(*triangleModel2));
     // model2->setModelMatrix(glm::translate(model2->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
     // model2->setModelMatrix(glm::rotate(model2->getModelMatrix(), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f)))->overrideModelName();
-    // // sc.addNewModel(model2);
+    // sc.addNewModel(model2);
 
     const glm::vec3& voxelSize = glm::vec3(0.05f);
 
@@ -870,7 +872,7 @@ void GDSA::Render::Scenes::p3(SceneContent& sc)
 }
 
 // Practice 4a: 2D Convex Hull
-void GDSA::Render::Scenes::p4a(SceneContent& sc, bool drawTriangles)
+void Scenes::p4a(SceneContent& sc, bool drawTriangles)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -907,7 +909,7 @@ void GDSA::Render::Scenes::p4a(SceneContent& sc, bool drawTriangles)
 }
 
 // Practice 4b: 3D Convex Hull
-void GDSA::Render::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
+void Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -957,7 +959,7 @@ void GDSA::Render::Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
     }
 }
 
-void GDSA::Render::Scenes::p4c(SceneContent& sc)
+void Scenes::p4c(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -994,7 +996,7 @@ void GDSA::Render::Scenes::p4c(SceneContent& sc)
     }
 }
 
-void GDSA::Render::Scenes::p4d(SceneContent& sc)
+void Scenes::p4d(SceneContent& sc)
 {
     constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
     constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
@@ -1026,3 +1028,4 @@ void GDSA::Render::Scenes::p4d(SceneContent& sc)
         }
     }
 }
+}    // namespace GDSA::Render::Scenes

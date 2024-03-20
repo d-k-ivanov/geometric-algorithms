@@ -1,6 +1,8 @@
 #include "DrawSegment.h"
 
-GDSA::Render::DrawSegment::DrawSegment(Geometry::SegmentLine& segment)
+namespace GDSA::Render
+{
+DrawSegment::DrawSegment(Geometry::SegmentLine& segment)
     : Model3D()
 {
     Component* component = new Component;
@@ -16,7 +18,7 @@ GDSA::Render::DrawSegment::DrawSegment(Geometry::SegmentLine& segment)
     this->buildVao(component);
 }
 
-GDSA::Render::DrawSegment::DrawSegment(Geometry::Segment3d& segment)
+DrawSegment::DrawSegment(Geometry::Segment3d& segment)
     : Model3D()
 {
     Component* component = new Component;
@@ -31,3 +33,4 @@ GDSA::Render::DrawSegment::DrawSegment(Geometry::Segment3d& segment)
     component->completeTopology();
     this->buildVao(component);
 }
+}    // namespace GDSA::Render

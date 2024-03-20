@@ -5,10 +5,6 @@
 
 namespace GDSA::Geometry
 {
-Polygon::Polygon()
-{
-}
-
 Polygon::Polygon(const Polygon& Polygon)
 {
     _vertices = std::vector<Vertex>(Polygon._vertices);
@@ -17,16 +13,6 @@ Polygon::Polygon(const Polygon& Polygon)
 Polygon::Polygon(std::vector<Vertex>& vertices)
 {
     _vertices = std::vector<Vertex>(vertices);
-}
-
-SegmentLine Polygon::getEdge(int i)
-{
-    return SegmentLine(getVertexAt(i), getVertexAt((i + 1) % _vertices.size()));
-}
-
-size_t Polygon::getNumVertices()
-{
-    return _vertices.size();
 }
 
 Polygon::Polygon(const std::string& filename)
@@ -47,8 +33,24 @@ Polygon::Polygon(const std::string& filename)
     this->_vertices = vertices;
 }
 
-Polygon::~Polygon()
+Polygon& Polygon::operator=(const Polygon& polygon)
 {
+    if(this != &polygon)
+    {
+        this->_vertices = polygon._vertices;
+    }
+
+    return *this;
+}
+
+SegmentLine Polygon::getEdge(const int i)
+{
+    return {getVertexAt(i), getVertexAt((i + 1) % _vertices.size())};
+}
+
+size_t Polygon::getNumVertices() const
+{
+    return _vertices.size();
 }
 
 std::vector<Vertex>& Polygon::getVertices()
@@ -58,7 +60,7 @@ std::vector<Vertex>& Polygon::getVertices()
 
 bool Polygon::add(const Vertex& vertex)
 {
-    size_t index = _vertices.size();
+    const size_t index = _vertices.size();
 
     // if (intersectsWithAnySegment(vertex)) return false;
 
@@ -84,14 +86,14 @@ Vertex Polygon::getVertexAt(size_t position)
     }
     else
     {
-        return Vertex();
+        return {};
     }
 }
 
 bool Polygon::intersects(Line& line, std::vector<Vect2d>& intersections)
 {
     bool result = false;
-    for(int i = 0; i < this->getNumVertices(); ++i)
+    for(int i = 0; i < static_cast<int>(this->getNumVertices()); ++i)
     {
         Vect2d intersection;
         if(this->getEdge(i).intersects(line, intersection))
@@ -106,7 +108,7 @@ bool Polygon::intersects(Line& line, std::vector<Vect2d>& intersections)
 bool Polygon::intersects(RayLine& ray, std::vector<Vect2d>& intersections)
 {
     bool result = false;
-    for(int i = 0; i < this->getNumVertices(); ++i)
+    for(int i = 0; i < static_cast<int>(this->getNumVertices()); ++i)
     {
         Vect2d intersection;
         if(this->getEdge(i).intersects(ray, intersection))
@@ -121,7 +123,7 @@ bool Polygon::intersects(RayLine& ray, std::vector<Vect2d>& intersections)
 bool Polygon::intersects(SegmentLine& segment, std::vector<Vect2d>& intersections)
 {
     bool result = false;
-    for(int i = 0; i < this->getNumVertices(); ++i)
+    for(int i = 0; i < static_cast<int>(this->getNumVertices()); ++i)
     {
         Vect2d intersection;
         if(this->getEdge(i).intersects(segment, intersection))
@@ -158,32 +160,22 @@ Vertex Polygon::next(size_t index)
 
 std::ostream& operator<<(std::ostream& os, const Polygon& polygon)
 {
-    for(int i = 0; i < polygon._vertices.size(); i++)
+    for(const auto& _vertice : polygon._vertices)
     {
-        os << polygon._vertices[i] << "\n";
+        os << _vertice << "\n";
     }
 
     return os;
 }
 
-Vertex Polygon::previous(int index)
+Vertex Polygon::previous(const int index)
 {
-    if(index >= 0 && index < _vertices.size())
+    if(index >= 0 && index < static_cast<int>(_vertices.size()))
     {
         return _vertices[(index - 1 + _vertices.size()) % _vertices.size()];
     }
 
-    return Vertex();
-}
-
-Polygon& Polygon::operator=(const Polygon& polygon)
-{
-    if(this != &polygon)
-    {
-        this->_vertices = polygon._vertices;
-    }
-
-    return *this;
+    return {};
 }
 
 bool Polygon::pointInConvexPolygonGeo(Point& point)
@@ -211,7 +203,7 @@ void Polygon::save(const std::string& filename)
     file.close();
 }
 
-void Polygon::set(Vertex& vertex, int pos)
+void Polygon::set(Vertex& vertex, const int pos)
 {
     if(pos >= 0 && pos < static_cast<int>(_vertices.size()))
     {

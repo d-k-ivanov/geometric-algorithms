@@ -2,7 +2,9 @@
 
 #include "Geometry/Triangle3d.h"
 
-GDSA::Render::DrawPlane::DrawPlane(Geometry::Plane& plane)
+namespace GDSA::Render
+{
+DrawPlane::DrawPlane(Geometry::Plane& plane)
     : Model3D()
     , _plane(plane)
 {
@@ -81,3 +83,4 @@ GDSA::Render::DrawPlane::DrawPlane(Geometry::Plane& plane)
     this->_components.push_back(std::unique_ptr<Component>(component));
     this->buildVao(component);
 }
+}    // namespace GDSA::Render

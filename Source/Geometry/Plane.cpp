@@ -5,6 +5,14 @@
 
 namespace GDSA::Geometry
 {
+
+Plane::Plane(const Plane& plane)
+    : _a(plane._a)
+    , _b(plane._b)
+    , _c(plane._c)
+{
+}
+
 Plane::Plane(const Vect3d& p, const Vect3d& u, const Vect3d& v, const bool arePoints)
 {
     // Vectors: pi = p + u * lambda + v * mu
@@ -36,15 +44,16 @@ Plane::Plane(const Vect3d& p, const Vect3d& u, const Vect3d& v, const bool arePo
     }
 }
 
-Plane::Plane(const Plane& plane)
-    : _a {plane._a}
-    , _b {plane._b}
-    , _c {plane._c}
+Plane& Plane::operator=(const Plane& plane)
 {
-}
+    if(this != &plane)
+    {
+        _a = plane._a;
+        _b = plane._b;
+        _c = plane._c;
+    }
 
-Plane::~Plane()
-{
+    return *this;
 }
 
 Vect3d& Plane::get_A()
@@ -212,18 +221,6 @@ Vect3d Plane::reflectedPoint(const Vect3d& p) const
         l /= n.dot(n);
     }
     return p.add(n.scalarMul(l));
-}
-
-Plane& Plane::operator=(const Plane& plane)
-{
-    if(this != &plane)
-    {
-        _a = plane._a;
-        _b = plane._b;
-        _c = plane._c;
-    }
-
-    return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Plane& plane)

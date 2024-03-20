@@ -30,33 +30,13 @@ protected:
     double _radius;
 
 public:
-    /**
-     *  @brief Default constructor. Coordinates are initialized with an invalid value.
-     */
-    Circle()
-        : _center(Point(0, 0))
-        , _radius(1.0)
-    {
-    }
-
-    /**
-     *  @brief Constructor.
-     */
-    Circle(const Point& center, const double radius)
-        : _center(center)
-        , _radius(radius)
-    {
-    }
-
-    /**
-     *  @brief Copy constructor.
-     */
+    Circle();
     Circle(const Circle& orig) = default;
+    Circle(const Point& center, double radius);
 
-    /**
-     *  @brief Destructor.
-     */
     virtual ~Circle() = default;
+
+    Circle& operator=(const Circle& circle);
 
     /**
      *   @brief Checks if the point is inside the circle.
@@ -91,11 +71,6 @@ public:
     CircleLineRelations relation(Line& line) const;
     CircleLineRelations intersect(Line& line, Point& p1, Point& p2) const;
     CircleLineRelations intersect(RayLine& rayLine, Point& p1, Point& p2) const;
-    CircleLineRelations intersect(SegmentLine& segment, Point& p1, Point& p2);
-
-    /**
-     *  @brief Assignment operator (override).
-     */
-    Circle& operator=(const Circle& circle);
+    CircleLineRelations intersect(SegmentLine& segment, Point& p1, Point& p2) const;
 };
 }    // namespace GDSA::Geometry

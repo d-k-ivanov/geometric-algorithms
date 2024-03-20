@@ -12,7 +12,7 @@ Edge3d::Edge3d()
 {
 }
 
-Edge3d::Edge3d(Vect3d& orig, Vect3d& dest)
+Edge3d::Edge3d(const Vect3d& orig, const Vect3d& dest)
     : _orig(orig)
     , _dest(dest)
     , _direction(_dest - _orig)
@@ -24,10 +24,6 @@ Edge3d::Edge3d(const Edge3d& edge)
     _orig      = edge._orig;
     _dest      = edge._dest;
     _direction = edge._direction;
-}
-
-Edge3d::~Edge3d()
-{
 }
 
 Vect3d& Edge3d::getDestination()
@@ -45,7 +41,7 @@ Vect3d Edge3d::getDirection() const
     return _direction;
 }
 
-Vect3d Edge3d::getPoint(double t)
+Vect3d Edge3d::getPoint(const double t)
 {
     if(!isTvalid(t))
         return {};
@@ -78,16 +74,7 @@ void Edge3d::setDirection(const Vect3d& direction)
 void Edge3d::setOrigin(const Vect3d& orig)
 {
     _orig      = orig;
-    _direction = _dest - _orig;
-}
-
-Edge3d& Edge3d::operator=(const Edge3d& edge)
-{
-    _orig      = edge._orig;
-    _dest      = edge._dest;
-    _direction = edge._direction;
-
-    return *this;
+    _direction = _dest.sub(_orig);
 }
 
 std::ostream& operator<<(std::ostream& os, const Edge3d& edge)

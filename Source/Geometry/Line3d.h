@@ -20,13 +20,16 @@ protected:
     /**
      *  @brief Checks if the parametric value t is valid. Any value is valid for a line.
      */
-    bool isTvalid(double t) override;
+    bool isTvalid(double t) override { return true; };
 
 public:
     Line3d() = default;
-    Line3d(Vect3d& orig, Vect3d& dest);
+    Line3d(const Vect3d& orig, const Vect3d& dest);
     Line3d(const Line3d& line) = default;
-    ~Line3d() override         = default;
+
+    ~Line3d() override = default;
+
+    Line3d& operator=(const Line3d& line);
 
     /**
      *  @brief Distance between two lines.
@@ -52,11 +55,6 @@ public:
      *  @brief Returns true if the lines are perpendicular.
      */
     bool isPerpendicular(Line3d& line);
-
-    /**
-     *  @brief Assignment operator.
-     */
-    virtual Line3d& operator=(const Line3d& line);
 
     /**
      *  @brief Shows line data at the debug window.

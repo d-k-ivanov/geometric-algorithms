@@ -30,13 +30,13 @@ private:
     {
         bool operator()(const glm::vec4& c1, const glm::vec4& c2) const
         {
-            return glm::distance(c1, c2) < glm::epsilon<float>();
+            return distance(c1, c2) < glm::epsilon<float>();
         }
     };
 
 private:
-    std::unordered_map<glm::vec4, GDSA::Render::Texture*, ColorHash, ColorEqual> _colorTexture;
-    std::unordered_map<std::string, GDSA::Render::Texture*>                      _imageTexture;
+    std::unordered_map<glm::vec4, Texture*, ColorHash, ColorEqual> _colorTexture;
+    std::unordered_map<std::string, Texture*>                      _imageTexture;
 
 private:
     TextureList();
@@ -44,9 +44,9 @@ private:
 public:
     virtual ~TextureList();
 
-    GDSA::Render::Texture* getTexture(const glm::vec4& color);
-    GDSA::Render::Texture* getTexture(const std::string& path);
-    void                   saveTexture(const glm::vec4& color, GDSA::Render::Texture* texture);
-    void                   saveTexture(const std::string& path, GDSA::Render::Texture* texture);
+    Texture* getTexture(const glm::vec4& color);
+    Texture* getTexture(const std::string& path);
+    void     saveTexture(const glm::vec4& color, Texture* texture);
+    void     saveTexture(const std::string& path, Texture* texture);
 };
 }    // namespace GDSA::Render

@@ -26,25 +26,11 @@ public:
         double _z, _b;
     };
 
-    /**
-     *  @brief Default constructor.
-     */
     Vect3d();
-
-    /**
-     *  @brief Constructors.
-     */
     Vect3d(double value);
     Vect3d(double x, double y, double z);
-
-    /**
-     *  @brief Copy constructor.
-     */
     Vect3d(const Vect3d& vector);
 
-    /**
-     *  @brief Destructor.
-     */
     virtual ~Vect3d();
 
     /**

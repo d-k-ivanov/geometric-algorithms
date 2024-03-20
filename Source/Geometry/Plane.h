@@ -30,6 +30,7 @@ protected:
     Vect3d _a, _b, _c, _d;
 
 public:
+    Plane(const Plane& plane);
     /**
      *  @param p in pi = p + u * lambda + v * mu -> r from the points (R, S, T).
      *  @param u in pi = p + u * lambda + v * mu -> d from the points (R, S, T).
@@ -38,15 +39,9 @@ public:
      */
     Plane(const Vect3d& p, const Vect3d& u, const Vect3d& v, bool arePoints);
 
-    /**
-     *  @brief Copy constructor.
-     */
-    Plane(const Plane& plane);
+    virtual ~Plane() = default;
 
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~Plane();
+    Plane& operator=(const Plane& plane);
 
     /**
      *  @brief Returns member A.
@@ -132,11 +127,6 @@ public:
      *  @brief Returns the reflected point of a point in the plane.
      */
     Vect3d reflectedPoint(const Vect3d& p) const;
-
-    /**
-     *  @brief Assignment operator.
-     */
-    Plane& operator=(const Plane& plane);
 
     /**
      *  @brief Shows the plane values at the debug window.

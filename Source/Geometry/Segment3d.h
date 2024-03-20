@@ -13,33 +13,15 @@ protected:
     /**
      *  @brief Checks if the parametric value t is between 0 and 1 as a segment is not infinite.
      */
-    virtual bool isTvalid(double t) { return (t >= 0.0f && t <= 1.0f); }
+    bool isTvalid(double t) override { return (t >= 0.0f && t <= 1.0f); }
 
 public:
-    /**
-     *  @brief Creates a segment with default point values.
-     */
-    Segment3d() {};
+    Segment3d() = default;
+    Segment3d(const Vect3d& orig, const Vect3d& dest);
+    Segment3d(const Segment3d& segment) = default;
+    ~Segment3d() override               = default;
 
-    /**
-     *  @brief Constructor.
-     */
-    Segment3d(Vect3d& orig, Vect3d& dest);
-
-    /**
-     *  @brief Copy constructor.
-     */
-    Segment3d(const Segment3d& segment);
-
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~Segment3d();
-
-    /**
-     *  @brief Assignment operator.
-     */
-    virtual Segment3d& operator=(const Segment3d& segment);
+    Segment3d& operator=(const Segment3d& segment);
 
     /**
      *  @brief Shows the segment data at the debug window.

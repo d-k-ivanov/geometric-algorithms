@@ -2,31 +2,33 @@
 
 #include <stdexcept>
 
-GDSA::Render::TextureList::TextureList()
+namespace GDSA::Render
+{
+TextureList::TextureList()
 {
 }
 
-GDSA::Render::TextureList::~TextureList()
+TextureList::~TextureList()
 {
-    for(auto& pair : _colorTexture)
+    for(const auto& pair : _colorTexture)
     {
         delete pair.second;
     }
 
-    for(auto& pair : _imageTexture)
+    for(const auto& pair : _imageTexture)
     {
         delete pair.second;
     }
 }
 
-GDSA::Render::Texture* GDSA::Render::TextureList::getTexture(const glm::vec4& color)
+Texture* TextureList::getTexture(const glm::vec4& color)
 {
-    GDSA::Render::Texture* texture = nullptr;
-    auto                   it      = _colorTexture.find(color);
+    Texture*   texture = nullptr;
+    const auto it      = _colorTexture.find(color);
 
     if(it == _colorTexture.end())
     {
-        texture              = new GDSA::Render::Texture(color);
+        texture              = new Texture(color);
         _colorTexture[color] = texture;
     }
     else
@@ -35,16 +37,16 @@ GDSA::Render::Texture* GDSA::Render::TextureList::getTexture(const glm::vec4& co
     return texture;
 }
 
-GDSA::Render::Texture* GDSA::Render::TextureList::getTexture(const std::string& path)
+Texture* TextureList::getTexture(const std::string& path)
 {
-    GDSA::Render::Texture* texture = nullptr;
-    auto                   it      = _imageTexture.find(path);
+    Texture*   texture = nullptr;
+    const auto it      = _imageTexture.find(path);
 
     if(it == _imageTexture.end())
     {
         try
         {
-            texture             = new GDSA::Render::Texture(new Image(path));
+            texture             = new Texture(new Image(path));
             _imageTexture[path] = texture;
         }
         catch(std::runtime_error& error)
@@ -60,12 +62,13 @@ GDSA::Render::Texture* GDSA::Render::TextureList::getTexture(const std::string& 
     return texture;
 }
 
-void GDSA::Render::TextureList::saveTexture(const glm::vec4& color, GDSA::Render::Texture* texture)
+void TextureList::saveTexture(const glm::vec4& color, Texture* texture)
 {
     _colorTexture[color] = texture;
 }
 
-void GDSA::Render::TextureList::saveTexture(const std::string& path, GDSA::Render::Texture* texture)
+void TextureList::saveTexture(const std::string& path, Texture* texture)
 {
     _imageTexture[path] = texture;
 }
+}    // namespace GDSA::Render

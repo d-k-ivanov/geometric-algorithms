@@ -19,8 +19,6 @@ Bezier::Bezier(const std::vector<Point>& controlPoints, const int controlPointsN
     }
 }
 
-Bezier::~Bezier() = default;
-
 void Bezier::add(const Point& point)
 {
     _controlPoints.emplace_back(point);

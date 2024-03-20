@@ -10,13 +10,14 @@ Line::Line(const Point& a, const Point& b)
 {
 }
 
-Line::Line(const Line& s)
-    : SegmentLine(s)
+Line& Line::operator=(const Line& line)
 {
-}
+    if(this != &line)
+    {
+        SegmentLine::operator=(line);
+    }
 
-Line::~Line()
-{
+    return *this;
 }
 
 bool Line::isTvalid(double t)
@@ -60,7 +61,7 @@ double Line::distancePointLine(Vect2d& v)
 {
     Vect2d*      d       = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
     const double t0      = d->dot(*new Vect2d(v.getX() - this->getA().getX(), v.getY() - this->getA().getY())) / d->dot(*d);
-    Vect2d*      resultV = new Vect2d(v.getX() - (this->getA().getX() + d->scalarMult(t0).getX()), v.getY() - (this->getA().getY() + d->scalarMult(t0).getY()));
+    Vect2d*      resultV = new Vect2d(v.getX() - (this->getA().getX() + d->ScalarMult(t0).getX()), v.getY() - (this->getA().getY() + d->ScalarMult(t0).getY()));
     return resultV->getModule();
 }
 
@@ -72,16 +73,6 @@ bool Line::segmentIntersection(SegmentLine& segment)
 bool Line::impSegmentIntersection(SegmentLine& segment)
 {
     return segment.impSegmentIntersection(*this);
-}
-
-Line& Line::operator=(const Line& line)
-{
-    if(this != &line)
-    {
-        SegmentLine::operator=(line);
-    }
-
-    return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Line& line)

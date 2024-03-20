@@ -3,12 +3,9 @@
 #include <filesystem>
 #include <iostream>
 
-GDSA::Render::DrawMesh::DrawMesh()
-    : Model3D()
+namespace GDSA::Render
 {
-}
-
-GDSA::Render::DrawMesh::DrawMesh(Geometry::TriangleModel& triangleModel)
+DrawMesh::DrawMesh(Geometry::TriangleModel& triangleModel)
     : Model3D()
 {
     const std::vector<Geometry::Vect3d>* vertices        = triangleModel.getVertices();
@@ -42,7 +39,7 @@ GDSA::Render::DrawMesh::DrawMesh(Geometry::TriangleModel& triangleModel)
     this->_components.push_back(std::unique_ptr<Component>(component));
 }
 
-GDSA::Render::DrawMesh* GDSA::Render::DrawMesh::loadModelOBJ(const std::string& path)
+DrawMesh* DrawMesh::loadModelOBJ(const std::string& path)
 {
     const std::string binaryFile = path.substr(0, path.find_last_of('.')) + BINARY_EXTENSION;
 
@@ -75,7 +72,7 @@ GDSA::Render::DrawMesh* GDSA::Render::DrawMesh::loadModelOBJ(const std::string& 
     return this;
 }
 
-GDSA::Render::Model3D::Component* GDSA::Render::DrawMesh::processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder) const
+Model3D::Component* DrawMesh::processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder) const
 {
     std::vector<VAO::Vertex> vertices(mesh->mNumVertices);
     std::vector<GLuint>      indices(mesh->mNumFaces * 4);
@@ -112,7 +109,7 @@ GDSA::Render::Model3D::Component* GDSA::Render::DrawMesh::processMesh(const aiMe
     return component;
 }
 
-void GDSA::Render::DrawMesh::processNode(const aiNode* node, const aiScene* scene, const std::string& folder)
+void DrawMesh::processNode(const aiNode* node, const aiScene* scene, const std::string& folder)
 {
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
@@ -125,3 +122,4 @@ void GDSA::Render::DrawMesh::processNode(const aiNode* node, const aiScene* scen
         this->processNode(node->mChildren[i], scene, folder);
     }
 }
+}    // namespace GDSA::Render

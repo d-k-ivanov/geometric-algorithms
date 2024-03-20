@@ -29,12 +29,12 @@ public:
     ~VoxelModel() = default;
     VoxelModel(const VoxelModel& voxel);
     VoxelModel(const Vect3d& minPoint, glm::vec3 size);
+
     void add(const Vect3d& point);
     bool find(const Vect3d& point);
     bool remove(const Vect3d& point);
 
-    void setStatus(VoxelStatus status) { _status = status; }
-
+    void        setStatus(VoxelStatus status) { _status = status; }
     Vect3d      getMin() { return this->_min; }
     Vect3d      getMax() { return this->_max; }
     Vect3d      getCenter() { return this->_center; }

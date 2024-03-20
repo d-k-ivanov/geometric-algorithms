@@ -4,7 +4,9 @@
 
 #include <imgui.h>
 
-void GDSA::Render::CameraGuiAdapter::renderGuiObject()
+namespace GDSA::Render
+{
+void CameraGuiAdapter::renderGuiObject()
 {
     bool updateMatrices = false;
 
@@ -38,3 +40,4 @@ void GDSA::Render::CameraGuiAdapter::renderGuiObject()
         _camera->updateMatrices();
     }
 }
+}    // namespace GDSA::Render

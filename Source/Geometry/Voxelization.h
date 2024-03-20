@@ -23,6 +23,7 @@ public:
     Voxelization(const Voxelization& voxel);
     Voxelization(double maxX, double maxY, double maxZ, double minX, double minY, double minZ, glm::vec3 size);
     Voxelization(TriangleModel* model, glm::vec3 size, int algorithm);
+
     virtual ~Voxelization() = default;
 
     VoxelModel*                                        getVoxel(double x, double y, double z);

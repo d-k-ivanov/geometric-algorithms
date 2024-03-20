@@ -14,6 +14,6 @@ protected:
 public:
     DrawPolygon(Geometry::Polygon& polygon);
     DrawPolygon(const DrawPolygon& ddt) = delete;
-    ~DrawPolygon() override {};
+    ~DrawPolygon() override             = default;
 };
 }    // namespace GDSA::Render

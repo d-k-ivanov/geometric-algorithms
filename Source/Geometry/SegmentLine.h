@@ -18,7 +18,7 @@ protected:
     /**
      *  @brief Returns the parametric value T0 to calculate the distance between a point and any geometric object like lines, segments or raylines.
      */
-    double getDistanceT0(Vect2d& point);
+    double getDistanceT0(Vect2d& point) const;
 
     /**
      *  @brief Obstaints the values ​​of s and t in the calculation of the intersection of two lines that they contain AB (this) and CD.
@@ -26,30 +26,14 @@ protected:
     virtual bool intersects(Point& c, Point& d, double& s, double& t);
 
 public:
-    /**
-     *  @brief Default constructor.
-     */
-    SegmentLine();
-
-    /**
-     *  @brief Constructor.
-     */
+    SegmentLine() = default;
     SegmentLine(const Point& a, const Point& b);
-
-    /**
-     *  @brief Copy constructor.
-     */
-    SegmentLine(const SegmentLine& segment);
-
-    /**
-     *  @brief Constructor.
-     */
+    SegmentLine(const SegmentLine& segment) = default;
     SegmentLine(double ax, double ay, double bx, double by);
 
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~SegmentLine();
+    virtual ~SegmentLine() = default;
+
+    SegmentLine& operator=(const SegmentLine& segment);
 
     /**
      *  @brief Returns the origin of the segment.
@@ -94,7 +78,7 @@ public:
     /**
      *  @brief Checks if a segment is equal to this one.
      */
-    bool equal(SegmentLine& segment);
+    bool equal(SegmentLine& segment) const;
 
     /**
      *  @brief It obtains the point belonging to the segment or colineal to it for a concrete t in the parametric equation: result = a + t (b-a).
@@ -124,22 +108,17 @@ public:
     /**
      *  @brief Check if the parameter t is valid to get a point of the segment.
      */
-    virtual bool isTvalid(double t);
+    virtual bool isTvalid(const double t) { return t >= 0 && t <= 1; }
 
     /**
      *  @brief Determines whether p is in the left of SegmentLine.
      */
-    bool left(Point& p);
+    bool left(const Point& p);
 
     /**
      *  @brief Returns the length of the segment.
      */
     double length();
-
-    /**
-     *  @brief Assignment operator.
-     */
-    SegmentLine& operator=(const SegmentLine& segment);
 
     /**
      *  @brief Overriding cout call.

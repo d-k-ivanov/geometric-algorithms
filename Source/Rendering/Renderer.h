@@ -11,7 +11,7 @@
 
 namespace GDSA::Render
 {
-class Renderer : public Singleton<Renderer>, public GDSA::Render::ResizeListener, public GDSA::Render::ScreenshotListener
+class Renderer : public Singleton<Renderer>, public ResizeListener, public ScreenshotListener
 {
     friend class Singleton<Renderer>;
 
@@ -32,14 +32,14 @@ private:
 
 public:
     virtual ~Renderer();
-    void         createCamera(uint16_t width, uint16_t height);
-    void         createModels();
-    void         createShaderProgram();
-    Camera*      getCamera() { return _content->_camera[_appState->_selectedCamera].get(); }
-    void         prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState);
-    void         removeModel();
-    void         render(float alpha = 1.0f, bool renderGui = true, bool bindScreenshoter = false);
-    virtual void resizeEvent(uint16_t width, uint16_t height);
-    virtual void screenshotEvent(const ScreenshotEvent& event);
+    void    createCamera(uint16_t width, uint16_t height);
+    void    createModels();
+    void    createShaderProgram();
+    Camera* getCamera() const { return _content->_camera[_appState->_selectedCamera].get(); }
+    void    prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState);
+    void    removeModel();
+    void    render(float alpha = 1.0f, bool renderGui = true, bool bindScreenshoter = false);
+    void    resizeEvent(uint16_t width, uint16_t height) override;
+    void    screenshotEvent(const ScreenshotEvent& event) override;
 };
 }    // namespace GDSA::Render

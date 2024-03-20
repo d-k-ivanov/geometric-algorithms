@@ -1,6 +1,8 @@
 #include "DrawPolygon.h"
 
-GDSA::Render::DrawPolygon::DrawPolygon(Geometry::Polygon& polygon)
+namespace GDSA::Render
+{
+DrawPolygon::DrawPolygon(Geometry::Polygon& polygon)
     : Model3D()
     , _polygon(polygon)
 {
@@ -17,3 +19,4 @@ GDSA::Render::DrawPolygon::DrawPolygon(Geometry::Polygon& polygon)
     this->_components.push_back(std::unique_ptr<Component>(component));
     this->buildVao(component);
 }
+}    // namespace GDSA::Render

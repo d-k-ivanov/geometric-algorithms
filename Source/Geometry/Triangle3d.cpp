@@ -7,32 +7,18 @@
 
 namespace GDSA::Geometry
 {
-Triangle3d::Triangle3d()
-{
-}
 
-Triangle3d::Triangle3d(double ax, double ay, double az, double bx, double by, double bz, double cx, double cy, double cz)
+Triangle3d::Triangle3d(const double ax, const double ay, const double az, const double bx, const double by, const double bz, const double cx, const double cy, const double cz)
     : _a(ax, ay, az)
     , _b(bx, by, bz)
     , _c(cx, cy, cz)
 {
 }
 
-Triangle3d::Triangle3d(const Triangle3d& triangle)
-    : _a(triangle._a)
-    , _b(triangle._b)
-    , _c(triangle._c)
-{
-}
-
-Triangle3d::Triangle3d(Vect3d& va, Vect3d& vb, Vect3d& vc)
+Triangle3d::Triangle3d(const Vect3d& va, const Vect3d& vb, const Vect3d& vc)
     : _a(va)
     , _b(vb)
     , _c(vc)
-{
-}
-
-Triangle3d::~Triangle3d()
 {
 }
 
@@ -89,7 +75,7 @@ Triangle3d::PointPosition Triangle3d::classify(const Vect3d& point)
 
     if(BasicGeometry::equal(0.0, len))
     {
-        return PointPosition::COPLANAR;
+        return COPLANAR;
     }
 
     v = new Vect3d(v->scalarMul(1 / len));
@@ -97,20 +83,20 @@ Triangle3d::PointPosition Triangle3d::classify(const Vect3d& point)
     const double d = v->dot(this->normal());
     if(BasicGeometry::equal(0.0, d))
     {
-        return PointPosition::COPLANAR;
+        return COPLANAR;
     }
 
     if(d < 0.0)
     {
-        return PointPosition::NEGATIVE;
+        return NEGATIVE;
     }
 
-    return PointPosition::POSITIVE;
+    return POSITIVE;
 }
 
-Triangle3d Triangle3d::copy()
+Triangle3d Triangle3d::copy() const
 {
-    return Triangle3d(_a, _b, _c);
+    return {_a, _b, _c};
 }
 
 Vect3d Triangle3d::normal() const
@@ -183,15 +169,6 @@ bool Triangle3d::intersect(Ray3d& ray, Vect3d& intersectionPoint)
     {
         return false;    // There is a line intersection but not a ray intersection
     }
-}
-
-Triangle3d& Triangle3d::operator=(const Triangle3d& triangle)
-{
-    _a = triangle._a;
-    _b = triangle._b;
-    _c = triangle._c;
-
-    return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Triangle3d& triangle)

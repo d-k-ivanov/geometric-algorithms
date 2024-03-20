@@ -4,7 +4,9 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
-GDSA::Render::Camera::Camera(uint16_t width, uint16_t height, bool is2D)
+namespace GDSA::Render
+{
+Camera::Camera(uint16_t width, uint16_t height, bool is2D)
     : _backupCamera(nullptr)
 {
     this->_properties._cameraType = CameraProjection::PERSPECTIVE;
@@ -32,23 +34,23 @@ GDSA::Render::Camera::Camera(uint16_t width, uint16_t height, bool is2D)
     this->saveCamera();
 }
 
-GDSA::Render::Camera::Camera(const GDSA::Render::Camera& camera)
+Camera::Camera(const Camera& camera)
     : _backupCamera(nullptr)
 {
     this->copyCameraAttributes(&camera);
 }
 
-GDSA::Render::Camera::~Camera()
+Camera::~Camera()
 {
     delete _backupCamera;
 }
 
-void GDSA::Render::Camera::reset()
+void Camera::reset()
 {
     this->copyCameraAttributes(_backupCamera);
 }
 
-void GDSA::Render::Camera::track(Geometry::AABB& aabb)
+void Camera::track(Geometry::AABB& aabb)
 {
     this->setLookAt(aabb.getCenter().toGlmVec3());
     const auto maxAxis         = std::max(aabb.getSize().getX(), std::max(aabb.getSize().getY(), aabb.getSize().getZ()));
@@ -58,55 +60,55 @@ void GDSA::Render::Camera::track(Geometry::AABB& aabb)
     this->setPosition(pos.toGlmVec3());
 }
 
-void GDSA::Render::Camera::saveCamera()
+void Camera::saveCamera()
 {
     delete _backupCamera;
     _backupCamera = nullptr;
 
-    _backupCamera = new GDSA::Render::Camera(*this);
+    _backupCamera = new Camera(*this);
 }
 
-void GDSA::Render::Camera::setBottomLeftCorner(const glm::vec2& bottomLeft)
+void Camera::setBottomLeftCorner(const glm::vec2& bottomLeft)
 {
     this->_properties._bottomLeftCorner = bottomLeft;
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void GDSA::Render::Camera::setCameraType(const GDSA::Render::CameraProjection::Projection projection)
+void Camera::setCameraType(const CameraProjection::Projection projection)
 {
     this->_properties._cameraType = projection;
     this->_properties.computeViewMatrices();
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void GDSA::Render::Camera::setFovX(const float fovX)
+void Camera::setFovX(const float fovX)
 {
     this->_properties._fovX = fovX;
     this->_properties._fovY = this->_properties.computeFovY();
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void GDSA::Render::Camera::setFovY(const float fovY)
+void Camera::setFovY(const float fovY)
 {
     this->_properties._fovY = fovY;
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void GDSA::Render::Camera::setLookAt(const glm::vec3& position)
+void Camera::setLookAt(const glm::vec3& position)
 {
     this->_properties._lookAt = position;
     this->_properties.computeAxes(this->_properties._n, this->_properties._u, this->_properties._v);
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::setPosition(const glm::vec3& position)
+void Camera::setPosition(const glm::vec3& position)
 {
     this->_properties._eye = position;
     this->_properties.computeAxes(this->_properties._n, this->_properties._u, this->_properties._v);
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::setRaspect(const uint16_t width, const uint16_t height)
+void Camera::setRaspect(const uint16_t width, const uint16_t height)
 {
     this->_properties._width            = width;
     this->_properties._height           = height;
@@ -115,25 +117,25 @@ void GDSA::Render::Camera::setRaspect(const uint16_t width, const uint16_t heigh
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void GDSA::Render::Camera::setUp(const glm::vec3& up)
+void Camera::setUp(const glm::vec3& up)
 {
     this->_properties._up = up;
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::setZFar(const float zfar)
+void Camera::setZFar(const float zfar)
 {
     this->_properties._zFar = zfar;
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void GDSA::Render::Camera::setZNear(const float znear)
+void Camera::setZNear(const float znear)
 {
     this->_properties._zNear = znear;
     this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void GDSA::Render::Camera::updateMatrices()
+void Camera::updateMatrices()
 {
     this->_properties.computeViewMatrix();
     this->_properties.computeProjectionMatrices(&_properties);
@@ -141,9 +143,9 @@ void GDSA::Render::Camera::updateMatrices()
 
 // [Movements]
 
-void GDSA::Render::Camera::boom(float speed)
+void Camera::boom(float speed)
 {
-    const glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), this->_properties._v * speed);    // Translation in y axis
+    const glm::mat4 translationMatrix = translate(glm::mat4(1.0f), this->_properties._v * speed);    // Translation in y axis
 
     this->_properties._eye    = glm::vec3(translationMatrix * glm::vec4(this->_properties._eye, 1.0f));
     this->_properties._lookAt = glm::vec3(translationMatrix * glm::vec4(this->_properties._lookAt, 1.0f));
@@ -151,81 +153,81 @@ void GDSA::Render::Camera::boom(float speed)
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::crane(float speed)
+void Camera::crane(float speed)
 {
     boom(-speed);    // Implemented as another method to take advantage of nomenclature
 }
 
-void GDSA::Render::Camera::dolly(float speed)
+void Camera::dolly(float speed)
 {
     if(this->_properties._2d)
         return;
 
-    const glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -this->_properties._n * speed);    // Translation in z axis
+    const glm::mat4 translationMatrix = translate(glm::mat4(1.0f), -this->_properties._n * speed);    // Translation in z axis
     this->_properties._eye            = glm::vec3(translationMatrix * glm::vec4(this->_properties._eye, 1.0f));
     this->_properties._lookAt         = glm::vec3(translationMatrix * glm::vec4(this->_properties._lookAt, 1.0f));
 
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::orbitXZ(float speed)
+void Camera::orbitXZ(float speed)
 {
     if(this->_properties._2d)
         return;
 
-    const glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), speed, this->_properties._u);    // We will pass over the scene, x or z axis could be used
+    const glm::mat4 rotationMatrix = rotate(glm::mat4(1.0f), speed, this->_properties._u);    // We will pass over the scene, x or z axis could be used
 
     this->_properties._eye = glm::vec3(rotationMatrix * glm::vec4(this->_properties._eye - this->_properties._lookAt, 1.0f)) + this->_properties._lookAt;
     this->_properties._u   = glm::vec3(rotationMatrix * glm::vec4(this->_properties._u, 0.0f));
     this->_properties._v   = glm::vec3(rotationMatrix * glm::vec4(this->_properties._v, 0.0f));
     this->_properties._n   = glm::vec3(rotationMatrix * glm::vec4(this->_properties._n, 0.0f));
-    this->_properties._up  = glm::normalize(glm::cross(this->_properties._n, this->_properties._u));    // Free rotation => we can look down or up
+    this->_properties._up  = normalize(cross(this->_properties._n, this->_properties._u));    // Free rotation => we can look down or up
 
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::orbitY(float speed)
+void Camera::orbitY(float speed)
 {
     if(this->_properties._2d)
         return;
 
-    const glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), speed, glm::vec3(0.0, 1.0f, 0.0f));
+    const glm::mat4 rotationMatrix = rotate(glm::mat4(1.0f), speed, glm::vec3(0.0, 1.0f, 0.0f));
 
     this->_properties._u   = glm::vec3(rotationMatrix * glm::vec4(this->_properties._u, 0.0f));
     this->_properties._v   = glm::vec3(rotationMatrix * glm::vec4(this->_properties._v, 0.0f));
     this->_properties._n   = glm::vec3(rotationMatrix * glm::vec4(this->_properties._n, 0.0f));
-    this->_properties._up  = glm::normalize(glm::cross(this->_properties._n, this->_properties._u));    // This movement doesn't change UP, but it could occur as a result of previous operations
+    this->_properties._up  = normalize(cross(this->_properties._n, this->_properties._u));    // This movement doesn't change UP, but it could occur as a result of previous operations
     this->_properties._eye = glm::vec3(rotationMatrix * glm::vec4(this->_properties._eye - this->_properties._lookAt, 1.0f)) + this->_properties._lookAt;
 
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::pan(float speed)
+void Camera::pan(float speed)
 {
     if(this->_properties._2d)
         return;
 
-    const glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), speed, glm::vec3(0.0f, 1.0f, 0.0f));
+    const glm::mat4 rotationMatrix = rotate(glm::mat4(1.0f), speed, glm::vec3(0.0f, 1.0f, 0.0f));
 
     // Up vector can change, not in the original position tho. Example: orbit XZ (rotated camera) + pan
     this->_properties._u      = glm::vec3(rotationMatrix * glm::vec4(this->_properties._u, 0.0f));
     this->_properties._v      = glm::vec3(rotationMatrix * glm::vec4(this->_properties._v, 0.0f));
     this->_properties._n      = glm::vec3(rotationMatrix * glm::vec4(this->_properties._n, 0.0f));
-    this->_properties._up     = glm::normalize(glm::cross(this->_properties._n, this->_properties._u));
+    this->_properties._up     = normalize(cross(this->_properties._n, this->_properties._u));
     this->_properties._lookAt = glm::vec3(rotationMatrix * glm::vec4(this->_properties._lookAt - this->_properties._eye, 1.0f)) + this->_properties._eye;
 
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::tilt(float speed)
+void Camera::tilt(float speed)
 {
     if(this->_properties._2d)
         return;
 
-    const glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), speed, this->_properties._u);
+    const glm::mat4 rotationMatrix = rotate(glm::mat4(1.0f), speed, this->_properties._u);
 
     const glm::vec3 n     = glm::vec3(rotationMatrix * glm::vec4(this->_properties._n, 0.0f));
-    float           alpha = glm::acos(glm::dot(n, glm::vec3(0.0f, 1.0f, 0.0f)));
+    float           alpha = glm::acos(dot(n, glm::vec3(0.0f, 1.0f, 0.0f)));
 
     if(alpha < speed || alpha > (glm::pi<float>() - speed))
     {
@@ -234,15 +236,15 @@ void GDSA::Render::Camera::tilt(float speed)
 
     this->_properties._v      = glm::vec3(rotationMatrix * glm::vec4(this->_properties._v, 0.0f));
     this->_properties._n      = n;
-    this->_properties._up     = glm::normalize(glm::cross(this->_properties._n, this->_properties._u));    // It could change because of the rotation
+    this->_properties._up     = normalize(cross(this->_properties._n, this->_properties._u));    // It could change because of the rotation
     this->_properties._lookAt = glm::vec3(rotationMatrix * glm::vec4(this->_properties._lookAt - this->_properties._eye, 1.0f)) + this->_properties._eye;
 
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::truck(float speed)
+void Camera::truck(float speed)
 {
-    const glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), this->_properties._u * speed);    // Translation in x axis
+    const glm::mat4 translationMatrix = translate(glm::mat4(1.0f), this->_properties._u * speed);    // Translation in x axis
 
     this->_properties._eye    = glm::vec3(translationMatrix * glm::vec4(this->_properties._eye, 1.0f));
     this->_properties._lookAt = glm::vec3(translationMatrix * glm::vec4(this->_properties._lookAt, 1.0f));
@@ -250,12 +252,12 @@ void GDSA::Render::Camera::truck(float speed)
     this->_properties.computeViewMatrices();
 }
 
-void GDSA::Render::Camera::zoom(float speed)
+void Camera::zoom(float speed)
 {
     this->_properties.zoom(speed);
 }
 
-void GDSA::Render::Camera::copyCameraAttributes(const GDSA::Render::Camera* camera)
+void Camera::copyCameraAttributes(const Camera* camera)
 {
     this->_properties = camera->_properties;
 
@@ -267,3 +269,4 @@ void GDSA::Render::Camera::copyCameraAttributes(const GDSA::Render::Camera* came
         delete backupCamera;
     }
 }
+}    // namespace GDSA::Render

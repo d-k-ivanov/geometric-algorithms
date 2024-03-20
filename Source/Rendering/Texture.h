@@ -28,7 +28,7 @@ public:
     Texture(const glm::vec4& color);
     virtual ~Texture();
 
-    void applyTexture(GDSA::Render::ShaderProgram* shader, const GLint id, const std::string& shaderVariable);
+    void applyTexture(ShaderProgram* shader, const GLint id, const std::string& shaderVariable) const;
 
     glm::vec4   getColor() { return _color; }
     std::string getFilename() { return _filename; }

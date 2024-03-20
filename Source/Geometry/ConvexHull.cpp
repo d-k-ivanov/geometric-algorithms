@@ -28,7 +28,7 @@ ConvexHull::ConvexHull(PointCloud* pointCloud)
     triangulation.insert(points.begin(), points.end());
 
     // Points on the convex hull:
-    CGAL::convex_hull_2(points.begin(), points.end(), std::back_inserter(result));
+    convex_hull_2(points.begin(), points.end(), std::back_inserter(result));
 
     for(const auto& pointVector : result)
     {
@@ -73,7 +73,7 @@ ConvexHull::ConvexHull(PointCloud3d* pointCloud)
     triangulation.incident_vertices(triangulation.infinite_vertex(), std::back_inserter(vertices));
 
     Surface_mesh result;
-    CGAL::convex_hull_3_to_face_graph(triangulation, result);
+    convex_hull_3_to_face_graph(triangulation, result);
 
     for(const auto edge : edges(result))
     {
@@ -134,7 +134,7 @@ ConvexHull::ConvexHull(TriangleModel* model)
     triangulation.incident_vertices(triangulation.infinite_vertex(), std::back_inserter(vertices));
 
     Surface_mesh result;
-    CGAL::convex_hull_3_to_face_graph(triangulation, result);
+    convex_hull_3_to_face_graph(triangulation, result);
 
     for(const auto edge : edges(result))
     {

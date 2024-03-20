@@ -43,30 +43,14 @@ protected:
     Vect3d _a, _b, _c;
 
 public:
-    /**
-     *  @brief Default constructor.
-     */
-    Triangle3d();
-
-    /**
-     *  @brief Constructor.
-     */
+    Triangle3d()                           = default;
+    Triangle3d(const Triangle3d& triangle) = default;
     Triangle3d(double ax, double ay, double az, double bx, double by, double bz, double cx, double cy, double cz);
+    Triangle3d(const Vect3d& va, const Vect3d& vb, const Vect3d& vc);
 
-    /**
-     *  @brief Copy constructor.
-     */
-    Triangle3d(const Triangle3d& triangle);
+    virtual ~Triangle3d() = default;
 
-    /**
-     *  @brief Constructor.
-     */
-    Triangle3d(Vect3d& va, Vect3d& vb, Vect3d& vc);
-
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~Triangle3d();
+    Triangle3d& operator=(const Triangle3d& triangle) = default;
 
     /**
      *  @brief Returns the first point.
@@ -116,7 +100,7 @@ public:
     /**
      *  @brief Returns a new triangle with the same values than this one.
      */
-    Triangle3d copy();
+    Triangle3d copy() const;
 
     /**
      *  @brief Returns the normal of the triangle.
@@ -137,14 +121,9 @@ public:
 
     /**
      * \brief Ray-Triangle Moller intersection algorithm.
-     */
-    bool intersect(Ray3d& ray, Vect3d& intersectionPoint);
-
-    /**
-     *  @brief Assignment operator.
      *  https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
      */
-    Triangle3d& operator=(const Triangle3d& triangle);
+    bool intersect(Ray3d& ray, Vect3d& intersectionPoint);
 
     /**
      *  @brief Cout overloading.

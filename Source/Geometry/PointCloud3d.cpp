@@ -52,21 +52,20 @@ PointCloud3d::PointCloud3d(const std::string& filename)
         {
             try
             {
-                Vect3d point(std::stof(coord[0].c_str(), nullptr), std::stof(coord[1].c_str(), nullptr), (std::stof(coord[2].c_str(), nullptr)));
+                Vect3d point(std::stof(coord[0], nullptr), std::stof(coord[1], nullptr), (std::stof(coord[2], nullptr)));
                 this->addPoint(point);
             }
-            catch(const std::exception& excep)
+            catch(const std::exception& e)
             {
                 inputStream.close();
-
-                throw excep;
+                throw e;
             }
         }
     }
     inputStream.close();
 }
 
-PointCloud3d::PointCloud3d(int size, const double max_x, const double max_y, const double max_z)
+PointCloud3d::PointCloud3d(int size, const double maxX, const double maxY, const double maxZ)
     : _maxPoint(-INFINITY, -INFINITY, -INFINITY)
     , _minPoint(INFINITY, INFINITY, INFINITY)
 {
@@ -74,9 +73,9 @@ PointCloud3d::PointCloud3d(int size, const double max_x, const double max_y, con
 
     while(size > 0)
     {
-        const double x = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_x * 2.0f))) - max_x;
-        const double y = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_y * 2.0f))) - max_y;
-        const double z = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (max_z * 2.0f))) - max_z;
+        const double x = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (maxX * 2.0f))) - maxX;
+        const double y = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (maxY * 2.0f))) - maxY;
+        const double z = static_cast<double>(rand()) / (static_cast<double>(RAND_MAX / (maxZ * 2.0f))) - maxZ;
         Vect3d       val(x, y, z);
         this->addPoint(val);
 
@@ -113,8 +112,16 @@ PointCloud3d::PointCloud3d(const PointCloud3d& pointCloud)
 {
 }
 
-PointCloud3d::~PointCloud3d()
+PointCloud3d& PointCloud3d::operator=(const PointCloud3d& pointCloud)
 {
+    if(this != &pointCloud)
+    {
+        _points   = pointCloud._points;
+        _maxPoint = pointCloud._maxPoint;
+        _minPoint = pointCloud._minPoint;
+    }
+
+    return *this;
 }
 
 void PointCloud3d::addPoint(const Vect3d& p)
@@ -140,18 +147,6 @@ Vect3d PointCloud3d::getPoint(const size_t pos)
 std::vector<Vect3d> PointCloud3d::getPoints()
 {
     return _points;
-}
-
-PointCloud3d& PointCloud3d::operator=(const PointCloud3d& pointCloud)
-{
-    if(this != &pointCloud)
-    {
-        _points   = pointCloud._points;
-        _maxPoint = pointCloud._maxPoint;
-        _minPoint = pointCloud._minPoint;
-    }
-
-    return *this;
 }
 
 void PointCloud3d::save(const std::string& filename) const

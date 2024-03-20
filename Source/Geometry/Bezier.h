@@ -17,7 +17,8 @@ public:
     Bezier(const Bezier& bezier) = default;
     Bezier(std::vector<Vect2d> controlPoints, int controlPointsNum);
     Bezier(const std::vector<Point>& controlPoints, int controlPointsNum);
-    ~Bezier();
+
+    ~Bezier() = default;
 
     void add(const Point& point);
     void add(const Vect2d& vector);

@@ -1,6 +1,8 @@
 #include "DrawCircle.h"
 
-GDSA::Render::DrawCircle::DrawCircle(const Geometry::Circle& circle, const uint32_t numSubdivisions, bool drawTriangularSegments)
+namespace GDSA::Render
+{
+DrawCircle::DrawCircle(const Geometry::Circle& circle, const uint32_t numSubdivisions, bool drawTriangularSegments)
     : Model3D()
     , _circle(circle)
     , _numSubdivisions(numSubdivisions)
@@ -32,3 +34,4 @@ GDSA::Render::DrawCircle::DrawCircle(const Geometry::Circle& circle, const uint3
     this->_components.push_back(std::unique_ptr<Component>(component));
     this->buildVao(component);
 }
+}    // namespace GDSA::Render

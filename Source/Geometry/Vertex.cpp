@@ -27,14 +27,22 @@ Vertex::Vertex(const Point& point, Polygon* polygon, int pos)
     _polygon  = polygon;
 }
 
-Vertex::~Vertex()
+Vertex& Vertex::operator=(const Vertex& vertex)
 {
+    if(this != &vertex)
+    {
+        Point::operator=(vertex);
+        this->_polygon  = vertex._polygon;
+        this->_position = vertex._position;
+    }
+
+    return *this;
 }
 
 bool Vertex::convex()
 {
-    Vertex prevV = this->previous();
-    Vertex nextV = this->next();
+    Vertex       prevV = this->previous();
+    const Vertex nextV = this->next();
 
     if(prevV.isValid() && nextV.isValid())
     {
@@ -49,7 +57,7 @@ bool Vertex::concave()
     return !this->convex();
 }
 
-Vertex Vertex::next()
+Vertex Vertex::next() const
 {
     if(_polygon && _position != INVALID_POSITION)
     {
@@ -70,18 +78,6 @@ SegmentLine Vertex::nextEdge()
     return {};
 }
 
-Vertex& Vertex::operator=(const Vertex& vertex)
-{
-    if(this != &vertex)
-    {
-        Point::operator=(vertex);
-        this->_polygon  = vertex._polygon;
-        this->_position = vertex._position;
-    }
-
-    return *this;
-}
-
 std::ostream& operator<<(std::ostream& os, const Vertex& vertex)
 {
     os << "Position: " << std::to_string(vertex._position);
@@ -89,7 +85,7 @@ std::ostream& operator<<(std::ostream& os, const Vertex& vertex)
     return os;
 }
 
-Vertex Vertex::previous()
+Vertex Vertex::previous() const
 {
     if(_polygon && _position != INVALID_POSITION)
     {

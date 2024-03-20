@@ -56,7 +56,7 @@ double Vect3d::getZ() const
     return _z;
 }
 
-double Vect3d::getAt(int index) const
+double Vect3d::getAt(const int index) const
 {
     switch(index)
     {
@@ -76,22 +76,22 @@ std::vector<double> Vect3d::getVert() const
     return {getX(), getY(), getZ()};
 }
 
-void Vect3d::setX(double x)
+void Vect3d::setX(const double x)
 {
     this->_x = x;
 }
 
-void Vect3d::setY(double y)
+void Vect3d::setY(const double y)
 {
     this->_y = y;
 }
 
-void Vect3d::setZ(double z)
+void Vect3d::setZ(const double z)
 {
     this->_z = z;
 }
 
-void Vect3d::setAt(int index, const double value)
+void Vect3d::setAt(const int index, const double value)
 {
     switch(index)
     {
@@ -114,7 +114,7 @@ glm::vec3 Vect3d::toGlmVec3() const
     return {getX(), getY(), getZ()};
 }
 
-void Vect3d::setVert(double x, double y, double z)
+void Vect3d::setVert(const double x, const double y, const double z)
 {
     this->_x = x;
     this->_y = y;
@@ -123,9 +123,9 @@ void Vect3d::setVert(double x, double y, double z)
 
 Vect3d& Vect3d::operator=(const Vect3d& vector)
 {
-    this->_x = vector._x;
-    this->_y = vector._y;
-    this->_z = vector._z;
+    this->_x = vector.getX();
+    this->_y = vector.getY();
+    this->_z = vector.getZ();
 
     return *this;
 }
@@ -148,16 +148,16 @@ std::ostream& operator<<(std::ostream& os, const Vect3d& vec)
 
 Vect3d Vect3d::operator/=(const Vect3d& b)
 {
-    this->_x /= b._x;
-    this->_y /= b._y;
-    this->_z /= b._z;
+    this->_x /= b.getX();
+    this->_y /= b.getY();
+    this->_z /= b.getZ();
 
-    return *this;
+    return {*this};
 }
 
 Vect3d Vect3d::operator/(const Vect3d& b)
 {
-    return *this /= b;
+    return Vect3d(*this) /= b;
 }
 
 Vect3d Vect3d::div(const Vect3d& b) const
@@ -171,12 +171,12 @@ Vect3d Vect3d::operator/=(const double value)
     this->_y /= value;
     this->_z /= value;
 
-    return *this;
+    return {*this};
 }
 
 Vect3d Vect3d::operator/(const double value)
 {
-    return *this /= value;
+    return Vect3d(*this) /= value;
 }
 
 Vect3d Vect3d::div(const double value) const
@@ -191,16 +191,16 @@ Vect3d Vect3d::scalarDiv(const double value) const
 
 Vect3d Vect3d::operator*=(const Vect3d& b)
 {
-    this->_x *= b._x;
-    this->_y *= b._y;
-    this->_z *= b._z;
+    this->_x *= b.getX();
+    this->_y *= b.getY();
+    this->_z *= b.getZ();
 
-    return *this;
+    return {*this};
 }
 
 Vect3d Vect3d::operator*(const Vect3d& b)
 {
-    return *this *= b;
+    return Vect3d(*this) *= b;
 }
 
 Vect3d Vect3d::mul(const Vect3d& b) const
@@ -214,12 +214,12 @@ Vect3d Vect3d::operator*=(const double value)
     this->_y *= value;
     this->_z *= value;
 
-    return *this;
+    return {*this};
 }
 
 Vect3d Vect3d::operator*(const double value)
 {
-    return *this *= value;
+    return Vect3d(*this) *= value;
 }
 
 Vect3d Vect3d::mul(const double value) const
@@ -234,16 +234,16 @@ Vect3d Vect3d::scalarMul(const double value) const
 
 Vect3d Vect3d::operator+=(const Vect3d& b)
 {
-    this->_x += b._x;
-    this->_y += b._y;
-    this->_z += b._z;
+    this->_x += b.getX();
+    this->_y += b.getY();
+    this->_z += b.getZ();
 
-    return *this;
+    return {*this};
 }
 
 Vect3d Vect3d::operator+(const Vect3d& b)
 {
-    return *this += b;
+    return Vect3d(*this) += b;
 }
 
 Vect3d Vect3d::add(const Vect3d& b) const
@@ -253,16 +253,16 @@ Vect3d Vect3d::add(const Vect3d& b) const
 
 Vect3d Vect3d::operator-=(const Vect3d& b)
 {
-    this->_x -= b._x;
-    this->_y -= b._y;
-    this->_z -= b._z;
+    this->_x -= b.getX();
+    this->_y -= b.getY();
+    this->_z -= b.getZ();
 
-    return *this;
+    return {*this};
 }
 
 Vect3d Vect3d::operator-(const Vect3d& b)
 {
-    return *this -= b;
+    return Vect3d(*this) -= b;
 }
 
 Vect3d Vect3d::sub(const Vect3d& b) const

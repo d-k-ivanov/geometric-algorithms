@@ -6,28 +6,27 @@
 #include <iostream>
 #include <sstream>
 
-// Static variables initialization
+namespace GDSA::Render
+{
+const std::string                            ShaderProgram::MODULE_HEADER      = "#include";
+const std::string                            ShaderProgram::MODULE_FILE_CHAR_1 = "<";
+const std::string                            ShaderProgram::MODULE_FILE_CHAR_2 = ">";
+std::unordered_map<std::string, std::string> ShaderProgram::_moduleCode;
 
-const std::string                            GDSA::Render::ShaderProgram::MODULE_HEADER      = "#include";
-const std::string                            GDSA::Render::ShaderProgram::MODULE_FILE_CHAR_1 = "<";
-const std::string                            GDSA::Render::ShaderProgram::MODULE_FILE_CHAR_2 = ">";
-std::unordered_map<std::string, std::string> GDSA::Render::ShaderProgram::_moduleCode;
-
-GDSA::Render::ShaderProgram::ShaderProgram()
+ShaderProgram::ShaderProgram()
     : _handler(0)
     , _linked(false)
-    , _logString("")
 {
 }
 
-bool GDSA::Render::ShaderProgram::setSubroutineUniform(const GLenum shaderType, const std::string& subroutine, const std::string& functionName)
+bool ShaderProgram::setSubroutineUniform(const GLenum shaderType, const std::string& subroutine, const std::string& functionName)
 {
-    GLint subroutineID = glGetSubroutineUniformLocation(_handler, shaderType, subroutine.c_str());
-    GLint uniformID    = glGetSubroutineIndex(_handler, shaderType, functionName.c_str());
+    const GLint subroutineID = glGetSubroutineUniformLocation(_handler, shaderType, subroutine.c_str());
+    const GLint uniformID    = glGetSubroutineIndex(_handler, shaderType, functionName.c_str());
 
     if(subroutineID >= 0 && uniformID >= 0)    // OpenGL returns -1 if subroutine or uniform doesn't exist
     {
-        ShaderTypes shaderEnum                             = fromOpenGLToShaderTypes(shaderType);
+        const ShaderTypes shaderEnum                       = fromOpenGLToShaderTypes(shaderType);
         _activeSubroutineUniform[shaderEnum][subroutineID] = uniformID;
 
         return true;
@@ -36,9 +35,9 @@ bool GDSA::Render::ShaderProgram::setSubroutineUniform(const GLenum shaderType, 
     return false;
 }
 
-bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, GLfloat value)
+bool ShaderProgram::setUniform(const std::string& name, GLfloat value)
 {
-    GLint location = glGetUniformLocation(_handler, name.c_str());
+    const GLint location = glGetUniformLocation(_handler, name.c_str());
 
     if(location >= 0)
     {
@@ -49,7 +48,7 @@ bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, GLfloat va
     return this->showErrorMessage(name);
 }
 
-bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, GLint value)
+bool ShaderProgram::setUniform(const std::string& name, GLint value)
 {
     const GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -62,9 +61,9 @@ bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, GLint valu
     return this->showErrorMessage(name);
 }
 
-bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const GLuint value)
+bool ShaderProgram::setUniform(const std::string& name, const GLuint value)
 {
-    GLint location = glGetUniformLocation(_handler, name.c_str());
+    const GLint location = glGetUniformLocation(_handler, name.c_str());
 
     if(location >= 0)
     {
@@ -75,9 +74,9 @@ bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const GLui
     return this->showErrorMessage(name);
 }
 
-bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm::mat4& value)
+bool ShaderProgram::setUniform(const std::string& name, const glm::mat4& value)
 {
-    GLint location = glGetUniformLocation(_handler, name.c_str());
+    const GLint location = glGetUniformLocation(_handler, name.c_str());
 
     if(location >= 0)
     {
@@ -88,9 +87,9 @@ bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm:
     return this->showErrorMessage(name);
 }
 
-bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const std::vector<glm::mat4>& values)
+bool ShaderProgram::setUniform(const std::string& name, const std::vector<glm::mat4>& values)
 {
-    GLint location = glGetUniformLocation(_handler, name.c_str());
+    const GLint location = glGetUniformLocation(_handler, name.c_str());
 
     if(location >= 0)
     {
@@ -101,9 +100,9 @@ bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const std:
     return this->showErrorMessage(name);
 }
 
-bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm::vec2& value)
+bool ShaderProgram::setUniform(const std::string& name, const glm::vec2& value)
 {
-    GLint location = glGetUniformLocation(_handler, name.c_str());
+    const GLint location = glGetUniformLocation(_handler, name.c_str());
 
     if(location >= 0)
     {
@@ -114,7 +113,7 @@ bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm:
     return this->showErrorMessage(name);
 }
 
-bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm::uvec2& value)
+bool ShaderProgram::setUniform(const std::string& name, const glm::uvec2& value)
 {
     GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -127,9 +126,9 @@ bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm:
     return this->showErrorMessage(name);
 }
 
-bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm::vec3& value)
+bool ShaderProgram::setUniform(const std::string& name, const glm::vec3& value)
 {
-    GLint location = glGetUniformLocation(_handler, name.c_str());
+    const GLint location = glGetUniformLocation(_handler, name.c_str());
 
     if(location >= 0)
     {
@@ -140,9 +139,9 @@ bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm:
     return this->showErrorMessage(name);
 }
 
-bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm::vec4& value)
+bool ShaderProgram::setUniform(const std::string& name, const glm::vec4& value)
 {
-    GLint location = glGetUniformLocation(_handler, name.c_str());
+    const GLint location = glGetUniformLocation(_handler, name.c_str());
 
     if(location >= 0)
     {
@@ -153,7 +152,7 @@ bool GDSA::Render::ShaderProgram::setUniform(const std::string& name, const glm:
     return this->showErrorMessage(name);
 }
 
-bool GDSA::Render::ShaderProgram::use()
+bool ShaderProgram::use() const
 {
     if((_handler > 0) && (_linked))    // Is the program created and linked?
     {
@@ -164,9 +163,7 @@ bool GDSA::Render::ShaderProgram::use()
     return false;
 }
 
-/// [Protected methods]
-
-GLuint GDSA::Render::ShaderProgram::compileShader(const char* filename, const GLenum shaderType)
+GLuint ShaderProgram::compileShader(const char* filename, const GLenum shaderType)
 {
     if(!fileExists(filename))
     {
@@ -226,13 +223,13 @@ GLuint GDSA::Render::ShaderProgram::compileShader(const char* filename, const GL
     return shaderHandler;
 }
 
-bool GDSA::Render::ShaderProgram::fileExists(const std::string& fileName)
+bool ShaderProgram::fileExists(const std::string& fileName) const
 {
     std::ifstream f(fileName.c_str());
     return f.good();
 }
 
-GDSA::Render::ShaderProgram::ShaderTypes GDSA::Render::ShaderProgram::fromOpenGLToShaderTypes(const GLenum shaderType)
+ShaderProgram::ShaderTypes ShaderProgram::fromOpenGLToShaderTypes(const GLenum shaderType) const
 {
     switch(shaderType)
     {
@@ -249,7 +246,7 @@ GDSA::Render::ShaderProgram::ShaderTypes GDSA::Render::ShaderProgram::fromOpenGL
     return VERTEX_SHADER;
 }
 
-bool GDSA::Render::ShaderProgram::includeLibraries(std::string& shaderContent)
+bool ShaderProgram::includeLibraries(std::string& shaderContent)
 {
     size_t pos = shaderContent.find(MODULE_HEADER);
 
@@ -286,14 +283,14 @@ bool GDSA::Render::ShaderProgram::includeLibraries(std::string& shaderContent)
         }
 
         shaderContent.erase(shaderContent.begin() + pos, shaderContent.begin() + char_2 + 1);    // Replace string in shader code
-        shaderContent.insert(pos, moduleCodeStr.c_str());
+        shaderContent.insert(pos, moduleCodeStr);
         pos = shaderContent.find(MODULE_HEADER);
     }
 
     return true;
 }
 
-bool GDSA::Render::ShaderProgram::loadFileContent(const std::string& filename, std::string& content)
+bool ShaderProgram::loadFileContent(const std::string& filename, std::string& content)
 {
     std::ifstream shaderSourceFile;
     shaderSourceFile.open(filename);
@@ -311,8 +308,9 @@ bool GDSA::Render::ShaderProgram::loadFileContent(const std::string& filename, s
     return true;
 }
 
-bool GDSA::Render::ShaderProgram::showErrorMessage(const std::string& variableName)
+bool ShaderProgram::showErrorMessage(const std::string& variableName) const
 {
     std::cerr << "Could not find shader slot for " << variableName << "!\n";
     return false;
 }
+}    // namespace GDSA::Render

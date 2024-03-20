@@ -1,6 +1,8 @@
 #include "VAO.h"
 
-GDSA::Render::VAO::VAO(bool interleaved)
+namespace GDSA::Render
+{
+VAO::VAO(bool interleaved)
 {
     glGenVertexArrays(1, &_vao);
     glBindVertexArray(_vao);
@@ -26,42 +28,42 @@ GDSA::Render::VAO::VAO(bool interleaved)
     glGenBuffers(static_cast<GLsizei>(_ibos.size()), _ibos.data());
 }
 
-GDSA::Render::VAO::~VAO()
+VAO::~VAO()
 {
     glDeleteBuffers(static_cast<GLsizei>(_vbos.size()), _vbos.data());
     glDeleteBuffers(static_cast<GLsizei>(_ibos.size()), _ibos.data());
     glDeleteVertexArrays(1, &_vao);
 }
 
-void GDSA::Render::VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices)
+void VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices) const
 {
     glBindVertexArray(_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibos[ibo]);
     glDrawElements(openGLPrimitive, numIndices, GL_UNSIGNED_INT, nullptr);
 }
 
-void GDSA::Render::VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices, GLuint numInstances)
+void VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices, GLuint numInstances) const
 {
     glBindVertexArray(_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibos[ibo]);
     glDrawElementsInstanced(openGLPrimitive, numIndices, GL_UNSIGNED_INT, nullptr, numInstances);
 }
 
-void GDSA::Render::VAO::setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency)
+void VAO::setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency) const
 {
     glBindVertexArray(_vao);
     glBindBuffer(GL_ARRAY_BUFFER, _vbos[0]);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VAO::Vertex), vertices.data(), changeFrequency);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), changeFrequency);
 }
 
-void GDSA::Render::VAO::setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices, GLuint changeFrequency)
+void VAO::setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices, GLuint changeFrequency) const
 {
     glBindVertexArray(_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibos[ibo]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), changeFrequency);
 }
 
-void GDSA::Render::VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint elementType, uint8_t slot)
+void VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint elementType, uint8_t slot) const
 {
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
     glBufferData(GL_ARRAY_BUFFER, structSize, nullptr, GL_STATIC_DRAW);
@@ -69,10 +71,10 @@ void GDSA::Render::VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, 
     glEnableVertexAttribArray(slot);
 }
 
-void GDSA::Render::VAO::defineInterleavedVBO(GLuint vboId)
+void VAO::defineInterleavedVBO(GLuint vboId) const
 {
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
-    GLsizei structSize = sizeof(Vertex);
+    const GLsizei structSize = sizeof(Vertex);
 
     glEnableVertexAttribArray(VBO_POSITION);
     glVertexAttribPointer(VBO_POSITION, static_cast<GLsizei>(sizeof(glm::vec3) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _position));
@@ -83,3 +85,4 @@ void GDSA::Render::VAO::defineInterleavedVBO(GLuint vboId)
     glEnableVertexAttribArray(VBO_TEXT_COORD);
     glVertexAttribPointer(VBO_TEXT_COORD, static_cast<GLsizei>(sizeof(glm::vec2) / sizeof(GL_FLOAT)), GL_FLOAT, GL_FALSE, structSize, (GLubyte*)offsetof(Vertex, _textCoord));
 }
+}    // namespace GDSA::Render

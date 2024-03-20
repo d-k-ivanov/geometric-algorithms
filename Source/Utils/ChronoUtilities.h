@@ -28,7 +28,7 @@ long long getDuration(const TimeUnit timeUnit = MILLISECONDS);
  */
 void initChrono();
 
-inline long long getDuration(const GDSA::Utils::Time::TimeUnit timeUnit)
+inline long long getDuration(const TimeUnit timeUnit)
 {
     const std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 

@@ -74,7 +74,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
                         {
                             if(_voxels[x][y][z]->bruteForce(triangles[j]))
                             {
-                                _voxels[x][y][z]->setStatus(VoxelStatus::OCCUPIED);
+                                _voxels[x][y][z]->setStatus(OCCUPIED);
                                 j = numTriangles;
                             }
                         }
@@ -93,7 +93,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
                 {
                     if(voxel->bruteForce(triangles[i]))
                     {
-                        voxel->setStatus(VoxelStatus::OCCUPIED);
+                        voxel->setStatus(OCCUPIED);
                     }
                 }
             }
@@ -105,7 +105,7 @@ Voxelization::Voxelization(TriangleModel* model, glm::vec3 size, int algorithm)
     this->flood();
 }
 
-Voxelization::Voxelization(double maxX, double maxY, double maxZ, double minX, double minY, double minZ, glm::vec3 size)
+Voxelization::Voxelization(const double maxX, const double maxY, const double maxZ, const double minX, const double minY, const double minZ, const glm::vec3 size)
 {
     _size = size;
     _maxX = maxX;
@@ -240,7 +240,7 @@ void Voxelization::sweep(const std::vector<Triangle3d>& triangles) const
             {
                 if(voxel->bruteForce(triangles[it->first]))
                 {
-                    voxel->setStatus(VoxelStatus::OCCUPIED);
+                    voxel->setStatus(OCCUPIED);
                     break;
                 }
             }
@@ -283,7 +283,7 @@ std::vector<VoxelModel*> Voxelization::getVoxelsInAABB(AABB& aabb)
             for(int z = 0; z < _numZ; z++)
             {
 
-                if(_voxels[x][y][z]->getStatus() != VoxelStatus::OCCUPIED)
+                if(_voxels[x][y][z]->getStatus() != OCCUPIED)
                 {
                     if(isInVoxel(_voxels[x][y][z], corner1) || isInVoxel(_voxels[x][y][z], corner2)
                        || isInVoxel(_voxels[x][y][z], corner3) || isInVoxel(_voxels[x][y][z], corner4)
@@ -321,9 +321,9 @@ void Voxelization::flood()
     const int centerY = _numY / 2;
     const int centerZ = _numZ / 2;
 
-    if(this->_voxels[centerX][centerY][centerZ]->getStatus() == VoxelStatus::OCCUPIED)
+    if(this->_voxels[centerX][centerY][centerZ]->getStatus() == OCCUPIED)
     {
-        while(this->_voxels[centerX][centerY][centerZ]->getStatus() == VoxelStatus::OCCUPIED)
+        while(this->_voxels[centerX][centerY][centerZ]->getStatus() == OCCUPIED)
         {
             centerX++;
         }
@@ -335,9 +335,9 @@ void Voxelization::flood()
         {
             for(int y = 0; y < _numZ; y++)
             {
-                if(this->_voxels[i][x][y]->getStatus() == VoxelStatus::NP)
+                if(this->_voxels[i][x][y]->getStatus() == NP)
                 {
-                    this->_voxels[i][x][y]->setStatus(VoxelStatus::OUTER);
+                    this->_voxels[i][x][y]->setStatus(OUTER);
                 }
             }
         }
@@ -346,11 +346,11 @@ void Voxelization::flood()
 
 void Voxelization::recursiveFill(VoxelModel* v, const int x, const int y, int z)
 {
-    if(v->getStatus() == VoxelStatus::OCCUPIED || v->getStatus() == VoxelStatus::INNER)
+    if(v->getStatus() == OCCUPIED || v->getStatus() == INNER)
     {
         return;
     }
-    v->setStatus(VoxelStatus::INNER);
+    v->setStatus(INNER);
 
     if(x + 1 < _numX)
     {
@@ -382,13 +382,13 @@ Render::DrawVoxelization* Voxelization::getRenderingObject(const bool outlineMod
 {
     VoxelStatus status;
     if(outlineMode)
-        status = VoxelStatus::INNER;
+        status = INNER;
     else
-        status = VoxelStatus::OCCUPIED;
+        status = OCCUPIED;
 
     std::vector<glm::vec3> positions;
     const Vect3d           displace(_size[0] / 2, _size[1] / 2, _size[2] / 2);
-    const unsigned         numVoxels = _numX * _numY * _numZ;
+    // const unsigned         numVoxels = _numX * _numY * _numZ;
 
     for(int x = 0; x < _numX; x++)
     {
@@ -398,8 +398,8 @@ Render::DrawVoxelization* Voxelization::getRenderingObject(const bool outlineMod
             {
                 if(this->getVoxels()[x][y][z]->getStatus() == status)
                 {
-                    const unsigned linearIndex = z + y * _numZ + x * _numZ * _numY;
-                    Vect3d         center      = this->getVoxels()[x][y][z]->getMin().add(displace);
+                    // const unsigned linearIndex = z + y * _numZ + x * _numZ * _numY;
+                    Vect3d center = this->getVoxels()[x][y][z]->getMin().add(displace);
                     positions.emplace_back(center.getX(), center.getY(), center.getZ());
                 }
             }
@@ -423,9 +423,9 @@ void Voxelization::printData() const
         {
             for(unsigned z = 0; z < static_cast<unsigned>(_numZ); ++z)
             {
-                numOccupiedVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == VoxelStatus::OCCUPIED);
-                numInnerVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == VoxelStatus::INNER);
-                numOuterVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == VoxelStatus::OUTER);
+                numOccupiedVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == OCCUPIED);
+                numInnerVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == INNER);
+                numOuterVoxels += static_cast<unsigned>(_voxels[x][y][z]->getStatus() == OUTER);
             }
         }
     }
@@ -521,7 +521,7 @@ bool Voxelization::rayTraversal(Ray3d& r, std::vector<VoxelModel*>& v)
         tMaxZ   = tMax;
     }
 
-    while(glm::all(glm::greaterThanEqual(glm::vec3(currentIndexX, currentIndexY, currentIndexZ), glm::vec3(1, 1, 1))) && glm::all(glm::lessThanEqual(glm::vec3(currentIndexX, currentIndexY, currentIndexZ), glm::vec3(_numX, _numY, _numZ))))
+    while(all(greaterThanEqual(glm::vec3(currentIndexX, currentIndexY, currentIndexZ), glm::vec3(1, 1, 1))) && all(lessThanEqual(glm::vec3(currentIndexX, currentIndexY, currentIndexZ), glm::vec3(_numX, _numY, _numZ))))
     {
         v.push_back(this->_voxels[currentIndexX - 1][currentIndexY - 1][currentIndexZ - 1]);
         if(tMaxX < tMaxY && tMaxX < tMaxZ)

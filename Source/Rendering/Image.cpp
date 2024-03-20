@@ -4,22 +4,24 @@
 
 #include <iostream>
 
-GDSA::Render::Image::Image(const std::string& filename)
+namespace GDSA::Render
+{
+Image::Image(const std::string& filename)
     : _depth(4)    // PNG depth
 {
-    const unsigned error = lodepng::decode(_image, _width, _height, filename.c_str());
+    const unsigned error = lodepng::decode(_image, _width, _height, filename);
 
     if(error)
     {
-        std::cout << "The image " << filename << " couldn't be loaded by lodepng" << std::endl;
+        std::cout << "The image " << filename << " couldn't be loaded by lodepng\n";
 
         _width = _height = _depth = 0;
     }
 
-    this->flipImageVertically(_image, _width, _height, _depth);    // By default it's flipped
+    this->flipImageVertically(_image, static_cast<uint16_t>(_width), static_cast<uint16_t>(_height), static_cast<uint8_t>(_depth));    // By default it's flipped
 }
 
-GDSA::Render::Image::Image(unsigned char* image, const uint16_t width, const uint16_t height, const uint8_t depth)
+Image::Image(unsigned char* image, const uint16_t width, const uint16_t height, const uint8_t depth)
     : _width(width)
     , _height(height)
     , _depth(depth)
@@ -31,19 +33,15 @@ GDSA::Render::Image::Image(unsigned char* image, const uint16_t width, const uin
     }
     else
     {
-        std::cout << "Empty image!" << std::endl;
+        std::cout << "Empty image!\n";
 
         _width = _height = _depth = 0;
     }
 }
 
-GDSA::Render::Image::~Image()
+void Image::flipImageVertically(std::vector<unsigned char>& image, const uint16_t width, const uint16_t height, const uint8_t depth)
 {
-}
-
-void GDSA::Render::Image::flipImageVertically(std::vector<unsigned char>& image, const uint16_t width, const uint16_t height, const uint8_t depth)
-{
-    int            rowSize    = width * depth;
+    const int      rowSize    = width * depth;
     unsigned char* bits       = image.data();
     unsigned char* tempBuffer = new unsigned char[rowSize];
 
@@ -60,7 +58,7 @@ void GDSA::Render::Image::flipImageVertically(std::vector<unsigned char>& image,
     delete[] tempBuffer;
 }
 
-bool GDSA::Render::Image::saveImage(const std::string& filename)
+bool Image::saveImage(const std::string& filename) const
 {
     std::vector<unsigned char> result;
     const unsigned             error = lodepng::encode(result, this->_image, this->_width, this->_height);
@@ -74,7 +72,8 @@ bool GDSA::Render::Image::saveImage(const std::string& filename)
     return false;
 }
 
-void GDSA::Render::Image::flipImageVertically()
+void Image::flipImageVertically()
 {
-    Image::flipImageVertically(_image, _width, _height, _depth);
+    flipImageVertically(_image, static_cast<uint16_t>(_width), static_cast<uint16_t>(_height), static_cast<uint8_t>(_depth));
 }
+}    // namespace GDSA::Render

@@ -127,16 +127,16 @@ protected:
     std::string                             _name;
 
 protected:
-    void       buildVao(Component* component);
+    void       buildVao(Component* component) const;
     void       loadModelBinaryFile(const std::string& path);
-    void       writeBinaryFile(const std::string& path);
+    void       writeBinaryFile(const std::string& path) const;
     Component* getVoxel();
 
 public:
     Model3D();
-    virtual ~Model3D();
+    virtual ~Model3D() = default;
 
-    bool         belongsModel(Component* component);
+    bool         belongsModel(const Component* component) const;
     virtual void draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive);
     glm::mat4    getModelMatrix() const { return _modelMatrix; }
     std::string  getName() { return _name; }

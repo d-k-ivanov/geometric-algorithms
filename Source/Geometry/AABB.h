@@ -15,20 +15,13 @@ protected:
     Vect3d _min, _max;
 
 public:
-    /**
-     *	@brief Constructor.
-     */
+    AABB()                 = default;
+    AABB(const AABB& aabb) = default;
     AABB(const Vect3d& min = Vect3d(HUGE_VAL), const Vect3d& max = Vect3d(-HUGE_VAL));
 
-    /**
-     *	@brief Copy constructor,
-     */
-    AABB(const AABB& aabb);
+    virtual ~AABB() = default;
 
-    /**
-     *	@brief Destructor.
-     */
-    virtual ~AABB();
+    AABB& operator=(const AABB& orig) = default;
 
     /**
      *	@brief Returns the size of the cube.
@@ -69,11 +62,6 @@ public:
      *	@brief AABB dot product.
      */
     AABB dot(const glm::mat4& matrix) const;
-
-    /**
-     *	@brief Assignment operator.
-     */
-    AABB& operator=(const AABB& orig);
 
     /**
      *	@brief Updates the cube with a new cube.

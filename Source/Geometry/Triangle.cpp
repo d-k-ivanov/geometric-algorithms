@@ -2,17 +2,10 @@
 
 namespace GDSA::Geometry
 {
-Triangle::Triangle(const Vect2d& aa, const Vect2d& bb, const Vect2d& cc)
-    : _a(aa)
-    , _b(bb)
-    , _c(cc)
-{
-}
-
-Triangle::Triangle(const Triangle& tt)
-    : _a(tt._a)
-    , _b(tt._b)
-    , _c(tt._c)
+Triangle::Triangle(const Vect2d& a, const Vect2d& b, const Vect2d& c)
+    : _a(a)
+    , _b(b)
+    , _c(c)
 {
 }
 }    // namespace GDSA::Geometry

@@ -13,28 +13,14 @@ protected:
     /**
      *  @brief Checks if the parametric value t is valid. It is only invalid if t is smaller than 0.
      */
-    virtual bool isTvalid(double t) { return (t >= 0); }
+    bool isTvalid(const double t) override { return (t >= 0); }
 
 public:
-    /**
-     *  @brief Constructor.
-     */
-    Ray3d(Vect3d& orig, Vect3d& dest);
+    Ray3d(const Vect3d& orig, const Vect3d& dest);
+    Ray3d(const Ray3d& ray) = default;
+    ~Ray3d() override       = default;
 
-    /**
-     *  @brief Copy constructor.
-     */
-    Ray3d(const Ray3d& ray);
-
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~Ray3d();
-
-    /**
-     *  @brief Assignment operator.
-     */
-    virtual Ray3d& operator=(const Ray3d& ray);
+    Ray3d& operator=(const Ray3d& ray);
 
     /**
      *  @brief Shows some information about the ray at the debug window.

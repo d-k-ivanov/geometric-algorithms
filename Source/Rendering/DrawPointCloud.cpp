@@ -1,10 +1,12 @@
 #include "DrawPointCloud.h"
 
-GDSA::Render::DrawPointCloud::DrawPointCloud(Geometry::PointCloud& pointCloud)
+namespace GDSA::Render
+{
+DrawPointCloud::DrawPointCloud(Geometry::PointCloud& pointCloud)
     : Model3D()
 {
-    size_t     numPoints = pointCloud.size();
-    Component* component = new Component;
+    const size_t numPoints = pointCloud.size();
+    Component*   component = new Component;
 
     for(unsigned vertexIdx = 0; vertexIdx < numPoints; vertexIdx++)
     {
@@ -17,11 +19,11 @@ GDSA::Render::DrawPointCloud::DrawPointCloud(Geometry::PointCloud& pointCloud)
     this->buildVao(component);
 }
 
-GDSA::Render::DrawPointCloud::DrawPointCloud(Geometry::PointCloud3d& pointCloud)
+DrawPointCloud::DrawPointCloud(Geometry::PointCloud3d& pointCloud)
     : Model3D()
 {
-    size_t     numPoints = pointCloud.size();
-    Component* component = new Component;
+    const size_t numPoints = pointCloud.size();
+    Component*   component = new Component;
 
     for(unsigned vertexIdx = 0; vertexIdx < numPoints; vertexIdx++)
     {
@@ -33,7 +35,4 @@ GDSA::Render::DrawPointCloud::DrawPointCloud(Geometry::PointCloud3d& pointCloud)
     this->_components.push_back(std::unique_ptr<Component>(component));
     this->buildVao(component);
 }
-
-GDSA::Render::DrawPointCloud::~DrawPointCloud()
-{
-}
+}    // namespace GDSA::Render

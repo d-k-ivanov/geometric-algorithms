@@ -32,8 +32,8 @@ private:
 
 protected:
     void loadModelBinaryFile(const std::string& path);
-    void processMesh(aiMesh* mesh, const aiScene* scene, const std::string& folder);
-    void processNode(aiNode* node, const aiScene* scene, const std::string& folder);
+    void processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder);
+    void processNode(const aiNode* node, const aiScene* scene, const std::string& folder);
     void writeBinaryFile(const std::string& path);
 
 public:
@@ -42,8 +42,8 @@ public:
     virtual ~TriangleModel();
 
     PointCloud3d            getCloud() const;
-    Triangle3d              getFace(unsigned index);
-    std::vector<Triangle3d> getFaces();
+    Triangle3d              getFace(unsigned index) const;
+    std::vector<Triangle3d> getFaces() const;
     std::vector<Vect3d>*    getVertices() { return &_vertices; }
     std::vector<Vect3d>*    getNormals() { return &_normals; }
     std::vector<Vect2d>*    getTextureCoordinates() { return &_textCoordinates; }
@@ -78,28 +78,12 @@ public:
     TriangleModel* _triangleModel;    //!< Mesh where those vertices belong to
 
 public:
-    /**
-     *	@brief Default constructor.
-     *	@param mesh Mesh from where we can retrieve the vertices
-     */
     Face(TriangleModel* mesh);
-
-    /**
-     *	@brief Parametrized constructor.
-     *	@param i1, i2, i3 Indexes of vertices.
-     *	@param mesh Mesh from where we can retrieve the vertices
-     */
     Face(const unsigned i1, const unsigned i2, const unsigned i3, TriangleModel* mesh);
-
-    /**
-     *	@brief Copy constructor.
-     */
     Face(const Face& face);
-
-    /**
-     *	@brief Destructor.
-     */
     virtual ~Face() = default;
+
+    Face& operator=(const Face& face);
 
     /**
      *	@return Triangle normal.
@@ -120,11 +104,6 @@ public:
      *	@brief Returns a vertex index.
      */
     unsigned getVertexIndex(const int i) const { return _indices[i]; }
-
-    /**
-     *	@brief Assignment operator overriding.
-     */
-    Face& operator=(const Face& face);
 
     /**
      *	@brief Modifies the indexes of vertices.

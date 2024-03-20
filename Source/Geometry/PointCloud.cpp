@@ -7,15 +7,11 @@
 
 namespace GDSA::Geometry
 {
-PointCloud::PointCloud()
-{
-}
-
-PointCloud::PointCloud(int size, double max_x, double max_y)
+PointCloud::PointCloud(const int size, const double maxX, const double maxY)
 {
     for(int i = 0; i < size; i++)
     {
-        _points.push_back(Point(GDSA::Utils::Random::getUniformRandom(-max_x, max_x), GDSA::Utils::Random::getUniformRandom(-max_y, max_y)));
+        _points.emplace_back(Utils::Random::getUniformRandom(static_cast<float>(-maxX), static_cast<float>(maxX)), Utils::Random::getUniformRandom(static_cast<float>(-maxY), static_cast<float>(maxY)));
     }
 }
 
@@ -77,8 +73,14 @@ PointCloud::PointCloud(const std::string& filename)
     this->_points = points;
 }
 
-PointCloud::~PointCloud()
+PointCloud& PointCloud::operator=(const PointCloud& pointCloud)
 {
+    if(this != &pointCloud)
+    {
+        this->_points = pointCloud._points;
+    }
+
+    return *this;
 }
 
 void PointCloud::addPoint(const Point& p)
@@ -127,10 +129,6 @@ void PointCloud::deletePoint(int index)
     }
 }
 
-void PointCloud::getEdges(Point& minPoint_x, Point& minPoint_y, Point& maxPoint_x, Point& maxPoint_y)
-{
-}
-
 Point PointCloud::getPoint(const size_t position)
 {
     if(position < _points.size())
@@ -141,17 +139,7 @@ Point PointCloud::getPoint(const size_t position)
     return {};
 }
 
-PointCloud& PointCloud::operator=(const PointCloud& pointCloud)
-{
-    if(this != &pointCloud)
-    {
-        this->_points = pointCloud._points;
-    }
-
-    return *this;
-}
-
-void PointCloud::save(const std::string& filename)
+void PointCloud::save(const std::string& filename) const
 {
     std::ofstream file;
 

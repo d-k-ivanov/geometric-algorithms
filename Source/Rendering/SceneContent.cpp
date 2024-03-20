@@ -1,27 +1,11 @@
 #include "SceneContent.h"
 #include "Scenes.h"
 
-#include "DrawBezier.h"
-#include "DrawLine.h"
-#include "DrawPoint.h"
-#include "DrawPointCloud.h"
-#include "DrawPolygon.h"
-#include "DrawRay.h"
-#include "DrawSegment.h"
-#include "Geometry/Bezier.h"
-
-#include "Geometry/PointCloud.h"
-#include "Geometry/Polygon.h"
-#include "Geometry/SegmentLine.h"
-
-#include "Utils/ChronoUtilities.h"
-#include "Utils/RandomUtilities.h"
-
-#include <iostream>
-
+namespace GDSA::Render
+{
 // ----------------------------- BUILD YOUR SCENARIO HERE -----------------------------------
 
-void GDSA::Render::SceneContent::buildScenario()
+void SceneContent::buildScenario()
 {
     constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
     constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
@@ -42,12 +26,12 @@ void GDSA::Render::SceneContent::buildScenario()
     // Scenes::p1Lines(*this, randomPointsFromCloud);
     // Scenes::p1Polygon(*this, extremumPointInCloud);
     // Scenes::p1Bezier(*this);
-    // Scenes::p1Bezier(*this, true, 5);
+    // Scenes::p1Bezier(*this, /*use random point*/ true, /*number of random point*/ 5);
     // Scenes::p1Intersections(*this);
     // Scenes::p1All(*this);
 
     // Practice 2:
-    Scenes::p2a(*this, numPointClouds, pointsPerCloud, scaleFactor);
+    // Scenes::p2a(*this, numPointClouds, pointsPerCloud, scaleFactor);
     // Scenes::p2b(*this);
     // Scenes::p2c(*this);
 
@@ -56,12 +40,12 @@ void GDSA::Render::SceneContent::buildScenario()
 
     // Practice 4:
     // Scenes::p4a(*this, /*draw triangles*/ true);    // 2D Hull
-    // Scenes::p4b(*this, /*random on sphere surface*/ true);    // 3D Hull
+    Scenes::p4b(*this, /*random on sphere surface*/ true);    // 3D Hull
     // Scenes::p4c(*this);    // 3D Hull from Trianles
     // Scenes::p4d(*this);    // Voronoi Diagram
 }
 
-void GDSA::Render::SceneContent::buildCamera(uint16_t width, uint16_t height)
+void SceneContent::buildCamera(uint16_t width, uint16_t height)
 {
     Camera* camera = new Camera(width, height, /*2D*/ false);
     camera->setPosition(glm::vec3(0.0f, 0.0f, 4.0f));
@@ -73,23 +57,23 @@ void GDSA::Render::SceneContent::buildCamera(uint16_t width, uint16_t height)
 
 // ------------------------------------------------------------------------------------------
 
-GDSA::Render::SceneContent::~SceneContent()
+SceneContent::~SceneContent()
 {
     _camera.clear();
     _model.clear();
 }
 
-void GDSA::Render::SceneContent::addNewCamera(ApplicationState* appState)
+void SceneContent::addNewCamera(ApplicationState* appState)
 {
     _camera.push_back(std::make_unique<Camera>(appState->_viewportSize.x, appState->_viewportSize.y, /*2D*/ false));
 }
 
-void GDSA::Render::SceneContent::addNewModel(Model3D* model)
+void SceneContent::addNewModel(Model3D* model)
 {
     _model.push_back(std::unique_ptr<Model3D>(model));
 }
 
-GDSA::Render::Model3D* GDSA::Render::SceneContent::getModel(Model3D::Component* component) const
+Model3D* SceneContent::getModel(Model3D::Component* component) const
 {
     for(auto& model : _model)
     {
@@ -99,3 +83,4 @@ GDSA::Render::Model3D* GDSA::Render::SceneContent::getModel(Model3D::Component* 
 
     return nullptr;
 }
+}    // namespace GDSA::Render

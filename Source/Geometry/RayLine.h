@@ -9,25 +9,18 @@ class RayLine : public SegmentLine
     friend Line;
 
 public:
-    /**
-     *  @brief Constructor of a rayline given its two points.
-     */
+    RayLine() = default;
     RayLine(const Point& a, const Point& b);
+    RayLine(const RayLine& s) = default;
 
-    /**
-     *  @brief Copy constructor.
-     */
-    RayLine(const RayLine& s);
+    ~RayLine() override = default;
 
-    /**
-     *  @brief Destructor.
-     */
-    ~RayLine();
+    RayLine& operator=(const RayLine& rayline);
 
     /**
      *  @brief Checks if this rayline intersects with a segment in an incorrect way.
      */
-    bool incorrectSegmentIntersection(SegmentLine& segment);
+    bool incorrectSegmentIntersection(SegmentLine& segment) const;
 
     /**
      *  @brief Checks if a rayline intersects with a line.
@@ -59,11 +52,6 @@ public:
      *  @brief Checks if the parameter t is valid to get a point of the rayline.
      */
     virtual bool isTvalid(double t) { return t >= 0; }
-
-    /**
-     *  @brief Assignment operator.
-     */
-    RayLine& operator=(const RayLine& rayline);
 
     /**
      *  @brief Overriding cout call.

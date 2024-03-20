@@ -10,7 +10,7 @@ namespace GDSA::Geometry
 {
 TriangleModel::TriangleModel(const std::string& pathfile)
 {
-    std::string binaryFile = pathfile.substr(0, pathfile.find_last_of('.')) + BINARY_EXTENSION;
+    const std::string binaryFile = pathfile.substr(0, pathfile.find_last_of('.')) + BINARY_EXTENSION;
 
     if(std::filesystem::exists(binaryFile))
     {
@@ -23,12 +23,12 @@ TriangleModel::TriangleModel(const std::string& pathfile)
 
         if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
         {
-            std::cout << "ERROR::ASSIMP::" << assimpImporter.GetErrorString() << std::endl;
+            std::cout << "ERROR::ASSIMP::" << assimpImporter.GetErrorString() << '\n';
             return;
         }
 
-        std::string shortName = scene->GetShortFilename(pathfile.c_str());
-        std::string folder    = pathfile.substr(0, pathfile.length() - shortName.length());
+        const std::string shortName = scene->GetShortFilename(pathfile.c_str());
+        const std::string folder    = pathfile.substr(0, pathfile.length() - shortName.length());
 
         this->processNode(scene->mRootNode, scene, folder);
         this->writeBinaryFile(binaryFile);
@@ -49,24 +49,24 @@ PointCloud3d TriangleModel::getCloud() const
     return PointCloud3d(_vertices);
 }
 
-Triangle3d TriangleModel::getFace(unsigned index)
+Triangle3d TriangleModel::getFace(const unsigned index) const
 {
     if(index > this->numTriangles())
         return {};
 
-    Vect3d a = _vertices[_indices[index * 3]];
-    Vect3d b = _vertices[_indices[index * 3 + 1]];
-    Vect3d c = _vertices[_indices[index * 3 + 2]];
+    Vect3d a = _vertices[_indices[static_cast<size_t>(index) * 3]];
+    Vect3d b = _vertices[_indices[static_cast<size_t>(index) * 3 + 1]];
+    Vect3d c = _vertices[_indices[static_cast<size_t>(index) * 3 + 2]];
 
     return {a, b, c};
 }
 
-std::vector<Triangle3d> TriangleModel::getFaces()
+std::vector<Triangle3d> TriangleModel::getFaces() const
 {
     std::vector<Triangle3d> result;
 
     result.reserve(this->numTriangles());
-    for(size_t index = 0; index < this->numTriangles(); index++)
+    for(unsigned index = 0; index < this->numTriangles(); index++)
     {
         result.push_back(getFace(index));
     }
@@ -166,7 +166,7 @@ Render::DrawVoxelization* TriangleModel::voxelize() const
         positions[vertexIdx] = glm::vec3(_vertices[vertexIdx].getX(), _vertices[vertexIdx].getY(), _vertices[vertexIdx].getZ());
     }
 
-    Render::DrawVoxelization* voxelization = new Render::DrawVoxelization(positions, _vertices.size(), glm::vec3(.01f));
+    Render::DrawVoxelization* voxelization = new Render::DrawVoxelization(positions, static_cast<int>(_vertices.size()), glm::vec3(.01f));
     delete[] positions;
 
     return voxelization;
@@ -177,61 +177,61 @@ void TriangleModel::loadModelBinaryFile(const std::string& path)
     std::ifstream fin(path, std::ios::in | std::ios::binary);
     if(!fin.is_open())
     {
-        std::cout << "Failed to open the binary file " << path << "!" << std::endl;
+        std::cout << "Failed to open the binary file " << path << "!\n";
         return;
     }
 
     size_t numVertices, numTextCoords, numIndices;
 
-    fin.read((char*)&numVertices, sizeof(size_t));
-    fin.read((char*)&numTextCoords, sizeof(size_t));
+    fin.read(reinterpret_cast<char*>(&numVertices), sizeof(size_t));
+    fin.read(reinterpret_cast<char*>(&numTextCoords), sizeof(size_t));
     this->_vertices.resize(numVertices);
     this->_normals.resize(numVertices);
     this->_textCoordinates.resize(numTextCoords);
 
-    fin.read((char*)this->_vertices.data(), sizeof(Vect3d) * numVertices);
-    fin.read((char*)this->_normals.data(), sizeof(Vect3d) * numVertices);
+    fin.read(reinterpret_cast<char*>(this->_vertices.data()), sizeof(Vect3d) * numVertices);
+    fin.read(reinterpret_cast<char*>(this->_normals.data()), sizeof(Vect3d) * numVertices);
     if(numTextCoords)
-        fin.read((char*)this->_textCoordinates.data(), sizeof(Vect2d) * numVertices);
+        fin.read(reinterpret_cast<char*>(this->_textCoordinates.data()), sizeof(Vect2d) * numVertices);
 
-    fin.read((char*)&numIndices, sizeof(size_t));
+    fin.read(reinterpret_cast<char*>(&numIndices), sizeof(size_t));
     if(numIndices)
     {
         this->_indices.resize(numIndices);
-        fin.read((char*)this->_indices.data(), sizeof(GLuint) * numIndices);
+        fin.read(reinterpret_cast<char*>(this->_indices.data()), sizeof(GLuint) * numIndices);
     }
 
     fin.close();
 }
 
-void TriangleModel::processMesh(aiMesh* mesh, const aiScene* scene, const std::string& folder)
+void TriangleModel::processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder)
 {
     // Vertices
-    unsigned baseIndex   = this->_vertices.size();
-    int      numVertices = static_cast<int>(mesh->mNumVertices);
+    const unsigned baseIndex   = this->_vertices.size();
+    const int      numVertices = static_cast<int>(mesh->mNumVertices);
 
     for(int i = 0; i < numVertices; i++)
     {
-        this->_vertices.push_back(Vect3d(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
-        this->_normals.push_back(Vect3d(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z));
+        this->_vertices.emplace_back(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+        this->_normals.emplace_back(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
         if(mesh->mTextureCoords[0])
-            this->_textCoordinates.push_back(Vect2d(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y));
+            this->_textCoordinates.emplace_back(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
     }
 
     // Indices
     for(unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
-        aiFace face = mesh->mFaces[i];
+        const aiFace face = mesh->mFaces[i];
         for(unsigned int j = 0; j < face.mNumIndices; j++)
             this->_indices.push_back(face.mIndices[j] + baseIndex);
     }
 }
 
-void TriangleModel::processNode(aiNode* node, const aiScene* scene, const std::string& folder)
+void TriangleModel::processNode(const aiNode* node, const aiScene* scene, const std::string& folder)
 {
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
-        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+        const aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         this->processMesh(mesh, scene, folder);
     }
 
@@ -251,17 +251,17 @@ void TriangleModel::writeBinaryFile(const std::string& path)
 
     size_t numVertices = this->_vertices.size(), numTextCoordinates = this->_textCoordinates.size();
 
-    fout.write((char*)&numVertices, sizeof(size_t));
-    fout.write((char*)&numTextCoordinates, sizeof(size_t));
-    fout.write((char*)this->_vertices.data(), numVertices * sizeof(Vect3d));
-    fout.write((char*)this->_normals.data(), numVertices * sizeof(Vect3d));
+    fout.write(reinterpret_cast<char*>(&numVertices), sizeof(size_t));
+    fout.write(reinterpret_cast<char*>(&numTextCoordinates), sizeof(size_t));
+    fout.write(reinterpret_cast<char*>(this->_vertices.data()), numVertices * sizeof(Vect3d));
+    fout.write(reinterpret_cast<char*>(this->_normals.data()), numVertices * sizeof(Vect3d));
     if(numTextCoordinates)
-        fout.write((char*)this->_textCoordinates.data(), numTextCoordinates * sizeof(Vect2d));
+        fout.write(reinterpret_cast<char*>(this->_textCoordinates.data()), numTextCoordinates * sizeof(Vect2d));
 
     size_t numIndices = this->_indices.size();
-    fout.write((char*)&numIndices, sizeof(size_t));
+    fout.write(reinterpret_cast<char*>(&numIndices), sizeof(size_t));
     if(numIndices)
-        fout.write((char*)this->_indices.data(), numIndices * sizeof(GLuint));
+        fout.write(reinterpret_cast<char*>(this->_indices.data()), numIndices * sizeof(GLuint));
 
     fout.close();
 }
@@ -285,6 +285,14 @@ TriangleModel::Face::Face(const Face& face)
     this->setIndexes(face._indices[0], face._indices[1], face._indices[2]);
 }
 
+TriangleModel::Face& TriangleModel::Face::operator=(const Face& face)
+{
+    this->setIndexes(face._indices[0], face._indices[1], face._indices[2]);
+    this->_triangleModel = face._triangleModel;
+
+    return *this;
+}
+
 Vect2d TriangleModel::Face::getTextCoord(const Vect3d& minPoint)
 {
     // Christer Ericson's Real-Time Collision Detection:  Cramer's rule
@@ -302,15 +310,7 @@ Vect2d TriangleModel::Face::getTextCoord(const Vect3d& minPoint)
     w                  = (d00 * d21 - d01 * d20) / denom;
     u                  = 1.0f - v - w;
 
-    return _triangleModel->_textCoordinates[_indices[0]].scalarMult(u) + _triangleModel->_textCoordinates[_indices[1]].scalarMult(v) + _triangleModel->_textCoordinates[_indices[2]].scalarMult(w);
-}
-
-TriangleModel::Face& TriangleModel::Face::operator=(const Face& face)
-{
-    this->setIndexes(face._indices[0], face._indices[1], face._indices[2]);
-    this->_triangleModel = face._triangleModel;
-
-    return *this;
+    return _triangleModel->_textCoordinates[_indices[0]].ScalarMult(u) + _triangleModel->_textCoordinates[_indices[1]].ScalarMult(v) + _triangleModel->_textCoordinates[_indices[2]].ScalarMult(w);
 }
 
 void TriangleModel::Face::setIndexes(unsigned i1, unsigned i2, unsigned i3)

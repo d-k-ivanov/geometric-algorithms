@@ -6,10 +6,12 @@
 
 #include <vector>
 
-GDSA::Render::ApplicationState GDSA::Render::InputManager::_applicationState;
-const glm::vec2                GDSA::Render::InputManager::_defaultCursorPosition = glm::vec2(-1.0f, -1.0f);
+namespace GDSA::Render
+{
+ApplicationState InputManager::_applicationState;
+const glm::vec2  InputManager::_defaultCursorPosition = glm::vec2(-1.0f, -1.0f);
 
-GDSA::Render::InputManager::InputManager()
+InputManager::InputManager()
     : _lastCursorPosition(_defaultCursorPosition)
     , _leftClickPressed(false)
     , _rightClickPressed(false)
@@ -17,41 +19,41 @@ GDSA::Render::InputManager::InputManager()
     this->buildMoveRelatedBuffers();
 }
 
-void GDSA::Render::InputManager::buildMoveRelatedBuffers()
+void InputManager::buildMoveRelatedBuffers()
 {
     _movementMultiplier = 0.1f;
     _moveSpeedUp        = 1.0f;
 
-    _moveSpeed                   = std::vector<float>(static_cast<size_t>(Events::NUM_EVENTS), .0f);
-    _moveSpeed[Events::BOOM]     = 0.1f;
-    _moveSpeed[Events::DOLLY]    = 0.08f;
-    _moveSpeed[Events::ORBIT_XZ] = 0.05f;
-    _moveSpeed[Events::ORBIT_Y]  = 0.03f;
-    _moveSpeed[Events::PAN]      = 0.002f;
-    _moveSpeed[Events::TILT]     = 0.002f;
-    _moveSpeed[Events::TRUCK]    = 0.01f;
-    _moveSpeed[Events::ZOOM]     = 0.008f;
+    _moveSpeed           = std::vector<float>(static_cast<size_t>(NUM_EVENTS), .0f);
+    _moveSpeed[BOOM]     = 0.1f;
+    _moveSpeed[DOLLY]    = 0.08f;
+    _moveSpeed[ORBIT_XZ] = 0.05f;
+    _moveSpeed[ORBIT_Y]  = 0.03f;
+    _moveSpeed[PAN]      = 0.002f;
+    _moveSpeed[TILT]     = 0.002f;
+    _moveSpeed[TRUCK]    = 0.01f;
+    _moveSpeed[ZOOM]     = 0.008f;
 
-    _eventKey                         = std::vector<glm::ivec2>(static_cast<size_t>(Events::NUM_EVENTS), glm::ivec2(0));
-    _eventKey[Events::ALTER_POINT]    = glm::ivec2(GLFW_KEY_0);
-    _eventKey[Events::ALTER_LINE]     = glm::ivec2(GLFW_KEY_1);
-    _eventKey[Events::ALTER_TRIANGLE] = glm::ivec2(GLFW_KEY_2);
+    _eventKey                 = std::vector<glm::ivec2>(static_cast<size_t>(NUM_EVENTS), glm::ivec2(0));
+    _eventKey[ALTER_POINT]    = glm::ivec2(GLFW_KEY_0);
+    _eventKey[ALTER_LINE]     = glm::ivec2(GLFW_KEY_1);
+    _eventKey[ALTER_TRIANGLE] = glm::ivec2(GLFW_KEY_2);
 
-    _eventKey[Events::BOOM]           = glm::ivec2(GLFW_KEY_UP, GLFW_KEY_DOWN);
-    _eventKey[Events::DOLLY]          = glm::ivec2(GLFW_KEY_W, GLFW_KEY_S);
-    _eventKey[Events::DOLLY_SPEED_UP] = glm::ivec2(GLFW_MOD_SHIFT);
-    _eventKey[Events::ORBIT_XZ]       = glm::ivec2(GLFW_KEY_Y);
-    _eventKey[Events::ORBIT_Y]        = glm::ivec2(GLFW_KEY_X);
-    _eventKey[Events::PAN]            = glm::ivec2(GLFW_KEY_P);
-    _eventKey[Events::RESET]          = glm::ivec2(GLFW_KEY_B);
-    _eventKey[Events::SCREENSHOT]     = glm::ivec2(GLFW_KEY_K, GLFW_KEY_L);
-    _eventKey[Events::TILT]           = glm::ivec2(GLFW_KEY_T);
-    _eventKey[Events::TRUCK]          = glm::ivec2(GLFW_KEY_D, GLFW_KEY_A);
+    _eventKey[BOOM]           = glm::ivec2(GLFW_KEY_UP, GLFW_KEY_DOWN);
+    _eventKey[DOLLY]          = glm::ivec2(GLFW_KEY_W, GLFW_KEY_S);
+    _eventKey[DOLLY_SPEED_UP] = glm::ivec2(GLFW_MOD_SHIFT);
+    _eventKey[ORBIT_XZ]       = glm::ivec2(GLFW_KEY_Y);
+    _eventKey[ORBIT_Y]        = glm::ivec2(GLFW_KEY_X);
+    _eventKey[PAN]            = glm::ivec2(GLFW_KEY_P);
+    _eventKey[RESET]          = glm::ivec2(GLFW_KEY_B);
+    _eventKey[SCREENSHOT]     = glm::ivec2(GLFW_KEY_K, GLFW_KEY_L);
+    _eventKey[TILT]           = glm::ivec2(GLFW_KEY_T);
+    _eventKey[TRUCK]          = glm::ivec2(GLFW_KEY_D, GLFW_KEY_A);
 
-    _moves = std::vector<GLuint>(static_cast<size_t>(Events::NUM_EVENTS), 0);
+    _moves = std::vector<GLuint>(static_cast<size_t>(NUM_EVENTS), 0);
 }
 
-bool GDSA::Render::InputManager::checkPanTilt(const float xPos, const float yPos)
+bool InputManager::checkPanTilt(const float xPos, const float yPos)
 {
     Camera* camera = Renderer::getInstance()->getCamera();
 
@@ -64,12 +66,12 @@ bool GDSA::Render::InputManager::checkPanTilt(const float xPos, const float yPos
         {
             if(!glm::epsilonEqual(xPos, _lastCursorPosition.x, glm::epsilon<float>()))
             {
-                camera->pan(-_moveSpeed[Events::PAN] * (xPos - _lastCursorPosition.x));
+                camera->pan(-_moveSpeed[PAN] * (xPos - _lastCursorPosition.x));
             }
 
             if(!glm::epsilonEqual(yPos, _lastCursorPosition.y, glm::epsilon<float>()))
             {
-                camera->tilt(-_moveSpeed[Events::TILT] * (yPos - _lastCursorPosition.y));
+                camera->tilt(-_moveSpeed[TILT] * (yPos - _lastCursorPosition.y));
             }
         }
 
@@ -80,113 +82,113 @@ bool GDSA::Render::InputManager::checkPanTilt(const float xPos, const float yPos
     return false;
 }
 
-void GDSA::Render::InputManager::processPressedKeyEvent(const int key, const int mods)
+void InputManager::processPressedKeyEvent(const int key, const int mods)
 {
     Renderer* renderer = Renderer::getInstance();
     Camera*   camera   = renderer->getCamera();
 
-    if(key == _eventKey[Events::ALTER_POINT][0])
+    if(key == _eventKey[ALTER_POINT][0])
     {
         _applicationState._activeRendering[VAO::IBO_POINT] = !_applicationState._activeRendering[VAO::IBO_POINT];
     }
-    else if(key == _eventKey[Events::ALTER_LINE][0])
+    else if(key == _eventKey[ALTER_LINE][0])
     {
         _applicationState._activeRendering[VAO::IBO_LINE] = !_applicationState._activeRendering[VAO::IBO_LINE];
     }
-    else if(key == _eventKey[Events::ALTER_TRIANGLE][0])
+    else if(key == _eventKey[ALTER_TRIANGLE][0])
     {
         _applicationState._activeRendering[VAO::IBO_TRIANGLE] = !_applicationState._activeRendering[VAO::IBO_TRIANGLE];
     }
-    else if(key == _eventKey[Events::RESET][0])
+    else if(key == _eventKey[RESET][0])
     {
         camera->reset();
     }
-    else if(key == _eventKey[Events::ORBIT_XZ][0])
+    else if(key == _eventKey[ORBIT_XZ][0])
     {
         if(mods == GLFW_MOD_CONTROL)
         {
-            camera->orbitXZ(_moveSpeed[Events::ORBIT_XZ]);
+            camera->orbitXZ(_moveSpeed[ORBIT_XZ]);
         }
         else
         {
-            camera->orbitXZ(-_moveSpeed[Events::ORBIT_XZ]);
+            camera->orbitXZ(-_moveSpeed[ORBIT_XZ]);
         }
     }
-    else if(key == _eventKey[Events::ORBIT_Y][0])
+    else if(key == _eventKey[ORBIT_Y][0])
     {
         if(mods == GLFW_MOD_CONTROL)
         {
-            camera->orbitY(-_moveSpeed[Events::ORBIT_Y]);
+            camera->orbitY(-_moveSpeed[ORBIT_Y]);
         }
         else
         {
-            camera->orbitY(_moveSpeed[Events::ORBIT_Y]);
+            camera->orbitY(_moveSpeed[ORBIT_Y]);
         }
     }
-    else if(key == _eventKey[Events::DOLLY][0])
+    else if(key == _eventKey[DOLLY][0])
     {
         if(_rightClickPressed)
         {
-            camera->dolly(_moveSpeed[Events::DOLLY] + _moves[Events::DOLLY] * _moveSpeed[Events::DOLLY] * _movementMultiplier);
-            ++_moves[Events::DOLLY];
+            camera->dolly(_moveSpeed[DOLLY] + _moves[DOLLY] * _moveSpeed[DOLLY] * _movementMultiplier);
+            ++_moves[DOLLY];
         }
     }
-    else if(key == _eventKey[Events::DOLLY][1])
+    else if(key == _eventKey[DOLLY][1])
     {
         if(_rightClickPressed)
         {
-            camera->dolly(-(_moveSpeed[Events::DOLLY] + _moves[Events::DOLLY] * _moveSpeed[Events::DOLLY] * _movementMultiplier));
-            ++_moves[Events::DOLLY];
+            camera->dolly(-(_moveSpeed[DOLLY] + _moves[DOLLY] * _moveSpeed[DOLLY] * _movementMultiplier));
+            ++_moves[DOLLY];
         }
     }
-    else if(key == _eventKey[Events::TRUCK][0])
+    else if(key == _eventKey[TRUCK][0])
     {
         if(_rightClickPressed)
         {
-            camera->truck(_moveSpeed[Events::TRUCK] + _moves[Events::TRUCK] * _moveSpeed[Events::TRUCK] * _movementMultiplier);
-            ++_moves[Events::TRUCK];
+            camera->truck(_moveSpeed[TRUCK] + _moves[TRUCK] * _moveSpeed[TRUCK] * _movementMultiplier);
+            ++_moves[TRUCK];
         }
     }
-    else if(key == _eventKey[Events::TRUCK][1])
+    else if(key == _eventKey[TRUCK][1])
     {
         if(_rightClickPressed)
         {
-            camera->truck(-(_moveSpeed[Events::TRUCK] + _moves[Events::TRUCK] * _moveSpeed[Events::TRUCK] * _movementMultiplier));
-            ++_moves[Events::TRUCK];
+            camera->truck(-(_moveSpeed[TRUCK] + _moves[TRUCK] * _moveSpeed[TRUCK] * _movementMultiplier));
+            ++_moves[TRUCK];
         }
     }
-    else if(key == _eventKey[Events::BOOM][0])
+    else if(key == _eventKey[BOOM][0])
     {
-        camera->boom(_moveSpeed[Events::BOOM]);
+        camera->boom(_moveSpeed[BOOM]);
     }
-    else if(key == _eventKey[Events::BOOM][1])
+    else if(key == _eventKey[BOOM][1])
     {
-        camera->crane(_moveSpeed[Events::BOOM]);
+        camera->crane(_moveSpeed[BOOM]);
     }
-    else if(key == _eventKey[Events::SCREENSHOT][0])
+    else if(key == _eventKey[SCREENSHOT][0])
     {
         this->pushScreenshotEvent(ScreenshotListener::ScreenshotEvent {ScreenshotListener::RGBA});
     }
 }
 
-void GDSA::Render::InputManager::processReleasedKeyEvent(const int key, const int mods)
+void InputManager::processReleasedKeyEvent(const int key, const int mods)
 {
-    if(key == _eventKey[Events::DOLLY][0] || key == _eventKey[Events::DOLLY][1])
+    if(key == _eventKey[DOLLY][0] || key == _eventKey[DOLLY][1])
     {
-        _moves[Events::DOLLY] = 0;
+        _moves[DOLLY] = 0;
     }
 
-    if(key == _eventKey[Events::TRUCK][0] || key == _eventKey[Events::TRUCK][0])
+    if(key == _eventKey[TRUCK][0] || key == _eventKey[TRUCK][0])
     {
-        _moves[Events::TRUCK] = 0;
+        _moves[TRUCK] = 0;
     }
 }
 
-GDSA::Render::InputManager::~InputManager()
+InputManager::~InputManager()
 {
 }
 
-void GDSA::Render::InputManager::init(GLFWwindow* window)
+void InputManager::init(GLFWwindow* window)
 {
     _window = window;
 
@@ -199,25 +201,25 @@ void GDSA::Render::InputManager::init(GLFWwindow* window)
     glfwSetScrollCallback(window, scrollCallback);
 }
 
-void GDSA::Render::InputManager::pushScreenshotEvent(const ScreenshotListener::ScreenshotEvent& event)
+void InputManager::pushScreenshotEvent(const ScreenshotListener::ScreenshotEvent& event)
 {
     _screenshotEvents.push_back(event);
 }
 
-void GDSA::Render::InputManager::suscribeResize(ResizeListener* listener)
+void InputManager::suscribeResize(ResizeListener* listener)
 {
     _resizeListeners.push_back(listener);
 }
 
-void GDSA::Render::InputManager::suscribeScreenshot(ScreenshotListener* listener)
+void InputManager::suscribeScreenshot(ScreenshotListener* listener)
 {
     _screenshotListeners.push_back(listener);
 }
 
 // This callback function will be called every time the OpenGL drawing area is resized.
-void GDSA::Render::InputManager::framebufferSizeCallback(GLFWwindow* window, int width, int height)
+void InputManager::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
-    InputManager* inputManager = InputManager::getInstance();
+    InputManager* inputManager = getInstance();
     for(ResizeListener* listener : inputManager->_resizeListeners)
     {
         listener->resizeEvent(static_cast<uint16_t>(width), static_cast<uint16_t>(height));
@@ -225,9 +227,9 @@ void GDSA::Render::InputManager::framebufferSizeCallback(GLFWwindow* window, int
 }
 
 // This callback function will be called every time a key directed to the OpenGL drawing area is pressed.
-void GDSA::Render::InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    InputManager* inputManager = InputManager::getInstance();
+    InputManager* inputManager = getInstance();
 
     if(action == GLFW_PRESS || action == GLFW_REPEAT)
     {
@@ -240,12 +242,12 @@ void GDSA::Render::InputManager::keyCallback(GLFWwindow* window, int key, int sc
 }
 
 // This callback function will be called every time a mouse button is pressed on the OpenGL drawing area.
-void GDSA::Render::InputManager::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+void InputManager::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
     if(GUI::getInstance()->isMouseActive())
         return;
 
-    InputManager* inputManager = InputManager::getInstance();
+    InputManager* inputManager = getInstance();
 
     if(button == GLFW_MOUSE_BUTTON_LEFT)
     {
@@ -260,25 +262,25 @@ void GDSA::Render::InputManager::mouseButtonCallback(GLFWwindow* window, int but
     }
 }
 
-void GDSA::Render::InputManager::mouseCursorCallback(GLFWwindow* window, double xpos, double ypos)
+void InputManager::mouseCursorCallback(GLFWwindow* window, double xpos, double ypos)
 {
-    InputManager* inputManager = InputManager::getInstance();
+    InputManager* inputManager = getInstance();
     inputManager->checkPanTilt(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 
 // This callback function will be called every time the mouse wheel is moved over the OpenGL drawing area.
-void GDSA::Render::InputManager::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+void InputManager::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    InputManager* inputManager = InputManager::getInstance();
+    InputManager* inputManager = getInstance();
     Camera*       camera       = Renderer::getInstance()->getCamera();
 
     camera->zoom(static_cast<float>(yoffset) * inputManager->_moveSpeed[ZOOM]);
 }
 
 // This callback function will be called every time the OpenGL drawing area needs to be redrawn.
-void GDSA::Render::InputManager::windowRefreshCallback(GLFWwindow* window)
+void InputManager::windowRefreshCallback(GLFWwindow* window)
 {
-    InputManager* inputManager = InputManager::getInstance();
+    InputManager* inputManager = getInstance();
     while(!inputManager->_screenshotEvents.empty())
     {
         for(ScreenshotListener* listener : inputManager->_screenshotListeners)
@@ -291,3 +293,4 @@ void GDSA::Render::InputManager::windowRefreshCallback(GLFWwindow* window)
 
     Renderer::getInstance()->render();
 }
+}    // namespace GDSA::Render

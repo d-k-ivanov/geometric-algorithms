@@ -12,19 +12,8 @@ protected:
 public:
     friend class DrawTriangle;    // avoid
 
-    /**
-     *   @brief Constructor .
-     *   @param aa vertex.
-     *   @param bb vertex.
-     *   @param cc vertex.
-     */
-    Triangle(const Vect2d& aa, const Vect2d& bb, const Vect2d& cc);
-
-    /**
-     *   @brief Copy constructor.
-     *   @param tt
-     */
-    Triangle(const Triangle& tt);
+    Triangle(const Vect2d& a, const Vect2d& b, const Vect2d& c);
+    Triangle(const Triangle& t) = default;
 
     /**
      *  @brief getter.

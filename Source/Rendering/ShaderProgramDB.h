@@ -11,8 +11,8 @@ class ShaderProgramDB : public Singleton<ShaderProgramDB>
     friend class Singleton<ShaderProgramDB>;
 
 private:
-    static std::unordered_map<uint8_t, std::string>                                    RENDERING_SHADER_PATH;
-    static std::unordered_map<uint8_t, std::unique_ptr<GDSA::Render::RenderingShader>> _renderingShader;
+    static std::unordered_map<uint8_t, std::string>                      RENDERING_SHADER_PATH;
+    static std::unordered_map<uint8_t, std::unique_ptr<RenderingShader>> _renderingShader;
 
 public:
     enum RenderingShaderId
@@ -23,10 +23,10 @@ public:
     };
 
 private:
-    ShaderProgramDB();
+    ShaderProgramDB() = default;
 
 public:
-    virtual ~ShaderProgramDB();
-    RenderingShader* getShader(RenderingShaderId shaderId);
+    virtual ~ShaderProgramDB() = default;
+    RenderingShader* getShader(RenderingShaderId shaderId) const;
 };
 }    // namespace GDSA::Render

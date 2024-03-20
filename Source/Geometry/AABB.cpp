@@ -8,16 +8,6 @@ AABB::AABB(const Vect3d& min, const Vect3d& max)
 {
 }
 
-AABB::AABB(const AABB& aabb)
-    : _min(aabb._min)
-    , _max(aabb._max)
-{
-}
-
-AABB::~AABB()
-{
-}
-
 Vect3d AABB::getSize() const
 {
     return _max.sub(_min);
@@ -62,14 +52,6 @@ AABB AABB::dot(const glm::mat4& matrix) const
     const Vect3d max = {maxMX.x, maxMX.y, maxMX.z};
 
     return {min, max};
-}
-
-AABB& AABB::operator=(const AABB& orig)
-{
-    _min = orig._min;
-    _max = orig._max;
-
-    return *this;
 }
 
 void AABB::update(AABB& aabb)

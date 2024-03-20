@@ -1,6 +1,8 @@
 #include "DrawPoint.h"
 
-GDSA::Render::DrawPoint::DrawPoint(const Geometry::Point& point)
+namespace GDSA::Render
+{
+DrawPoint::DrawPoint(const Geometry::Point& point)
     : Model3D()
     , _point(point)
 {
@@ -12,7 +14,7 @@ GDSA::Render::DrawPoint::DrawPoint(const Geometry::Point& point)
     this->buildVao(component);
 }
 
-GDSA::Render::DrawPoint::DrawPoint(const Geometry::Vect3d& point)
+DrawPoint::DrawPoint(const Geometry::Vect3d& point)
     : Model3D()
 {
     Component* component = new Component;
@@ -22,3 +24,4 @@ GDSA::Render::DrawPoint::DrawPoint(const Geometry::Vect3d& point)
 
     this->buildVao(component);
 }
+}    // namespace GDSA::Render

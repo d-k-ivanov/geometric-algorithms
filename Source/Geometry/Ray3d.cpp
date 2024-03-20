@@ -5,17 +5,8 @@
 
 namespace GDSA::Geometry
 {
-Ray3d::Ray3d(Vect3d& orig, Vect3d& dest)
+Ray3d::Ray3d(const Vect3d& orig, const Vect3d& dest)
     : Edge3d(orig, dest)
-{
-}
-
-Ray3d::Ray3d(const Ray3d& ray)
-    : Edge3d(ray)
-{
-}
-
-Ray3d::~Ray3d()
 {
 }
 

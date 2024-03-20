@@ -8,7 +8,7 @@ Point::Point()
     _y = DEFAULT_VALUE;
 }
 
-Point::Point(double x, double y, bool polar)
+Point::Point(const double x, const double y, const bool polar)
 {
     if(!polar)
     {
@@ -31,16 +31,12 @@ Point::Point(const Point& point)
     _y = point._y;
 }
 
-Point::~Point()
+bool Point::backward(Point& a, Point& b) const
 {
+    return this->classify(a, b) == BACKWARD;
 }
 
-bool Point::backward(Point& a, Point& b)
-{
-    return this->classify(a, b) == PointClassification::BACKWARD;
-}
-
-Point::PointClassification Point::classify(Point& p0, Point& p1)
+Point::PointClassification Point::classify(Point& p0, Point& p1) const
 {
     Point        p2 = *this;
     Point        a  = p1 - p0;
@@ -49,61 +45,61 @@ Point::PointClassification Point::classify(Point& p0, Point& p1)
 
     if(sa > 0.0)
     {
-        return PointClassification::LEFT;
+        return LEFT;
     }
 
     if(sa < 0.0)
     {
-        return PointClassification::RIGHT;
+        return RIGHT;
     }
 
     if((a._x * b._x < 0.0) || (a._y * b._y < 0.0))
     {
-        return PointClassification::BACKWARD;
+        return BACKWARD;
     }
 
     if(a.getModule() < b.getModule())
     {
-        return PointClassification::FORWARD;
+        return FORWARD;
     }
 
     if(p0.equal(p2))
     {
-        return PointClassification::ORIGIN;
+        return ORIGIN;
     }
 
     if(p1.equal(p2))
     {
-        return PointClassification::DEST;
+        return DEST;
     }
 
-    return PointClassification::BETWEEN;
+    return BETWEEN;
 }
 
-bool Point::colinear(Point& a, Point& b)
+bool Point::colinear(Point& a, Point& b) const
 {
     PointClassification result = classify(a, b);
-    return (result != PointClassification::LEFT) && (result != PointClassification::RIGHT);
+    return (result != LEFT) && (result != RIGHT);
 }
 
-double Point::distance(Point& p)
+double Point::distance(Point& p) const
 {
     return std::sqrt(std::pow(p._x - _x, 2) + std::pow(p._y - _y, 2));
 }
 
-bool Point::distinct(Point& p)
+bool Point::distinct(Point& p) const
 {
     return BasicGeometry::equal(_x, p._x) or BasicGeometry::equal(_y, p._y);
 }
 
-bool Point::equal(Point& p)
+bool Point::equal(Point& p) const
 {
     return BasicGeometry::equal(_x, p._x) and BasicGeometry::equal(_y, p._y);
 }
 
-bool Point::forward(Point& a, Point& b)
+bool Point::forward(Point& a, Point& b) const
 {
-    return classify(a, b) == PointClassification::FORWARD;
+    return classify(a, b) == FORWARD;
 }
 
 double Point::getX()
@@ -116,43 +112,35 @@ double Point::getY()
     return _y;
 }
 
-double Point::getAlpha()
+double Point::getAlpha() const
 {
     return std::atan2(_y, _x);
 }
 
-double Point::getModule()
+double Point::getModule() const
 {
     return std::sqrt(std::pow(_x, 2) + std::pow(_y, 2));
 }
 
-bool Point::isBetween(Point& a, Point& b)
+bool Point::isBetween(Point& a, Point& b) const
 {
-    return classify(a, b) == PointClassification::BETWEEN;
+    return classify(a, b) == BETWEEN;
 }
 
-bool Point::isValid()
+bool Point::isValid() const
 {
-    return (_x != DEFAULT_VALUE) && (_y != DEFAULT_VALUE);
+    return !BasicGeometry::equal(_x, DEFAULT_VALUE) && !BasicGeometry::equal(_y, DEFAULT_VALUE);
 }
 
-bool Point::left(Point& a, Point& b)
+bool Point::left(Point& a, Point& b) const
 {
-    return classify(a, b) == PointClassification::LEFT;
+    return classify(a, b) == LEFT;
 }
 
-bool Point::leftAbove(Point& a, Point& b)
+bool Point::leftAbove(Point& a, Point& b) const
 {
-    PointClassification result = classify(a, b);
-    return (result == PointClassification::LEFT) || (result != PointClassification::RIGHT);
-}
-
-Point& Point::operator=(const Point& point)
-{
-    _x = point._x;
-    _y = point._y;
-
-    return *this;
+    const PointClassification result = classify(a, b);
+    return (result == LEFT) || (result != RIGHT);
 }
 
 Point& Point::operator-(const Point& point)
@@ -196,12 +184,12 @@ std::istream& operator>>(std::istream& is, Point& point)
 bool Point::rightAbove(Point& a, Point& b)
 {
     PointClassification result = classify(a, b);
-    return (result == PointClassification::RIGHT) || (result != PointClassification::LEFT);
+    return (result == RIGHT) || (result != LEFT);
 }
 
 bool Point::right(Point& a, Point& b)
 {
-    return classify(a, b) == PointClassification::RIGHT;
+    return classify(a, b) == RIGHT;
 }
 
 void Point::set(double x, double y)

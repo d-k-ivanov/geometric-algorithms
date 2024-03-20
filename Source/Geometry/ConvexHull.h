@@ -21,6 +21,8 @@ public:
     ConvexHull(PointCloud3d* pointCloud);
     ConvexHull(TriangleModel* model);
 
+    ~ConvexHull() = default;
+
     const std::vector<Vect2d>&     getPoints2D() const { return _pointSequence2D; }
     const std::vector<Vect3d>&     getPoints3D() const { return _pointSequence3D; }
     const std::vector<Triangle>&   getTriangles2D() const { return _triangles2D; }

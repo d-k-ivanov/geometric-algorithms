@@ -9,20 +9,13 @@ class Line : public SegmentLine
     friend RayLine;
 
 public:
-    /**
-     *  @brief Constructor.
-     */
+    Line() = default;
     Line(const Point& a, const Point& b);
+    Line(const Line& s) = default;
 
-    /**
-     *  @brief Copy constructor.
-     */
-    Line(const Line& s);
+    ~Line() override = default;
 
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~Line();
+    Line& operator=(const Line& line);
 
     /**
      *  @brief Checks if the parameter t is valid to obtain a point for a line (it's always valid, we just need to override).
@@ -64,11 +57,6 @@ public:
      *  @brief Checks if a segment line generates an incorrect intersection.
      */
     bool impSegmentIntersection(SegmentLine& segment) override;
-
-    /**
-     *  @brief Assignment operator.
-     */
-    Line& operator=(const Line& line);
 
     /**
      *  @brief Overriding cout call.

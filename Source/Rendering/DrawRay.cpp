@@ -1,6 +1,8 @@
 #include "DrawRay.h"
 
-GDSA::Render::DrawRay::DrawRay(Geometry::RayLine& ray)
+namespace GDSA::Render
+{
+DrawRay::DrawRay(Geometry::RayLine& ray)
     : Model3D()
 {
     Component*      component = new Component;
@@ -18,7 +20,7 @@ GDSA::Render::DrawRay::DrawRay(Geometry::RayLine& ray)
     this->buildVao(component);
 }
 
-GDSA::Render::DrawRay::DrawRay(Geometry::Ray3d& ray)
+DrawRay::DrawRay(Geometry::Ray3d& ray)
     : Model3D()
 {
     Component*             component = new Component;
@@ -35,3 +37,4 @@ GDSA::Render::DrawRay::DrawRay(Geometry::Ray3d& ray)
     component->completeTopology();
     this->buildVao(component);
 }
+}    // namespace GDSA::Render

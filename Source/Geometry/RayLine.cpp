@@ -11,16 +11,17 @@ RayLine::RayLine(const Point& a, const Point& b)
 {
 }
 
-RayLine::RayLine(const RayLine& ray)
-    : SegmentLine(ray)
+RayLine& RayLine::operator=(const RayLine& rayline)
 {
+    if(this != &rayline)
+    {
+        SegmentLine::operator=(rayline);
+    }
+
+    return *this;
 }
 
-RayLine::~RayLine()
-{
-}
-
-bool RayLine::incorrectSegmentIntersection(SegmentLine& segment)
+bool RayLine::incorrectSegmentIntersection(SegmentLine& segment) const
 {
     return false;
 }
@@ -52,32 +53,22 @@ bool RayLine::intersects(SegmentLine& segment, Vect2d& intersection)
 
 double RayLine::distanceToPoint(Vect2d& vector)
 {
-    Vect2d*      d  = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
-    const double t0 = d->dot(*new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY())) / d->dot(*d);
+    auto*      d  = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
+    const auto t0 = d->dot(*new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY())) / d->dot(*d);
 
     double distance;
     if(t0 < 0 || BasicGeometry::equal(t0, 0.0))
     {
-        Vect2d* resultV = new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY());
-        distance        = resultV->getModule();
+        const auto* resultV = new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY());
+        distance            = resultV->getModule();
     }
     else
     {
-        Vect2d* resultV = new Vect2d(vector.getX() - (this->getA().getX() + d->scalarMult(t0).getX()), vector.getY() - (this->getA().getY() + d->scalarMult(t0).getY()));
-        distance        = resultV->getModule();
+        const auto* resultV = new Vect2d(vector.getX() - (this->getA().getX() + d->ScalarMult(t0).getX()), vector.getY() - (this->getA().getY() + d->ScalarMult(t0).getY()));
+        distance            = resultV->getModule();
     }
 
     return distance;
-}
-
-RayLine& RayLine::operator=(const RayLine& rayline)
-{
-    if(this != &rayline)
-    {
-        SegmentLine::operator=(rayline);
-    }
-
-    return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const RayLine& ray)

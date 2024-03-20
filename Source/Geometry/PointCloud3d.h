@@ -24,40 +24,16 @@ protected:
     void updateMaxMin(size_t index);
 
 public:
-    /**
-     *  @brief Default constructor.
-     */
     PointCloud3d();
-
-    /**
-     *  @brief Loads the point cloud from a file.
-     */
     PointCloud3d(const std::string& filename);
-
-    /**
-     *  @brief Construct the point cloud from a vector of points
-     */
     PointCloud3d(const std::vector<Vect3d>& points);
-
-    /**
-     *  @brief Constructor.
-     */
-    PointCloud3d(int size, double max_x, double max_y, double max_z);
-
-    /**
-     *  @brief Alternative constructor with an uniform sphere distribution.
-     */
+    PointCloud3d(int size, double maxX, double maxY, double maxZ);
     PointCloud3d(int size, double radius);
-
-    /**
-     *  @brief Copy constructor.
-     */
     PointCloud3d(const PointCloud3d& pointCloud);
 
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~PointCloud3d();
+    virtual ~PointCloud3d() = default;
+
+    PointCloud3d& operator=(const PointCloud3d& pointCloud);
 
     /**
      *  @brief Adds a new point to the cloud.
@@ -88,11 +64,6 @@ public:
      *  @brief Returns all the cloud points.
      */
     std::vector<Vect3d> getPoints();
-
-    /**
-     *  @brief Assigment operator.
-     */
-    PointCloud3d& operator=(const PointCloud3d& pointCloud);
 
     /**
      *  @brief Saves the cloud points in a file.

@@ -5,20 +5,22 @@
 #include <iostream>
 #include <stdexcept>
 
-GDSA::Render::Window::Window()
+namespace GDSA::Render
+{
+Window::Window()
     : _window(nullptr)
 {
     _renderer = Renderer::getInstance();
 }
 
-void GDSA::Render::Window::releaseResources()
+void Window::releaseResources()
 {
     glfwDestroyWindow(_window);    // We close and destroy the application window.
     _window = nullptr;
     glfwTerminate();    // We freed up the resources that GLFW was occupying.
 }
 
-void GDSA::Render::Window::init(const std::string& title, const uint16_t width, const uint16_t height)
+void Window::init(const std::string& title, const uint16_t width, const uint16_t height)
 {
     // Initialize GLFW. It is a process that only needs to be done once in the application
     if(glfwInit() != GLFW_TRUE)
@@ -66,7 +68,7 @@ void GDSA::Render::Window::init(const std::string& title, const uint16_t width, 
     GUI::getInstance()->initialize(_window, 2);
 }
 
-void GDSA::Render::Window::loop()
+void Window::loop()
 {
     while(!glfwWindowShouldClose(_window))
     {
@@ -79,3 +81,4 @@ void GDSA::Render::Window::loop()
 
     this->releaseResources();
 }
+}    // namespace GDSA::Render

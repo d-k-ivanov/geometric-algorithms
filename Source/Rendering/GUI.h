@@ -49,17 +49,17 @@ protected:
     ImGuizmo::MODE      _currentGizmoMode;
 
 protected:
-    void editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode);
-    void loadFonts();
-    void loadImGUIStyle();
+    void editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode) const;
+    void loadFonts() const;
+    void loadImGUIStyle() const;
     void processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent) const;
-    void renderGuizmo(Model3D::Component* component, SceneContent* sceneContent);
-    void showCameraMenu(SceneContent* sceneContent);
+    void renderGuizmo(Model3D::Component* component, const SceneContent* sceneContent);
+    void showCameraMenu(const SceneContent* sceneContent) const;
     void showFileDialog(SceneContent* sceneContent);
-    void showLightMenu(SceneContent* sceneContent);
-    void showModelMenu(SceneContent* sceneContent);
-    void showRenderingMenu(SceneContent* sceneContent);
-    void showScreenshotMenu(SceneContent* sceneContent);
+    void showLightMenu(SceneContent* sceneContent) const;
+    void showModelMenu(const SceneContent* sceneContent);
+    void showRenderingMenu(SceneContent* sceneContent) const;
+    void showScreenshotMenu(SceneContent* sceneContent) const;
 
 protected:
     GUI();
@@ -67,7 +67,7 @@ protected:
 public:
     virtual ~GUI();
 
-    void initialize(GLFWwindow* window, const int openGLMinorVersion);
+    void initialize(GLFWwindow* window, const int openGLMinorVersion) const;
     void render(SceneContent* sceneContent);
 
     uint16_t getFrameRate() { return static_cast<uint16_t>(ImGui::GetIO().Framerate); }

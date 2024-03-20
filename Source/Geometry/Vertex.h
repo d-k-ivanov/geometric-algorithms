@@ -18,25 +18,13 @@ protected:
     int      _position;    //!< Position of the vertex in the polygon
 
 public:
-    /**
-     *  @brief Constructor of a vertex no associated to any polygon (position = -1).
-     */
     Vertex();
-
-    /**
-     *  @brief Constructor of a vertex no associated to any polygon (position = -1). The point is valid tho.
-     */
     Vertex(const Point& point);
-
-    /**
-     *  @brief Constructor of a valid point associated to a polygon.
-     */
     Vertex(const Point& point, Polygon* polygon, int pos = -1);
 
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~Vertex();
+    ~Vertex() override = default;
+
+    Vertex& operator=(const Vertex& vertex);
 
     /**
      *  @brief Determines if the vertex is in a concave position of the polygon.
@@ -51,32 +39,27 @@ public:
     /**
      *  @brief Returns the point value.
      */
-    Point getPoint() { return Point(_x, _y); }
+    Point getPoint() const { return {_x, _y}; }
 
     /**
      *  @brief Returns the polygon associated to this vertex.
      */
-    Polygon* getPolygon() { return _polygon; }
+    Polygon* getPolygon() const { return _polygon; }
 
     /**
      *  @brief Returns the position of the current vertex in the polygon, if any.
      */
-    int getPositionInPolygon() { return _position; }
+    int getPositionInPolygon() const { return _position; }
 
     /**
      *  @brief Next vertex in counterclockwise order.
      */
-    Vertex next();
+    Vertex next() const;
 
     /**
      *  @brief Next edge in counterclockwise order.
      */
     SegmentLine nextEdge();
-
-    /**
-     *  @brief Assignment operator.
-     */
-    Vertex& operator=(const Vertex& vertex);
 
     /**
      *  @brief Overriding cout call.
@@ -86,7 +69,7 @@ public:
     /**
      *  @brief Next vertex in clockwise order.
      */
-    Vertex previous();
+    Vertex previous() const;
 
     /**
      *  @brief Next edge in clockwise order.

@@ -8,14 +8,19 @@
 
 namespace GDSA::Geometry
 {
-Line3d::Line3d(Vect3d& orig, Vect3d& dest)
+Line3d::Line3d(const Vect3d& orig, const Vect3d& dest)
     : Edge3d(orig, dest)
 {
 }
 
-bool Line3d::isTvalid(double t)
+Line3d& Line3d::operator=(const Line3d& line)
 {
-    return true;
+    if(this != &line)
+    {
+        Edge3d::operator=(line);
+    }
+
+    return *this;
 }
 
 // Distance between two lines.
@@ -105,16 +110,6 @@ bool Line3d::isPerpendicular(Line3d& line)
         return true;
     }
     return false;
-}
-
-Line3d& Line3d::operator=(const Line3d& line)
-{
-    if(this != &line)
-    {
-        Edge3d::operator=(line);
-    }
-
-    return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const Line3d& line)

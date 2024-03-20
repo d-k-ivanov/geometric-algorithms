@@ -38,11 +38,11 @@ protected:
 
 protected:
     virtual GLuint compileShader(const char* filename, const GLenum shaderType);
-    bool           fileExists(const std::string& fileName);
-    ShaderTypes    fromOpenGLToShaderTypes(const GLenum shaderType);
+    bool           fileExists(const std::string& fileName) const;
+    ShaderTypes    fromOpenGLToShaderTypes(const GLenum shaderType) const;
     bool           includeLibraries(std::string& shaderContent);
     virtual bool   loadFileContent(const std::string& filename, std::string& content);
-    bool           showErrorMessage(const std::string& variableName);
+    bool           showErrorMessage(const std::string& variableName) const;
 
 public:
     ShaderProgram();
@@ -62,6 +62,6 @@ public:
     bool setUniform(const std::string& name, const glm::vec3& value);
     bool setUniform(const std::string& name, const glm::vec4& value);
 
-    bool use();
+    bool use() const;
 };
 }    // namespace GDSA::Render

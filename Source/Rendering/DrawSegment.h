@@ -13,6 +13,6 @@ public:
     DrawSegment(Geometry::SegmentLine& segment);
     DrawSegment(Geometry::Segment3d& segment);
     DrawSegment(const DrawSegment& drawSegment) = delete;
-    ~DrawSegment() override { }
+    ~DrawSegment() override                     = default;
 };
 }    // namespace GDSA::Render

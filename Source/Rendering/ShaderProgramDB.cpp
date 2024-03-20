@@ -2,25 +2,19 @@
 
 #include "Utils/FilesystemUtilities.h"
 
-std::unordered_map<uint8_t, std::string> GDSA::Render::ShaderProgramDB::RENDERING_SHADER_PATH {
-    {RenderingShaderId::LINE_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/line"},
-    {RenderingShaderId::POINT_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/point"},
-    {RenderingShaderId::TRIANGLE_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/triangle"},
+namespace GDSA::Render
+{
+std::unordered_map<uint8_t, std::string> ShaderProgramDB::RENDERING_SHADER_PATH {
+    {LINE_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/line"},
+    {POINT_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/point"},
+    {TRIANGLE_RENDERING, Utils::ThisExecutableLocation() + "/Resources/Shaders/triangle"},
 };
 
-std::unordered_map<uint8_t, std::unique_ptr<GDSA::Render::RenderingShader>> GDSA::Render::ShaderProgramDB::_renderingShader;
+std::unordered_map<uint8_t, std::unique_ptr<RenderingShader>> ShaderProgramDB::_renderingShader;
 
-GDSA::Render::ShaderProgramDB::ShaderProgramDB()
+RenderingShader* ShaderProgramDB::getShader(const RenderingShaderId shaderId) const
 {
-}
-
-GDSA::Render::ShaderProgramDB::~ShaderProgramDB()
-{
-}
-
-GDSA::Render::RenderingShader* GDSA::Render::ShaderProgramDB::getShader(const RenderingShaderId shaderId)
-{
-    uint8_t shaderId8 = static_cast<uint8_t>(shaderId);
+    const uint8_t shaderId8 = static_cast<uint8_t>(shaderId);
 
     if(!_renderingShader[shaderId8].get())
     {
@@ -32,3 +26,4 @@ GDSA::Render::RenderingShader* GDSA::Render::ShaderProgramDB::getShader(const Re
 
     return _renderingShader[shaderId8].get();
 }
+}    // namespace GDSA::Render

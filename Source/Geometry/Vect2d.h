@@ -7,23 +7,14 @@ namespace GDSA::Geometry
 class Vect2d : public Point
 {
 public:
-    Vect2d();
+    Vect2d() = default;
     Vect2d(double x, double y);
-
-    /**
-     *  @brief Copy constructor.
-     */
     Vect2d(const Vect2d& vector);
-
-    /**
-     *  @brief Copy constructor.
-     */
     Vect2d(const Point& point);
 
-    /**
-     *  @brief Destructor.
-     */
-    ~Vect2d() override;
+    ~Vect2d() override = default;
+
+    Vect2d& operator=(const Vect2d& vector) = default;
 
     /**
      *  @return X coordinate.
@@ -38,12 +29,7 @@ public:
     /**
      *  @brief Returns a . b (scalar product).
      */
-    double dot(Vect2d& b);
-
-    /**
-     *  @brief Assignment operator.
-     */
-    Vect2d& operator=(const Vect2d& vector);
+    double dot(const Vect2d& b) const;
 
     /**
      *  @brief Returns this + b (sum of vectors).
@@ -59,6 +45,6 @@ public:
     /**
      *  @brief Returns t . a (vector product by a scalar).
      */
-    Vect2d scalarMult(double t);
+    Vect2d ScalarMult(double t);
 };
 }

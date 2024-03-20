@@ -13,6 +13,6 @@ public:
     DrawPointCloud(Geometry::PointCloud& pointCloud);
     DrawPointCloud(Geometry::PointCloud3d& pointCloud);
     DrawPointCloud(const DrawPointCloud& drawPointCloud) = delete;
-    ~DrawPointCloud() override;
+    ~DrawPointCloud() override                           = default;
 };
 }    // namespace GDSA::Render

@@ -13,30 +13,14 @@ protected:
     std::vector<Point> _points;
 
 public:
-    /**
-     *  @brief Default constructor. Creates an empty point cloud.
-     */
-    PointCloud();
-
-    /**
-     *  @brief Constructor of a point cloud of random form giving the total number of points and the maximum range of those points ((-max_x, max_x), or (-max_y, max_y)).
-     */
-    PointCloud(int size, double max_x, double max_y);
-
-    /**
-     *  @brief Construct the point cloud from a vector of points
-     */
+    PointCloud() = default;
+    PointCloud(int size, double maxX, double maxY);
     PointCloud(const std::vector<Point>& points);
-
-    /**
-     *  @brief Constructor of a point cloud from the coordinates of points stored in file.
-     */
     PointCloud(const std::string& filename);
 
-    /**
-     *  @brief Destructor.
-     */
-    ~PointCloud();
+    ~PointCloud() = default;
+
+    PointCloud& operator=(const PointCloud& pointCloud);
 
     /**
      *  @brief Adds a point to the point cloud.
@@ -54,11 +38,6 @@ public:
     void deletePoint(int index);
 
     /**
-     *  @brief Returns the points that defines the edges of the point cloud (min x, max x, min y and max y).
-     */
-    void getEdges(Point& minPoint_x, Point& minPoint_y, Point& maxPoint_x, Point& maxPoint_y);
-
-    /**
      *  @brief Returns the point in an specific index.
      */
     Point getPoint(size_t position);
@@ -69,14 +48,9 @@ public:
     std::vector<Point> getPoints() { return _points; }
 
     /**
-     *  @brief Assignment operator.
-     */
-    PointCloud& operator=(const PointCloud& pointCloud);
-
-    /**
      *  @brief Saves the cloud of points in file with the same format used by the constructor.
      */
-    void save(const std::string& filename);
+    void save(const std::string& filename) const;
 
     /**
      *  @brief Returns the size of the point cloud.

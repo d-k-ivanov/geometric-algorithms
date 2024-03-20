@@ -1,6 +1,8 @@
 #include "DrawTriangle.h"
 
-GDSA::Render::DrawTriangle::DrawTriangle(Geometry::Triangle& triangle)
+namespace GDSA::Render
+{
+DrawTriangle::DrawTriangle(Geometry::Triangle& triangle)
     : Model3D()
 {
     Component* component = new Component;
@@ -17,7 +19,7 @@ GDSA::Render::DrawTriangle::DrawTriangle(Geometry::Triangle& triangle)
     this->buildVao(component);
 }
 
-GDSA::Render::DrawTriangle::DrawTriangle(Geometry::Triangle3d& triangle)
+DrawTriangle::DrawTriangle(Geometry::Triangle3d& triangle)
     : Model3D()
 {
     Component* component = new Component;
@@ -36,3 +38,4 @@ GDSA::Render::DrawTriangle::DrawTriangle(Geometry::Triangle3d& triangle)
 
     this->buildVao(component);
 }
+}    // namespace GDSA::Render

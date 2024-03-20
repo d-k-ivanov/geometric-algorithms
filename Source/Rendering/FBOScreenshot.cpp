@@ -2,7 +2,9 @@
 
 #include <thread>
 
-GDSA::Render::FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t height)
+namespace GDSA::Render
+{
+FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t height)
     : FBO(width, height)
 {
     glGenFramebuffers(1, &_id);    // Support for multisampled framebuffer
@@ -47,19 +49,19 @@ GDSA::Render::FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);    // Default framebuffer
 }
 
-GDSA::Render::FBOScreenshot::~FBOScreenshot()
+FBOScreenshot::~FBOScreenshot()
 {
     glDeleteTextures(1, &_colorBufferID);
     glDeleteRenderbuffers(1, &_mColorBufferID);
     glDeleteRenderbuffers(1, &_mDepthBufferID);
 }
 
-void GDSA::Render::FBOScreenshot::bindFBO()
+void FBOScreenshot::bindFBO()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _multisampledFBO);    // Multisampled! Normal FBO is only used as support for this one
 }
 
-GDSA::Render::Image* GDSA::Render::FBOScreenshot::getImage() const
+Image* FBOScreenshot::getImage() const
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _multisampledFBO);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _id);
@@ -77,7 +79,7 @@ GDSA::Render::Image* GDSA::Render::FBOScreenshot::getImage() const
     return image;
 }
 
-void GDSA::Render::FBOScreenshot::modifySize(const uint16_t width, const uint16_t height)
+void FBOScreenshot::modifySize(const uint16_t width, const uint16_t height)
 {
     FBO::modifySize(width, height);
 
@@ -99,7 +101,7 @@ void GDSA::Render::FBOScreenshot::modifySize(const uint16_t width, const uint16_
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void GDSA::Render::FBOScreenshot::saveImage(const std::string& filename)
+void FBOScreenshot::saveImage(const std::string& filename)
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _multisampledFBO);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _id);
@@ -118,3 +120,4 @@ void GDSA::Render::FBOScreenshot::saveImage(const std::string& filename)
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+}    // namespace GDSA::Render

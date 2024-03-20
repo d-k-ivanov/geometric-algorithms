@@ -7,19 +7,9 @@
 
 namespace GDSA::Geometry
 {
-SegmentLine::SegmentLine()
-{
-}
-
 SegmentLine::SegmentLine(const Point& a, const Point& b)
     : _orig(a)
     , _dest(b)
-{
-}
-
-SegmentLine::SegmentLine(const SegmentLine& segment)
-    : _orig(segment._orig)
-    , _dest(segment._dest)
 {
 }
 
@@ -27,20 +17,6 @@ SegmentLine::SegmentLine(double ax, double ay, double bx, double by)
     : _orig(ax, ay)
     , _dest(bx, by)
 {
-}
-
-SegmentLine::~SegmentLine()
-{
-}
-
-Point SegmentLine::getA()
-{
-    return _orig;
-}
-
-Point SegmentLine::getB()
-{
-    return _dest;
 }
 
 SegmentLine& SegmentLine::operator=(const SegmentLine& segment)
@@ -52,6 +28,16 @@ SegmentLine& SegmentLine::operator=(const SegmentLine& segment)
     }
 
     return *this;
+}
+
+Point SegmentLine::getA()
+{
+    return _orig;
+}
+
+Point SegmentLine::getB()
+{
+    return _dest;
 }
 
 bool SegmentLine::segmentIntersection(SegmentLine& l)
@@ -98,9 +84,9 @@ void SegmentLine::setA(Point& p)
 
 double SegmentLine::getC()
 {
-    if(slope() == INFINITY)
+    if(BasicGeometry::equal(slope(), HUGE_VAL))
     {
-        return INFINITY;
+        return HUGE_VAL;
     }
     return _orig.getY() - slope() * _orig.getX();
 }
@@ -175,35 +161,35 @@ bool SegmentLine::intersects(SegmentLine& segment, Vect2d& res)
 
 double SegmentLine::distPointSegment(Vect2d& vector)
 {
-    Vect2d*      d  = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
-    const double t0 = d->dot(*new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY())) / d->dot(*d);
-    double       distance;
+    auto*      d  = new Vect2d((this->getB() - this->getA()).getX(), (this->getB() - this->getA()).getY());
+    const auto t0 = d->dot(*new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY())) / d->dot(*d);
+    double     distance;
 
     if(t0 < 0 || BasicGeometry::equal(t0, 0.0))    // A - P
     {
-        Vect2d* resultV = new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY());
-        distance        = resultV->getModule();
+        const auto* resultV = new Vect2d(vector.getX() - this->getA().getX(), vector.getY() - this->getA().getY());
+        distance            = resultV->getModule();
     }
     else if(t0 > 1 || BasicGeometry::equal(t0, 1.0))    // A - (P + d)
     {
-        Vect2d* resultV = new Vect2d(vector.getX() - this->getB().getX(), vector.getY() - this->getB().getY());
-        distance        = resultV->getModule();
+        const auto* resultV = new Vect2d(vector.getX() - this->getB().getX(), vector.getY() - this->getB().getY());
+        distance            = resultV->getModule();
     }
     else    // A - (P + t * d)
     {
-        Vect2d* resultV = new Vect2d(vector.getX() - (this->getA().getX() + d->scalarMult(t0).getX()), vector.getY() - (this->getA().getY() + d->scalarMult(t0).getY()));
-        distance        = resultV->getModule();
+        const auto* resultV = new Vect2d(vector.getX() - (this->getA().getX() + d->ScalarMult(t0).getX()), vector.getY() - (this->getA().getY() + d->ScalarMult(t0).getY()));
+        distance            = resultV->getModule();
     }
 
     return distance;
 }
 
-double SegmentLine::getDistanceT0(Vect2d& point)
+double SegmentLine::getDistanceT0(Vect2d& point) const
 {
     return 0.0f;
 }
 
-bool SegmentLine::equal(SegmentLine& segment)
+bool SegmentLine::equal(SegmentLine& segment) const
 {
     return (_orig.equal(segment._orig) && _dest.equal(segment._dest)) || (_orig.equal(segment._dest) && _dest.equal(segment._orig));
 }
@@ -233,12 +219,7 @@ bool SegmentLine::isVertical()
     return false;
 }
 
-bool SegmentLine::isTvalid(double t)
-{
-    return t >= 0 && t <= 1;
-}
-
-bool SegmentLine::left(Point& p)
+bool SegmentLine::left(const Point& p)
 {
     return p.left(_orig, _dest);
 }
@@ -257,7 +238,7 @@ double SegmentLine::slope()
 
     if(this->isVertical())
     {
-        return INFINITY;
+        return HUGE_VAL;
     }
 
     return (_dest.getY() - _orig.getY()) / (_dest.getX() - _orig.getX());

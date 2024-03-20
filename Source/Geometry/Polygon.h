@@ -21,30 +21,14 @@ protected:
     bool intersectsWithAnySegment(Vertex& vertex);
 
 public:
-    /**
-     *  @brief Default empty constructor.
-     */
-    Polygon();
-
-    /**
-     *  @brief Constructor.
-     */
+    Polygon() = default;
     Polygon(std::vector<Vertex>& vertices);
-
-    /**
-     *  @brief Copy constructor.
-     */
     Polygon(const Polygon& Polygon);
-
-    /**
-     *  @brief Constructor of a Polygon from a file.
-     */
     Polygon(const std::string& filename);
 
-    /**
-     *  @brief Destructor.
-     */
-    ~Polygon();
+    ~Polygon() = default;
+
+    Polygon& operator=(const Polygon& Polygon);
 
     /**
      * @brief Returns the vertices of the Polygon.
@@ -74,7 +58,7 @@ public:
     /**
      *  @brief Returns the number of vertices of the Polygon.
      */
-    size_t getNumVertices();
+    size_t getNumVertices() const;
 
     /**
      *  @brief Returns the vertex at an index.
@@ -116,11 +100,6 @@ public:
      *  @brief Returns the vertex previous to the one in the position index.
      */
     Vertex previous(int index);
-
-    /**
-     *  @brief Assignment operator.
-     */
-    Polygon& operator=(const Polygon& Polygon);
 
     /**
      *  @brief Assuming that this is a convex Polygon, this method indicates if the point p is inside the Polygon.

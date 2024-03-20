@@ -46,23 +46,23 @@ private:
     std::vector<GLuint> _ibos;
 
 private:
-    void defineInterleavedVBO(GLuint vboId);
-    void defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint elementType, uint8_t slot);
+    void defineInterleavedVBO(GLuint vboId) const;
+    void defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint elementType, uint8_t slot) const;
 
 public:
     VAO(bool interleaved = true);
     virtual ~VAO();
 
-    void drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices);
-    void drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices, GLuint numInstances);
+    void drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices) const;
+    void drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices, GLuint numInstances) const;
 
     template <typename T, typename Z>
     int defineMultiInstancingVBO(VBO_slots vbo, const T dataExample, const Z dataPrimitive, const GLuint openGLBasicType);
 
     template <typename T>
     void setVBOData(VBO_slots vbo, T* geometryData, GLuint size, GLuint changeFrequency = GL_STATIC_DRAW);
-    void setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency = GL_STATIC_DRAW);
-    void setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices, GLuint changeFrequency = GL_STATIC_DRAW);
+    void setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency = GL_STATIC_DRAW) const;
+    void setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices, GLuint changeFrequency = GL_STATIC_DRAW) const;
 };
 
 template <typename T, typename Z>

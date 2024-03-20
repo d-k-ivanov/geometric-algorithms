@@ -31,60 +31,48 @@ public:
 public:
     double _x, _y;
 
-    /**
-     *  @brief Default constructor. Coordinates are initialized with an invalid value.
-     */
     Point();
-
-    /**
-     *  @brief Constructor. If polar, x is an angle (radians) and y the vector module.
-     */
     Point(double x, double y, bool polar = false);
-
-    /**
-     *  @brief Copy constructor.
-     */
     Point(const Point& point);
 
-    /**
-     *  @brief Destructor.
-     */
-    virtual ~Point();
+    virtual ~Point() = default;
+
+    Point& operator=(const Point& point) = default;
 
     /**
      *  @brief Checks the position of the point respect to other two points (a, b).
      */
-    bool backward(Point& a, Point& b);
+    bool backward(Point& a, Point& b) const;
 
     /**
      *  @brief Determines the relative position with respect to other two (which can form a segment).
      */
-    PointClassification classify(Point& p0, Point& p1);
+    PointClassification classify(Point& p0, Point& p1) const;
 
     /**
      *  @brief Checks if this point lies on the same line described by a and b.
      */
-    bool colinear(Point& a, Point& b);
+    bool colinear(Point& a, Point& b) const;
 
     /**
      *  @brief Distance between this point and another one.
      */
-    double distance(Point& p);
+    double distance(Point& p) const;
 
     /**
      *  @brief Checks if the coordinates of this point are different from the coordinates of a point p.
      */
-    bool distinct(Point& p);
+    bool distinct(Point& p) const;
 
     /**
      *  @brief Checks if the coordinates of this point are equal from the coordinates of a point p.
      */
-    bool equal(Point& p);
+    bool equal(Point& p) const;
 
     /**
      *  @brief Checks the position of the point respect to other two points (a, b).
      */
-    bool forward(Point& a, Point& b);
+    bool forward(Point& a, Point& b) const;
 
     /**
      *  @return X coordinate.
@@ -99,37 +87,32 @@ public:
     /**
      *  @brief Angle of this point interpreted as a polar coordinate (radians).
      */
-    double getAlpha();
+    double getAlpha() const;
 
     /**
      *  @brief Module of a 2D structure. This method is useful for child classes.
      */
-    double getModule();
+    double getModule() const;
 
     /**
      *  @brief Checks the position of the point respect to other two points (a, b).
      */
-    bool isBetween(Point& a, Point& b);
+    bool isBetween(Point& a, Point& b) const;
 
     /**
      *  @brief Checks the value of the coordinates. If the values are the DEFAULT, then the point is not valid.
      */
-    bool isValid();
+    bool isValid() const;
 
     /**
      *  @brief Checks the position of the point respect to other two points (a, b).
      */
-    bool left(Point& a, Point& b);
+    bool left(Point& a, Point& b) const;
 
     /**
      *  @brief Checks the position of the point respect to other two points (a, b).
      */
-    bool leftAbove(Point& a, Point& b);
-
-    /**
-     *  @brief Assignment operator (override).
-     */
-    Point& operator=(const Point& point);
+    bool leftAbove(Point& a, Point& b) const;
 
     /**
      *  @brief Substraction operator (override).
