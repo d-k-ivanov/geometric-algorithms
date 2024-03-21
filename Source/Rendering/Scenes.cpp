@@ -91,9 +91,6 @@ void Scenes::p0(SceneContent& sc)
 
 void Scenes::p0a(SceneContent& sc)
 {
-    constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
-    constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
-
     {
         Geometry::Vect3d      a {0.5f, -0.5f, 0.0f};
         Geometry::Vect3d      b {0.5f, -0.5f, 0.0f};
@@ -146,17 +143,14 @@ void Scenes::p0a(SceneContent& sc)
 
 void Scenes::p0b(SceneContent& sc)
 {
-    constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
-    constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
-
-    const Geometry::Point center       = {0, 0};
-    Geometry::Circle*     c            = new Geometry::Circle(center, 2.0);
-    const auto            circleToDraw = new DrawCircle(*c, 100, /*draw triangular segments*/ true);
-    circleToDraw->setPointColor(Utils::Random::getUniformRandomColor())->setPointSize(7.0f);
-    circleToDraw->setLineColor(Utils::Random::getUniformRandomColor())->setLineWidth(5.0);
-    circleToDraw->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f));
-    circleToDraw->overrideModelName();
-    sc.addNewModel(circleToDraw);
+    const auto  center     = Geometry::Point(0, 0);
+    const auto* circle     = new Geometry::Circle(center, 2.0);
+    const auto  drawCircle = new DrawCircle(*circle, 100, /*draw triangular segments*/ true);
+    drawCircle->setPointColor(Utils::Random::getUniformRandomColor())->setPointSize(7.0f);
+    drawCircle->setLineColor(Utils::Random::getUniformRandomColor())->setLineWidth(5.0);
+    drawCircle->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f));
+    drawCircle->overrideModelName();
+    sc.addNewModel(drawCircle);
 }
 
 void Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int pointsPerCloud, float scaleFactor, std::vector<Geometry::Point>& randomPointsFromCloud, std::vector<Geometry::Point>& extremumPointInCloud)
@@ -281,8 +275,8 @@ void Scenes::p1PointClouds(SceneContent& sc, const int numPointClouds, int point
 // blue segment, red line, and magenta ray
 void Scenes::p1Lines(SceneContent& sc, const std::vector<Geometry::Point>& randomPointsFromCloud)
 {
-    constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
-    constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
+    // constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
+    // constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
 
     {
         // const Geometry::Point  a(Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x), Random::getUniformRandom(minBoundaries.y, maxBoundaries.y));
@@ -331,8 +325,6 @@ void Scenes::p1Lines(SceneContent& sc, const std::vector<Geometry::Point>& rando
 // Convex polygon from the point cloud extremum points
 void Scenes::p1Polygon(SceneContent& sc, const std::vector<Geometry::Point>& extremumPointInCloud)
 {
-    constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
-    constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
     if(extremumPointInCloud.size() >= 4)
     {
         auto* polygon = new Geometry::Polygon;
@@ -389,9 +381,6 @@ void Scenes::p1Bezier(SceneContent& sc, bool randomPoints, const size_t pointNum
 // P1-B: Two segments, Two Lines, Two Rays, and a Polygon
 void Scenes::p1Intersections(SceneContent& sc)
 {
-    constexpr glm::vec2 minBoundaries = glm::vec2(-3.0, -1.5);
-    constexpr glm::vec2 maxBoundaries = glm::vec2(-minBoundaries);
-
     auto* s1 = new Geometry::SegmentLine({0, 2}, {1.5, 0.5});
     sc.addNewModel((new DrawSegment(*s1))->setLineColor(Utils::Random::getUniformRandomColor())->overrideModelName()->setLineWidth(3.0f));
 
@@ -714,7 +703,7 @@ void Scenes::p2b(SceneContent& sc)
     // const Geometry::Vect3d uRand(1, 1, 1);
     // const Geometry::Vect3d vRand(-1, 1, -1);
 
-    const auto randomColour = Utils::Random::getUniformRandomColor();
+    // const auto randomColour = Utils::Random::getUniformRandomColor();
     // sc.addNewModel((new DrawPoint(pRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
     // sc.addNewModel((new DrawPoint(uRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
     // sc.addNewModel((new DrawPoint(vRand))->setPointColor(randomColour)->overrideModelName()->setPointSize(10.0f));
@@ -762,9 +751,6 @@ void Scenes::p2b(SceneContent& sc)
 
 void Scenes::p2c(SceneContent& sc)
 {
-    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
-    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
-
     auto*      triangleModel = new Geometry::TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto model(new DrawMesh(*triangleModel));
     model->setModelMatrix(translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
@@ -823,9 +809,6 @@ void Scenes::p2c(SceneContent& sc)
 
 void Scenes::p3(SceneContent& sc)
 {
-    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
-    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
-
     auto*      triangleModel1 = new Geometry::TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto model1(new DrawMesh(*triangleModel1));
     model1->setModelMatrix(translate(model1->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
@@ -874,23 +857,20 @@ void Scenes::p3(SceneContent& sc)
 // Practice 4a: 2D Convex Hull
 void Scenes::p4a(SceneContent& sc, bool drawTriangles)
 {
-    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
-    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
-
-    constexpr int   pointsPerCloud = 100;
-    constexpr float scale          = 0.5f;
-    glm::vec3       center         = glm::vec3(0, 0, 0);
+    constexpr int       pointsPerCloud = 100;
+    constexpr float     scale          = 0.5f;
+    constexpr glm::vec3 center         = glm::vec3(0, 0, 0);
 
     auto* pointCloud2D = new Geometry::PointCloud;
     for(int idx = 0; idx < pointsPerCloud; ++idx)
     {
-        glm::vec3 rand = Utils::Random::getUniformRandomInUnitSphere() / scale + center;
+        const glm::vec3 rand = Utils::Random::getUniformRandomInUnitSphere() / scale + center;
         pointCloud2D->addPoint(Geometry::Point(rand.x, rand.y));
     }
     sc.addNewModel((new DrawPointCloud(*pointCloud2D))->setPointColor(Utils::Random::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(10.0f));
 
     const Geometry::ConvexHull convexHull2D(pointCloud2D);
-    auto                       randColor1 = Utils::Random::getUniformRandomColorEuclideanDistance();
+    const auto                 randColor1 = Utils::Random::getUniformRandomColorEuclideanDistance();
     for(size_t i = 0; i < convexHull2D.getPoints2D().size(); i++)
     {
         auto* segment = new Geometry::SegmentLine(convexHull2D.getPoints2D()[i], convexHull2D.getPoints2D()[(i + 1) % convexHull2D.getPoints2D().size()]);
@@ -911,12 +891,9 @@ void Scenes::p4a(SceneContent& sc, bool drawTriangles)
 // Practice 4b: 3D Convex Hull
 void Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
 {
-    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
-    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
-
-    constexpr int   pointsPerCloud = 100;
-    constexpr float scale          = 0.5f;
-    glm::vec3       center         = glm::vec3(0, 0, 0);
+    constexpr int       pointsPerCloud = 100;
+    constexpr float     scale          = 0.5f;
+    constexpr glm::vec3 center         = glm::vec3(0, 0, 0);
 
     auto* pointCloud3D = new Geometry::PointCloud3d;
 
@@ -936,7 +913,7 @@ void Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
     // sc.addNewModel((new DrawPointCloud(*pointCloud3D))->setPointColor(Utils::Random::getUniformRandomColorEuclideanDistance())->overrideModelName()->setPointSize(10.0f));
 
     const Geometry::ConvexHull convexHull3D(pointCloud3D);
-    auto                       color = Utils::Random::getUniformRandomColorEuclideanDistance();
+    // auto color = Utils::Random::getUniformRandomColorEuclideanDistance();
     // for(size_t i = 0; i < convexHull3D.getPoints3D().size(); i++)
     // {
     //     auto orig = convexHull3D.getPoints3D()[i];
@@ -961,9 +938,6 @@ void Scenes::p4b(SceneContent& sc, bool randomOnSphereSurface)
 
 void Scenes::p4c(SceneContent& sc)
 {
-    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
-    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
-
     auto*      triangleModel = new Geometry::TriangleModel(Utils::ThisExecutableLocation() + "/Resources/Models/Ajax.obj");
     const auto model(new DrawMesh(*triangleModel));
     model->setModelMatrix(translate(model->getModelMatrix(), glm::vec3(0.0f, 0.0f, 0.0f)));
@@ -972,8 +946,9 @@ void Scenes::p4c(SceneContent& sc)
 
     // auto cloud = triangleModel->getCloud();
     // ConvexHull convexHull3D(&cloud);
-    Geometry::ConvexHull convexHull3D(triangleModel);
-    auto                 color = Utils::Random::getUniformRandomColorEuclideanDistance();
+    const Geometry::ConvexHull convexHull3D(triangleModel);
+
+    // const auto color = Utils::Random::getUniformRandomColorEuclideanDistance();
     // for(size_t i = 0; i < convexHull3D.getPoints3D().size(); i++)
     // {
     //     auto orig = convexHull3D.getPoints3D()[i];
@@ -998,12 +973,9 @@ void Scenes::p4c(SceneContent& sc)
 
 void Scenes::p4d(SceneContent& sc)
 {
-    constexpr glm::vec3 minBoundaries = glm::vec3(-3.5, -1.5, -2.5);
-    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
-
-    constexpr int   pointsPerCloud = 100;
-    constexpr float scale          = 0.5f;
-    const glm::vec3 center         = glm::vec3(0, 0, 0);
+    constexpr int       pointsPerCloud = 100;
+    constexpr float     scale          = 0.5f;
+    constexpr glm::vec3 center         = glm::vec3(0, 0, 0);
 
     auto* pointCloud2D = new Geometry::PointCloud;
     for(int idx = 0; idx < pointsPerCloud; ++idx)
@@ -1027,5 +999,166 @@ void Scenes::p4d(SceneContent& sc)
             sc.addNewModel((new DrawRay(ray))->overrideModelName()->setLineColor(color)->setLineWidth(3.0f)->setPointColor(color)->setPointSize(5.0f));
         }
     }
+}
+
+void Scenes::p10RandomPoints(SceneContent& sc)
+{
+    constexpr glm::vec3 minBoundaries = glm::vec3(-1.0, -1.0, -1.0);
+    constexpr glm::vec3 maxBoundaries = glm::vec3(-minBoundaries);
+
+    constexpr glm::vec3 center         = glm::vec3(0, 0, 0);
+    constexpr int       pointsPerCloud = 300;
+    // constexpr float     scale          = 0.5f;
+    constexpr float     scale          = 1.0f;
+    // constexpr float     scale          = 2.0f;
+    // constexpr float     scale          = 3.0f;
+    // auto*               pointCloud     = new Geometry::PointCloud;
+    auto* pointCloud = new Geometry::PointCloud3d;
+
+    for(int idx = 0; idx < pointsPerCloud; ++idx)
+    {
+        glm::vec3 rand;
+
+        // Default
+        // rand = Utils::Random::getUniformRandom(-1.0f, 1.0f) / scale + center;
+        // rand.x = Utils::Random::getUniformRandom(minBoundaries.x, maxBoundaries.x) / scale;
+        // rand.y = Utils::Random::getUniformRandom(minBoundaries.y, maxBoundaries.y) / scale;
+        // rand.z = Utils::Random::getUniformRandom(minBoundaries.z, maxBoundaries.z) / scale;
+
+        // Hemispheric point cloud
+        // rand = Utils::Random::getUniformRandomInHemisphere(glm::vec3(0, -1, 0)) / scale + center;
+        // rand = Utils::Random::getUniformRandomCosineDirection() / scale + center;
+
+        // Spheric point cloud
+        // rand = Utils::Random::getUniformRandomInUnitSphere() / scale + center;
+        // rand = Utils::Random::getRandomInUnitSphereSurface() / scale + center;
+        // rand = Utils::Random::getUniformRandomInUnitSphereSurface() / scale + center;
+
+        // Disk point cloud
+        // rand = Utils::Random::getUniformRandomInUnitDiskCircumference() / scale + center;
+
+        // Disk point cloud
+        // rand = Utils::Random::getUniformRandomInUnitDisk() / scale + center;
+
+        // Rectangular point cloud
+        // rand = Utils::Random::getUniformRandomInUnitSquare() / scale + center;
+        // rand = Utils::Random::getUniformRandomInUnitSquarePerimeter() / scale + center;
+
+        // Cubical point cloud
+        rand = Utils::Random::getUniformRandomInUnitCubeSurface() / scale + center;
+
+        // pointCloud->addPoint(Geometry::Point(rand.x, rand.y));
+        // pointCloud->addPoint(Geometry::Vect3d(rand.x, rand.y, 0.0));
+        pointCloud->addPoint(Geometry::Vect3d(rand.x, rand.y, rand.z));
+
+        auto color = Utils::Random::getUniformRandomColor();
+        // auto color = Utils::Random::getUniformRandomColorEuclideanDistance();
+        // auto color = glm::vec3(1, 1, 1);
+        // sc.addNewModel((new DrawPointCloud(*pointCloud, true))->overrideModelName()->setLineColor(color)->setLineWidth(3.0f)->setPointColor(color)->setPointSize(0.0f));
+        // sc.addNewModel((new DrawPointCloud(*pointCloud, true))->overrideModelName()->setLineColor(color)->setLineWidth(3.0f));
+        sc.addNewModel((new DrawPointCloud(*pointCloud, false))->overrideModelName()->setPointColor(color)->setPointSize(3.0f));
+    }
+    {
+        auto* segment = new Geometry::Segment3d({1.0 / scale, 1.0 / scale, 1.0 / scale}, {-1.0 / scale, 1.0 / scale, 1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({1.0 / scale, 1.0 / scale, 1.0 / scale}, {1.0 / scale, -1.0 / scale, 1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({1.0 / scale, 1.0 / scale, 1.0 / scale}, {1.0 / scale, 1.0 / scale, -1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({1.0 / scale, 1.0 / scale, -1.0 / scale}, {-1.0 / scale, 1.0 / scale, -1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({-1.0 / scale, 1.0 / scale, -1.0 / scale}, {-1.0 / scale, 1.0 / scale, 1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({-1.0 / scale, 1.0 / scale, 1.0 / scale}, {-1.0 / scale, -1.0 / scale, 1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({-1.0 / scale, -1.0 / scale, 1.0 / scale}, {1.0 / scale, -1.0 / scale, 1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({1.0 / scale, -1.0 / scale, 1.0 / scale}, {1.0 / scale, -1.0 / scale, -1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({1.0 / scale, -1.0 / scale, -1.0 / scale}, {1.0 / scale, 1.0 / scale, -1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({1.0 / scale, -1.0 / scale, -1.0 / scale}, {-1.0 / scale, -1.0 / scale, -1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({-1.0 / scale, -1.0 / scale, -1.0 / scale}, {-1.0 / scale, 1.0 / scale, -1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+    {
+        auto* segment = new Geometry::Segment3d({-1.0 / scale, -1.0 / scale, -1.0 / scale}, {-1.0 / scale, -1.0 / scale, 1.0 / scale});
+        sc.addNewModel((new DrawSegment(*segment))->overrideModelName()->setLineColor(glm::vec3(1, 1, 1))->setLineWidth(3.0f));
+        delete segment;
+    }
+
+    // auto* pc2 = new Geometry::PointCloud3d;
+    // pc2->addPoint({-1.0, -1.0, -1.0});
+    // pc2->addPoint({-1.0, -1.0, 1.0});
+    // pc2->addPoint({-1.0, 1.0, -1.0});
+    // pc2->addPoint({-1.0, 1.0, 1.0});
+    // pc2->addPoint({1.0, -1.0, -1.0});
+    // pc2->addPoint({1.0, -1.0, 1.0});
+    // pc2->addPoint({1.0, 1.0, -1.0});
+    // pc2->addPoint({1.0, 1.0, 1.0});
+
+    // pc2->addPoint({1.0, 1.0, 1.0});
+    // pc2->addPoint({-1.0, 1.0, 1.0});
+    // pc2->addPoint({1.0, 1.0, 1.0});
+    // pc2->addPoint({1.0, -1.0, 1.0});
+    // pc2->addPoint({1.0, 1.0, 1.0});
+    // pc2->addPoint({1.0, 1.0, -1.0});
+    // pc2->addPoint({1.0, 1.0, -1.0});
+    // pc2->addPoint({-1.0, 1.0, -1.0});
+    // pc2->addPoint({-1.0, 1.0, -1.0});
+    // pc2->addPoint({-1.0, 1.0, 1.0});
+    // pc2->addPoint({-1.0, 1.0, 1.0});
+    // pc2->addPoint({-1.0, -1.0, 1.0});
+    // pc2->addPoint({-1.0, -1.0, 1.0});
+    // pc2->addPoint({1.0, -1.0, 1.0});
+    // pc2->addPoint({1.0, -1.0, 1.0});
+    // pc2->addPoint({1.0, -1.0, -1.0});
+    // pc2->addPoint({1.0, -1.0, -1.0});
+    // pc2->addPoint({1.0, 1.0, -1.0});
+    // pc2->addPoint({1.0, -1.0, -1.0});
+    // pc2->addPoint({-1.0, -1.0, -1.0});
+    // pc2->addPoint({-1.0, -1.0, -1.0});
+    // pc2->addPoint({-1.0, 1.0, -1.0});
+    // pc2->addPoint({-1.0, -1.0, -1.0});
+    // pc2->addPoint({-1.0, -1.0, 1.0});
+
+    // const Geometry::ConvexHull convexHull3D(pc2);
+    // const Geometry::ConvexHull convexHull3D(pointCloud);
+    // for(auto triangle : convexHull3D.getTriangles3D())
+    // {
+    //     sc.addNewModel((new DrawTriangle(triangle))->setLineColor(Utils::Random::getUniformRandomColor())->setTriangleColor(glm::vec4(Utils::Random::getUniformRandomColor(), 1.0f))->overrideModelName());
+    // }
 }
 }    // namespace GDSA::Render::Scenes

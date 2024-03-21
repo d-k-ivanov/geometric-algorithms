@@ -19,6 +19,6 @@ public:
     void     addNewModel(Model3D* model);
     void     buildCamera(uint16_t width, uint16_t height);
     void     buildScenario();
-    Model3D* getModel(Model3D::Component* component) const;
+    Model3D* getModel(const Model3D::Component* component) const;
 };
 }    // namespace GDSA::Render

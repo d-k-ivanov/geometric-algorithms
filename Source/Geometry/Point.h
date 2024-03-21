@@ -6,6 +6,8 @@
 #include <ostream>
 #include <sstream>
 
+#include <glm/vec3.hpp>
+
 namespace GDSA::Geometry
 {
 /**
@@ -178,5 +180,10 @@ public:
      *  @brief Calculates the scalar multiplication of this point.
      */
     Point scalarMult(double t);
+
+    /**
+     * @brief Returns the point as a glm::vec3.
+     */
+    glm::vec3 toGlmVec3() const;
 };
 }    // namespace GDSA::Geometry

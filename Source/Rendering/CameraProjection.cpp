@@ -40,10 +40,10 @@ void CameraProjection::CameraProperties::computeAxes(glm::vec3& n, glm::vec3& u,
 
 glm::vec2 CameraProjection::CameraProperties::computeBottomLeftCorner() const
 {
-    const float halfWidth  = _width / 2.0f;
-    const float halfHeight = _height / 2.0f;
+    const float halfWidth  = static_cast<float>(_width) / 2.0f;
+    const float halfHeight = static_cast<float>(_height) / 2.0f;
 
-    return glm::vec2(-halfWidth, -halfHeight);
+    return {-halfWidth, -halfHeight};
 }
 
 float CameraProjection::CameraProperties::computeFovY() const
@@ -81,7 +81,7 @@ glm::mat4 PerspectiveProjection::buildProjectionMatrix(CameraProperties* camera)
 
 void PerspectiveProjection::zoom(CameraProperties* camera, const float speed)
 {
-    float angle = camera->_fovY - speed;
+    const float angle = camera->_fovY - speed;
     if(angle < glm::pi<float>() && angle > 0.0f)
     {
         camera->_fovY = angle;

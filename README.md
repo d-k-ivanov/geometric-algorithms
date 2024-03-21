@@ -66,6 +66,13 @@ The application's origins belong to [Alfonso López Ruiz](https://github.com/Alf
 | ![](Docs/p4/images/p4-2-b.png) | ![](Docs/p4/images/p4-2-a.png) |
 | ![](Docs/p4/images/p4-1-b.png) |                                |
 
+### Random points
+
+| Column                           | Column                           |
+|----------------------------------|----------------------------------|
+| ![](Images/random_cube_01.png)   | ![](Images/random_square_01.png) |
+| ![](Images/random_sphere_01.png) | ![](Images/random_sphere_02.png) |
+
 ### Voxelization
 
 ![](Docs/p3/images/p3-0-models.png)

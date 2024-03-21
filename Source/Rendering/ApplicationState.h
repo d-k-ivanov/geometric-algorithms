@@ -31,7 +31,8 @@ struct ApplicationState
 
     ApplicationState()
     {
-        _backgroundColor    = glm::vec3(.6f);
+        // _backgroundColor    = glm::vec3(.6f);
+        _backgroundColor    = glm::vec3(0.125f, 0.153f, 0.184f);
         _materialScattering = 1.0f;
         _numFps             = 0;
         _selectedCamera     = 0;

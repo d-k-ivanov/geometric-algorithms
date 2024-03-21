@@ -227,4 +227,9 @@ Point Point::scalarMult(double t)
 {
     return {this->getX() * t, this->getY() * t};
 }
+
+glm::vec3 Point::toGlmVec3() const
+{
+    return {_x, _y, 0};
+}
 }    // namespace GDSA::Geometry

@@ -96,11 +96,15 @@ glm::vec3 getUniformRandomInUnitSquare();
  */
 glm::vec3 getUniformRandomInUnitSquarePerimeter();
 
+/**
+ *  @return Random point in unit cube surface.
+ */
+glm::vec3 getUniformRandomInUnitCubeSurface();
+
 inline float getUniformRandom()
 {
     static DoubleUniformDistribution distribution(0.0f, 1.0f);
-    // static RandomNumberGenerator     generator(static_cast<unsigned>(time(nullptr)));
-    static RandomNumberGenerator generator;
+    static RandomNumberGenerator     generator;
     generator.seed(std::random_device()());
     return distribution(generator);
 }
@@ -262,6 +266,18 @@ inline glm::vec3 getUniformRandomInUnitSquarePerimeter()
         point = glm::vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), .0f);
 
         if(point.x <= -0.998f || point.x >= 0.998f || point.y <= -0.998f || point.y >= 0.998f)
+            return point;
+    }
+}
+
+inline glm::vec3 getUniformRandomInUnitCubeSurface()
+{
+    glm::vec3 point;
+    while(true)
+    {
+        point = glm::vec3(getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f), getUniformRandom(-1.0f, 1.0f));
+
+        if(point.x <= -0.998f || point.x >= 0.998f || point.y <= -0.998f || point.y >= 0.998f || point.z <= -0.998f || point.z >= 0.998f)
             return point;
     }
 }
