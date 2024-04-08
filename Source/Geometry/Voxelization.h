@@ -48,7 +48,7 @@ public:
     double    getXMin() const { return _minX; }
     double    getYMin() const { return _minY; }
     double    getZMin() const { return _minZ; }
-    glm::vec3 getTam() const { return _size; }
+    glm::vec3 getSize() const { return _size; }
 
 protected:
     void flood();
