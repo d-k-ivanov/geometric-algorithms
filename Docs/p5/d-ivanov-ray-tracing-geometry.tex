@@ -209,7 +209,7 @@ Even though ray tracing technology utilizes Ray as the basic geometric term, ray
     \label{fig:parametric_line_gems}
 \end{figure}
 
-Instead of two points, choosing a point and a direction is better. We can define point \textbf{$B$} as \textbf{$d$} (\textit{direction}) and point \textbf{$A$} as \textbf{$O$} (\textit{origin}). For various computation reasons, like computing cosines with dot products, it's preferable to use a normalized vector as a direction:
+Instead of two points, choosing a point and a direction is better. We can define the normalized vector between points \textbf{$B$} and \textbf{$A$} as \textbf{$\hat{d}$} (\textit{direction}) and point \textbf{$A$} as \textbf{$O$} (\textit{origin}). For various computation reasons, like computing cosines with dot products, it's preferable to use a normalized vector as a direction:
 
 \begin{equation}
     P(t) = O + t \hat{d}
@@ -241,11 +241,11 @@ We know a point is on the surface of a plane if it satisfies the plane equation:
 
 \begin{equation}
     \begin{split}
-    Plane = Ax + Bx + Cz + D = 0 \\ where: A^2 + B^2 + C^2 = 1
+    Ax + Bx + Cz + D = 0 \\ where: A^2 + B^2 + C^2 = 1
     \end{split}
 \end{equation}
 
-If no point along the ray satisfies the plane equation, the ray and plane do not intersect \cite{Szauer_2017}:
+A point with coordinates $(x, y, z)$ is in the plane only when the values $x$, $y$ and $z$ make the equation hold true. If no point along the ray satisfies the plane equation, the ray and plane do not intersect \cite{Szauer_2017}:
 
 \begin{figure}[H]
     \centering
@@ -265,7 +265,17 @@ Once the ray-plane intersection is defined, the ray-polygon intersection can be 
 
 This algorithm works by shooting rays in an arbitrary direction and counting the number of intersections with the polygon. If the number is odd, the point is inside the polygon; otherwise, it is outside. The Jordan curve theorem is a fundamental concept in computational geometry. Once the ray-polygon interacting achieved, the ray tracing engine can construct more complex geometries like triangles quadrilaterals, and other polygons.
 
-\newpage
+Möller and Trumbore presented \cite{Möller_Trumbore_1997} the faster and simpler ray-triangle intersection algorithm. The algorithm translates the origin of the ray to triangle-specific barycentric coordinates, then changes the base to yield a vector containing the distance $t$ and the coordinates $(u,v)$ of the intersection, as illustrated on figure \ref{fig:moller_trumbore_algorithm}:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{moller_trumbore_algorithm}
+    \caption[Geometrical illustration of Möller-Trumbore intersection algorithm]{Geometrical illustration of Möller-Trumbore intersection algorithm.}
+    \label{fig:moller_trumbore_algorithm}
+\end{figure}
+
+It is shown that the Möller-Trumbore algorithm is comparable in speed to previous methods while significantly reducing memory storage costs, by avoiding storing triangle plane equations. Baldwin and Weber presented \cite{Baldwin_Weber_2016} a faster ray-triangle intersection calculation at the expense of pre-computing and storing a small amount of extra information for each triangle. The Baldwin-Weber algorithm is 1-6\% faster than the Möller-Trumbore algorithm.
+
 \section{Optimization}
 
 Another important area in ray tracing is performance optimizations and acceleration techniques. Using different geometry structures allows for the reduction of complicated computations, increasing the rendering time of a scene. The figure \ref{fig:acceleration-techniques} presents the broad classification of various optimization approaches described by Arvo and Kirk \cite{Arvo_Kirk_1989}.
@@ -277,7 +287,7 @@ Another important area in ray tracing is performance optimizations and accelerat
     \label{fig:acceleration-techniques}
 \end{figure}
 
-BVH trees are the most important optimization technology in ray tracing. A scene can consist of thousands of objects. Some of them are visible, some of them are not. If an object invisible, it could be traceable or not traceable. BVH constructions and bounding box hit-checking algorithms help to the time of initial scene construction and ray-tracing computations. The figures \ref{fig:bvh-100}, \ref{fig:bvh-1000}, \ref{fig:bvh-5000}, \ref{fig:bvh-10000}, \ref{fig:bvh-20000} show the increasing number of objects on the ray traced scene. Each of the spheres wrapped into a bounding box and the whole scene exists as one BVH construction.
+Bounding Volumes Hierarchy (BVH) trees are the most important optimization technology in ray tracing. A scene can consist of thousands of objects. BVH structure makes it possible to avoid computing the intersections between a single ray and each object in a large group of objects when the bounding box of the group does not intersect the ray. BVH tree construction and bounding box hit-checking algorithms help with the time of initial scene construction and Ray-Tracing computations. The figures \ref{fig:bvh-100}, \ref{fig:bvh-1000}, \ref{fig:bvh-5000}, \ref{fig:bvh-10000}, \ref{fig:bvh-20000} show the increasing number of objects on the ray-traced scene. Each sphere is wrapped into a bounding box, and the whole scene exists as one BVH construction.
 
 \begin{multicols}{5}
     \begin{figure}[H]
@@ -311,7 +321,7 @@ BVH trees are the most important optimization technology in ray tracing. A scene
     \end{figure}
 \end{multicols}
 
-As was shown in the figures above, the computation time for 100 samples per pixel doesn't increase too much when sphered starting to overlap each other.
+As was shown in the figures above, the computation time for 100 samples per pixel doesn't increase too much when the number of spheres is quite large, because of the usage of a BVH.
 
 Another interesting optimization approach proposed by Alexander Reshetov \cite{Reshetov_2019}. Their GARP method (Geometric Approach to Ray/bilinear Patch intersections) is trying to find a balance between the simplicity of triangles and the richness of such smooth shapes as subdivision surfaces, NURBS, and Bézier patches.
 
